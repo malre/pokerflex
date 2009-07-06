@@ -81,7 +81,7 @@ package
 			{
 				var go:GameObject = new GameObject();
 				// 传入的是左上的位置坐标
-				go.startupGameObject(ResourceManager.CardsRes, new Point(0, 0), Rectangle(cardsRect.getItemAt(8)));
+				go.startupGameObject(ResourceManager.CardsRes, new Point(50, 0), Rectangle(cardsRect.getItemAt(18)));
 				GameObjectManager.Instance.addBaseObject(go);
 			}
 		}
