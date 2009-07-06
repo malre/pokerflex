@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="MainMenu"
+	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
+	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
+<!-- 添加状态控制部分 -->
+	<mx:states>
+		<mx:State 
+			name="Game"			
+			enterState="enterGame(event)"
+        	exitState="exitGame(event)">
+		</mx:State>
+		<mx:State 
+			name="LevelEnd">
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="514" y="368" label="Continue" id="btnContinue" click="btnContinueClicked(event)"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="10" y="10" text="Congratulations, you finished the level."/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="MainMenu">
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="525" y="368" label="Start" id="btnStart" click="startGameClicked(event)"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="10" y="49" source="@Embed('../res/suit_big.png')"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="10" y="10" text="双扣" fontSize="20" fontWeight="bold"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<!--定义画布-->
+	<mx:Canvas x="0" y="0" width="100%" height="100%" id="myCanvas"/>
+	<!--定义http连接-->
+    <mx:HTTPService useProxy="false" id="httpService" method="POST" showBusyCursor="true"
+    	url=""
+    	result="{NetManager.Instance.resultProcess(event)}" fault="{NetManager.Instance.failProcess(event)}">
+        <mx:request>
+            <data>"{NetManager.getSendData()}"</data>
+        </mx:request>
+    </mx:HTTPService>
+	
+	<mx:Script>
+		<![CDATA[
+			protected var inGame:Boolean = false;
+
+			private function enterGame(event:Event):void
+			{
+				Mouse.hide();
+				Game.Instance.init();
+				inGame = true;
+			}
+			
+			private function exitGame(event:Event):void
+			{
+				Mouse.show();
+				GameObjectManager.Instance.shutdown();
+				inGame = false;
+			}
+			
+			private function startGameClicked(event:Event):void
+			{
+				Application.application.currentState="Game";
+			}
+			
+			private function btnContinueClicked(event:Event):void
+			{
+			}
+
+			public function creationComplete():void
+			{
+			
+			}
+			
+			public function enterFrame(event:Event):void
+			{
+		    	if (inGame)
+		    	{
+		    		// 逻辑部分的循环
+		    		Game.Instance.taskLoop();
+		    		// 描画部分的循环
+		    		myCanvas.graphics.clear();
+		    		myCanvas.graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
+		    		myCanvas.graphics.drawRect(0, 0, this.width, this.height);
+		    		myCanvas.graphics.endFill();
+		    	}	
+			}
+			
+			public function click(event:MouseEvent):void
+			{
+				
+			}
+			
+			public function mouseDown(even:MouseEvent):void
+			{
+			
+			}
+			
+			public function mouseUp(event:MouseEvent):void
+			{
+			
+			}
+			
+			public function mouseMove(event:MouseEvent):void
+			{
+				
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
