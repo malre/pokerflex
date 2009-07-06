@@ -47,14 +47,14 @@
 
 			private function enterGame(event:Event):void
 			{
-				Mouse.hide();
+//				Mouse.hide();
 				Game.Instance.init();
 				inGame = true;
 			}
 			
 			private function exitGame(event:Event):void
 			{
-				Mouse.show();
+//				Mouse.show();
 				GameObjectManager.Instance.shutdown();
 				inGame = false;
 			}
