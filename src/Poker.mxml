@@ -8,6 +8,23 @@
 			name="Game"			
 			enterState="enterGame(event)"
         	exitState="exitGame(event)">
+			<mx:SetProperty target="{myCanvas}" name="width" value="800"/>
+			<mx:SetProperty target="{myCanvas}" name="height" value="600"/>
+			<mx:SetStyle target="{myCanvas}" name="themeColor" value="#009DFF"/>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="327.5" y="416.25" label="出牌" width="65" height="22.045454" id="btn"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="400.5" y="416.25" label="放弃" width="65" height="22.045454"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="491.75" y="416.25" label="提示" width="65" height="22.045454"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{myCanvas}" name="x"/>
+			<mx:SetStyle target="{myCanvas}" name="horizontalCenter" value="0"/>
+			<mx:SetProperty target="{myCanvas}" name="y"/>
+			<mx:SetStyle target="{myCanvas}" name="verticalCenter" value="0"/>
+			<mx:SetStyle target="{myCanvas}" name="backgroundAlpha" value="1.0"/>
 		</mx:State>
 		<mx:State 
 			name="LevelEnd">
@@ -17,10 +34,14 @@
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Label x="10" y="10" text="Congratulations, you finished the level."/>
 			</mx:AddChild>
+			<mx:SetProperty target="{myCanvas}" name="x"/>
+			<mx:SetStyle target="{myCanvas}" name="horizontalCenter" value="0"/>
+			<mx:SetProperty target="{myCanvas}" name="y"/>
+			<mx:SetStyle target="{myCanvas}" name="verticalCenter" value="0"/>
 		</mx:State>
 		<mx:State name="MainMenu">
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="525" y="368" label="Start" id="btnStart" click="startGameClicked(event)"/>
+				<mx:Button x="641.7" y="452.85" label="Start" id="btnStart" click="startGameClicked(event)"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Image x="10" y="49" source="@Embed('../res/suit_big.png')"/>
@@ -28,6 +49,16 @@
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Label x="10" y="10" text="双扣" fontSize="20" fontWeight="bold"/>
 			</mx:AddChild>
+			<mx:SetProperty target="{myCanvas}" name="width" value="800"/>
+			<mx:SetProperty target="{myCanvas}" name="height" value="600"/>
+			<mx:SetProperty target="{myCanvas}" name="x"/>
+			<mx:SetStyle target="{myCanvas}" name="horizontalCenter" value="0"/>
+			<mx:SetProperty target="{myCanvas}" name="y"/>
+			<mx:SetStyle target="{myCanvas}" name="verticalCenter" value="0"/>
+			<mx:SetStyle target="{myCanvas}" name="borderStyle" value="inset"/>
+			<mx:SetStyle target="{myCanvas}" name="borderColor" value="#B7BABC"/>
+			<mx:SetStyle target="{myCanvas}" name="themeColor" value="#009DFF"/>
+			<mx:SetStyle target="{myCanvas}" name="backgroundAlpha" value="1.0"/>
 		</mx:State>
 	</mx:states>
 	<!--定义画布-->
