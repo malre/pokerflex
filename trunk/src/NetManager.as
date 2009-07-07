@@ -78,6 +78,7 @@ package
 				{
 					// 链接成功，开始等待玩家点击准备完成按钮
 					send_type = send_waitForReady;
+					Application.application.currentState = "WaitReady";
 					Game.Instance.menuState = 1;
 				}
 				// text 
