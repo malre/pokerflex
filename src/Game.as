@@ -49,11 +49,13 @@ package
 		{
 			GameObjectManager.Instance.startup();
 
-			for(var i:int=0; i<2/* cardsAmount*2 */; i++)
+			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
+			for(var i:int=0; i<36; i++)
 			{
 				var go:GameObject = new GameObject();
+				var pt:Point = new Point(i*17,460);
 				// 传入的是左上的位置坐标
-				go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(52)), new Point(0, 0), new Rectangle(0,0,79,109));
+				go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(i+10)), pt, rt);
 				GameObjectManager.Instance.addBaseObject(go);
 			}
 		}
@@ -76,9 +78,9 @@ package
 					case 0:
 					break;
 					case 1:
-					    GameObjectManager.Instance.enterFrame();
 					break;
 					case 2:
+					    GameObjectManager.Instance.enterFrame();
 					break;
 				}
 			}
@@ -89,8 +91,6 @@ package
 				}
 				else if(menuState == 1)
 				{
-					//
-					NetManager.Instance.send(NetManager.send_waitForReady);
 				}
 			}
 
