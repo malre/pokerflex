@@ -20,6 +20,10 @@ package
 		public static var cardsHeight:int = 108;
 		public static var cardsIntervalX:int = 31;
 		public static var cardsIntervalY:int = 28;
+		
+		// 游戏中的各个阶段的状态定义
+		// 0 没有状态  1 自己的牌的发牌的过程，也就是初始化的过程， 2 游戏过程 3...
+		private var state:int	= 0;
 
 		public function Game()
 		{
@@ -48,7 +52,17 @@ package
 		
 		public function taskLoop():void
 		{
-    		GameObjectManager.Instance.enterFrame();
+			switch(state)
+			{
+				case 0:
+				break;
+				case 1:
+				    GameObjectManager.Instance.enterFrame();
+				break;
+				case 2:
+				break;
+			}
+
 		} 
 	}
 }
