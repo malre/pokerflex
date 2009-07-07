@@ -41,13 +41,13 @@
 		</mx:State>
 		<mx:State name="MainMenu">
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="641.7" y="452.85" label="Start" id="btnStart" click="startGameClicked(event)"/>
+				<mx:Button x="641.7" y="452.85" label="准备" id="btnStart" click="startGameClicked(event)"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Image x="10" y="49" source="@Embed('../res/suit_big.png')"/>
+				<mx:Image x="371.5" y="171" source="@Embed('../res/suit_big.png')"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="10" y="10" text="双扣" fontSize="20" fontWeight="bold"/>
+				<mx:Label x="374.5" y="120" text="双扣" fontSize="20" fontWeight="bold"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{myCanvas}" name="width" value="800"/>
 			<mx:SetProperty target="{myCanvas}" name="height" value="600"/>
@@ -59,6 +59,9 @@
 			<mx:SetStyle target="{myCanvas}" name="borderColor" value="#B7BABC"/>
 			<mx:SetStyle target="{myCanvas}" name="themeColor" value="#009DFF"/>
 			<mx:SetStyle target="{myCanvas}" name="backgroundAlpha" value="1.0"/>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:TextArea x="279" y="385.85" width="238" height="89" id="loginlog" editable="false"/>
+			</mx:AddChild>
 		</mx:State>
 	</mx:states>
 	<!--定义画布-->
