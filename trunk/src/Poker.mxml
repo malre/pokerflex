@@ -41,7 +41,7 @@
 		</mx:State>
 		<mx:State name="MainMenu">
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="641.7" y="452.85" label="准备" id="btnStart" click="startGameClicked(event)"/>
+				<mx:Button x="641.7" y="452.85" label="准备好了" id="btnStart" click="startGameClicked(event)"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Image x="371.5" y="171" source="@Embed('../res/suit_big.png')"/>
@@ -95,7 +95,8 @@
 			
 			private function startGameClicked(event:Event):void
 			{
-				Application.application.currentState="Game";
+				//currentState="Game";
+				NetManager.Instance.send(NetManager.send_joinRoom);
 			}
 			
 			private function btnContinueClicked(event:Event):void
@@ -109,10 +110,10 @@
 			
 			public function enterFrame(event:Event):void
 			{
+	    		// 逻辑部分的循环
+	    		Game.Instance.taskLoop(currentState);
 		    	if (inGame)
 		    	{
-		    		// 逻辑部分的循环
-		    		Game.Instance.taskLoop();
 		    		// 描画部分的循环
 		    		myCanvas.graphics.clear();
 		    		myCanvas.graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);

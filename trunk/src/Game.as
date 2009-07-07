@@ -23,7 +23,15 @@ package
 		
 		// 游戏中的各个阶段的状态定义
 		// 0 没有状态  1 自己的牌的发牌的过程，也就是初始化的过程， 2 游戏过程 3...
-		private var state:int	= 0;
+		public var gameState:int	= 0;
+		// 0 没有状态，等待   1 发送了参加房间的消息以后，成功，  2 发送了参加房间的消息以后，失败 
+		// 3 发送了准备完整的消息以后，成功， 4 发送了准备完成的消息以后，失败
+		public var menuState:int	= 0;
+		// 计时器
+		private var lastFrameTime:Date = new Date();
+		private static var requestInterval:Number = 1.0;
+		private var requestFlag:Boolean = false;
+
 
 		public function Game()
 		{
@@ -50,17 +58,40 @@ package
 			}
 		}
 		
-		public function taskLoop():void
+		public function taskLoop(state:String):void
 		{
-			switch(state)
+			// Calculate the time since the last frame
+			var thisFrame:Date = new Date();
+			var seconds:Number = (thisFrame.getTime() - lastFrameTime.getTime())/1000.0;
+			if(seconds > requestInterval)
 			{
-				case 0:
-				break;
-				case 1:
-				    GameObjectManager.Instance.enterFrame();
-				break;
-				case 2:
-				break;
+				requestFlag = true;
+	    		lastFrameTime = thisFrame;
+			}
+
+			if(state == "Game")
+			{
+				switch(gameState)
+				{
+					case 0:
+					break;
+					case 1:
+					    GameObjectManager.Instance.enterFrame();
+					break;
+					case 2:
+					break;
+				}
+			}
+			else if(state == "MainMenu")
+			{
+				if(menuState == 0)	// nothing
+				{
+				}
+				else if(menuState == 1)
+				{
+					//
+					NetManager.Instance.send(NetManager.send_waitForReady);
+				}
 			}
 
 		} 

@@ -2,6 +2,8 @@ package
 {
 	import flash.events.Event;
 	
+	import json.JSON;
+	
 	import mx.core.Application;
 	
 	public class NetManager
@@ -65,12 +67,55 @@ package
 		
 		public function resultProcess(event:Event):void
 		{
+			// 
+			var str:String=null;
+ 			var json1:Object = new Object();
+			json1 = JSON.decode(Application.application.httpService.lastResult.toString());
+
 			if(send_type == send_joinRoom)
 			{
-				Application.application.loginlog.text = "";
+				if(json1.success)
+				{
+					// 链接成功，开始等待玩家点击准备完成按钮
+					send_type = send_waitForReady;
+					Game.Instance.menuState = 1;
+				}
+				// text 
+				if(json1.hasOwnProperty("errors"))
+				{
+					if(json1.errors != null)
+						str += json1.errors[0]+"\n";
+				}
+				if(json1.hasOwnProperty("players"))
+				{
+					str += json1.players[0];
+				}
+				Application.application.loginlog.text = "success="+json1.success+"\n"
+														+"status="+json1.status+"\n"
+														+str;
 			}
 			else if(send_type == send_waitForReady)
 			{
+				if(json1.success)
+				{
+					// 链接成功，进入游戏逻辑，开始进行update处理
+					send_type = send_updateWhileGame;
+					if(json1.status == 0)	// game start
+						Application.application.currentState ="Game";
+				}
+				// text 
+				if(json1.hasOwnProperty("errors"))
+				{
+					if(json1.errors != null)
+						str += json1.errors[0]+"\n";
+				}
+				if(json1.hasOwnProperty("players"))
+				{
+					str += json1.players[0];
+				}
+				Application.application.loginlog.text = "success="+json1.success+"\n"
+														+"status="+json1.status+"\n"
+														+str;
 			}
 			else if(send_type == send_updateWhileGame)
 			{
@@ -81,9 +126,11 @@ package
 		{
 			if(send_type == send_joinRoom)
 			{
+				Application.application.loginlog.text = "connect failed. join room";
 			}
 			else if(send_type == send_waitForReady)
 			{
+				Application.application.loginlog.text = "connect failed. wait for ready";
 			}
 			else if(send_type == send_updateWhileGame)
 			{
