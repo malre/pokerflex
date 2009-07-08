@@ -65,10 +65,13 @@
 				<mx:TextArea x="279" y="385.85" width="238" height="89" id="loginlog" editable="false"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="623.7" y="452.85" label="加入默认房间" id="btnJoin" click="startGameClicked(event)"/>
+				<mx:Button x="623" y="413.85" label="加入默认房间" id="btnJoin" click="startGameClicked(event)"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="623" y="494" label="Debug" id="btnDebug" click="startDebugClicked(event)"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="623" y="452.85" label="退出默认房间" id="btnLeave" click="leaveGameClicked(event)"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="WaitReady">
@@ -92,7 +95,7 @@
 			private function enterGame(event:Event):void
 			{
 //				Mouse.hide();
-				Game.Instance.init();
+				//Game.Instance.init();
 				inGame = true;
 			}
 			
@@ -108,10 +111,17 @@
 				//currentState="WaitReady";
 				NetManager.Instance.send(NetManager.send_joinRoom);
 			}
+			
+			private function leaveGameClicked(event:Event):void
+			{
+				//currentState="WaitReady";
+				NetManager.Instance.send(NetManager.send_leave);
+			}
 
 			private function startDebugClicked(event:Event):void
 			{
 				currentState="Game";
+				Game.Instance.init();
 				Game.Instance.gameState = 2;
 			}
 

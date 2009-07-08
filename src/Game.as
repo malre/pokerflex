@@ -85,6 +85,8 @@ package
 					for(j=0;j<27;j++)
 					{
 						PlayerCards.push(NetManager.Instance.json1.players[i].card[j]);
+						//for debug
+						//PlayerCards.push();
 					}
 					// do sort
 					PlayerCards.sort();
