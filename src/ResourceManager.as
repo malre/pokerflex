@@ -230,6 +230,9 @@ package
 		public static var Card54:Class;
 		CardsRes.addItem(new GraphicsResource(new Card54()));
 
+		[Embed(source="../res/BG.gif")]							// background
+		public static var BG00:Class;
+		public static var BG00Res:GraphicsResource = new GraphicsResource(new BG00());
 //		[Embed(source="../res/bmp1.png")]
 //		public static var Club1:Class;
 //		public static var GreenGraphicsID1:GraphicsResource = new GraphicsResource(new GreenID1());

@@ -25,6 +25,11 @@ package
 		public static var send_updateWhileGame:String = "update While Game";
 		private var	send_type:String = null;
 		
+		////////////////////////////////////////////////////////
+		// 用来处理收到的json数据
+ 		public var json1:Object = new Object();
+ 		public var json2:Object = new Object();
+		
 		public function NetManager()
 		{
 		}
@@ -69,7 +74,6 @@ package
 		{
 			// 
 			var str:String=null;
- 			var json1:Object = new Object();
 			json1 = JSON.decode(Application.application.httpService.lastResult.toString());
 
 			if(send_type == send_joinRoom)
@@ -77,11 +81,17 @@ package
 				if(json1.success)
 				{
 					// 链接成功，开始等待玩家点击准备完成按钮
+					// 进入等待状态
 					send_type = send_waitForReady;
-					Application.application.currentState = "WaitReady";
-					Game.Instance.menuState = 1;
+					Application.application.currentState = "Game";
+					//Game.Instance.menuState = 1;
+					Game.Instance.gameState = 3;	// 3 发送举手消息以前
+					// 关闭几个和出牌有关的按钮的显示
+					Application.application.btnSendCards.visible = false;
+					Application.application.btnDiscard.visible = false;
+					Application.application.btnHint.visible = false;
 				}
-				// text 
+				// 加入房间失败的情况下，显示失败的消息
 				if(json1.hasOwnProperty("errors"))
 				{
 					if(json1.errors != null)
