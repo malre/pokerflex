@@ -32,7 +32,8 @@ package
 		
 		protected function createAlphaBitmapData(image:DisplayObject):BitmapData
 		{
-			var bitmap:BitmapData = new BitmapData(Game.cardsWidth, Game.cardsHeight);
+			//var bitmap:BitmapData = new BitmapData(Game.cardsWidth, Game.cardsHeight);
+			var bitmap:BitmapData = new BitmapData(image.width, image.height);
 			bitmap.draw(image, null, null, flash.display.BlendMode.ALPHA);
 			return bitmap;
 		}
