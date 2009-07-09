@@ -1,6 +1,7 @@
 package
 {
 	import flash.display.*;
+	import flash.events.MouseEvent;
 	import flash.geom.*;
 	
 	/*
@@ -39,6 +40,20 @@ package
 				graphics = null;							
 			}
 		}
+		
+		override public function click(event:MouseEvent):Boolean
+		{
+			// 如果是纸牌的话，对纸牌进行处理
+			if(name == "Card")
+			{
+				if(event.localX >= position.x && event.localX <= (position.x+Game.cardsWidth))
+				{
+					trace("card be clicked"+position.x+position.y);
+				}
+			}
+			
+			return true;
+		}		
 		
 		override public function copyToBackBuffer(db:BitmapData):void
 		{

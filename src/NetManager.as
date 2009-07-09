@@ -4,6 +4,7 @@ package
 	
 	import json.JSON;
 	
+	import mx.controls.Alert;
 	import mx.core.Application;
 	
 	public class NetManager
@@ -13,6 +14,7 @@ package
 		//定义了进行连接的服务器地址
 		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
+		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
 		public var sendURL_ready:String = sendURL_serverIP+"/game/room/start";
 		public var sendURL_game:String = sendURL_serverIP+"/game/room/update";
@@ -25,6 +27,7 @@ package
 		public static var send_leave:String = "leave Room";
 		public static var send_waitForReady:String = "wait For Ready";
 		public static var send_updateWhileGame:String = "update While Game";
+		public static var send_requestinfo:String = "request player info";
 		private var	send_type:String = null;
 		
 		////////////////////////////////////////////////////////
@@ -55,15 +58,24 @@ package
 			send_type = type;
 			if(type == send_joinRoom)
 			{
-				Application.application.httpService.request={roomid:"1"};
+				Application.application.httpService.request={roomid:Application.application.roomid.text};
 				Application.application.httpService.url = NetManager.Instance.sendURL_join;
 			}
 			else if(type == send_leave)
 			{
+				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_leave;
+			}
+			else if(type == send_requestinfo)
+			{
+				Application.application.httpService.request = {};
+				Application.application.httpService.url = NetManager.Instance.sendURL_requestinfo;
 			}
 			else if(type == send_waitForReady)
 			{
+				// 游戏状态变成 发送举手消息以后
+				Game.Instance.gameState = 4;
+				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_ready;
 			}
 			else if(type == send_updateWhileGame)
@@ -110,6 +122,22 @@ package
 														+"status="+json1.status+"\n"
 														+str;
 			}
+			else if(send_type == send_leave)
+			{
+			}
+			else if(send_type == send_requestinfo)
+			{
+				if(json1.success)
+				{
+					Game.Instance.pid = json1.pid;
+					trace("pid = "+json1.pid+"\n");
+					Alert.show("pid="+json1.pid, "success");
+				}
+				else
+				{
+					Alert.show("pid="+json1.pid, "fail");
+				}
+			}
 			else if(send_type == send_waitForReady)
 			{
 				if(json1.success)
@@ -117,6 +145,9 @@ package
 					// 链接成功，进入游戏逻辑，开始进行update处理
 					send_type = send_updateWhileGame;
 					Game.Instance.init();
+					Game.Instance.gameState = 2;
+					// 将准备按钮隐藏
+					Application.application.btnReady.visible = false;
 				}
 				// text 
 				if(json1.hasOwnProperty("errors"))
