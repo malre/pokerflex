@@ -32,7 +32,12 @@ package
 		private var PlayerCards:Array = new Array();
 		// player id
 		public var pid:int;
-		
+		// 记录其他玩家出的的牌
+		// 按照
+		private var deskCards0:Array = new Array();
+		private var deskCards1:Array = new Array();
+		private var deskCards2:Array = new Array();
+		private var deskCards3:Array = new Array();
 		
 		//////////////////////////////////////////////////////////////////////////////
 		// card height ZOrder
