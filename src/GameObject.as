@@ -14,7 +14,8 @@ package
 		// the bitmap data to display	
 		public var graphics:GraphicsResource = null;
 		public var drawRect:Rectangle;
-//		public var collisionName:String = CollisionIdentifiers.NONE;	
+		// 这张牌是否被选中
+		public var selected:Boolean = false;	
 		
 		public function GameObject()
 		{
@@ -46,13 +47,25 @@ package
 			// 如果是纸牌的话，对纸牌进行处理
 			if(name == "Card")
 			{
-				if(event.localX >= position.x && event.localX <= (position.x+Game.cardsWidth))
+				// 这张纸牌被点中了
+				if(event.localX >= position.x && event.localX <= (position.x+Game.cardsWidth)
+				&& event.localY >= position.y && event.localY <= (position.y+Game.cardsHeight))
 				{
-					trace("card be clicked"+position.x+position.y);
+					if(selected)
+					{
+						position.y += 20;
+						selected = false;
+					}
+					else
+					{
+						position.y -= 20;
+						selected = true;
+					}
+					return true;
 				}
 			}
 			
-			return true;
+			return false;
 		}		
 		
 		override public function copyToBackBuffer(db:BitmapData):void

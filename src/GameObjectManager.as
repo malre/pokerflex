@@ -72,14 +72,17 @@ package
 		public function click(event:MouseEvent):void
 		{
 			// 检测 ZOrder，然后然找优先级来进行点击传递，一旦一个点击被处理了，就直接返回。
-			for each (var gameObject:BaseObject in baseObjects)
+			for(var i:int=0;i<baseObjects.length;i++)
+			{
+				var gameObject:BaseObject = BaseObject(baseObjects.getItemAt(baseObjects.length-1-i)); 
 				if (gameObject.inuse)
 				{ 
 					if(gameObject.click(event))
 					{
-						
+						return;
 					}
 				}
+			}
 		}
 		
 		public function mouseDown(event:MouseEvent):void
