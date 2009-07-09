@@ -19,8 +19,8 @@ package
 		// 最后的53，54是joker--司令。
 		private static var cardsRect:ArrayCollection = new ArrayCollection();
 		//
-		public static var cardsWidth:int = 77;
-		public static var cardsHeight:int = 108;
+		public static var cardsWidth:int = 61;
+		public static var cardsHeight:int = 86;
 		public static var cardsIntervalX:int = 14;
 		public static var cardsIntervalY:int = 28;
 		// BG
