@@ -9,10 +9,10 @@
 			enterState="enterGame(event)"
         	exitState="exitGame(event)">
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="327.5" y="385.25" label="出牌" width="65" height="22.045454" id="btnSendCards" icon="@Embed(source='../res/chupai.png')"/>
+				<mx:Button x="327.5" y="385.25" label="出牌" width="65" height="22.045454" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="400.5" y="385.25" label="放弃" width="65" height="22.045454" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')"/>
+				<mx:Button x="400.5" y="385.25" label="放弃" width="65" height="22.045454" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')" click="discardClicked(event)"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="495.5" y="385.25" label="提示" width="65" height="22.045454" id="btnHint" enabled="false"/>
@@ -29,6 +29,9 @@
 			<mx:SetStyle name="cornerRadius" value="0"/>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="250.9" y="327.55" label="准备好了" width="93.71212" height="81.06061" id="btnReady" click="gameReadyClicked(event)"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" fontSize="14" fontWeight="bold" textDecoration="normal" fontStyle="normal"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State 
@@ -140,6 +143,17 @@
 			}
 
 			private function gameReadyClicked(event:Event):void
+			{
+				//currentState="Game";
+				NetManager.Instance.send(NetManager.send_waitForReady);
+			}
+			
+			private function sendCardsClicked(event:Event):void
+			{
+				NetManager.Instance.send(NetManager.send_updateWhileGame);
+			}
+			
+			private function discardClicked(event:Event):void
 			{
 				//currentState="Game";
 				NetManager.Instance.send(NetManager.send_waitForReady);

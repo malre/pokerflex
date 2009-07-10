@@ -102,7 +102,7 @@ package
 			Application.application.btnSendCards.visible = true;
 			Application.application.btnSendCards.enabled = false;
 			Application.application.btnDiscard.visible = true;
-//			Application.application.btnDiscard.enabled = false;
+			Application.application.btnDiscard.enabled = false;
 			Application.application.btnHint.visible = true;
 			// 对得到的牌进行排序并显示
 			sortCards();
@@ -158,33 +158,7 @@ package
 					// do sort
 					PlayerCards.sort(Array.NUMERIC);
 					PlayerCards.reverse();
-					/*
-					var jokerarray:Array = new Array();
-					for(k=0;k<4;k++)
-					{
-						if(PlayerCards[26-k] >= 52)
-						{
-							jokerarray.push(PlayerCards.pop());
-						}
-					}
-					var tmp:Array = new Array();
-					for(k=0;k<8;k++)
-					{
-						// 因为头元素被移出去，所以每次判断的时候都是头元素
-						if(PlayerCards[0] ==0 || PlayerCards[0]==1)
-						{
-							tmp.push(PlayerCards.shift());
-						}
-					}
-					for(k=0;k<tmp.length;k++)
-					{
-						PlayerCards.push(tmp.shift());
-					}
-					for(k=0;k<jokerarray.length;k++)
-					{
-						PlayerCards.push(jokerarray.pop());
-					}
-					*/
+
 					break;
 				}
 			}
@@ -221,12 +195,22 @@ package
 							// make chupai enable
 							Application.application.btnSendCards.enabled = true;
 						}
+						else
+						{
+							Application.application.btnSendCards.enabled = false;
+						}
 					    GameObjectManager.Instance.enterFrame();
 					break;
 					case 3:
 						GameObjectManager.Instance.enterFrame();
 					break;
-					case 4:
+					case 4:	// 等待其他玩家准备完成
+						// 在一定的频率下，发送消息，更新自己的数据。
+						if(requestFlag)
+						{
+							NetManager.Instance.send(NetManager.send_updateWhileGame);
+						}
+						GameObjectManager.Instance.enterFrame();
 					break;
 				}
 			}
