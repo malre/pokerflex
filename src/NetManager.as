@@ -214,7 +214,12 @@ package
 					// 游戏中
 					else if(Game.Instance.gameState == 2)
 					{
-						
+						// 更新所有玩家的信息
+						if(json1.play != null)
+						{
+							Game.Instance.curPlayer = json1.play.last;
+							Game.Instance.drawOtherCards(json1.play.last_card);
+						}
 					}
 
 				}
