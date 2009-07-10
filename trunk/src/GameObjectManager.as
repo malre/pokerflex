@@ -165,10 +165,39 @@ package
 			newBaseObjects.removeAll();
 		}
 		
-		protected function sortZOrder():void
+		// 检测所有的卡片，确定该次是否满足出牌条件
+		public function checkCardtobePlayed():Boolean
 		{
+			for each(var go:GameObject in baseObjects)
+			{
+				if(go.getName() == "Card")
+				{
+					// temperary
+					if(go.selected)
+						return true;
+				}
+			}
+			return false;
 		}
-		
+
+		// 生成并返回当前被选中的纸牌的序列
+		public function getSelectedCards():Array
+		{
+			var cards:Array = new Array();
+			for each(var go:GameObject in baseObjects)
+			{
+				if(go.getName() == "Card")
+				{
+					if(go.selected)
+					{
+						cards.push(go.getId());
+					}
+				}
+			}
+			
+			return cards;
+		}
+
 		protected function removeDeletedBaseObjects():void
 		{
 			// insert the object acording to it's z position

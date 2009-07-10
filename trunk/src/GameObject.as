@@ -15,7 +15,8 @@ package
 		public var graphics:GraphicsResource = null;
 		public var drawRect:Rectangle;
 		// 这张牌是否被选中
-		public var selected:Boolean = false;	
+		public var selected:Boolean = false;
+
 		
 		public function GameObject()
 		{
@@ -53,12 +54,12 @@ package
 				{
 					if(selected)
 					{
-						position.y += 20;
+						position.y += 15;
 						selected = false;
 					}
 					else
 					{
-						position.y -= 20;
+						position.y -= 15;
 						selected = true;
 					}
 					return true;
