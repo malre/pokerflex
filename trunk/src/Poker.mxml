@@ -28,7 +28,7 @@
 			<mx:SetStyle target="{myCanvas}" name="verticalCenter" value="0"/>
 			<mx:SetStyle name="cornerRadius" value="0"/>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="250.9" y="327.55" label="准备好了" width="93.71212" height="81.06061" id="btnReady" click="gameReadyClicked(event)"/>
+				<mx:Button x="250.9" y="319.2" label="准备好了" width="73.7" height="53.05" id="btnReady" click="gameReadyClicked(event)" icon="@Embed(source='../res/btnSelfread.png')"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" fontSize="14" fontWeight="bold" textDecoration="normal" fontStyle="normal"/>
@@ -80,7 +80,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.0.3" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.0.5" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)"/>
@@ -184,7 +184,7 @@
 			
 			public function click(event:MouseEvent):void
 			{
-				GameObjectManager.Instance.click(event);
+				Game.Instance.click(event);
 			}
 			
 			public function mouseDown(even:MouseEvent):void

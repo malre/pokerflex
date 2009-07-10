@@ -1,5 +1,6 @@
 package
 {
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -12,18 +13,26 @@ package
 		// 总牌数
 		public static const cardsAmount:int = 54;
 		// 玩家的牌的中心基准点
-		public static var cardStandardX:int = 280;
-		public static var cardStandardY:int = 440;
+		public static const cardStandardX:int = 280;
+		public static const cardStandardY:int = 440;
+		public static const playedCardStdX:int = 280;
+		public static const playedCardStdY:int = 180;
 		// 其他玩家的牌堆的显示位置
 		// 左边玩家的位置，
 		private static const leftCardback_x:int = 26;
 		private static const leftCardback_y:int = 238;
+		private static const playedleftCardStdX:int = 100;
+		private static const playedleftCardStdY:int = 238;
 		// 上面玩家的位置，
 		private static const upCardback_x:int = 262;
 		private static const upCardback_y:int = 27;
+		private static const playedupCardStdX:int = 262;
+		private static const playedupCardStdY:int = 130;
 		// 右边玩家的位置
 		private static const rightCardback_x:int = 493;
 		private static const rightCardback_y:int = 239;
+		private static const playedrightCardStdX:int = 410;
+		private static const playedrightCardStdY:int = 239;
 		// 牌堆类型1的宽高
 		private static const cardback1_w:int = 61;
 		private static const cardback1_h:int = 95;
@@ -50,7 +59,11 @@ package
 		private var PlayerCards:Array = new Array();
 		// player id
 		public var pid:int;
-		// 记录其他玩家出的的牌
+		// 玩家的座位号
+		private var selfseat:int;
+		// 当前出牌玩家的座位号
+		public var curPlayer:int;
+		// 记录其他玩家出的牌
 		// 按照
 		private var deskCards0:Array = new Array();
 		private var deskCards1:Array = new Array();
@@ -62,6 +75,10 @@ package
 		private var BG_BaseZOrder:int = 0;
 		private var card_BaseZOrder:int = 10;
 		private var cardback_BaseZOrder:int	 = 100;
+		private var cardplayed0_BaseZOrder:int	 = 200;
+		private var cardplayed1_BaseZOrder:int	 = 220;
+		private var cardplayed2_BaseZOrder:int	 = 240;
+		private var cardplayed3_BaseZOrder:int	 = 260;
 
 		
 		// 游戏中的各个阶段的状态定义
@@ -151,6 +168,7 @@ package
 			{
 				if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
 				{
+					selfseat = i;
 					for(j=0;j<27;j++)
 					{
 						PlayerCards.push(NetManager.Instance.json1.players[i].card[j]);
@@ -164,9 +182,65 @@ package
 			}
 		}
 		
-		public function drawBG():void
+		// 描画玩家打出来的牌
+		public function drawOtherCards(cards:Array):void
 		{
-			
+			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
+			var pt:Point;
+			var go:GameObject;
+			// 更新玩家self的牌
+			var i:int;
+			var id:int;
+			if(cards[selfseat] != "null")
+			{
+				for(i=0;i<cards[selfseat].length;i++)
+				{
+					go = new GameObject();
+					pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[selfseat][i])), pt, rt,cardplayed0_BaseZOrder);
+					go.setName("PlayedCard");
+					go.setId(cards[selfseat][i]);
+				}
+			}
+			// 更新右边的玩家
+			id = (selfseat+1)%4;
+			if(cards[id] != "null")
+			{
+				for(i=0;i<cards[id].length;i++)
+				{
+					go = new GameObject();
+					pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed1_BaseZOrder);
+					go.setName("PlayedCard");
+					go.setId(cards[id][i]);
+				}
+			}
+			// 更新上边的玩家
+			id = (selfseat+2)%4;
+			if(cards[id] != "null")
+			{
+				for(i=0;i<cards[id].length;i++)
+				{
+					go = new GameObject();
+					pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedrightCardStdY);
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed2_BaseZOrder);
+					go.setName("PlayedCard");
+					go.setId(cards[id][i]);
+				}
+			}
+			// 更新左边的玩家
+			id = (selfseat+3)%4;
+			if(cards[id] != "null")
+			{
+				for(i=0;i<cards[id].length;i++)
+				{
+					go = new GameObject();
+					pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed3_BaseZOrder);
+					go.setName("PlayedCard");
+					go.setId(cards[id][i]);
+				}
+			}
 		}
 		
 		public function taskLoop(state:String):void
@@ -189,6 +263,11 @@ package
 					case 1:
 					break;
 					case 2:
+						if(requestFlag)
+						{
+							NetManager.Instance.send(NetManager.send_updateWhileGame);
+						}
+						
 						// 检测该次的出牌是否符合要求，能否出牌。
 						if(GameObjectManager.Instance.checkCardtobePlayed())
 						{
@@ -225,5 +304,13 @@ package
 			}
 
 		} 
+		
+		public function click(event:MouseEvent):void
+		{
+			if(gameState == 2 && curPlayer == selfseat)
+			{
+				GameObjectManager.Instance.click(event);
+			}
+		}
 	}
 }
