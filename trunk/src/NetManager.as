@@ -80,7 +80,16 @@ package
 			}
 			else if(type == send_updateWhileGame)
 			{
-				//Application.application.httpService.request={play:"1"};
+				var arr:Array = GameObjectManager.Instance.getSelectedCards();
+				var data:String = null;
+				for(var id:int=0;id<arr.length;id++)
+				{
+					data += arr[id].toString();
+					if(id != arr.length-1)
+						data += ",";
+				}
+				
+				Application.application.httpService.request={play:data};
 				Application.application.httpService.url = NetManager.Instance.sendURL_game;
 			}
 
@@ -105,9 +114,11 @@ package
 					Game.Instance.init();
 					Game.Instance.gameState = 3;	// 3 发送举手消息以前
 					// 关闭几个和出牌有关的按钮的显示
+					Application.application.btnReady.visible = true;
 					Application.application.btnSendCards.visible = false;
 					Application.application.btnDiscard.visible = false;
 					Application.application.btnHint.visible = false;
+					Application.application.labelWait.visible = false;
 				}
 				// 加入房间失败的情况下，显示失败的消息
 				if(json1.hasOwnProperty("errors"))
@@ -143,12 +154,25 @@ package
 			{
 				if(json1.success)
 				{
-					// 链接成功，进入游戏逻辑，开始进行update处理
-					send_type = send_updateWhileGame;
-					Game.Instance.gameState = 2;
-					Game.Instance.gameStart();
-					// 将准备按钮隐藏
-					Application.application.btnReady.visible = false;
+					// 链接成功，
+					if(json1.status == 1)
+					{
+						// 继续等待其他玩家
+						send_type = send_updateWhileGame;
+						Game.Instance.gameState = 4;
+						// 将准备按钮的文字修改
+						Application.application.btnReady.enabled = false;
+						Application.application.labelWait.visible = true;
+					}
+					else if(json1.status == 0)
+					{
+						// 进入游戏逻辑，开始进行update处理
+						send_type = send_updateWhileGame;
+						Game.Instance.gameState = 2;
+						Game.Instance.gameStart();
+						// 将准备按钮隐藏
+						Application.application.btnReady.visible = false;
+					}
 				}
 				// text 
 				if(json1.hasOwnProperty("errors"))
@@ -166,6 +190,34 @@ package
 			}
 			else if(send_type == send_updateWhileGame)
 			{
+				//	更新所有的游戏信息
+				if(json1.success)
+				{
+					// 等待游戏开始状态
+					if(Game.Instance.gameState == 4)
+					{
+						// 链接成功，
+						if(json1.status == 1)
+						{
+							// 继续等待其他玩家
+						}
+						else if(json1.status == 0)
+						{
+							// 进入游戏逻辑，开始进行update处理
+							Game.Instance.gameState = 2;
+							Game.Instance.gameStart();
+							// 将准备按钮隐藏
+							Application.application.btnReady.visible = false;
+							Application.application.labelWait.visible = false;
+						}
+					}
+					// 游戏中
+					else if(Game.Instance.gameState == 2)
+					{
+						
+					}
+
+				}
 			}
 		}
 
