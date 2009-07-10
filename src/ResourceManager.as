@@ -247,13 +247,14 @@ package
 		public static var BG00:Class;
 		public static var BG00Res:GraphicsResource = new GraphicsResource(new BG00());
 
-//		[Embed(source="../res/chupai.png")]
-//		public static var BTNChupai:Class;
-//		public static var BtnChupaiRes:GraphicsResource = new GraphicsResource(new BTNChupai());
+		[Embed(source="../res/cardback1.png")]
+		public static var cardback1:Class;
+		public static var CardBack1Res:GraphicsResource = new GraphicsResource(new cardback1());
 
-//		[Embed(source="../res/fangqi.png")]
-//		public static var BTNFangqi:Class;
-//		public static var BtnFangqiRes:GraphicsResource = new GraphicsResource(new BTNFangqi());
+		[Embed(source="../res/cardback2.png")]
+		public static var cardback2:Class;
+		public static var CardBack2Res:GraphicsResource = new GraphicsResource(new cardback2());
+
 //		[Embed(source="../res/bmp1.png")]
 //		public static var Club1:Class;
 //		public static var GreenGraphicsID1:GraphicsResource = new GraphicsResource(new GreenID1());

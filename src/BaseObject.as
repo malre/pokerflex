@@ -8,6 +8,7 @@ package
 		public var inuse:Boolean = false;
 		public var zOrder:int = 0;
 		protected var name:String = null;
+		protected var id:int = -1;
 		
 		public function BaseObject()
 		{
@@ -16,6 +17,19 @@ package
 		public function setName(name:String):void
 		{
 			this.name = name; 
+		}
+		public function getName():String
+		{
+			return name;
+		}
+		
+		public function setId(id:int):void
+		{
+			this.id = id;
+		}
+		public function getId():int
+		{
+			return id;
 		}
 		
 		public function startupBaseObject(zOrder:int):void

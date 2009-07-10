@@ -102,6 +102,7 @@ package
 					send_type = send_waitForReady;
 					Application.application.currentState = "Game";
 					//Game.Instance.menuState = 1;
+					Game.Instance.init();
 					Game.Instance.gameState = 3;	// 3 发送举手消息以前
 					// 关闭几个和出牌有关的按钮的显示
 					Application.application.btnSendCards.visible = false;
@@ -144,8 +145,8 @@ package
 				{
 					// 链接成功，进入游戏逻辑，开始进行update处理
 					send_type = send_updateWhileGame;
-					Game.Instance.init();
 					Game.Instance.gameState = 2;
+					Game.Instance.gameStart();
 					// 将准备按钮隐藏
 					Application.application.btnReady.visible = false;
 				}
