@@ -168,14 +168,22 @@ package
 		// 检测所有的卡片，确定该次是否满足出牌条件
 		public function checkCardtobePlayed():Boolean
 		{
+			var array:Array = new Array();
 			for each(var go:GameObject in baseObjects)
 			{
 				if(go.getName() == "Card")
 				{
-					// temperary
+					// 检测出牌条件
 					if(go.selected)
+					{
+						array.push(go.getId());
 						return true;
+					}
 				}
+			}
+			if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)))
+			{
+				return true;
 			}
 			return false;
 		}
