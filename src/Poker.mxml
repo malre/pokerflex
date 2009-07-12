@@ -92,7 +92,7 @@
 	<!--定义画布-->
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="myCanvas"/>
 	<!--定义http连接-->
-    <mx:HTTPService useProxy="false" id="httpService" method="POST" showBusyCursor="true"
+    <mx:HTTPService useProxy="false" id="httpService" method="POST" showBusyCursor="false"
     	url=""
     	result="{NetManager.Instance.resultProcess(event)}" fault="{NetManager.Instance.failProcess(event)}">
         <mx:request>

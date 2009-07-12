@@ -266,6 +266,7 @@ package
 						if(requestFlag)
 						{
 							NetManager.Instance.send(NetManager.send_updateWhileGame);
+							requestFlag = false;
 						}
 						
 						// 检测该次的出牌是否符合要求，能否出牌。
