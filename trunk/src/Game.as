@@ -288,6 +288,7 @@ package
 						if(requestFlag)
 						{
 							NetManager.Instance.send(NetManager.send_updateWhileGame);
+							requestFlag = false;
 						}
 						GameObjectManager.Instance.enterFrame();
 					break;
