@@ -80,9 +80,13 @@ package
 		}
 
 		// 传入比较的2个数组必须是相同的类别才有效
+		// 为真表示,第一个值要比第二个大,否则的话,第一个比第二个小或者相等.
 		public function patternCompare(data1:Array, data2:Array):Boolean
 		{
-			return false;
+			if(data1[0] > data2[0])
+				return true;
+			else
+				return false;
 		}
 	}
 }
