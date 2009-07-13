@@ -28,6 +28,7 @@ package
 		public static var send_waitForReady:String = "wait For Ready";
 		public static var send_updateWhileGame:String = "update While Game";
 		public static var send_requestinfo:String = "request player info";
+		public static var send_sendcardsWhileGame:String = "send cards";
 		private var	send_type:String = null;
 		
 		////////////////////////////////////////////////////////
@@ -46,6 +47,12 @@ package
 			else
 				return instance = new NetManager();
 		}
+		
+		// 用来改变用来处理返回数据的方式
+		public function setSendType(type:String):void
+		{
+			send_type = type;
+		}
 
 		public static function getSendData():String
 		{
@@ -58,16 +65,19 @@ package
 			send_type = type;
 			if(type == send_joinRoom)
 			{
+				Application.application.httpService.method = "POST";
 				Application.application.httpService.request={roomid:Application.application.roomid.text};
 				Application.application.httpService.url = NetManager.Instance.sendURL_join;
 			}
 			else if(type == send_leave)
 			{
+				Application.application.httpService.method = "GET";
 				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_leave;
 			}
 			else if(type == send_requestinfo)
 			{
+				Application.application.httpService.method = "GET";
 				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_requestinfo;
 			}
@@ -75,13 +85,21 @@ package
 			{
 				// 游戏状态变成 发送举手消息以后
 				Game.Instance.gameState = 4;
+				Application.application.httpService.method = "GET";
 				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_ready;
 			}
 			else if(type == send_updateWhileGame)
 			{
+				Application.application.httpService.method = "GET";
+				Application.application.httpService.request={};
+				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+			}
+			else if(type == send_sendcardsWhileGame)
+			{
+				Application.application.httpService.method = "POST";
 				var arr:Array = GameObjectManager.Instance.getSelectedCards();
-				var data:String = null;
+				var data:String = "";
 				for(var id:int=0;id<arr.length;id++)
 				{
 					data += arr[id].toString();
@@ -217,7 +235,7 @@ package
 						// 更新所有玩家的信息
 						if(json1.play != null)
 						{
-							Game.Instance.curPlayer = json1.play.last;
+							Game.Instance.curPlayer = json1.play.next;
 							Game.Instance.drawOtherCards(json1.play.last_card);
 						}
 					}
