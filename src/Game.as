@@ -21,7 +21,7 @@ package
 		// 左边玩家的位置，
 		private static const leftCardback_x:int = 26;
 		private static const leftCardback_y:int = 238;
-		private static const playedleftCardStdX:int = 100;
+		private static const playedleftCardStdX:int = 120;
 		private static const playedleftCardStdY:int = 238;
 		// 上面玩家的位置，
 		private static const upCardback_x:int = 262;
@@ -115,12 +115,6 @@ package
 
 		public function gameStart():void
 		{
-			// enable button
-			Application.application.btnSendCards.visible = true;
-			Application.application.btnSendCards.enabled = false;
-			Application.application.btnDiscard.visible = true;
-			Application.application.btnDiscard.enabled = false;
-			Application.application.btnHint.visible = true;
 			// 对得到的牌进行排序并显示
 			sortCards();
 			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
@@ -150,6 +144,17 @@ package
 			cardbackright.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
 					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
 			cardbackright.setName("Cardback");
+			
+			// 是否为玩家出牌轮
+			if(NetManager.Instance.json1.last == selfseat)
+			{
+				// enable button
+				Application.application.btnSendCards.visible = true;
+				Application.application.btnSendCards.enabled = false;
+				Application.application.btnDiscard.visible = true;
+				Application.application.btnDiscard.enabled = false;
+				Application.application.btnHint.visible = true;
+			}
 		}
 		//
 		public function sortCards():void
@@ -168,6 +173,7 @@ package
 			{
 				if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
 				{
+					// 获得玩家的座位号
 					selfseat = i;
 					for(j=0;j<27;j++)
 					{
@@ -222,7 +228,7 @@ package
 				for(i=0;i<cards[id].length;i++)
 				{
 					go = new GameObject();
-					pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedrightCardStdY);
+					pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
 					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed2_BaseZOrder);
 					go.setName("PlayedCard");
 					go.setId(cards[id][i]);
@@ -265,9 +271,25 @@ package
 					case 2:
 						if(requestFlag)
 						{
-							NetManager.Instance.send(NetManager.send_updateWhileGame);
-							requestFlag = false;
+							if(curPlayer != selfseat)
+							{
+								NetManager.Instance.send(NetManager.send_updateWhileGame);
+								requestFlag = false;
+								Application.application.btnSendCards.visible = false;
+								Application.application.btnDiscard.visible = false;
+								Application.application.btnHint.visible = false;
+							}
+							else
+							{
+								// 显示所有的按钮
+								Application.application.btnSendCards.visible = true;
+								Application.application.btnSendCards.enabled = false;
+								Application.application.btnDiscard.visible = true;
+								Application.application.btnDiscard.enabled = false;
+								Application.application.btnHint.visible = true;
 						}
+						}
+
 						
 						// 检测该次的出牌是否符合要求，能否出牌。
 						if(GameObjectManager.Instance.checkCardtobePlayed())
@@ -309,9 +331,21 @@ package
 		
 		public function click(event:MouseEvent):void
 		{
-			if(gameState == 2 && curPlayer == selfseat)
+			if(gameState == 2)
 			{
-				GameObjectManager.Instance.click(event);
+				if(curPlayer == selfseat)
+				{
+					// 是按钮有效
+					Application.application.btnSendCards.visible = true;
+					Application.application.btnDiscard.visible = true;
+					
+					GameObjectManager.Instance.click(event);
+				}
+				else
+				{
+					Application.application.btnSendCards.visible = false;
+					Application.application.btnDiscard.visible = false;
+				}
 			}
 		}
 	}
