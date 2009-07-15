@@ -247,6 +247,7 @@ package
 							{
 								Game.Instance.curPlayer = json1.play.next;
 								Game.Instance.drawOtherCards(json1.play.history);
+								Game.Instance.updatePlayerInfo();
 							}
 						}
 						else if(json1.status == 1)

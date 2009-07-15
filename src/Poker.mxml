@@ -33,6 +33,21 @@
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" fontSize="14" fontWeight="bold" textDecoration="normal" fontStyle="normal"/>
 			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="667" y="11" fontSize="12" width="76" height="24" id="textPlayerSelf"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="653" y="93" fontSize="12" width="90" height="19" id="textPlayerPartner"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="653" y="157" fontSize="12" width="90" height="19" id="textPlayerEmy1"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="653" y="205" fontSize="12" width="90" height="19" id="textPlayerEmy2"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="241" y="95" text="思考中。。。" width="125" height="40" fontSize="20" fontWeight="bold" id="label_thinking"/>
+			</mx:AddChild>
 		</mx:State>
 		<mx:State 
 			name="LevelEnd">
@@ -80,7 +95,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.1.3" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.1.4" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)"/>

@@ -386,6 +386,66 @@ package
 			}
 		}
 		
+		// 更新玩家的信息
+		public function updatePlayerInfo():void
+		{
+			// 玩家的姓名，显示在右上
+			for(var i:int=0;i<NetManager.Instance.json1.players.length;i++)
+			{
+				if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
+				{
+					// 获得玩家的座位号
+					selfseat = i;
+					break;
+				}
+			}
+			Application.application.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
+				// partner
+			if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
+			{
+				Application.application.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
+			}
+			if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
+			{
+				Application.application.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
+			}
+			if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
+			{
+				Application.application.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
+			}
+			
+			// 当前出牌玩家，显示在主画面上
+			if(NetManager.Instance.json1.hasOwnProperty("play"))
+			{
+				if(NetManager.Instance.json1.play.hasOwnProperty("next"))
+				{
+					if(NetManager.Instance.json1.play.next == (selfseat+1)%4)
+					{
+						Application.application.label_thinking.x =485;
+						Application.application.label_thinking.y =250;
+					}
+					else if(NetManager.Instance.json1.play.next == (selfseat+2)%4)
+					{
+						Application.application.label_thinking.x =250;
+						Application.application.label_thinking.y =40;
+					}
+					else if(NetManager.Instance.json1.play.next == (selfseat+2)%4)
+					{
+						Application.application.label_thinking.x =30;
+						Application.application.label_thinking.y =250;
+					}
+				}
+			}
+			// 剩余牌数
+			if(NetManager.Instance.json1.hasOwnProperty("players"))
+			{
+//				if(NetManager.Instance.json1.play.hasOwnProperty("next"))
+//				{
+//					
+//				}
+			}
+		}
+		
 		public function taskLoop(state:String):void
 		{
 			// Calculate the time since the last frame
