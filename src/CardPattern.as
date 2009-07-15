@@ -71,6 +71,8 @@ package
 			}
 			// 新数组赋值
 			var data:Array = arr.concat();
+			// 对司令特别处理
+			if(data.
 			// 所有的牌值除以4
 			for(card=0;card<data.length;card++)
 			{
