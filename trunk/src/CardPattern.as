@@ -108,10 +108,36 @@ package
 		// 为真表示,第一个值要比第二个大,否则的话,第一个比第二个小或者相等.
 		public function patternCompare(data1:Array, data2:Array):Boolean
 		{
-			if(int(data1[0]/4) > int(data2[0]/4))
-				return true;
+			// 是否是炸弹
+			if(patternCheck(data1) >=3 && patternCheck(data1) <=7)
+			{
+				// 上一副牌是不是炸弹
+				if(patternCheck(data2) >=3 && patternCheck(data2) <=7)
+				{
+					if(data1.length > data2.length)
+						return true;
+					else if(data1.length == data2.length)
+					{
+						if(int(data1[0]/4) > int(data2[0]/4))
+							return true;
+						else
+							return false;
+					}
+					else
+						return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
 			else
-				return false;
+			{ 
+				if(int(data1[0]/4) > int(data2[0]/4))
+					return true;
+				else
+					return false;
+			}
 		}
 	}
 }
