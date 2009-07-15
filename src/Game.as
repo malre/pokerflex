@@ -196,63 +196,192 @@ package
 			// 更新玩家self的牌
 			var i:int;
 			var id:int;
-			if(cards[selfseat] != "null")
+			if(cards[selfseat] == "null")
+			{
+				
+			}
+			else if(cards[selfseat] == "pass")
+			{
+				
+			}
+			else
 			{
 				// 查看本次得到的数据是否和上次的一样
-				if(cards[selfseat] != deskCards0)
+				var flag:Boolean = false;
+				if(cards[selfseat].length != deskCards0.length)
 				{
+					flag = true;
+				}
+				else
+				{
+					// 判断每一个元素是否相同
+					for(i=0;i<cards[selfseat].length;i++)
+					{
+						if(cards[selfseat][i] != deskCards0[i])
+						{
+							flag = true;
+							break;
+						}
+					}
+					
+				}
+				if(flag)
+				{
+					// 删除之前该位置显示的所有卡牌
+					deskCards0.length = 0;
+					GameObjectManager.Instance.removePlayedCards("PlayedCardSelf");
+					// 重新描画
 					for(i=0;i<cards[selfseat].length;i++)
 					{
 						go = new GameObject();
 						pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
 						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[selfseat][i])), pt, rt,cardplayed0_BaseZOrder);
-						go.setName("PlayedCard");
+						go.setName("PlayedCardSelf");
 						go.setId(cards[selfseat][i]);
 					}
-					for each(go in deskCards0)
-					{
-						go.shutdown();
-					}
-					deskCards0 = cards[selfseat];
+					deskCards0 = deskCards0.concat(cards[selfseat]);
 				}
 			}
 			// 更新右边的玩家
 			id = (selfseat+1)%4;
-			if(cards[id] != "null")
+			if(cards[id] == "null")
 			{
-				for(i=0;i<cards[id].length;i++)
+				
+			}
+			else if(cards[id] == "pass")
+			{
+				
+			}
+			else
+			{
+				flag = false;
+				if(cards[id].length != deskCards1.length)
 				{
-					go = new GameObject();
-					pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed1_BaseZOrder);
-					go.setName("PlayedCard");
-					go.setId(cards[id][i]);
+					flag = true;
+				}
+				else
+				{
+					// 判断每一个元素是否相同
+					for(i=0;i<cards[id].length;i++)
+					{
+						if(cards[id][i] != deskCards1[i])
+						{
+							flag = true;
+							break;
+						}
+					}
+					
+				}
+				if(flag)
+				{
+					// 删除之前该位置显示的所有卡牌
+					deskCards1.length = 0;
+					GameObjectManager.Instance.removePlayedCards("PlayedCardRight");
+					// 重新描画
+					for(i=0;i<cards[id].length;i++)
+					{
+						go = new GameObject();
+						pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
+						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed1_BaseZOrder);
+						go.setName("PlayedCardRight");
+						go.setId(cards[id][i]);
+					}
+					deskCards1 = deskCards1.concat(cards[id]);
 				}
 			}
 			// 更新上边的玩家
 			id = (selfseat+2)%4;
-			if(cards[id] != "null")
+			if(cards[id] == "null")
 			{
-				for(i=0;i<cards[id].length;i++)
+				
+			}
+			else if(cards[id] == "pass")
+			{
+				
+			}
+			else
+			{
+				flag = false;
+				if(cards[id].length != deskCards2.length)
 				{
-					go = new GameObject();
-					pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed2_BaseZOrder);
-					go.setName("PlayedCard");
-					go.setId(cards[id][i]);
+					flag = true;
 				}
+				else
+				{
+					// 判断每一个元素是否相同
+					for(i=0;i<cards[id].length;i++)
+					{
+						if(cards[id][i] != deskCards2[i])
+						{
+							flag = true;
+							break;
+						}
+					}
+					
+				}
+				if(flag)
+				{
+					// 删除之前该位置显示的所有卡牌
+					deskCards2.length = 0;
+					GameObjectManager.Instance.removePlayedCards("PlayedCardUp");
+					// 重新描画
+					for(i=0;i<cards[id].length;i++)
+					{
+						go = new GameObject();
+						pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
+						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed2_BaseZOrder);
+						go.setName("PlayedCardUp");
+						go.setId(cards[id][i]);
+					}
+					deskCards2 = deskCards2.concat(cards[id]);
+				}
+
 			}
 			// 更新左边的玩家
 			id = (selfseat+3)%4;
-			if(cards[id] != "null")
+			if(cards[id] == "null")
 			{
-				for(i=0;i<cards[id].length;i++)
+				
+			}
+			else if(cards[id] == "pass")
+			{
+				
+			}
+			else
+			{
+				flag = false;
+				if(cards[id].length != deskCards3.length)
 				{
+					flag = true;
+				}
+				else
+				{
+					// 判断每一个元素是否相同
+					for(i=0;i<cards[id].length;i++)
+					{
+						if(cards[id][i] != deskCards3[i])
+						{
+							flag = true;
+							break;
+						}
+					}
+					
+				}
+				if(flag)
+				{
+					// 删除之前该位置显示的所有卡牌
+					deskCards3.length = 0;
+					GameObjectManager.Instance.removePlayedCards("PlayedCardLeft");
+					// 重新描画
+					for(i=0;i<cards[id].length;i++)
+					{
 					go = new GameObject();
 					pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
 					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed3_BaseZOrder);
-					go.setName("PlayedCard");
+					go.setName("PlayedCardLeft");
 					go.setId(cards[id][i]);
+					}
+					deskCards3 = deskCards3.concat(cards[id]);
 				}
 			}
 		}

@@ -204,16 +204,29 @@ package
 			}
 			else
 			{
-				// 首先比较模式是否相同
-				if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) == CardPattern.Instance.patternCheck(arr)
-				 && CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) != -1)
+				// 是否是炸弹
+				if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) >=3 
+					&& CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) <= 7)
 				{
-					//然后比较大小
 					if(CardPattern.Instance.patternCompare(array.sort(Array.NUMERIC), arr))
 					{
 						return true;
 					}
 					return false;
+				}
+				else
+				{
+					// 首先比较模式是否相同
+					if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) == CardPattern.Instance.patternCheck(arr)
+					 && CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) != -1)
+					{
+						//然后比较大小
+						if(CardPattern.Instance.patternCompare(array.sort(Array.NUMERIC), arr))
+						{
+							return true;
+						}
+						return false;
+					}
 				}
 			}
 			return false;
@@ -235,6 +248,16 @@ package
 			}
 			
 			return cards;
+		}
+		
+		// 将指定位置的打出的牌清空
+		public function removePlayedCards(name:String):void
+		{
+			for each(var go:GameObject in baseObjects)
+			{
+				if(go.getName() == name)
+					go.shutdown();
+			}
 		}
 
 		protected function removeDeletedBaseObjects():void
