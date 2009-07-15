@@ -85,6 +85,17 @@ package
 			}
 		}
 		
+		public function removeSendCards():void
+		{
+			for each(var gameObject:GameObject in baseObjects)
+			{
+				if (gameObject.selected)
+				{ 
+					gameObject.shutdown();
+				}
+			}
+		}
+		
 		public function mouseDown(event:MouseEvent):void
 		{
 			for each (var gameObject:BaseObject in baseObjects)
@@ -166,7 +177,7 @@ package
 		}
 		
 		// 检测所有的卡片，确定该次是否满足出牌条件
-		public function checkCardtobePlayed():Boolean
+		public function checkCardtobePlayed(arr:Array):Boolean
 		{
 			var array:Array = new Array();
 			for each(var go:GameObject in baseObjects)
@@ -177,13 +188,29 @@ package
 					if(go.selected)
 					{
 						array.push(go.getId());
-						return true;
 					}
 				}
 			}
-			if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)))
+			if(arr.length == 0)
 			{
-				return true;
+				// 第一个出牌，只有基本限制
+				if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) != -1)
+				{
+					return true;
+				}
+			}
+			else
+			{
+				// 首先比较模式是否相同
+				if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) == CardPattern.Instance.patternCheck(arr))
+				{
+					//然后比较大小
+					if(CardPattern.Instance.patternCompare(array.sort(Array.NUMERIC), arr))
+					{
+						return true;
+					}
+					return false;
+				}
 			}
 			return false;
 		}

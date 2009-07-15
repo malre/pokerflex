@@ -71,6 +71,12 @@ package
 					data[card]-=base;
 				}
 			}
+			// 所有的牌值除以4
+			for(card=0;card<data.length;card++)
+			{
+				data[card]/=4;
+			}
+			
 			for each(var tmp:Array in pattern)
 			{
 				if(tmp == data)
@@ -83,7 +89,7 @@ package
 		// 为真表示,第一个值要比第二个大,否则的话,第一个比第二个小或者相等.
 		public function patternCompare(data1:Array, data2:Array):Boolean
 		{
-			if(data1[0] > data2[0])
+			if(data1[0]/4 > data2[0]/4)
 				return true;
 			else
 				return false;
