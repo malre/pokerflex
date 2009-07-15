@@ -72,7 +72,19 @@ package
 			// 新数组赋值
 			var data:Array = arr.concat();
 			// 对司令特别处理
-			if(data.
+			if(data[0] >= 52)	// 副司令
+			{
+				if(data.length == 2)
+				{
+					if(data[0] == data[1])
+						return 1;		// 33 模式
+				}
+				else if(data.length == 4)
+				{
+					return 7;		// 33333333 模式
+				}
+				return -1;
+			}
 			// 所有的牌值除以4
 			for(card=0;card<data.length;card++)
 			{
@@ -116,6 +128,18 @@ package
 				// 上一副牌是不是炸弹
 				if(patternCheck(data2) >=3 && patternCheck(data2) <=7)
 				{
+					// 天王炸的处理
+						// 打出的是天王炸
+					if(data1.length == 4 && data1[0] >= 52)
+					{
+						return true;
+					}
+					if(data2.length == 4 && data2[0] >= 52)
+					{
+						// 上一副出的是天王炸
+						return false;
+					}
+					
 					if(data1.length > data2.length)
 						return true;
 					else if(data1.length == data2.length)
