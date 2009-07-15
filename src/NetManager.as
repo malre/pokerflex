@@ -29,6 +29,7 @@ package
 		public static var send_updateWhileGame:String = "update While Game";
 		public static var send_requestinfo:String = "request player info";
 		public static var send_sendcardsWhileGame:String = "send cards";
+		public static var send_passWhileGame:String = "pass";
 		private var	send_type:String = null;
 		
 		////////////////////////////////////////////////////////
@@ -108,6 +109,12 @@ package
 				}
 				
 				Application.application.httpService.request={play:data};
+				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+			}
+			else if(type == send_passWhileGame)
+			{
+				Application.application.httpService.method = "POST";
+				Application.application.httpService.request={play:"pass"};
 				Application.application.httpService.url = NetManager.Instance.sendURL_game;
 			}
 
@@ -232,11 +239,19 @@ package
 					// 游戏中
 					else if(Game.Instance.gameState == 2)
 					{
-						// 更新所有玩家的信息
-						if(json1.play != null)
+						// 如果游戏意外结束，退回到开始界面
+						if(json1.status == 0)
 						{
-							Game.Instance.curPlayer = json1.play.next;
-							Game.Instance.drawOtherCards(json1.play.last_card);
+							// 更新所有玩家的信息
+							if(json1.play != null)
+							{
+								Game.Instance.curPlayer = json1.play.next;
+								Game.Instance.drawOtherCards(json1.play.history);
+							}
+						}
+						else if(json1.status == 1)
+						{
+							Application.application.currentState = "MainMenu";
 						}
 					}
 

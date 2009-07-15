@@ -16,7 +16,7 @@ package
 		public static const cardStandardX:int = 280;
 		public static const cardStandardY:int = 440;
 		public static const playedCardStdX:int = 280;
-		public static const playedCardStdY:int = 180;
+		public static const playedCardStdY:int = 340;
 		// 其他玩家的牌堆的显示位置
 		// 左边玩家的位置，
 		private static const leftCardback_x:int = 26;
@@ -27,9 +27,9 @@ package
 		private static const upCardback_x:int = 262;
 		private static const upCardback_y:int = 27;
 		private static const playedupCardStdX:int = 262;
-		private static const playedupCardStdY:int = 130;
+		private static const playedupCardStdY:int = 150;
 		// 右边玩家的位置
-		private static const rightCardback_x:int = 493;
+		private static const rightCardback_x:int = 495;
 		private static const rightCardback_y:int = 239;
 		private static const playedrightCardStdX:int = 410;
 		private static const playedrightCardStdY:int = 239;
@@ -199,13 +199,22 @@ package
 			var id:int;
 			if(cards[selfseat] != "null")
 			{
-				for(i=0;i<cards[selfseat].length;i++)
+				// 查看本次得到的数据是否和上次的一样
+				if(cards[selfseat] != deskCards0)
 				{
-					go = new GameObject();
-					pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[selfseat][i])), pt, rt,cardplayed0_BaseZOrder);
-					go.setName("PlayedCard");
-					go.setId(cards[selfseat][i]);
+					for(i=0;i<cards[selfseat].length;i++)
+					{
+						go = new GameObject();
+						pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
+						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[selfseat][i])), pt, rt,cardplayed0_BaseZOrder);
+						go.setName("PlayedCard");
+						go.setId(cards[selfseat][i]);
+					}
+					for each(go in deskCards0)
+					{
+						go.shutdown();
+					}
+					deskCards0 = cards[selfseat];
 				}
 			}
 			// 更新右边的玩家
@@ -287,19 +296,31 @@ package
 								Application.application.btnDiscard.visible = true;
 								Application.application.btnDiscard.enabled = false;
 								Application.application.btnHint.visible = true;
-						}
+							}
 						}
 
-						
-						// 检测该次的出牌是否符合要求，能否出牌。
-						if(GameObjectManager.Instance.checkCardtobePlayed())
+						if(curPlayer == NetManager.Instance.json1.play.next)
 						{
-							// make chupai enable
-							Application.application.btnSendCards.enabled = true;
-						}
-						else
-						{
-							Application.application.btnSendCards.enabled = false;
+							// 检测该次的出牌是否符合要求，能否出牌。
+							var checkarr:Array = new Array();
+							if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
+							{
+								// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
+							}
+							else
+							{
+								checkarr  = NetManager.Instance.json1.play.last_card;
+							}
+							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+							{
+								// make chupai enable
+								Application.application.btnSendCards.enabled = true;
+							}
+							else
+							{
+								Application.application.btnSendCards.enabled = false;
+							}
+						    checkarr = null;
 						}
 					    GameObjectManager.Instance.enterFrame();
 					break;
@@ -329,22 +350,26 @@ package
 
 		} 
 		
+		public function sendcards():void
+		{
+			NetManager.Instance.send(NetManager.send_sendcardsWhileGame);
+			NetManager.Instance.setSendType(NetManager.send_updateWhileGame);
+			// 从玩家的当前牌堆中把打掉的牌移除
+			GameObjectManager.Instance.removeSendCards();
+		}
+		public function pass():void
+		{
+			NetManager.Instance.send(NetManager.send_passWhileGame);
+			NetManager.Instance.setSendType(NetManager.send_updateWhileGame);
+		}
+
 		public function click(event:MouseEvent):void
 		{
 			if(gameState == 2)
 			{
 				if(curPlayer == selfseat)
 				{
-					// 是按钮有效
-					Application.application.btnSendCards.visible = true;
-					Application.application.btnDiscard.visible = true;
-					
 					GameObjectManager.Instance.click(event);
-				}
-				else
-				{
-					Application.application.btnSendCards.visible = false;
-					Application.application.btnDiscard.visible = false;
 				}
 			}
 		}
