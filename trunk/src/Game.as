@@ -49,7 +49,7 @@ package
 		public static const cardsWidth:int = 61;
 		public static const cardsHeight:int = 86;
 		public static const cardsIntervalX:int = 14;
-		public static const cardsIntervalY:int = 28;
+		public static const cardsIntervalY:int = 18;
 		// BG
 		private var BGImg:GameObject = null;
 		// 记录玩家的牌的数组
@@ -198,11 +198,11 @@ package
 			var id:int;
 			if(cards[selfseat] == "null")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardSelf");
 			}
 			else if(cards[selfseat] == "pass")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardSelf");
 			}
 			else
 			{
@@ -246,11 +246,11 @@ package
 			id = (selfseat+1)%4;
 			if(cards[id] == "null")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardRight");
 			}
 			else if(cards[id] == "pass")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardRight");
 			}
 			else
 			{
@@ -293,11 +293,11 @@ package
 			id = (selfseat+2)%4;
 			if(cards[id] == "null")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardUp");
 			}
 			else if(cards[id] == "pass")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardUp");
 			}
 			else
 			{
@@ -341,11 +341,11 @@ package
 			id = (selfseat+3)%4;
 			if(cards[id] == "null")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardLeft");
 			}
 			else if(cards[id] == "pass")
 			{
-				
+				GameObjectManager.Instance.removePlayedCards("PlayedCardLeft");
 			}
 			else
 			{
@@ -429,7 +429,7 @@ package
 						Application.application.label_thinking.x =250;
 						Application.application.label_thinking.y =40;
 					}
-					else if(NetManager.Instance.json1.play.next == (selfseat+2)%4)
+					else if(NetManager.Instance.json1.play.next == (selfseat+3)%4)
 					{
 						Application.application.label_thinking.x =30;
 						Application.application.label_thinking.y =250;
