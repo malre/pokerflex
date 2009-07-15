@@ -152,7 +152,6 @@ package
 				Application.application.btnSendCards.visible = true;
 				Application.application.btnSendCards.enabled = false;
 				Application.application.btnDiscard.visible = true;
-				Application.application.btnDiscard.enabled = false;
 				Application.application.btnHint.visible = true;
 			}
 		}
@@ -294,12 +293,11 @@ package
 								Application.application.btnSendCards.visible = true;
 								Application.application.btnSendCards.enabled = false;
 								Application.application.btnDiscard.visible = true;
-								Application.application.btnDiscard.enabled = false;
 								Application.application.btnHint.visible = true;
 							}
 						}
 
-						if(curPlayer == NetManager.Instance.json1.play.next)
+						if(selfseat == NetManager.Instance.json1.play.next)
 						{
 							// 检测该次的出牌是否符合要求，能否出牌。
 							var checkarr:Array = new Array();
@@ -309,7 +307,7 @@ package
 							}
 							else
 							{
-								checkarr  = NetManager.Instance.json1.play.last_card;
+								checkarr = checkarr.concat(NetManager.Instance.json1.play.last_card);
 							}
 							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
 							{

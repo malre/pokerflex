@@ -1,5 +1,7 @@
 package
 {
+	import mx.utils.ArrayUtil;
+	
 	public class CardPattern
 	{
 		protected static var instance:CardPattern = null;
@@ -61,8 +63,19 @@ package
 		
 		// 返回传入牌的牌型
 		// 返回值是该牌型在数组中的位置，也就等于是id值
-		public function patternCheck(data:Array):int
+		public function patternCheck(arr:Array):int
 		{
+			if(arr.length == 0)	// 没有数据的情况下
+			{
+				return -1;
+			}
+			// 新数组赋值
+			var data:Array = arr.concat();
+			// 所有的牌值除以4
+			for(card=0;card<data.length;card++)
+			{
+				data[card]=int(data[card]/4);
+			}
 			if(data[0] != 0)
 			{
 				var base:int = data[0];
@@ -71,15 +84,21 @@ package
 					data[card]-=base;
 				}
 			}
-			// 所有的牌值除以4
-			for(card=0;card<data.length;card++)
-			{
-				data[card]/=4;
-			}
 			
 			for each(var tmp:Array in pattern)
 			{
-				if(tmp == data)
+				if(tmp.length != data.length)
+					continue;
+				var flag:Boolean = false;
+				for(var m:int=0;m<tmp.length;m++)
+				{
+					if(tmp[m] != data[m])
+					{
+						flag = true;
+						break;
+					}
+				}
+				if(!flag)
 					return pattern.indexOf(tmp);
 			}
 			return -1;
@@ -89,7 +108,7 @@ package
 		// 为真表示,第一个值要比第二个大,否则的话,第一个比第二个小或者相等.
 		public function patternCompare(data1:Array, data2:Array):Boolean
 		{
-			if(data1[0]/4 > data2[0]/4)
+			if(int(data1[0]/4) > int(data2[0]/4))
 				return true;
 			else
 				return false;

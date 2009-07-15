@@ -191,6 +191,9 @@ package
 					}
 				}
 			}
+			if(array.length == 0)	//没有点击任何牌
+				return false;
+				
 			if(arr.length == 0)
 			{
 				// 第一个出牌，只有基本限制
@@ -202,7 +205,8 @@ package
 			else
 			{
 				// 首先比较模式是否相同
-				if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) == CardPattern.Instance.patternCheck(arr))
+				if(CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) == CardPattern.Instance.patternCheck(arr)
+				 && CardPattern.Instance.patternCheck(array.sort(Array.NUMERIC)) != -1)
 				{
 					//然后比较大小
 					if(CardPattern.Instance.patternCompare(array.sort(Array.NUMERIC), arr))
