@@ -34,19 +34,37 @@
 				<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" fontSize="14" fontWeight="bold" textDecoration="normal" fontStyle="normal"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="667" y="11" fontSize="12" width="76" height="24" id="textPlayerSelf"/>
+				<mx:Label x="667" y="10" fontSize="12" width="76" height="24" id="textPlayerSelf"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="653" y="93" fontSize="12" width="90" height="19" id="textPlayerPartner"/>
+				<mx:Label x="653" y="91" fontSize="12" width="90" height="19" id="textPlayerPartner"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="653" y="157" fontSize="12" width="90" height="19" id="textPlayerEmy1"/>
+				<mx:Label x="653" y="155" fontSize="12" width="90" height="19" id="textPlayerEmy1"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="653" y="205" fontSize="12" width="90" height="19" id="textPlayerEmy2"/>
+				<mx:Label x="653" y="203" fontSize="12" width="90" height="19" id="textPlayerEmy2"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="241" y="95" text="思考中。。。" width="125" height="40" fontSize="20" fontWeight="bold" id="label_thinking"/>
+				<mx:Label x="25" y="356" id="Label_leftcardsnumLeft"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="350" y="74" id="Label_leftcardsnumUp"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="510" y="356" id="Label_leftcardsnumRight"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="350" y="49" id="Lable_playernameUp"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="25" y="330" id="Lable_playernameLeft"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Label x="510" y="330" id="Lable_playernameRight"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="262" y="49" id="label_thinking" width="91" height="84" source="http://192.168.18.24/web/world/resources/game/clock.swf" scaleContent="false" autoLoad="true"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State 
@@ -95,7 +113,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.1.5" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.1.8" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)"/>
@@ -117,20 +135,29 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			protected var inGame:Boolean = false;
 
 			private function enterGame(event:Event):void
 			{
-//				Mouse.hide();
 				//Game.Instance.init();
 				inGame = true;
+				//
+				Label_leftcardsnumRight.visible = false;
+				Label_leftcardsnumUp.visible = false;
+				Label_leftcardsnumLeft.visible = false;
+				//
+				label_thinking.visible = false;
 			}
 			
 			private function exitGame(event:Event):void
 			{
-//				Mouse.show();
 				GameObjectManager.Instance.shutdown();
 				inGame = false;
+				// 
+				Label_leftcardsnumRight.visible = false;
+				Label_leftcardsnumUp.visible = false;
+				Label_leftcardsnumLeft.visible = false;
 			}
 			
 			private function startGameClicked(event:Event):void
@@ -148,6 +175,7 @@
 			{
 				//currentState="WaitReady";
 				NetManager.Instance.send(NetManager.send_leave);
+				Alert.show("leave room success!", "");
 			}
 
 			private function startDebugClicked(event:Event):void
@@ -193,7 +221,7 @@
 		    		myCanvas.graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
 		    		myCanvas.graphics.drawRect(0, 0, this.width, this.height);
 		    		myCanvas.graphics.endFill();
-		    	}	
+		    	}
 			}
 			
 			public function click(event:MouseEvent):void

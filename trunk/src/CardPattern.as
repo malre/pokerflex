@@ -83,7 +83,11 @@ package
 				{
 					return 7;		// 33333333 模式
 				}
-				return -1;
+				else if(data.length == 1)
+				{
+				}
+				else
+					return -1;
 			}
 			// 所有的牌值除以4
 			for(card=0;card<data.length;card++)
@@ -158,11 +162,22 @@ package
 				}
 			}
 			else
-			{ 
-				if(int(data1[0]/4) > int(data2[0]/4))
-					return true;
+			{
+				// 如果是司令
+				if(data1[0] >= 52)
+				{
+					if(int(data1[0]) > int(data2[0]))
+						return true;
+					else
+						return false;
+				}
 				else
-					return false;
+				{
+					if(int(data1[0]/4) > int(data2[0]/4))
+						return true;
+					else
+						return false;
+				}
 			}
 		}
 	}
