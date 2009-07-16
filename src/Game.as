@@ -20,17 +20,17 @@ package
 		// 其他玩家的牌堆的显示位置
 		// 左边玩家的位置，
 		private static const leftCardback_x:int = 26;
-		private static const leftCardback_y:int = 238;
+		private static const leftCardback_y:int = 220;
 		private static const playedleftCardStdX:int = 120;
 		private static const playedleftCardStdY:int = 238;
 		// 上面玩家的位置，
-		private static const upCardback_x:int = 262;
+		private static const upCardback_x:int = 240;
 		private static const upCardback_y:int = 27;
 		private static const playedupCardStdX:int = 262;
 		private static const playedupCardStdY:int = 150;
 		// 右边玩家的位置
 		private static const rightCardback_x:int = 495;
-		private static const rightCardback_y:int = 239;
+		private static const rightCardback_y:int = 220;
 		private static const playedrightCardStdX:int = 410;
 		private static const playedrightCardStdY:int = 239;
 		// 牌堆类型1的宽高
@@ -399,19 +399,33 @@ package
 					break;
 				}
 			}
-			Application.application.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
+			if(NetManager.Instance.json1.hasOwnProperty("players"))
+			{
+				Application.application.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
+
+				
 				// partner
-			if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
-			{
-				Application.application.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
-			}
-			if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
-			{
-				Application.application.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
-			}
-			if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
-			{
-				Application.application.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
+				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
+				{
+					Application.application.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
+					Application.application.Lable_playernameUp.text = Application.application.textPlayerPartner.text;
+					// 剩余牌数
+					Application.application.Label_leftcardsnumUp.text = "("+NetManager.Instance.json1.players[(selfseat+2)%4].cardnumber+")";
+				}
+				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
+				{
+					Application.application.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
+					Application.application.Lable_playernameRight.text = Application.application.textPlayerEmy1.text; 
+					// 剩余牌数
+					Application.application.Label_leftcardsnumRight.text = "("+NetManager.Instance.json1.players[(selfseat+1)%4].cardnumber+")";
+				}
+				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
+				{
+					Application.application.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
+					Application.application.Lable_playernameLeft.text = Application.application.textPlayerEmy2.text;
+					// 剩余牌数
+					Application.application.Label_leftcardsnumLeft.text = "("+NetManager.Instance.json1.players[(selfseat+3)%4].cardnumber+")";
+				}
 			}
 			
 			// 当前出牌玩家，显示在主画面上
@@ -419,6 +433,8 @@ package
 			{
 				if(NetManager.Instance.json1.play.hasOwnProperty("next"))
 				{
+					// 将显示的图打开 
+					Application.application.label_thinking.visible = true;
 					if(NetManager.Instance.json1.play.next == (selfseat+1)%4)
 					{
 						Application.application.label_thinking.x =485;
@@ -434,16 +450,14 @@ package
 						Application.application.label_thinking.x =30;
 						Application.application.label_thinking.y =250;
 					}
+					else
+					{
+						// 将显示的图打开 
+						Application.application.label_thinking.visible = false;
+					}
 				}
 			}
-			// 剩余牌数
-			if(NetManager.Instance.json1.hasOwnProperty("players"))
-			{
-//				if(NetManager.Instance.json1.play.hasOwnProperty("next"))
-//				{
-//					
-//				}
-			}
+
 		}
 		
 		public function taskLoop(state:String):void
@@ -534,8 +548,7 @@ package
 				{
 				}
 			}
-
-		} 
+		}
 		
 		public function sendcards():void
 		{
@@ -554,7 +567,7 @@ package
 		{
 			if(gameState == 2)
 			{
-				if(curPlayer == selfseat)
+				//if(curPlayer == selfseat)
 				{
 					GameObjectManager.Instance.click(event);
 				}
