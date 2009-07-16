@@ -403,7 +403,6 @@ package
 			{
 				Application.application.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
 
-				
 				// partner
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
 				{
@@ -411,6 +410,7 @@ package
 					Application.application.Lable_playernameUp.text = Application.application.textPlayerPartner.text;
 					// 剩余牌数
 					Application.application.Label_leftcardsnumUp.text = "("+NetManager.Instance.json1.players[(selfseat+2)%4].cardnumber+")";
+					Application.application.Label_leftcardsnumUp.visible = true;
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
 				{
@@ -418,6 +418,7 @@ package
 					Application.application.Lable_playernameRight.text = Application.application.textPlayerEmy1.text; 
 					// 剩余牌数
 					Application.application.Label_leftcardsnumRight.text = "("+NetManager.Instance.json1.players[(selfseat+1)%4].cardnumber+")";
+					Application.application.Label_leftcardsnumRight.visible = true;
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
 				{
@@ -425,6 +426,7 @@ package
 					Application.application.Lable_playernameLeft.text = Application.application.textPlayerEmy2.text;
 					// 剩余牌数
 					Application.application.Label_leftcardsnumLeft.text = "("+NetManager.Instance.json1.players[(selfseat+3)%4].cardnumber+")";
+					Application.application.Label_leftcardsnumLeft.visible = true;
 				}
 			}
 			
@@ -496,6 +498,7 @@ package
 								Application.application.btnSendCards.visible = true;
 								Application.application.btnSendCards.enabled = false;
 								Application.application.btnDiscard.visible = true;
+								Application.application.btnDiscard.enabled = true;
 								Application.application.btnHint.visible = true;
 							}
 						}
@@ -507,6 +510,8 @@ package
 							if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
 							{
 								// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
+								// 这个时候不能够放弃
+								Application.application.btnDiscard.enabled = false;
 							}
 							else
 							{
