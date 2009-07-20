@@ -265,6 +265,15 @@ package
 					}
 
 				}
+				else
+				{
+					if(json1.hasOwnProperty("errors"))
+					{
+						if(json1.errors != null)
+							str += json1.errors[0]+"\n";
+					}
+					Alert.show(str, "");
+				}
 			}
 		}
 

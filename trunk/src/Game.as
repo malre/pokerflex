@@ -93,7 +93,7 @@ package
 		private var requestFlag:Boolean = false;
 		
 		// 按键对应的判断变量,用来控制按键不会被多次按下
-		public var isSendDirective:Boolean = false;
+		public var btnState:int = 0;
 		// 记录游戏的轮次
 		public var gameCurRound:int	= 0;
 		public var gameLastRound:int	= 0;
@@ -101,8 +101,6 @@ package
 		public function Game()
 		{
 			//TODO: implement function
-			BGImg = new GameObject();
-			BGImg.startupGameObject(GraphicsResource(ResourceManager.BG00Res), new Point(0,0), new Rectangle(0,0, 800, 600),BG_BaseZOrder);
 		}
 		static public function get Instance():Game
 		{
@@ -116,6 +114,38 @@ package
 		public function init():void
 		{
 			GameObjectManager.Instance.startup();
+			//创建所有的图像对象，并放到集合中去
+			BGImg = new GameObject();
+			BGImg.startupGameObject(GraphicsResource(ResourceManager.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
+			// 104 cards
+			var i:int,j:int;
+			for(i=0;i<2;i++)
+			{
+				for(j=0;j<cardsAmount;j++)
+				{
+					var go:GameObject = new GameObject();
+					go.setName("Card");
+					go.setId(j);
+					var pt:Point = new Point();
+					// 传入的是左上的位置坐标
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(j)), pt, rt,card_BaseZOrder+i);
+				}
+			}
+			// 左边的玩家
+			var cardbackleft:GameObject = new GameObject();
+			cardbackleft.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
+					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
+			cardbackleft.setName("Cardback");
+			// 上面的玩家
+			var cardbackup:GameObject = new GameObject();
+			cardbackup.startupGameObject(GraphicsResource(ResourceManager.CardBack2Res), new Point(upCardback_x,upCardback_y), 
+					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
+			cardbackup.setName("Cardback");
+			// 右边的玩家
+			var cardbackright:GameObject = new GameObject();
+			cardbackright.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
+					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
+			cardbackright.setName("Cardback");
 		}
 
 		public function gameStart():void
@@ -212,32 +242,32 @@ package
 			}
 			
 			// 左边的玩家
-			var cardbackleft:GameObject = new GameObject();
-			cardbackleft.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
-					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
-			cardbackleft.setName("Cardback");
 			// 上面的玩家
-			var cardbackup:GameObject = new GameObject();
-			cardbackup.startupGameObject(GraphicsResource(ResourceManager.CardBack2Res), new Point(upCardback_x,upCardback_y), 
-					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
-			cardbackup.setName("Cardback");
 			// 右边的玩家
-			var cardbackright:GameObject = new GameObject();
-			cardbackright.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
-					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
-			cardbackright.setName("Cardback");
+			GameObjectManager.Instance.setVisible("Cardback", true);
+
 			
 			// 是否为玩家出牌轮
 			if(NetManager.Instance.json1.last == selfseat)
 			{
-				// enable button
-				if(!isSendDirective)
+				if(btnState == 0)
+				{
+					// 进入可被点击的状态
+					btnState = 1;
+				}else if(btnState == 1)
 				{
 					Application.application.btnSendCards.visible = true;
 					Application.application.btnSendCards.enabled = false;
 					Application.application.btnDiscard.visible = true;
+					Application.application.btnDiscard.enabled = true;
 					Application.application.btnHint.visible = true;
+					//
+					btnState = 2;
 				}
+			}
+			else
+			{
+				btnState = 0;
 			}
 		}
 			

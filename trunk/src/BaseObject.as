@@ -9,6 +9,7 @@ package
 		public var zOrder:int = 0;
 		protected var name:String = null;
 		protected var id:int = -1;
+		protected var visible:Boolean = false;
 		
 		public function BaseObject()
 		{
@@ -30,6 +31,17 @@ package
 		public function getId():int
 		{
 			return id;
+		}
+		public function setVisible(visible:Boolean):void
+		{
+			this.visible = visible;
+		}
+		public function setVisibleByName(name:String, visible:Boolean):void
+		{
+			if(this.name == name)
+			{
+				this.visible = visible;
+			}
 		}
 		
 		public function startupBaseObject(zOrder:int):void
