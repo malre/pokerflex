@@ -279,5 +279,13 @@ package
 			
 			removedBaseObjects.removeAll();
 		}
+		
+		public function setVisible(name:String, visible:Boolean):void
+		{
+			for each(var go:GameObject in baseObjects)
+			{
+				go.setVisibleByName(name, visible);
+			}
+		}
 	}
 }
