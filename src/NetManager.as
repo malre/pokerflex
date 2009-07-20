@@ -249,6 +249,11 @@ package
 								Game.Instance.drawPlayerCards(null);
 								Game.Instance.drawOtherCards(json1.play.history);
 								Game.Instance.updatePlayerInfo();
+								//
+								if(Game.Instance.selfseat == NetManager.Instance.json1.play.next)
+								{
+									Game.Instance.isSendDirective = false;
+								}
 							}
 						}
 						else if(json1.status == 1)
