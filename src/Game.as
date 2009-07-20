@@ -161,12 +161,6 @@ package
 			var i:int;
 			var j:int;
 			var k:int;
-			// for debug
-//			for(j=0;j<27;j++)
-//			{
-//				PlayerCards.push(j+5);
-//			}
-//			return;
 
 			for(i=0;i<4;i++)
 			{
@@ -174,7 +168,7 @@ package
 				{
 					// 获得玩家的座位号
 					selfseat = i;
-					for(j=0;j<27;j++)
+					for(j=0;j<NetManager.Instance.json1.players[i].cardnumber;j++)
 					{
 						PlayerCards.push(NetManager.Instance.json1.players[i].card[j]);
 					}
@@ -187,6 +181,58 @@ package
 			}
 		}
 		
+		// 描画玩家手上的牌
+		public function drawPlayerCards(cards:Array):void
+		{
+			var i:int;
+			// 是否需要显示
+			if(NetManager.Instance.json1.players[selfseat].cardnumber != PlayerCards.length)
+			{
+				//清空原来的牌的记录
+				GameObjectManager.Instance.removePlayedCards("Card");
+				PlayerCards.length = 0;
+				// 对得到的牌进行排序并显示
+				sortCards();
+				var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
+				for(i=0; i<PlayerCards.length; i++)
+				{
+					var go:GameObject = new GameObject();
+					var pt:Point = new Point(cardStandardX-(PlayerCards.length*cardsIntervalX/2)+i*cardsIntervalX,cardStandardY);
+					// 传入的是左上的位置坐标
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(PlayerCards[i])), pt, rt,card_BaseZOrder+i);
+					go.setName("Card");
+					go.setId(PlayerCards[i]);
+					//GameObjectManager.Instance.addBaseObject(go);
+				}
+			}
+			
+			// 左边的玩家
+			var cardbackleft:GameObject = new GameObject();
+			cardbackleft.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
+					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
+			cardbackleft.setName("Cardback");
+			// 上面的玩家
+			var cardbackup:GameObject = new GameObject();
+			cardbackup.startupGameObject(GraphicsResource(ResourceManager.CardBack2Res), new Point(upCardback_x,upCardback_y), 
+					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
+			cardbackup.setName("Cardback");
+			// 右边的玩家
+			var cardbackright:GameObject = new GameObject();
+			cardbackright.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
+					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
+			cardbackright.setName("Cardback");
+			
+			// 是否为玩家出牌轮
+			if(NetManager.Instance.json1.last == selfseat)
+			{
+				// enable button
+				Application.application.btnSendCards.visible = true;
+				Application.application.btnSendCards.enabled = false;
+				Application.application.btnDiscard.visible = true;
+				Application.application.btnHint.visible = true;
+			}
+		}
+			
 		// 描画玩家打出来的牌
 		public function drawOtherCards(cards:Array):void
 		{
@@ -390,15 +436,6 @@ package
 		public function updatePlayerInfo():void
 		{
 			// 玩家的姓名，显示在右上
-			for(var i:int=0;i<NetManager.Instance.json1.players.length;i++)
-			{
-				if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
-				{
-					// 获得玩家的座位号
-					selfseat = i;
-					break;
-				}
-			}
 			if(NetManager.Instance.json1.hasOwnProperty("players"))
 			{
 				Application.application.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
@@ -482,6 +519,7 @@ package
 					case 1:
 					break;
 					case 2:
+						getSelfseat();
 						if(requestFlag)
 						{
 							if(curPlayer != selfseat)
@@ -551,6 +589,22 @@ package
 				}
 				else if(menuState == 1)
 				{
+				}
+			}
+		}
+		
+		public function getSelfseat():void
+		{
+			for(var i:int=0;i<4;i++)
+			{
+				if(NetManager.Instance.json1.players.hasOwnProperty(i.toString()))
+				{
+					if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
+					{
+						// 获得玩家的座位号
+						selfseat = i;
+						break;
+					}
 				}
 			}
 		}

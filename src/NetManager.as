@@ -194,7 +194,7 @@ package
 						// 进入游戏逻辑，开始进行update处理
 						send_type = send_updateWhileGame;
 						Game.Instance.gameState = 2;
-						Game.Instance.gameStart();
+						//Game.Instance.gameStart();
 						// 将准备按钮隐藏
 						Application.application.btnReady.visible = false;
 					}
@@ -230,7 +230,7 @@ package
 						{
 							// 进入游戏逻辑，开始进行update处理
 							Game.Instance.gameState = 2;
-							Game.Instance.gameStart();
+							//Game.Instance.gameStart();
 							// 将准备按钮隐藏
 							Application.application.btnReady.visible = false;
 							Application.application.labelWait.visible = false;
@@ -246,12 +246,15 @@ package
 							if(json1.play != null)
 							{
 								Game.Instance.curPlayer = json1.play.next;
+								Game.Instance.drawPlayerCards(null);
 								Game.Instance.drawOtherCards(json1.play.history);
 								Game.Instance.updatePlayerInfo();
 							}
 						}
 						else if(json1.status == 1)
 						{
+							Alert.show("游戏意外结束，重新开始","");
+							GameObjectManager.Instance.shutdown();
 							Application.application.currentState = "MainMenu";
 						}
 					}
