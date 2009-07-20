@@ -60,7 +60,7 @@ package
 		// player id
 		public var pid:int;
 		// 玩家的座位号
-		private var selfseat:int;
+		public var selfseat:int;
 		// 当前出牌玩家的座位号
 		public var curPlayer:int;
 		// 记录其他玩家出的牌
@@ -91,7 +91,12 @@ package
 		private var lastFrameTime:Date = new Date();
 		private static var requestInterval:Number = 1.0;
 		private var requestFlag:Boolean = false;
-
+		
+		// 按键对应的判断变量,用来控制按键不会被多次按下
+		public var isSendDirective:Boolean = false;
+		// 记录游戏的轮次
+		public var gameCurRound:int	= 0;
+		public var gameLastRound:int	= 0;
 
 		public function Game()
 		{
@@ -226,10 +231,13 @@ package
 			if(NetManager.Instance.json1.last == selfseat)
 			{
 				// enable button
-				Application.application.btnSendCards.visible = true;
-				Application.application.btnSendCards.enabled = false;
-				Application.application.btnDiscard.visible = true;
-				Application.application.btnHint.visible = true;
+				if(!isSendDirective)
+				{
+					Application.application.btnSendCards.visible = true;
+					Application.application.btnSendCards.enabled = false;
+					Application.application.btnDiscard.visible = true;
+					Application.application.btnHint.visible = true;
+				}
 			}
 		}
 			
@@ -519,7 +527,8 @@ package
 					case 1:
 					break;
 					case 2:
-						getSelfseat();
+						if(NetManager.Instance.json1.success)
+							getSelfseat();
 						if(requestFlag)
 						{
 							if(curPlayer != selfseat)
@@ -541,30 +550,33 @@ package
 							}
 						}
 
-						if(selfseat == NetManager.Instance.json1.play.next)
+						if(NetManager.Instance.json1.success)
 						{
-							// 检测该次的出牌是否符合要求，能否出牌。
-							var checkarr:Array = new Array();
-							if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
+							if(selfseat == NetManager.Instance.json1.play.next)
 							{
-								// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
-								// 这个时候不能够放弃
-								Application.application.btnDiscard.enabled = false;
+								// 检测该次的出牌是否符合要求，能否出牌。
+								var checkarr:Array = new Array();
+								if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
+								{
+									// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
+									// 这个时候不能够放弃
+									Application.application.btnDiscard.enabled = false;
+								}
+								else
+								{
+									checkarr = checkarr.concat(NetManager.Instance.json1.play.last_card);
+								}
+								if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+								{
+									// make chupai enable
+									Application.application.btnSendCards.enabled = true;
+								}
+								else
+								{
+									Application.application.btnSendCards.enabled = false;
+								}
+							    checkarr = null;
 							}
-							else
-							{
-								checkarr = checkarr.concat(NetManager.Instance.json1.play.last_card);
-							}
-							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
-							{
-								// make chupai enable
-								Application.application.btnSendCards.enabled = true;
-							}
-							else
-							{
-								Application.application.btnSendCards.enabled = false;
-							}
-						    checkarr = null;
 						}
 					    GameObjectManager.Instance.enterFrame();
 					break;
