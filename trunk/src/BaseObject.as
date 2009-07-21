@@ -8,9 +8,9 @@ package
 	{
 		public var inuse:Boolean = false;
 		public var zOrder:int = 0;
-		protected var name:String = null;
-		protected var id:int = -1;
-		protected var visible:Boolean = false;
+		public var name:String = null;
+		public var id:int = -1;
+		public var visible:Boolean = false;
 		
 		public function BaseObject()
 		{
@@ -46,7 +46,7 @@ package
 		}
 		public function setSpecIdVisible(id:int, zOrder:int, visible:Boolean):Boolean
 		{
-			if(this.id == id)
+			if(this.id == id && !this.visible)
 			{
 				this.zOrder = zOrder;
 				this.visible = visible;
