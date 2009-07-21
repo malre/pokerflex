@@ -148,48 +148,6 @@ package
 			cardbackright.setName("Cardback");
 		}
 
-		public function gameStart():void
-		{
-			// 对得到的牌进行排序并显示
-			sortCards();
-			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
-			for(var i:int=0; i<PlayerCards.length; i++)
-			{
-				var go:GameObject = new GameObject();
-				var pt:Point = new Point(cardStandardX-(PlayerCards.length*cardsIntervalX/2)+i*cardsIntervalX,cardStandardY);
-				// 传入的是左上的位置坐标
-				go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(PlayerCards[i])), pt, rt,card_BaseZOrder+i);
-				go.setName("Card");
-				go.setId(PlayerCards[i]);
-				//GameObjectManager.Instance.addBaseObject(go);
-			}
-			
-			// 左边的玩家
-			var cardbackleft:GameObject = new GameObject();
-			cardbackleft.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
-					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
-			cardbackleft.setName("Cardback");
-			// 上面的玩家
-			var cardbackup:GameObject = new GameObject();
-			cardbackup.startupGameObject(GraphicsResource(ResourceManager.CardBack2Res), new Point(upCardback_x,upCardback_y), 
-					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
-			cardbackup.setName("Cardback");
-			// 右边的玩家
-			var cardbackright:GameObject = new GameObject();
-			cardbackright.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
-					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
-			cardbackright.setName("Cardback");
-			
-			// 是否为玩家出牌轮
-			if(NetManager.Instance.json1.last == selfseat)
-			{
-				// enable button
-				Application.application.btnSendCards.visible = true;
-				Application.application.btnSendCards.enabled = false;
-				Application.application.btnDiscard.visible = true;
-				Application.application.btnHint.visible = true;
-			}
-		}
 		//
 		public function sortCards():void
 		{
