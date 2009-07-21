@@ -110,8 +110,8 @@ package
 			return instance;
 		}
 		
-		// 根据得到的数据来
-		// 初始化玩家手上的27张牌
+		// 完全的把所有用的纸牌的数据都预先生成
+		// 
 		public function init():void
 		{
 			GameObjectManager.Instance.startup();
@@ -131,7 +131,7 @@ package
 					var pt:Point = new Point();
 					var rt:Rectangle = new Rectangle(0, 0, cardsHeight, cardsWidth);
 					// 传入的是左上的位置坐标
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(j)), pt, rt,card_BaseZOrder+i);
+					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(j)), pt, rt,0);
 				}
 			}
 			// 左边的玩家
@@ -193,7 +193,7 @@ package
 
 			
 			// 是否为玩家出牌轮
-			if(NetManager.Instance.json1.last == selfseat)
+			if(curPlayer == selfseat)
 			{
 				if(btnState == 0)
 				{
@@ -278,6 +278,14 @@ package
 						GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
 					}
 					deskCards0 = deskCards0.concat(cards[selfseat]);
+				}
+				else
+				{
+					// 如果该回合是自己出牌，将先清除桌面上所有的牌
+					if(curPlayer == selfseat)
+					{
+						GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+					}
 				}
 			}
 			// 更新右边的玩家
@@ -609,8 +617,6 @@ package
 		{
 			NetManager.Instance.send(NetManager.send_sendcardsWhileGame);
 			NetManager.Instance.setSendType(NetManager.send_updateWhileGame);
-			// 从玩家的当前牌堆中把打掉的牌移除
-			GameObjectManager.Instance.removeSendCards();
 		}
 		public function pass():void
 		{

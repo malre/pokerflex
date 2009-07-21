@@ -136,7 +136,6 @@ package
 					send_type = send_waitForReady;
 					Application.application.currentState = "Game";
 					//Game.Instance.menuState = 1;
-					Game.Instance.init();
 					Game.Instance.gameState = 3;	// 3 发送举手消息以前
 					// 关闭几个和出牌有关的按钮的显示
 					Application.application.btnReady.visible = true;
