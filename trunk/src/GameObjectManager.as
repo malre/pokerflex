@@ -2,6 +2,7 @@ package
 {
 	import flash.display.*;
 	import flash.events.*;
+	import flash.geom.Point;
 	import flash.utils.*;
 	
 	import mx.collections.*;
@@ -65,8 +66,23 @@ package
 			for each (var gameObject:BaseObject in baseObjects)
 				if (gameObject.inuse) 
 					gameObject.enterFrame(seconds);
+			
+			// 对所有集合中的元素按照Z值来进行排序
+			var sort:Sort = new Sort()
+			sort.compareFunction = sortFunction;
+			baseObjects.sort = sort;
+			baseObjects.refresh();
+			sort = null;
 	    	
 	    	drawObjects();
+		}
+		public function sortFunction(a:GameObject, b:GameObject, fields:Array=null):int
+		{
+			var i:int = a.zOrder;
+			var j:int = b.zOrder;
+			if(i > j) return 1;
+			else if(i == j) return 0;
+			else return -1;
 		}
 		
 		public function click(event:MouseEvent):void
@@ -123,7 +139,7 @@ package
 			
 			// draw the objects
 			for each (var baseObject:BaseObject in baseObjects)
-				if (baseObject.inuse)
+				if (baseObject.inuse && baseObject.getVisible())
 					baseObject.copyToBackBuffer(backBuffer);
 		}
 				
@@ -279,12 +295,32 @@ package
 			
 			removedBaseObjects.removeAll();
 		}
+		// 将所有的指定名字的牌置为不可见
+		public function makeAllCardsInvisible():void
+		{
+			for each(var baseObject:BaseObject in baseObjects)
+			{
+				baseObject.setVisible(false);
+			}
+		} 
 		
-		public function setVisible(name:String, visible:Boolean):void
+		public function setVisibleByName(name:String, visible:Boolean):void
 		{
 			for each(var go:GameObject in baseObjects)
 			{
 				go.setVisibleByName(name, visible);
+			}
+		}
+		public function setSpecCardVisible(id:int, name:String, pt:Point, zOrder:int, visible:Boolean):void
+		{
+			for each(var go:GameObject in baseObjects)
+			{
+				if(go.setSpecIdVisible(id, zOrder, visible))
+				{
+					go.position = pt.clone();
+					go.setName(name);
+					return;
+				}
 			}
 		}
 	}

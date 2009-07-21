@@ -2,6 +2,7 @@ package
 {
 	import flash.display.*;
 	import flash.events.*;
+	import flash.geom.Rectangle;
 	
 	public class BaseObject
 	{
@@ -42,6 +43,20 @@ package
 			{
 				this.visible = visible;
 			}
+		}
+		public function setSpecIdVisible(id:int, zOrder:int, visible:Boolean):Boolean
+		{
+			if(this.id == id)
+			{
+				this.zOrder = zOrder;
+				this.visible = visible;
+				return true;
+			}
+			return false;
+		}
+		public function getVisible():Boolean
+		{
+			return visible;
 		}
 		
 		public function startupBaseObject(zOrder:int):void

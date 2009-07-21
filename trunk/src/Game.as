@@ -101,6 +101,7 @@ package
 		public function Game()
 		{
 			//TODO: implement function
+			init();
 		}
 		static public function get Instance():Game
 		{
@@ -117,6 +118,7 @@ package
 			//创建所有的图像对象，并放到集合中去
 			BGImg = new GameObject();
 			BGImg.startupGameObject(GraphicsResource(ResourceManager.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
+			BGImg.setVisible(true);
 			// 104 cards
 			var i:int,j:int;
 			for(i=0;i<2;i++)
@@ -127,6 +129,7 @@ package
 					go.setName("Card");
 					go.setId(j);
 					var pt:Point = new Point();
+					var rt:Rectangle = new Rectangle(0, 0, cardsHeight, cardsWidth);
 					// 传入的是左上的位置坐标
 					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(j)), pt, rt,card_BaseZOrder+i);
 				}
@@ -151,27 +154,15 @@ package
 		//
 		public function sortCards():void
 		{
-			var i:int;
 			var j:int;
-			var k:int;
 
-			for(i=0;i<4;i++)
+			for(j=0;j<NetManager.Instance.json1.players[selfseat].cardnumber;j++)
 			{
-				if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
-				{
-					// 获得玩家的座位号
-					selfseat = i;
-					for(j=0;j<NetManager.Instance.json1.players[i].cardnumber;j++)
-					{
-						PlayerCards.push(NetManager.Instance.json1.players[i].card[j]);
-					}
-					// do sort
-					PlayerCards.sort(Array.NUMERIC);
-					PlayerCards.reverse();
-
-					break;
-				}
+				PlayerCards.push(NetManager.Instance.json1.players[selfseat].card[j]);
 			}
+			// do sort
+			PlayerCards.sort(Array.NUMERIC);
+			PlayerCards.reverse();
 		}
 		
 		// 描画玩家手上的牌
@@ -182,27 +173,23 @@ package
 			if(NetManager.Instance.json1.players[selfseat].cardnumber != PlayerCards.length)
 			{
 				//清空原来的牌的记录
-				GameObjectManager.Instance.removePlayedCards("Card");
+				GameObjectManager.Instance.setVisibleByName("Card", false);
 				PlayerCards.length = 0;
 				// 对得到的牌进行排序并显示
 				sortCards();
 				var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
 				for(i=0; i<PlayerCards.length; i++)
 				{
-					var go:GameObject = new GameObject();
 					var pt:Point = new Point(cardStandardX-(PlayerCards.length*cardsIntervalX/2)+i*cardsIntervalX,cardStandardY);
 					// 传入的是左上的位置坐标
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(PlayerCards[i])), pt, rt,card_BaseZOrder+i);
-					go.setName("Card");
-					go.setId(PlayerCards[i]);
-					//GameObjectManager.Instance.addBaseObject(go);
+					GameObjectManager.Instance.setSpecCardVisible(PlayerCards[i], "Card", pt, card_BaseZOrder+i, true);
 				}
 			}
 			
 			// 左边的玩家
 			// 上面的玩家
 			// 右边的玩家
-			GameObjectManager.Instance.setVisible("Cardback", true);
+			GameObjectManager.Instance.setVisibleByName("Cardback", true);
 
 			
 			// 是否为玩家出牌轮
@@ -222,6 +209,11 @@ package
 					//
 					btnState = 2;
 				}
+				else if(btnState == 3)
+				{
+					Application.application.btnSendCards.enabled = false;
+					Application.application.btnDiscard.enabled = false;
+				}
 			}
 			else
 			{
@@ -232,6 +224,12 @@ package
 		// 描画玩家打出来的牌
 		public function drawOtherCards(cards:Array):void
 		{
+			// reset
+			Application.application.imgDiscardDown.visible = false;
+			Application.application.imgDiscardRight.visible = false;
+			Application.application.imgDiscardUp.visible = false;
+			Application.application.imgDiscardLeft.visible = false;
+			
 			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
 			var pt:Point;
 			var go:GameObject;
@@ -240,11 +238,12 @@ package
 			var id:int;
 			if(cards[selfseat] == "null")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardSelf");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 			}
 			else if(cards[selfseat] == "pass")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardSelf");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+				Application.application.imgDiscardDown.visible = true;
 			}
 			else
 			{
@@ -271,15 +270,12 @@ package
 				{
 					// 删除之前该位置显示的所有卡牌
 					deskCards0.length = 0;
-					GameObjectManager.Instance.removePlayedCards("PlayedCardSelf");
+					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 					// 重新描画
 					for(i=0;i<cards[selfseat].length;i++)
 					{
-						go = new GameObject();
 						pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
-						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[selfseat][i])), pt, rt,cardplayed0_BaseZOrder);
-						go.setName("PlayedCardSelf");
-						go.setId(cards[selfseat][i]);
+						GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
 					}
 					deskCards0 = deskCards0.concat(cards[selfseat]);
 				}
@@ -288,11 +284,12 @@ package
 			id = (selfseat+1)%4;
 			if(cards[id] == "null")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardRight");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 			}
 			else if(cards[id] == "pass")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardRight");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+				Application.application.imgDiscardRight.visible = true;
 			}
 			else
 			{
@@ -318,15 +315,13 @@ package
 				{
 					// 删除之前该位置显示的所有卡牌
 					deskCards1.length = 0;
-					GameObjectManager.Instance.removePlayedCards("PlayedCardRight");
+					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 					// 重新描画
 					for(i=0;i<cards[id].length;i++)
 					{
-						go = new GameObject();
+						
 						pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed1_BaseZOrder);
-						go.setName("PlayedCardRight");
-						go.setId(cards[id][i]);
+						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardRight", pt, cardplayed1_BaseZOrder+i, true);
 					}
 					deskCards1 = deskCards1.concat(cards[id]);
 				}
@@ -335,11 +330,12 @@ package
 			id = (selfseat+2)%4;
 			if(cards[id] == "null")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardUp");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
 			}
 			else if(cards[id] == "pass")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardUp");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+				Application.application.imgDiscardup.visible = true;
 			}
 			else
 			{
@@ -365,15 +361,12 @@ package
 				{
 					// 删除之前该位置显示的所有卡牌
 					deskCards2.length = 0;
-					GameObjectManager.Instance.removePlayedCards("PlayedCardUp");
+					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
 					// 重新描画
 					for(i=0;i<cards[id].length;i++)
 					{
-						go = new GameObject();
 						pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
-						go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed2_BaseZOrder);
-						go.setName("PlayedCardUp");
-						go.setId(cards[id][i]);
+						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed2_BaseZOrder+i, true);
 					}
 					deskCards2 = deskCards2.concat(cards[id]);
 				}
@@ -383,11 +376,11 @@ package
 			id = (selfseat+3)%4;
 			if(cards[id] == "null")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardLeft");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 			}
 			else if(cards[id] == "pass")
 			{
-				GameObjectManager.Instance.removePlayedCards("PlayedCardLeft");
+				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 			}
 			else
 			{
@@ -407,21 +400,18 @@ package
 							break;
 						}
 					}
-					
 				}
 				if(flag)
 				{
 					// 删除之前该位置显示的所有卡牌
 					deskCards3.length = 0;
-					GameObjectManager.Instance.removePlayedCards("PlayedCardLeft");
+					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 					// 重新描画
 					for(i=0;i<cards[id].length;i++)
 					{
-					go = new GameObject();
-					pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(cards[id][i])), pt, rt,cardplayed3_BaseZOrder);
-					go.setName("PlayedCardLeft");
-					go.setId(cards[id][i]);
+
+						pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
+						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed3_BaseZOrder+i, true);
 					}
 					deskCards3 = deskCards3.concat(cards[id]);
 				}
@@ -516,7 +506,12 @@ package
 					break;
 					case 2:
 						if(NetManager.Instance.json1.success)
+						{
 							getSelfseat();
+							drawPlayerCards(null);
+							drawOtherCards(NetManager.Instance.json1.play.history);
+							updatePlayerInfo();
+						}
 						if(requestFlag)
 						{
 							if(curPlayer != selfseat)
@@ -595,6 +590,7 @@ package
 		
 		public function getSelfseat():void
 		{
+			curPlayer = NetManager.Instance.json1.play.next;
 			for(var i:int=0;i<4;i++)
 			{
 				if(NetManager.Instance.json1.players.hasOwnProperty(i.toString()))
