@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" currentState="MainMenu"
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" frameRate="30" currentState="MainMenu"
 	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
 	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
 
@@ -66,6 +66,18 @@
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Image x="262" y="49" id="label_thinking" width="91" height="84" source="http://192.168.18.24/web/world/resources/game/clock.swf" scaleContent="false" autoLoad="true"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="310" y="169" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardUp"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="495.5" y="234" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardRight"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="139" y="249" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardLeft"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="307" y="356" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardDown"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State 
@@ -149,6 +161,11 @@
 				Label_leftcardsnumRight.visible = false;
 				Label_leftcardsnumUp.visible = false;
 				Label_leftcardsnumLeft.visible = false;
+				// 放弃图
+				imgDiscardDown.visible = false;
+				imgDiscardLeft.visible = false;
+				imgDiscardUp.visible = false;
+				imgDiscardRight.visible = false;
 				//
 				label_thinking.visible = false;
 			}
@@ -196,20 +213,20 @@
 			
 			private function sendCardsClicked(event:Event):void
 			{
-				if(!Game.Instance.isSendDirective)
+				if(Game.Instance.btnState == 2)
 				{
 					Game.Instance.sendcards();
-					Game.Instance.isSendDirective = true;
+					Game.Instance.btnState = 3;
 					btnSendCards.enabled = false;
 				}
 			}
 			
 			private function discardClicked(event:Event):void
 			{
-				if(!Game.Instance.isSendDirective)
+				if(Game.Instance.btnState == 2)
 				{
 					Game.Instance.pass();
-					Game.Instance.isSendDirective = true;
+					Game.Instance.btnState = 3;
 					btnDiscard.enabled = false;
 				}
 			}

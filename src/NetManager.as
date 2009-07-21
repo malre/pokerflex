@@ -245,14 +245,14 @@ package
 							// 更新所有玩家的信息
 							if(json1.play != null)
 							{
-								Game.Instance.curPlayer = json1.play.next;
-								Game.Instance.drawPlayerCards(null);
-								Game.Instance.drawOtherCards(json1.play.history);
-								Game.Instance.updatePlayerInfo();
-								//
+//								Game.Instance.curPlayer = json1.play.next;
+//								Game.Instance.drawPlayerCards(null);
+//								Game.Instance.drawOtherCards(json1.play.history);
+//								Game.Instance.updatePlayerInfo();
+//								//
 								if(Game.Instance.selfseat == NetManager.Instance.json1.play.next)
 								{
-									Game.Instance.isSendDirective = false;
+									//Game.Instance.isSendDirective = false;
 								}
 							}
 						}
