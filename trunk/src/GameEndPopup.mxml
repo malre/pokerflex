@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300" verticalAlign="middle" horizontalAlign="center"
+	borderSkin="CustomPanelSkin" creationComplete="createComplete()">
+	
+	<mx:Style>
+		.customPopUp{
+			header-height:2;
+			color:#ffff00;
+		}
+	</mx:Style>
+	<mx:Text width="100%" height="216" text="{message}" x="4" y="4"/>
+	<mx:Button label="继续" x="72" y="228" id="popupBtnContinue" width="57"/>
+	<mx:Button label="退出" x="232" y="228" id="popupBtnExit" width="58"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
+			[Bindable]
+			public var message:String;
+			
+			private function handleClose(evt:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			private function createComplete():void
+			{
+				x = (this.parent.width - width)/2;
+				y = (this.parent.height - height)/2;
+			}
+		]]>
+	</mx:Script>
+	<mx:DataGrid x="39" y="37">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Column 1" dataField="col1"/>
+			<mx:DataGridColumn headerText="Column 2" dataField="col2"/>
+			<mx:DataGridColumn headerText="Column 3" dataField="col3"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:TitleWindow>
