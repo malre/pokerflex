@@ -68,22 +68,22 @@
 				<mx:Image x="262" y="49" id="label_thinking" width="91" height="84" source="http://192.168.18.24/web/world/resources/game/clock.swf" scaleContent="false" autoLoad="true"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Image x="310" y="169" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardUp"/>
+				<mx:Image x="262" y="169" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardUp"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Image x="495.5" y="234" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardRight"/>
+				<mx:Image x="423.5" y="240" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardRight"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Image x="139" y="249" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardLeft"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Image x="307" y="356" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardDown"/>
+				<mx:Image x="262" y="356" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardDown"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State 
 			name="LevelEnd">
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="514" y="368" label="Continue" id="btnContinue" click="btnContinueClicked(event)"/>
+				<mx:Button x="514" y="368" label="Continue" id="btnContinue" click="btnContinueClicked(event)" cornerRadius="4"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Label x="10" y="10" text="Congratulations, you finished the level."/>
@@ -126,7 +126,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.2.6" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.2.8" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)"/>
@@ -149,6 +149,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+
+			import mx.managers.PopUpManager;
 			import mx.managers.SystemManager;
 			import mx.controls.Alert;
 			protected var inGame:Boolean = false;
@@ -200,8 +202,8 @@
 
 			private function startDebugClicked(event:Event):void
 			{
-				currentState="Game";
-				Game.Instance.gameState = 2;
+				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, false));
+
 			}
 
 			private function gameReadyClicked(event:Event):void
