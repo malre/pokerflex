@@ -91,7 +91,7 @@ package
 			for(var i:int=0;i<baseObjects.length;i++)
 			{
 				var gameObject:BaseObject = BaseObject(baseObjects.getItemAt(baseObjects.length-1-i)); 
-				if (gameObject.inuse)
+				if (gameObject.inuse && gameObject.getVisible())
 				{ 
 					if(gameObject.click(event))
 					{
@@ -201,7 +201,7 @@ package
 				if(go.getName() == "Card")
 				{
 					// 检测出牌条件
-					if(go.selected)
+					if(go.selected && go.getVisible())
 					{
 						array.push(go.getId());
 					}
@@ -256,7 +256,7 @@ package
 			{
 				if(go.getName() == "Card")
 				{
-					if(go.selected)
+					if(go.selected && go.getVisible())
 					{
 						cards.push(go.getId());
 					}
@@ -308,7 +308,8 @@ package
 		{
 			for each(var go:GameObject in baseObjects)
 			{
-				go.setVisibleByName(name, visible);
+				if(go.setVisibleByName(name, visible))
+					go.selected = false;
 			}
 		}
 		public function setSpecCardVisible(id:int, name:String, pt:Point, zOrder:int, visible:Boolean):void

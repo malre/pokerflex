@@ -37,12 +37,14 @@ package
 		{
 			this.visible = visible;
 		}
-		public function setVisibleByName(name:String, visible:Boolean):void
+		public function setVisibleByName(name:String, visible:Boolean):Boolean
 		{
 			if(this.name == name)
 			{
 				this.visible = visible;
+				return true;
 			}
+			return false;
 		}
 		public function setSpecIdVisible(id:int, zOrder:int, visible:Boolean):Boolean
 		{

@@ -343,7 +343,7 @@ package
 			else if(cards[id] == "pass")
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-				Application.application.imgDiscardup.visible = true;
+				Application.application.imgDiscardUp.visible = true;
 			}
 			else
 			{
@@ -389,6 +389,7 @@ package
 			else if(cards[id] == "pass")
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+				Application.application.imgDiscardLeft.visible = true;
 			}
 			else
 			{
@@ -419,7 +420,7 @@ package
 					{
 
 						pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed3_BaseZOrder+i, true);
+						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
 					}
 					deskCards3 = deskCards3.concat(cards[id]);
 				}
