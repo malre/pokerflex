@@ -126,10 +126,10 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.2.8" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.3.0" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)"/>
+				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)" enabled="false"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="WaitReady">
@@ -184,8 +184,10 @@
 			
 			private function startGameClicked(event:Event):void
 			{
+				// 首先获得玩家id,用来显示玩家的牌用
+				NetManager.Instance.send(NetManager.send_requestinfo);
 				// 检查房间输入，如果不是数字就报错
-				NetManager.Instance.send(NetManager.send_joinRoom);
+				//NetManager.Instance.send(NetManager.send_joinRoom);
 			}
 			private function getpidClicked(event:Event):void
 			{

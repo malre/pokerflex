@@ -333,6 +333,14 @@ package
 					}
 					deskCards1 = deskCards1.concat(cards[id]);
 				}
+				else
+				{
+					// 如果该回合是出牌轮，将先清除桌面上所有的牌
+					if(curPlayer == id)
+					{
+						GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+					}
+				}
 			}
 			// 更新上边的玩家
 			id = (selfseat+2)%4;
@@ -378,7 +386,14 @@ package
 					}
 					deskCards2 = deskCards2.concat(cards[id]);
 				}
-
+				else
+				{
+					// 如果该回合是出牌轮，将先清除桌面上所有的牌
+					if(curPlayer == id)
+					{
+						GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+					}
+				}
 			}
 			// 更新左边的玩家
 			id = (selfseat+3)%4;
@@ -423,6 +438,14 @@ package
 						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
 					}
 					deskCards3 = deskCards3.concat(cards[id]);
+				}
+				else
+				{
+					// 如果该回合是出牌轮，将先清除桌面上所有的牌
+					if(curPlayer == id)
+					{
+						GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+					}
 				}
 			}
 		}

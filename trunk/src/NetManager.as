@@ -12,7 +12,7 @@ package
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
+		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
 		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
@@ -31,6 +31,10 @@ package
 		public static var send_sendcardsWhileGame:String = "send cards";
 		public static var send_passWhileGame:String = "pass";
 		private var	send_type:String = null;
+		
+		// 请求连接标志位
+		// 当本次请求发出以后，置为真，这期间，不再发起人和的请求，直到收到或者超时为止。
+		private var requestEnable:Boolean = true;
 		
 		////////////////////////////////////////////////////////
 		// 用来处理收到的json数据
@@ -63,7 +67,14 @@ package
 		
 		public function	send(type:String):void
 		{
+			// 对发送进行控制
+			if(requestEnable)
+				requestEnable = false;
+			else
+				return;
+			//改变接受类型
 			send_type = type;
+				
 			if(type == send_joinRoom)
 			{
 				Application.application.httpService.method = "POST";
@@ -123,6 +134,7 @@ package
 		
 		public function resultProcess(event:Event):void
 		{
+			requestEnable = true;
 			// 
 			var str:String=null;
 			json1 = JSON.decode(Application.application.httpService.lastResult.toString());
@@ -166,8 +178,10 @@ package
 				if(json1.success)
 				{
 					Game.Instance.pid = json1.pid;
-					trace("pid = "+json1.pid+"\n");
-					Alert.show("pid="+json1.pid, "success");
+					//trace("pid = "+json1.pid+"\n");
+					//Alert.show("pid="+json1.pid, "success");
+					// 继续请求进入房间
+					NetManager.Instance.send(NetManager.send_joinRoom);
 				}
 				else
 				{
