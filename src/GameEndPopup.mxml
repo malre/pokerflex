@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300" verticalAlign="middle" horizontalAlign="center"
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="300" height="250" verticalAlign="middle" horizontalAlign="center"
 	borderSkin="CustomPanelSkin" creationComplete="createComplete()">
 	
 	<mx:Style>
@@ -8,9 +8,8 @@
 			color:#ffff00;
 		}
 	</mx:Style>
-	<mx:Text width="100%" height="216" text="{message}" x="4" y="4"/>
-	<mx:Button label="继续" x="72" y="228" id="popupBtnContinue" width="57"/>
-	<mx:Button label="退出" x="232" y="228" id="popupBtnExit" width="58"/>
+	<mx:Button label="继续" x="60" y="178" id="popupBtnContinue" width="57" fontSize="12"/>
+	<mx:Button label="退出" x="166" y="178" id="popupBtnExit" width="58" fontSize="12"/>
 	<mx:Script>
 		<![CDATA[
 			import mx.core.Application;
@@ -30,11 +29,24 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:DataGrid x="39" y="37">
-		<mx:columns>
-			<mx:DataGridColumn headerText="Column 1" dataField="col1"/>
-			<mx:DataGridColumn headerText="Column 2" dataField="col2"/>
-			<mx:DataGridColumn headerText="Column 3" dataField="col3"/>
-		</mx:columns>
-	</mx:DataGrid>
+	<mx:Image x="88" y="0" source="@Embed('../res/tongji.png')" autoLoad="true" scaleContent="false"/>
+	<mx:Label x="22" y="54" text="玩家一" fontSize="14" fontWeight="bold" id="popupPlayer0"/>
+	<mx:Label x="22" y="85" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
+	<mx:Label x="22" y="116" text="玩家三" fontSize="14" fontWeight="bold" id="popupPlayer2"/>
+	<mx:Label x="22" y="147" text="玩家四" fontSize="14" fontWeight="bold" id="popupPlayer3"/>
+	<mx:Label x="82" y="31" text="本局得分" width="66" height="22" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="156" y="31" text="累计" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="210" y="31" text="总积分" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="103" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Benju"/>
+	<mx:Label x="103" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Benju"/>
+	<mx:Label x="156" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Leiji"/>
+	<mx:Label x="156" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Leiji"/>
+	<mx:Label x="156" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Leiji"/>
+	<mx:Label x="156" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Leiji"/>
+	<mx:Label x="223" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Total"/>
+	<mx:Label x="223" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Total"/>
+	<mx:Label x="223" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Total"/>
+	<mx:Label x="223" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Total"/>
+	<mx:Label x="103" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Benju"/>
+	<mx:Label x="103" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Benju"/>
 </mx:TitleWindow>
