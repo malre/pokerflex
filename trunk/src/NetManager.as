@@ -252,7 +252,6 @@ package
 					// 游戏中
 					else if(Game.Instance.gameState == 2)
 					{
-						// 如果游戏意外结束，退回到开始界面
 						if(json1.status == 0)
 						{
 							// 更新所有玩家的信息
@@ -269,6 +268,7 @@ package
 								}
 							}
 						}
+						// 如果游戏意外结束，退回到开始界面
 						else if(json1.status == 1)
 						{
 							Alert.show("游戏意外结束，重新开始","");
