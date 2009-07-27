@@ -236,215 +236,227 @@ package
 			// 更新玩家self的牌
 			var i:int;
 			var id:int;
-			if(cards[selfseat] == "null")
+			// 如果该回合是自己出牌，将先清除桌面上所有的牌
+			if(curPlayer == selfseat)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-			}
-			else if(cards[selfseat] == "pass")
-			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-				Application.application.imgDiscardDown.visible = true;
+				Application.application.imgDiscardDown.visible = false;
 			}
 			else
 			{
-				// 查看本次得到的数据是否和上次的一样
-				var flag:Boolean = false;
-				if(cards[selfseat].length != deskCards0.length)
+				if(cards[selfseat] == "null")
 				{
-					flag = true;
-				}
-				else
-				{
-					// 判断每一个元素是否相同
-					for(i=0;i<cards[selfseat].length;i++)
-					{
-						if(cards[selfseat][i] != deskCards0[i])
-						{
-							flag = true;
-							break;
-						}
-					}
-					
-				}
-				if(flag)
-				{
-					// 删除之前该位置显示的所有卡牌
-					deskCards0.length = 0;
 					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-					// 重新描画
-					for(i=0;i<cards[selfseat].length;i++)
-					{
-						pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
-						GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
-					}
-					deskCards0 = deskCards0.concat(cards[selfseat]);
+				}
+				else if(cards[selfseat] == "pass")
+				{
+					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+					Application.application.imgDiscardDown.visible = true;
 				}
 				else
 				{
-					// 如果该回合是自己出牌，将先清除桌面上所有的牌
-					if(curPlayer == selfseat)
+					// 查看本次得到的数据是否和上次的一样
+					var flag:Boolean = false;
+					if(cards[selfseat].length != deskCards0.length)
 					{
+						flag = true;
+					}
+					else
+					{
+						// 判断每一个元素是否相同
+						for(i=0;i<cards[selfseat].length;i++)
+						{
+							if(cards[selfseat][i] != deskCards0[i])
+							{
+								flag = true;
+								break;
+							}
+						}
+						
+					}
+					if(flag)
+					{
+						// 删除之前该位置显示的所有卡牌
+						deskCards0.length = 0;
 						GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+						// 重新描画
+						for(i=0;i<cards[selfseat].length;i++)
+						{
+							pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
+							GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
+						}
+						deskCards0 = deskCards0.concat(cards[selfseat]);
+					}
+					else
+					{
+						// 如果该回合是自己出牌，将先清除桌面上所有的牌
+						if(curPlayer == selfseat)
+						{
+							GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+						}
 					}
 				}
 			}
 			// 更新右边的玩家
 			id = (selfseat+1)%4;
-			if(cards[id] == "null")
+			// 如果该回合是出牌轮，将先清除桌面上所有的牌
+			if(curPlayer == id)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-			}
-			else if(cards[id] == "pass")
-			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-				Application.application.imgDiscardRight.visible = true;
+				Application.application.imgDiscardRight.visible = false;
 			}
 			else
 			{
-				flag = false;
-				if(cards[id].length != deskCards1.length)
+				if(cards[id] == "null")
 				{
-					flag = true;
-				}
-				else
-				{
-					// 判断每一个元素是否相同
-					for(i=0;i<cards[id].length;i++)
-					{
-						if(cards[id][i] != deskCards1[i])
-						{
-							flag = true;
-							break;
-						}
-					}
-					
-				}
-				if(flag)
-				{
-					// 删除之前该位置显示的所有卡牌
-					deskCards1.length = 0;
 					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-					// 重新描画
-					for(i=0;i<cards[id].length;i++)
-					{
-						
-						pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardRight", pt, cardplayed1_BaseZOrder+i, true);
-					}
-					deskCards1 = deskCards1.concat(cards[id]);
+				}
+				else if(cards[id] == "pass")
+				{
+					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+					Application.application.imgDiscardRight.visible = true;
 				}
 				else
 				{
-					// 如果该回合是出牌轮，将先清除桌面上所有的牌
-					if(curPlayer == id)
+					flag = false;
+					if(cards[id].length != deskCards1.length)
 					{
+						flag = true;
+					}
+					else
+					{
+						// 判断每一个元素是否相同
+						for(i=0;i<cards[id].length;i++)
+						{
+							if(cards[id][i] != deskCards1[i])
+							{
+								flag = true;
+								break;
+							}
+						}
+						
+					}
+					if(flag)
+					{
+						// 删除之前该位置显示的所有卡牌
+						deskCards1.length = 0;
 						GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+						// 重新描画
+						for(i=0;i<cards[id].length;i++)
+						{
+							
+							pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
+							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardRight", pt, cardplayed1_BaseZOrder+i, true);
+						}
+						deskCards1 = deskCards1.concat(cards[id]);
 					}
 				}
 			}
 			// 更新上边的玩家
 			id = (selfseat+2)%4;
-			if(cards[id] == "null")
+			// 如果该回合是出牌轮，将先清除桌面上所有的牌
+			if(curPlayer == id)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-			}
-			else if(cards[id] == "pass")
-			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-				Application.application.imgDiscardUp.visible = true;
+				Application.application.imgDiscardUp.visible = false;
 			}
 			else
 			{
-				flag = false;
-				if(cards[id].length != deskCards2.length)
+				if(cards[id] == "null")
 				{
-					flag = true;
-				}
-				else
-				{
-					// 判断每一个元素是否相同
-					for(i=0;i<cards[id].length;i++)
-					{
-						if(cards[id][i] != deskCards2[i])
-						{
-							flag = true;
-							break;
-						}
-					}
-					
-				}
-				if(flag)
-				{
-					// 删除之前该位置显示的所有卡牌
-					deskCards2.length = 0;
 					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-					// 重新描画
-					for(i=0;i<cards[id].length;i++)
-					{
-						pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
-						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed2_BaseZOrder+i, true);
-					}
-					deskCards2 = deskCards2.concat(cards[id]);
+				}
+				else if(cards[id] == "pass")
+				{
+					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+					Application.application.imgDiscardUp.visible = true;
 				}
 				else
 				{
-					// 如果该回合是出牌轮，将先清除桌面上所有的牌
-					if(curPlayer == id)
+					flag = false;
+					if(cards[id].length != deskCards2.length)
 					{
+						flag = true;
+					}
+					else
+					{
+						// 判断每一个元素是否相同
+						for(i=0;i<cards[id].length;i++)
+						{
+							if(cards[id][i] != deskCards2[i])
+							{
+								flag = true;
+								break;
+							}
+						}
+						
+					}
+					if(flag)
+					{
+						// 删除之前该位置显示的所有卡牌
+						deskCards2.length = 0;
 						GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+						// 重新描画
+						for(i=0;i<cards[id].length;i++)
+						{
+							pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
+							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed2_BaseZOrder+i, true);
+						}
+						deskCards2 = deskCards2.concat(cards[id]);
 					}
 				}
 			}
 			// 更新左边的玩家
 			id = (selfseat+3)%4;
-			if(cards[id] == "null")
+			// 如果该回合是出牌轮，将先清除桌面上所有的牌
+			if(curPlayer == id)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-			}
-			else if(cards[id] == "pass")
-			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-				Application.application.imgDiscardLeft.visible = true;
+				Application.application.imgDiscardLeft.visible = false;
 			}
 			else
 			{
-				flag = false;
-				if(cards[id].length != deskCards3.length)
+				if(cards[id] == "null")
 				{
-					flag = true;
+					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+				}
+				else if(cards[id] == "pass")
+				{
+					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+					Application.application.imgDiscardLeft.visible = true;
 				}
 				else
 				{
-					// 判断每一个元素是否相同
-					for(i=0;i<cards[id].length;i++)
+					flag = false;
+					if(cards[id].length != deskCards3.length)
 					{
-						if(cards[id][i] != deskCards3[i])
+						flag = true;
+					}
+					else
+					{
+						// 判断每一个元素是否相同
+						for(i=0;i<cards[id].length;i++)
 						{
-							flag = true;
-							break;
+							if(cards[id][i] != deskCards3[i])
+							{
+								flag = true;
+								break;
+							}
 						}
 					}
-				}
-				if(flag)
-				{
-					// 删除之前该位置显示的所有卡牌
-					deskCards3.length = 0;
-					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-					// 重新描画
-					for(i=0;i<cards[id].length;i++)
+					if(flag)
 					{
-
-						pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-						GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
-					}
-					deskCards3 = deskCards3.concat(cards[id]);
-				}
-				else
-				{
-					// 如果该回合是出牌轮，将先清除桌面上所有的牌
-					if(curPlayer == id)
-					{
+						// 删除之前该位置显示的所有卡牌
+						deskCards3.length = 0;
 						GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+						// 重新描画
+						for(i=0;i<cards[id].length;i++)
+						{
+	
+							pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
+							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
+						}
+						deskCards3 = deskCards3.concat(cards[id]);
 					}
 				}
 			}

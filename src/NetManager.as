@@ -72,7 +72,7 @@ package
 				requestEnable = false;
 			else
 				return;
-			//改变接受类型
+			//改变处理类型
 			send_type = type;
 				
 			if(type == send_joinRoom)
