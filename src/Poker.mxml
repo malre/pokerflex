@@ -136,11 +136,15 @@
 		</mx:State>
 	</mx:states>
 	<!--定义状态过渡时候的特效-->
-	<mx:transitions>
+<!--	<mx:transitions>
 		<mx:Transition id="mytrans" fromState="*" toState="*">
-			<mx:SetPropertyAction target="{myCanvas}" name="btnJoin" value="255"/>
+			<mx:Sequence target="{{btnJoin}" >
+				<mx:RemoveChildAction/>
+				<mx:SetPropertyAction target="{btnJoin}" name="label"/>
+				<mx:AddChildAction/>
+			</mx:Sequence>
 		</mx:Transition>
-	</mx:transitions>
+	</mx:transitions>-->
 	<mx:Glow blurXTo="20" blurYTo="20" duration="1000" color="0xffffff" id="glow" target="{myCanvas}"/>
 	<!--定义画布-->
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="myCanvas">
