@@ -12,7 +12,7 @@ package
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
+		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
 		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
@@ -31,10 +31,16 @@ package
 		public static var send_sendcardsWhileGame:String = "send cards";
 		public static var send_passWhileGame:String = "pass";
 		private var	send_type:String = null;
+		// 记录了本次请求的内容, 请求的内容一般属于下面的几类
+		private var request_type_cards:Boolean = false;
+		private var request_type_play:Boolean = false;
+		private var request_type_players:Boolean = false;
+		
 		
 		// 请求连接标志位
 		// 当本次请求发出以后，置为真，这期间，不再发起人和的请求，直到收到或者超时为止。
 		private var requestEnable:Boolean = true;
+		public var requestSuccess:Boolean = false;
 		
 		////////////////////////////////////////////////////////
 		// 用来处理收到的json数据
@@ -72,24 +78,27 @@ package
 				requestEnable = false;
 			else
 				return;
+			//重置所有的请求标志位
+			request_type_cards = false;
+			request_type_play = false;
+			request_type_players = false;
 			//改变处理类型
 			send_type = type;
 				
 			if(type == send_joinRoom)
 			{
-				Application.application.httpService.method = "POST";
-				Application.application.httpService.request={roomid:Application.application.roomid.text};
+				Application.application.httpService.request={roomid:Application.application.roomid.text, getPlayers:"true"};
 				Application.application.httpService.url = NetManager.Instance.sendURL_join;
+				//置上请求内容的标志位
+				request_type_players = true;
 			}
 			else if(type == send_leave)
 			{
-				Application.application.httpService.method = "GET";
 				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_leave;
 			}
 			else if(type == send_requestinfo)
 			{
-				Application.application.httpService.method = "GET";
 				Application.application.httpService.request = {};
 				Application.application.httpService.url = NetManager.Instance.sendURL_requestinfo;
 			}
@@ -97,19 +106,21 @@ package
 			{
 				// 游戏状态变成 发送举手消息以后
 				Game.Instance.gameState = 4;
-				Application.application.httpService.method = "GET";
-				Application.application.httpService.request = {};
+				Application.application.httpService.request = {getPlayers:"true"};
 				Application.application.httpService.url = NetManager.Instance.sendURL_ready;
+				//置上请求内容的标志位
+				request_type_players = true;
 			}
 			else if(type == send_updateWhileGame)
 			{
-				Application.application.httpService.method = "GET";
-				Application.application.httpService.request={};
+				Application.application.httpService.request = {getPlay:"true",getCards:"true"};
 				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+				//置上请求内容的标志位
+				request_type_play = true;
+				request_type_cards = true;
 			}
 			else if(type == send_sendcardsWhileGame)
 			{
-				Application.application.httpService.method = "POST";
 				var arr:Array = GameObjectManager.Instance.getSelectedCards();
 				var data:String = "";
 				for(var id:int=0;id<arr.length;id++)
@@ -119,12 +130,14 @@ package
 						data += ",";
 				}
 				
-				Application.application.httpService.request={play:data};
+				Application.application.httpService.request={play:data, getPlay:"true", getCards:"true"};
 				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+				//置上请求内容的标志位
+				request_type_play = true;
+				request_type_cards = true;
 			}
 			else if(type == send_passWhileGame)
 			{
-				Application.application.httpService.method = "POST";
 				Application.application.httpService.request={play:"pass"};
 				Application.application.httpService.url = NetManager.Instance.sendURL_game;
 			}
@@ -134,11 +147,56 @@ package
 		
 		public function resultProcess(event:Event):void
 		{
+			// 本次的请求到达，可以进行下一次请求
 			requestEnable = true;
 			// 
 			var str:String=null;
+			json1 = null;
 			json1 = JSON.decode(Application.application.httpService.lastResult.toString());
-
+			
+			// 首先分析数据，本次请求成功还是失败
+			// 然后看是否得到了预期的数据
+			if(json1.hasOwnProperty("success"))
+			{
+				if(!json1.success)
+				{
+					requestSuccess = false;
+					Alert.show(json1.error[0], "错误");
+					return;
+				}
+			}
+			else
+			{
+				// fault 处理
+			}
+			if(request_type_players)
+			{
+				if(!json1.hasOwnProperty("players"))
+				{
+					requestSuccess = false;
+					Alert.show("没有得到预期的players数据", "错误");
+					return;
+				}
+			}
+			if(request_type_play)
+			{
+				if(!json1.hasOwnProperty("play"))
+				{
+					requestSuccess = false;
+					Alert.show("没有得到预期的play数据", "错误");
+					return;
+				}
+			}
+			if(request_type_cards)
+			{
+				if(!json1.hasOwnProperty("cards"))
+				{
+					requestSuccess = false;
+					Alert.show("没有得到预期的cards数据", "错误");
+					return;
+				}
+			}
+			
 			if(send_type == send_joinRoom)
 			{
 				if(json1.success)
@@ -147,7 +205,6 @@ package
 					// 进入等待状态
 					send_type = send_waitForReady;
 					Application.application.currentState = "Game";
-					//Game.Instance.menuState = 1;
 					Game.Instance.gameState = 3;	// 3 发送举手消息以前
 					// 关闭几个和出牌有关的按钮的显示
 					Application.application.btnReady.visible = true;
