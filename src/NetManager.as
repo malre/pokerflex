@@ -149,6 +149,7 @@ package
 		{
 			// 本次的请求到达，可以进行下一次请求
 			requestEnable = true;
+			requestSuccess = false;
 			// 
 			var str:String=null;
 			json1 = null;
@@ -161,7 +162,7 @@ package
 				if(!json1.success)
 				{
 					requestSuccess = false;
-					Alert.show(json1.error[0], "错误");
+					Alert.show(json1.errors[0], "错误");
 					return;
 				}
 			}
@@ -212,20 +213,9 @@ package
 					Application.application.btnDiscard.visible = false;
 					Application.application.btnHint.visible = false;
 					Application.application.labelWait.visible = false;
+					// 
+					requestSuccess = true;
 				}
-				// 加入房间失败的情况下，显示失败的消息
-				if(json1.hasOwnProperty("errors"))
-				{
-					if(json1.errors != null)
-						str += json1.errors[0]+"\n";
-				}
-				if(json1.hasOwnProperty("players"))
-				{
-					str += json1.players[0];
-				}
-				Application.application.loginlog.text = "success="+json1.success+"\n"
-														+"status="+json1.status+"\n"
-														+str;
 			}
 			else if(send_type == send_leave)
 			{
@@ -235,8 +225,7 @@ package
 				if(json1.success)
 				{
 					Game.Instance.pid = json1.pid;
-					//trace("pid = "+json1.pid+"\n");
-					//Alert.show("pid="+json1.pid, "success");
+
 					// 继续请求进入房间
 					NetManager.Instance.send(NetManager.send_joinRoom);
 				}
@@ -269,19 +258,6 @@ package
 						Application.application.btnReady.visible = false;
 					}
 				}
-				// text 
-				if(json1.hasOwnProperty("errors"))
-				{
-					if(json1.errors != null)
-						str += json1.errors[0]+"\n";
-				}
-				if(json1.hasOwnProperty("players"))
-				{
-					str += json1.players[0];
-				}
-				Application.application.loginlog.text = "success="+json1.success+"\n"
-														+"status="+json1.status+"\n"
-														+str;
 			}
 			else if(send_type == send_updateWhileGame)
 			{
