@@ -229,20 +229,20 @@
 			
 			private function sendCardsClicked(event:Event):void
 			{
-				if(Game.Instance.btnState == 2)
+				if(!Game.Instance.btnState)
 				{
 					Game.Instance.sendcards();
-					Game.Instance.btnState = 3;
+					Game.Instance.btnState = 1;
 					btnSendCards.enabled = false;
 				}
 			}
 			
 			private function discardClicked(event:Event):void
 			{
-				if(Game.Instance.btnState == 2)
+				if(!Game.Instance.btnState)
 				{
 					Game.Instance.pass();
-					Game.Instance.btnState = 3;
+					Game.Instance.btnState = 1;
 					btnDiscard.enabled = false;
 				}
 			}
@@ -294,6 +294,11 @@
 			public function mouseMove(event:MouseEvent):void
 			{
 				
+			}
+			// 被调用函数
+			public function showPopupDlg():void
+			{
+				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
 			}
 		]]>
 	</mx:Script>

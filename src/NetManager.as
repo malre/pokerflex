@@ -88,40 +88,40 @@ package
 			if(type == send_joinRoom)
 			{
 				Application.application.httpService.request={roomid:Application.application.roomid.text, getPlayers:"true"};
-				Application.application.httpService.url = NetManager.Instance.sendURL_join;
+				Application.application.httpService.url = sendURL_join;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_leave)
 			{
 				Application.application.httpService.request = {};
-				Application.application.httpService.url = NetManager.Instance.sendURL_leave;
+				Application.application.httpService.url = sendURL_leave;
 			}
 			else if(type == send_requestinfo)
 			{
 				Application.application.httpService.request = {};
-				Application.application.httpService.url = NetManager.Instance.sendURL_requestinfo;
+				Application.application.httpService.url = sendURL_requestinfo;
 			}
 			else if(type == send_iamReady)
 			{
 				// 游戏状态变成 发送举手消息以后
 				//Game.Instance.gameState = 4;
 				Application.application.httpService.request = {getPlayers:"true"};
-				Application.application.httpService.url = NetManager.Instance.sendURL_ready;
+				Application.application.httpService.url = sendURL_ready;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_updateWhileWait)
 			{
 				Application.application.httpService.request = {getPlayers:"true"};
-				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+				Application.application.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_updateWhileGame)
 			{
 				Application.application.httpService.request = {getPlay:"true",getCards:"true"};
-				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+				Application.application.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
@@ -138,7 +138,7 @@ package
 				}
 				
 				Application.application.httpService.request={play:data, getPlay:"true", getCards:"true"};
-				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+				Application.application.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
@@ -146,7 +146,7 @@ package
 			else if(type == send_passWhileGame)
 			{
 				Application.application.httpService.request={play:"pass"};
-				Application.application.httpService.url = NetManager.Instance.sendURL_game;
+				Application.application.httpService.url = sendURL_game;
 			}
 
 			Application.application.httpService.send();
@@ -240,7 +240,7 @@ package
 
 					// 继续请求进入房间
 					requestEnable = true;
-					send(NetManager.send_joinRoom);
+					send(send_joinRoom);
 				}
 				else
 				{
@@ -300,6 +300,19 @@ package
 						{
 							// 进入游戏逻辑，开始进行update处理
 							Game.Instance.gameState = 2;
+							if(json1.play.next == Game.Instance.selfseat)
+							{
+								// 显示所有的按钮
+								Application.application.btnSendCards.visible = true;
+								Application.application.btnSendCards.enabled = false;
+								Application.application.btnDiscard.visible = true;
+								Application.application.btnDiscard.enabled = true;
+								Application.application.btnHint.visible = true;
+								if(json1.play.last == json1.play.next)
+								{
+									Application.application.btnDiscard.enabled = false;
+								}
+							}
 						}
 					}
 					// 游戏中
@@ -307,19 +320,21 @@ package
 					{
 						if(json1.status == 0)
 						{
-							// 更新所有玩家的信息
-							if(json1.play != null)
+							// 判断是否到了玩家的出牌回合
+							if(json1.play.next == Game.Instance.selfseat)
 							{
-//								Game.Instance.curPlayer = json1.play.next;
-//								Game.Instance.drawPlayerCards(null);
-//								Game.Instance.drawOtherCards(json1.play.history);
-//								Game.Instance.updatePlayerInfo();
-//								//
-								//if(Game.Instance.selfseat == NetManager.Instance.json1.play.next)
+								// 显示所有的按钮
+								Application.application.btnSendCards.visible = true;
+								Application.application.btnSendCards.enabled = false;
+								Application.application.btnDiscard.visible = true;
+								Application.application.btnDiscard.enabled = true;
+								Application.application.btnHint.visible = true;
+								if(json1.play.last == json1.play.next)
 								{
-									//Game.Instance.isSendDirective = false;
+									Application.application.btnDiscard.enabled = false;
 								}
 							}
+							// 对游戏正常结束的判断。
 						}
 						// 如果游戏意外结束，退回到开始界面
 						else if(json1.status == 1)
@@ -327,6 +342,11 @@ package
 							Alert.show("游戏意外结束，重新开始","有玩家推出了房间");
 //							GameObjectManager.Instance.shutdown();
 //							Application.application.currentState = "MainMenu";
+						}
+						// 游戏胜利
+						else if(json1.status == 2)
+						{
+							Application.application.showPopupDlg();
 						}
 					}
 
