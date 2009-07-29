@@ -190,35 +190,6 @@ package
 			// 上面的玩家
 			// 右边的玩家
 			GameObjectManager.Instance.setVisibleByName("Cardback", true);
-
-			
-			// 是否为玩家出牌轮
-			if(curPlayer == selfseat)
-			{
-				if(btnState == 0)
-				{
-					// 进入可被点击的状态
-					btnState = 1;
-				}else if(btnState == 1)
-				{
-					Application.application.btnSendCards.visible = true;
-					Application.application.btnSendCards.enabled = false;
-					Application.application.btnDiscard.visible = true;
-					Application.application.btnDiscard.enabled = true;
-					Application.application.btnHint.visible = true;
-					//
-					btnState = 2;
-				}
-				else if(btnState == 3)
-				{
-					Application.application.btnSendCards.enabled = false;
-					Application.application.btnDiscard.enabled = false;
-				}
-			}
-			else
-			{
-				btnState = 0;
-			}
 		}
 			
 		// 描画玩家打出来的牌
@@ -597,15 +568,6 @@ package
 								Application.application.btnDiscard.visible = false;
 								Application.application.btnHint.visible = false;
 							}
-							else
-							{
-								// 显示所有的按钮
-								Application.application.btnSendCards.visible = true;
-								Application.application.btnSendCards.enabled = false;
-								Application.application.btnDiscard.visible = true;
-								Application.application.btnDiscard.enabled = true;
-								Application.application.btnHint.visible = true;
-							}
 						}
 						if(NetManager.Instance.requestSuccess 
 						&& NetManager.Instance.request_type_cards && NetManager.Instance.request_type_play)
@@ -614,8 +576,8 @@ package
 							drawPlayerCards(null);
 							drawOtherCards(NetManager.Instance.json1.play.history);
 							updatePlayerCardsInfo();
-
-							if(selfseat == NetManager.Instance.json1.play.next)
+							// 轮到自己出牌,并且按钮没有被按下
+							if(selfseat == NetManager.Instance.json1.play.next && !btnState)
 							{
 								// 检测该次的出牌是否符合要求，能否出牌。
 								var checkarr:Array = new Array();
