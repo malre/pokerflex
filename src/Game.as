@@ -156,9 +156,9 @@ package
 		{
 			var j:int;
 
-			for(j=0;j<NetManager.Instance.json1.players[selfseat].cardnumber;j++)
+			for(j=0;j<NetManager.Instance.json1.cards[selfseat].number;j++)
 			{
-				PlayerCards.push(NetManager.Instance.json1.players[selfseat].card[j]);
+				PlayerCards.push(NetManager.Instance.json1.cards[selfseat].card[j]);
 			}
 			// do sort
 			PlayerCards.sort(Array.NUMERIC);
@@ -170,7 +170,7 @@ package
 		{
 			var i:int;
 			// 是否需要显示
-			if(NetManager.Instance.json1.players[selfseat].cardnumber != PlayerCards.length)
+			if(NetManager.Instance.json1.cards[selfseat].number != PlayerCards.length)
 			{
 				//清空原来的牌的记录
 				GameObjectManager.Instance.setVisibleByName("Card", false);
@@ -463,7 +463,7 @@ package
 		}
 		
 		// 更新玩家的信息
-		public function updatePlayerInfo():void
+		public function updatePlayerName():void
 		{
 			// 玩家的姓名，显示在右上
 			if(NetManager.Instance.json1.hasOwnProperty("players"))
@@ -475,25 +475,16 @@ package
 				{
 					Application.application.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
 					Application.application.Lable_playernameUp.text = Application.application.textPlayerPartner.text;
-					// 剩余牌数
-					Application.application.Label_leftcardsnumUp.text = "("+NetManager.Instance.json1.players[(selfseat+2)%4].cardnumber+")";
-					Application.application.Label_leftcardsnumUp.visible = true;
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
 				{
 					Application.application.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
 					Application.application.Lable_playernameRight.text = Application.application.textPlayerEmy1.text; 
-					// 剩余牌数
-					Application.application.Label_leftcardsnumRight.text = "("+NetManager.Instance.json1.players[(selfseat+1)%4].cardnumber+")";
-					Application.application.Label_leftcardsnumRight.visible = true;
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
 				{
 					Application.application.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
 					Application.application.Lable_playernameLeft.text = Application.application.textPlayerEmy2.text;
-					// 剩余牌数
-					Application.application.Label_leftcardsnumLeft.text = "("+NetManager.Instance.json1.players[(selfseat+3)%4].cardnumber+")";
-					Application.application.Label_leftcardsnumLeft.visible = true;
 				}
 			}
 			
@@ -528,6 +519,53 @@ package
 			}
 
 		}
+		public function updatePlayerCardsInfo():void
+		{
+			// 玩家的剩余牌数
+			// partner
+			if(NetManager.Instance.json1.cards.hasOwnProperty( ((selfseat+2)%4).toString() ))
+			{
+				Application.application.Label_leftcardsnumUp.text = "("+NetManager.Instance.json1.cards[(selfseat+2)%4].number+")";
+				Application.application.Label_leftcardsnumUp.visible = true;
+			}
+			if(NetManager.Instance.json1.cards.hasOwnProperty( ((selfseat+1)%4).toString() ))
+			{
+				Application.application.Label_leftcardsnumRight.text = "("+NetManager.Instance.json1.cards[(selfseat+1)%4].number+")";
+				Application.application.Label_leftcardsnumRight.visible = true;
+			}
+			if(NetManager.Instance.json1.cards.hasOwnProperty( ((selfseat+3)%4).toString() ))
+			{
+				Application.application.Label_leftcardsnumLeft.text = "("+NetManager.Instance.json1.cards[(selfseat+3)%4].number+")";
+				Application.application.Label_leftcardsnumLeft.visible = true;
+			}
+			
+			// 当前出牌玩家，显示在主画面上
+			if(NetManager.Instance.json1.play.hasOwnProperty("next"))
+			{
+				// 将显示的图打开 
+				Application.application.label_thinking.visible = true;
+				if(NetManager.Instance.json1.play.next == (selfseat+1)%4)
+				{
+					Application.application.label_thinking.x =485;
+					Application.application.label_thinking.y =250;
+				}
+				else if(NetManager.Instance.json1.play.next == (selfseat+2)%4)
+				{
+					Application.application.label_thinking.x =250;
+					Application.application.label_thinking.y =40;
+				}
+				else if(NetManager.Instance.json1.play.next == (selfseat+3)%4)
+				{
+					Application.application.label_thinking.x =30;
+					Application.application.label_thinking.y =250;
+				}
+				else
+				{
+					// 将显示的图打开 
+					Application.application.label_thinking.visible = false;
+				}
+			}
+		}
 		
 		public function taskLoop(state:String):void
 		{
@@ -549,13 +587,6 @@ package
 					case 1:
 					break;
 					case 2:
-						if(NetManager.Instance.json1.success)
-						{
-							getSelfseat();
-							drawPlayerCards(null);
-							drawOtherCards(NetManager.Instance.json1.play.history);
-							updatePlayerInfo();
-						}
 						if(requestFlag)
 						{
 							if(curPlayer != selfseat)
@@ -576,9 +607,14 @@ package
 								Application.application.btnHint.visible = true;
 							}
 						}
-
-						if(NetManager.Instance.json1.success)
+						if(NetManager.Instance.requestSuccess 
+						&& NetManager.Instance.request_type_cards && NetManager.Instance.request_type_play)
 						{
+							curPlayer = NetManager.Instance.json1.play.next;
+							drawPlayerCards(null);
+							drawOtherCards(NetManager.Instance.json1.play.history);
+							updatePlayerCardsInfo();
+
 							if(selfseat == NetManager.Instance.json1.play.next)
 							{
 								// 检测该次的出牌是否符合要求，能否出牌。
@@ -605,9 +641,19 @@ package
 							    checkarr = null;
 							}
 						}
+
 					    GameObjectManager.Instance.enterFrame();
 					break;
 					case 3:
+						if(requestFlag)
+						{
+							NetManager.Instance.send(NetManager.send_updateWhileWait);
+							requestFlag = false;
+						}
+						if(NetManager.Instance.requestSuccess)
+						{
+							updatePlayerName();
+						}
 						GameObjectManager.Instance.enterFrame();
 					break;
 					case 4:	// 等待其他玩家准备完成
@@ -634,7 +680,6 @@ package
 		
 		public function getSelfseat():void
 		{
-			curPlayer = NetManager.Instance.json1.play.next;
 			for(var i:int=0;i<4;i++)
 			{
 				if(NetManager.Instance.json1.players.hasOwnProperty(i.toString()))

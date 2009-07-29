@@ -47,22 +47,22 @@
 				<mx:Label x="653" y="203" fontSize="12" width="90" height="19" id="textPlayerEmy2"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="25" y="356" id="Label_leftcardsnumLeft"/>
+				<mx:Label x="25" y="356" id="Label_leftcardsnumLeft" fontWeight="bold" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="350" y="74" id="Label_leftcardsnumUp"/>
+				<mx:Label x="350" y="74" id="Label_leftcardsnumUp" fontWeight="bold" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="510" y="356" id="Label_leftcardsnumRight"/>
+				<mx:Label x="510" y="356" id="Label_leftcardsnumRight" fontWeight="bold" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="350" y="49" id="Lable_playernameUp"/>
+				<mx:Label x="350" y="49" id="Lable_playernameUp" fontWeight="bold" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="25" y="330" id="Lable_playernameLeft"/>
+				<mx:Label x="25" y="330" id="Lable_playernameLeft" fontWeight="bold" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="510" y="330" id="Lable_playernameRight"/>
+				<mx:Label x="510" y="330" id="Lable_playernameRight" fontWeight="bold" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Image x="262" y="49" id="label_thinking" width="91" height="84" source="http://192.168.18.24/web/world/resources/game/clock.swf" scaleContent="false" autoLoad="true"/>
@@ -126,7 +126,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.3.1" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.3.4" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)" enabled="false"/>
@@ -196,6 +196,7 @@
 			private function startGameClicked(event:Event):void
 			{
 				// 首先获得玩家id,用来显示玩家的牌用
+				NetManager.Instance.requestEnable = true;
 				NetManager.Instance.send(NetManager.send_requestinfo);
 				// 检查房间输入，如果不是数字就报错
 				//NetManager.Instance.send(NetManager.send_joinRoom);
@@ -208,9 +209,9 @@
 
 			private function leaveGameClicked(event:Event):void
 			{
-				//currentState="WaitReady";
+				NetManager.Instance.requestEnable = true;
 				NetManager.Instance.send(NetManager.send_leave);
-				Alert.show("leave room success!", "");
+				//Alert.show("leave room success!", "");
 			}
 
 			private function startDebugClicked(event:Event):void
@@ -221,8 +222,9 @@
 
 			private function gameReadyClicked(event:Event):void
 			{
-				//currentState="Game";
-				NetManager.Instance.send(NetManager.send_waitForReady);
+				NetManager.Instance.requestEnable = true;
+				NetManager.Instance.send(NetManager.send_iamReady);
+				btnReady.enabled = false;
 			}
 			
 			private function sendCardsClicked(event:Event):void
