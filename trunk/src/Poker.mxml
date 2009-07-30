@@ -126,7 +126,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.3.4" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.3.9" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)" enabled="false"/>
@@ -160,6 +160,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import flash.utils.getDefinitionByName;
+			import flash.utils.getQualifiedClassName;
 
 			import mx.managers.PopUpManager;
 			import mx.managers.SystemManager;
@@ -216,8 +218,19 @@
 
 			private function startDebugClicked(event:Event):void
 			{
-				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
-
+				//var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
+				// 增加一个键盘监听事件
+				this.addEventListener(KeyboardEvent.KEY_DOWN, keydown);
+			}
+			private function keydown(evt:KeyboardEvent):void
+			{
+				if(evt.keyCode == 65)
+				{
+					// CTRL + A
+					GameObjectManager.Instance.shutdown();
+					Game.Instance.gameState = 5;
+					Application.application.showPopupDlg();
+				}
 			}
 
 			private function gameReadyClicked(event:Event):void
@@ -232,7 +245,7 @@
 				if(!Game.Instance.btnState)
 				{
 					Game.Instance.sendcards();
-					Game.Instance.btnState = 1;
+					//Game.Instance.btnState = 1;
 					btnSendCards.enabled = false;
 				}
 			}
@@ -242,7 +255,7 @@
 				if(!Game.Instance.btnState)
 				{
 					Game.Instance.pass();
-					Game.Instance.btnState = 1;
+					//Game.Instance.btnState = 1;
 					btnDiscard.enabled = false;
 				}
 			}
@@ -256,6 +269,18 @@
 			{
 				//loadedSM = SystemManager(swfbtn_OK.content);
 				//Button(loadedSM.application["ok"]).addEventListener(MouseEvent.CLICK,testfunction);
+				//swfloader.getChildAt(0).addEventListener(MouseEvent.CLICK, swfclick);
+				//var loader:Loader = new Loader();
+				//var urlrequest:URLRequest = new URLRequest("hello.swf");
+				//loader.load(urlrequest);
+				//var classname:String = getQualifiedClassName(loader);
+				//var refclass:Class = Class(getDefinitionByName(classname));
+				//var instance:Object = new refclass();
+				//instance.helloworld();
+			}
+			public function swfclick(evt:MouseEvent):void
+			{
+				Alert.show("get click", "");
 			}
 			public function testfunction():void
 			{
@@ -299,7 +324,9 @@
 			public function showPopupDlg():void
 			{
 				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
+				popup.visible = false;
 			}
+			//public function 
 		]]>
 	</mx:Script>
 </mx:Application>

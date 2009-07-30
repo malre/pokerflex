@@ -83,6 +83,7 @@ package
 		
 		// 游戏中的各个阶段的状态定义
 		// 0 没有状态  1 自己的牌的发牌的过程，也就是初始化的过程， 2 游戏过程 3 发送举手消息以前 4 发送举手消息以后
+		// 5 游戏结果发布画面
 		public var gameState:int	= 0;
 		// 0 没有状态，等待   1 发送了参加房间的消息以后，成功，  2 发送了参加房间的消息以后，失败 
 		// 3 发送了准备完整的消息以后，成功， 4 发送了准备完成的消息以后，失败
@@ -96,7 +97,7 @@ package
 		public var btnState:int = 0;
 		// 记录游戏的轮次
 		public var gameCurRound:int	= 0;
-		public var gameLastRound:int	= 0;
+		public var gameLastRound:int = 0;
 
 		public function Game()
 		{
@@ -119,6 +120,7 @@ package
 			BGImg = new GameObject();
 			BGImg.startupGameObject(GraphicsResource(ResourceManager.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
 			BGImg.setVisible(true);
+			BGImg.setName("BG");
 			// 104 cards
 			var i:int,j:int;
 			for(i=0;i<2;i++)

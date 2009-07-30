@@ -155,8 +155,12 @@ package
 		
 		protected function shutdownAll():void
 		{
-			// don't dispose objects twice
 			for each (var baseObject:BaseObject in baseObjects)
+			{
+				baseObject.setVisible(false);
+			}
+			// don't dispose objects twice
+/* 			for each (var baseObject:BaseObject in baseObjects)
 			{
 				var found:Boolean = false;
 				for each (var removedObject:BaseObject in removedBaseObjects)
@@ -170,7 +174,7 @@ package
 				
 				if (!found)
 					baseObject.shutdown();
-			}
+			} */
 		}
 		
 		protected function insertNewBaseObjects():void
