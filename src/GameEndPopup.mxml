@@ -31,12 +31,24 @@
 				var myfilter:Array = new Array();
 				myfilter.push(bf);
 				this.filters = myfilter;
+				//
+				this.visible = true;
 			}
 			
 			private function gameContinue(event:MouseEvent):void
 			{
-				//handleClose(null);
-				this.visible = false;
+				//this.visible = false;
+				Game.Instance.gameState = 3;	// 3 发送举手消息以前
+				// 关闭几个和出牌有关的按钮的显示
+				Application.application.btnReady.visible = true;
+				Application.application.btnReady.enabled = true;
+				Application.application.btnSendCards.visible = false;
+				Application.application.btnDiscard.visible = false;
+				Application.application.btnHint.visible = false;
+				// “等待其他玩家” 该信息不显示
+				Application.application.labelWait.visible = false;
+				handleClose(null);
+				//this.visible = false;
 			}
 		]]>
 	</mx:Script>

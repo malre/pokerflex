@@ -12,7 +12,7 @@ package
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
+		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
 		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
@@ -145,8 +145,11 @@ package
 			}
 			else if(type == send_passWhileGame)
 			{
-				Application.application.httpService.request={play:"pass"};
+				Application.application.httpService.request={play:"pass", getPlay:"true", getCards:"true"};
 				Application.application.httpService.url = sendURL_game;
+				//置上请求内容的标志位
+				request_type_play = true;
+				request_type_cards = true;
 			}
 
 			Application.application.httpService.send();
@@ -267,7 +270,7 @@ package
 						// 继续等待其他玩家
 						//send_type = send_updateWhileGame;
 						//Game.Instance.gameState = 4;
-
+						Game.Instance.getSelfseat();
 					}
 					else if(json1.status == 0)
 					{
@@ -346,6 +349,10 @@ package
 						// 游戏胜利
 						else if(json1.status == 2)
 						{
+							GameObjectManager.Instance.shutdown();
+							// 背景还是要保留
+							GameObjectManager.Instance.setVisibleByName("BG", true);
+							Game.Instance.gameState = 5;
 							Application.application.showPopupDlg();
 						}
 					}
@@ -365,6 +372,8 @@ package
 
 		public function failProcess(event:Event):void
 		{
+			requestEnable = true;
+			Alert.show("接收消息失败", "错误");
 			if(send_type == send_joinRoom)
 			{
 				Application.application.loginlog.text = "connect failed. join room";
