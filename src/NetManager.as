@@ -4,6 +4,7 @@ package
 	
 	import json.JSON;
 	
+	import mx.charts.chartClasses.StackedSeries;
 	import mx.controls.Alert;
 	import mx.core.Application;
 	
@@ -31,6 +32,7 @@ package
 		public static var send_requestinfo:String = "request player info";
 		public static var send_sendcardsWhileGame:String = "send cards";
 		public static var send_passWhileGame:String = "pass";
+		public static var send_viewCardsHistory:String = "view card history";
 		private var	send_type:String = null;
 		// 记录了本次请求的内容, 请求的内容一般属于下面的几类
 		public var request_type_cards:Boolean = false;
@@ -146,6 +148,14 @@ package
 			else if(type == send_passWhileGame)
 			{
 				Application.application.httpService.request={play:"pass", getPlay:"true", getCards:"true"};
+				Application.application.httpService.url = sendURL_game;
+				//置上请求内容的标志位
+				request_type_play = true;
+				request_type_cards = true;
+			}
+			else if(type == send_viewCardsHistory)
+			{
+				Application.application.httpService.request={play:"pass", getPlay:"true", getCards:"true", getHistory:"true"};
 				Application.application.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;

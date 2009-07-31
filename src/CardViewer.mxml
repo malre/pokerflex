@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300" creationComplete="createComplete()">
-	<mx:Panel x="0" y="0" width="400" height="300" layout="absolute" cornerRadius="0">
-		<mx:Image x="269" y="10" width="38" height="54" scaleContent="true" id="imgPlayerUpCard0" source="@Embed('../res/49.png')"/>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="550" height="400" creationComplete="createComplete()">
+	<mx:Panel x="0" y="0" width="550" height="400" layout="absolute" cornerRadius="0" id="panelCardView" title="出牌查看">
+		<mx:Form x="10" y="10" width="510" height="161" borderColor="#0795F9" borderStyle="outset">
+		</mx:Form>
+		<mx:Form x="10" y="179" width="510" height="159" borderColor="#FF4B27" borderStyle="outset">
+		</mx:Form>
 	</mx:Panel>
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Image;
 			private function createComplete():void
 			{
-				//imgPlayerUpCard0.source = "@Embed('../res/01.png')";
-				//imgPlayerUpCard0.
+
+				// 创建108个image对象，并按照一定的顺序排列在菜单上
+				var i:int, j:int =0;
+				var img:Image = null;
+				for(j=0;j<4;j++)
+				{
+					for(i=0;i<27; i++)	// 自己
+					{
+						img = new Image();
+						img.x = 10+i*20;
+						img.y = 10+j*100;
+						this.panelCardView.addChild(img);
+					}
+				}
 			}
 		]]>
 	</mx:Script>	
