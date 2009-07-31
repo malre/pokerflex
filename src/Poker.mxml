@@ -79,6 +79,27 @@
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Image x="262" y="356" source="@Embed('../res/fangqi2.png')" autoLoad="true" scaleContent="false" id="imgDiscardDown"/>
 			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="266.5" y="102" source="@Embed('../res/notRready.png')" id="imgPlayerUpPrepare"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="72" y="277" id="imgPlayerLeftPrepare" source="@Embed('../res/notRready.png')"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="390" y="277" source="@Embed('../res/notRready.png')" id="imgPlayerRightPrepare"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="72" y="277" source="@Embed('../res/ready.png')" id="imgPlayerLeftReady"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="266" y="102" id="imgPlayerUpReady" source="@Embed('../res/ready.png')"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Image x="390" y="277" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
+				<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView"/>
+			</mx:AddChild>
 		</mx:State>
 		<mx:State 
 			name="LevelEnd">
@@ -126,7 +147,7 @@
 				<mx:TextInput x="623" y="376.85" width="47" height="29" borderStyle="solid" editable="true" displayAsPassword="false" id="roomid" maxChars="3" fontFamily="Courier New" fontSize="12"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Label x="711" y="10" text="ver 0.3.9" width="55"/>
+				<mx:Label x="711" y="10" text="ver 0.4.2" width="55"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)" enabled="false"/>
@@ -218,19 +239,14 @@
 
 			private function startDebugClicked(event:Event):void
 			{
-				//var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
+				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
 				// 增加一个键盘监听事件
-				this.addEventListener(KeyboardEvent.KEY_DOWN, keydown);
+				//this.addEventListener(KeyboardEvent.KEY_DOWN, keydown);
+				
 			}
 			private function keydown(evt:KeyboardEvent):void
 			{
-				if(evt.keyCode == 65)
-				{
-					// CTRL + A
-					GameObjectManager.Instance.shutdown();
-					Game.Instance.gameState = 5;
-					Application.application.showPopupDlg();
-				}
+
 			}
 
 			private function gameReadyClicked(event:Event):void

@@ -152,7 +152,19 @@ package
 					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
 			cardbackright.setName("Cardback");
 		}
-
+		
+		// 各种按钮和图的初始化
+		// 准备界面的所有的按钮的初始化
+		public function readyStateInit():void
+		{
+			Application.application.imgPlayerLeftPrepare.visible = false;
+			Application.application.imgPlayerLeftReady.visible = false;
+			Application.application.imgPlayerUpPrepare.visible = false;
+			Application.application.imgPlayerUpReady.visible = false;
+			Application.application.imgPlayerRightPrepare.visible = false;
+			Application.application.imgPlayerRightReady.visible = false;
+		}
+	
 		//
 		public function sortCards():void
 		{
@@ -492,6 +504,53 @@ package
 			}
 
 		}
+		public function updatePlayerReadyState():void
+		{
+			// 玩家的状态
+			if(NetManager.Instance.json1.hasOwnProperty("players"))
+			{
+				// partner
+				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
+				{
+					if(NetManager.Instance.json1.players[(selfseat+2)%4].ready)
+					{
+						Application.application.imgPlayerUpPrepare.visible = false;
+						Application.application.imgPlayerUpReady.visible = true;
+					}
+					else
+					{
+						Application.application.imgPlayerUpPrepare.visible = true;
+						Application.application.imgPlayerUpReady.visible = false;
+					}
+				}
+				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
+				{
+					if(NetManager.Instance.json1.players[(selfseat+1)%4].ready)
+					{
+						Application.application.imgPlayerRightPrepare.visible = false;
+						Application.application.imgPlayerRightReady.visible = true;
+					}
+					else
+					{
+						Application.application.imgPlayerRightPrepare.visible = true;
+						Application.application.imgPlayerRightReady.visible = false;
+					}
+				}
+				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
+				{
+					if(NetManager.Instance.json1.players[(selfseat+3)%4].ready)
+					{
+						Application.application.imgPlayerLeftPrepare.visible = false;
+						Application.application.imgPlayerLeftReady.visible = true;
+					}
+					else
+					{
+						Application.application.imgPlayerLeftPrepare.visible = true;
+						Application.application.imgPlayerLeftReady.visible = false;
+					}
+				}
+			}
+		}
 		public function updatePlayerCardsInfo():void
 		{
 			// 玩家的剩余牌数
@@ -617,6 +676,7 @@ package
 						if(NetManager.Instance.requestSuccess)
 						{
 							updatePlayerName();
+							updatePlayerReadyState();
 						}
 						GameObjectManager.Instance.enterFrame();
 					break;
