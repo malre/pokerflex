@@ -12,7 +12,7 @@ package
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
+		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
 		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
@@ -172,7 +172,7 @@ package
 				if(!json1.success)
 				{
 					requestSuccess = false;
-					Alert.show(json1.errors[0], "错误");
+					Alert.show(json1.error.message, "错误");
  					return;
 				}
 			}
@@ -226,6 +226,8 @@ package
 					Application.application.btnSendCards.visible = false;
 					Application.application.btnDiscard.visible = false;
 					Application.application.btnHint.visible = false;
+					// 初始化玩家的准备用按钮
+					Game.Instance.readyStateInit();
 					// “等待其他玩家” 该信息不显示
 					Application.application.labelWait.visible = false;
 					// 
@@ -283,6 +285,12 @@ package
 						// 将准备按钮隐藏
 						Application.application.btnReady.visible = false;
 						Application.application.labelWait.visible = false;
+						// 准备状态按钮初始化
+						Game.Instance.readyStateInit();
+					}
+					else if(json1.status == 2)
+					{
+						Game.Instance.getSelfseat();
 					}
 				}
 			}
@@ -360,10 +368,10 @@ package
 				}
 				else
 				{
-					if(json1.hasOwnProperty("errors"))
+					if(json1.hasOwnProperty("error"))
 					{
-						if(json1.errors != null)
-							str += json1.errors[0]+"\n";
+						if(json1.error.message != null)
+							str += json1.error.message+"\n";
 					}
 					Alert.show(str, "");
 				}

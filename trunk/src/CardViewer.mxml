@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300" creationComplete="createComplete()">
+	<mx:Panel x="0" y="0" width="400" height="300" layout="absolute" cornerRadius="0">
+		<mx:Image x="269" y="10" width="38" height="54" scaleContent="true" id="imgPlayerUpCard0" source="@Embed('../res/49.png')"/>
+	</mx:Panel>
+	<mx:Script>
+		<![CDATA[
+			private function createComplete():void
+			{
+				//imgPlayerUpCard0.source = "@Embed('../res/01.png')";
+				//imgPlayerUpCard0.
+			}
+		]]>
+	</mx:Script>	
+</mx:Application>
