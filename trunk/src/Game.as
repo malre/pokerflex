@@ -718,6 +718,17 @@ package
 			}
 		}
 		
+		////////////////////////////////////////////////////////////////////////////////
+		// 描画特殊应用 
+		// 算牌器
+		// 数据从服务器得到，本地不进行计算
+		////////////////////////////////////////////////////////////////////////////////
+		public function ViewCards():void
+		{
+			// 首先验证数据的有效性
+			
+		}
+		
 		public function sendcards():void
 		{
 			NetManager.Instance.send(NetManager.send_sendcardsWhileGame);
