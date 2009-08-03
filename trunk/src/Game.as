@@ -69,6 +69,11 @@ package
 		private var deskCards1:Array = new Array();
 		private var deskCards2:Array = new Array();
 		private var deskCards3:Array = new Array();
+		// 用来保存从服务器得到的出牌记录，供看牌器使用
+		private var cardview0:Array = new Array();
+		private var cardview1:Array = new Array();
+		private var cardview2:Array = new Array();
+		private var cardview3:Array = new Array();
 		
 		//////////////////////////////////////////////////////////////////////////////
 		// card height ZOrder
@@ -721,12 +726,17 @@ package
 		////////////////////////////////////////////////////////////////////////////////
 		// 描画特殊应用 
 		// 算牌器
-		// 数据从服务器得到，本地不进行计算
+		// 数据从服务器得到，本地不进行计算, 所有的数据进行分析处理
 		////////////////////////////////////////////////////////////////////////////////
 		public function ViewCards():void
 		{
 			// 首先验证数据的有效性
-			
+			//if(NetManager.Instance.json1.history
+			{
+				
+			}
+			//for(
+			//cardview0.
 		}
 		
 		public function sendcards():void
