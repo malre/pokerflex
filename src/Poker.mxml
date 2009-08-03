@@ -98,7 +98,7 @@
 				<mx:Image x="390" y="277" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
 			</mx:AddChild>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
-				<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView"/>
+				<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State 
@@ -236,7 +236,12 @@
 				NetManager.Instance.send(NetManager.send_leave);
 				//Alert.show("leave room success!", "");
 			}
-
+			private function requestCardHistory():void
+			{
+				NetManager.Instance.requestEnable = true;
+				NetManager.Instance.send(NetManager.send_viewCardsHistory);
+				btnCardView.enabled = false;
+			}
 			private function startDebugClicked(event:Event):void
 			{
 				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
@@ -265,7 +270,7 @@
 					btnSendCards.enabled = false;
 				}
 			}
-			
+
 			private function discardClicked(event:Event):void
 			{
 				if(!Game.Instance.btnState)

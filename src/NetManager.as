@@ -4,7 +4,6 @@ package
 	
 	import json.JSON;
 	
-	import mx.charts.chartClasses.StackedSeries;
 	import mx.controls.Alert;
 	import mx.core.Application;
 	
@@ -38,6 +37,7 @@ package
 		public var request_type_cards:Boolean = false;
 		public var request_type_play:Boolean = false;
 		public var request_type_players:Boolean = false;
+		public var request_type_history:Boolean = false;
 		
 		// 请求连接标志位
 		// 当本次请求发出以后，置为真，这期间，不再发起人和的请求，直到收到或者超时为止。
@@ -84,6 +84,7 @@ package
 			request_type_cards = false;
 			request_type_play = false;
 			request_type_players = false;
+			request_type_history = false;
 			//改变处理类型
 			send_type = type;
 				
@@ -155,11 +156,12 @@ package
 			}
 			else if(type == send_viewCardsHistory)
 			{
-				Application.application.httpService.request={play:"pass", getPlay:"true", getCards:"true", getHistory:"true"};
+				Application.application.httpService.request={getPlay:"true", getCards:"true", getHistory:"true"};
 				Application.application.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
+				request_type_history = true;
 			}
 
 			Application.application.httpService.send();
@@ -214,6 +216,15 @@ package
 				{
 					requestSuccess = false;
 					Alert.show("没有得到预期的cards数据", "错误");
+					return;
+				}
+			}
+			if(request_type_history)
+			{
+				if(!json1.hasOwnProperty("history"))
+				{
+					requestSuccess = false;
+					Alert.show("没有得到预期的History数据", "错误");
 					return;
 				}
 			}

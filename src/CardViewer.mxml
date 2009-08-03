@@ -22,9 +22,24 @@
 						img = new Image();
 						img.x = 10+i*20;
 						img.y = 10+j*100;
+						var id:int = i+j*27;
+						img.id = "img"+id;
+						img.name = img.id;
+						img.load(ResourceManager.Card01);
 						this.panelCardView.addChild(img);
 					}
 				}
+				setCards();
+			}
+			
+			public function setCards():void
+			{
+				var panel:Panel = Panel(this.getChildByName("panelCardView"));
+				//var child:Array = new Array();
+				//child = panel.getChildren();
+				//var obj:Object = panel.getChildByName("img0");
+				var img:Image = Image(panel.getChildByName("img1"));
+				img.load(ResourceManager.Card03);
 			}
 		]]>
 	</mx:Script>	
