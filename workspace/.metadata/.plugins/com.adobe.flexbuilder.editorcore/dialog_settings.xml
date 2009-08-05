@@ -8,7 +8,7 @@
 		<item key="AlphaTopIndex" value="0"/>
 		<item key="AlphaCol1Width" value="78"/>
 		<item key="TreeGridImpl.ColumnOneWidth" value="78"/>
-		<item key="TreeGridImpl.TopCategory" value="Styles"/>
+		<item key="TreeGridImpl.TopCategory" value="Common"/>
 		<item key="AlphaCol0Width" value="130"/>
 		<item key="Common" value="true"/>
 		<item key="Layout" value="true"/>
@@ -17,9 +17,9 @@
 			<item value="false"/>
 			<item value="false"/>
 			<item value="false"/>
-			<item value="false"/>
 			<item value="true"/>
-			<item value="false"/>
+			<item value="true"/>
+			<item value="true"/>
 			<item value="true"/>
 		</list>
 		<list key="CategoryNames">

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
 	<section name="CleanDialogSettings">
 		<item key="DIALOG_X_ORIGIN" value="435"/>
 		<item key="DIALOG_HEIGHT" value="356"/>
 		<item key="DIALOG_Y_ORIGIN" value="258"/>
-		<item key="TOGGLE_SELECTED" value="false"/>
 		<item key="DIALOG_WIDTH" value="411"/>
+		<item key="TOGGLE_SELECTED" value="true"/>
 	</section>
 	<section name="NewWizardAction">
 		<item key="NewWizardSelectionPage.STORE_SELECTED_ID" value="com.adobe.flexbuilder.editorcore.ui.project.wizards.newproject"/>
@@ -18,12 +22,12 @@
 		<item key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID" value="false"/>
 	</section>
-	<section name="ResourceNavigator">
-		<item key="ResourceWorkingSetFilter.STORE_WORKING_SET" value=""/>
-		<item key="ResourceViewer.STORE_SORT_TYPE" value="1"/>
-	</section>
 	<section name="ChooseWorkspaceDialogSettings">
 		<item key="DIALOG_X_ORIGIN" value="349"/>
 		<item key="DIALOG_Y_ORIGIN" value="346"/>
+	</section>
+	<section name="ResourceNavigator">
+		<item key="ResourceWorkingSetFilter.STORE_WORKING_SET" value=""/>
+		<item key="ResourceViewer.STORE_SORT_TYPE" value="1"/>
 	</section>
 </section>

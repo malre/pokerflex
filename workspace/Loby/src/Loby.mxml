@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560" currentState="GameHall"
-	initialize="init()">
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560"
+	initialize="init()" currentState="GameHall" width="780" height="560">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
 	<s:states>
 		<s:State name="GameHall"/>
 	</s:states>
-	<s:Panel width="780" height="560" horizontalCenter="0" verticalCenter="0" title="游戏大厅">
-		<s:VGroup x="0" y="-0.35" width="100%" height="100%">
-			<mx:Form width="100%" height="66" borderStyle="solid" backgroundColor="#70B9FE">
-				<mx:HBox width="100%" height="38" x="10">
-					<mx:Image width="40" height="43"/>
-					
-				</mx:HBox>
-			</mx:Form>
-            <mx:HDividedBox width="100%" height="100%">
-        		<mx:VBox label="游戏大厅" width="242" height="100%">
-	            	<mx:TabBar dataProvider="gameViewStack">
-	            	</mx:TabBar>
-	            	<mx:LinkBar>
-	            	</mx:LinkBar>
-	            	<mx:ViewStack id="gameViewStack" width="100%" height="100%">
-	            		<mx:Form label="游戏大厅" width="100%" height="100%">
-	            			<mx:Tree width="100%" height="100%"></mx:Tree>
-	            		</mx:Form>
-	            	</mx:ViewStack>
-        		</mx:VBox>
-            	<mx:Form width="394" height="100%">
-            	</mx:Form>
-            </mx:HDividedBox>
+	<s:Panel width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
+		<s:VGroup width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
+			<s:Group width="780" height="60">
+				<mx:Image x="0" y="0" width="100%" height="60" source="@Embed('../res/titlebar.png')" scaleContent="false"/>
+				<mx:Image x="10" y="4" width="53" height="52"/>
+				<mx:Label x="73" y="6" text="Playername"/>
+				<s:Button x="75" y="33" label="Button" width="22" height="22"/>
+				<s:Button x="109" y="33" label="Button" width="22" height="22"/>
+				<s:Button x="143" y="33" label="Button" width="22" height="22"/>
+				<s:layout>
+					<s:BasicLayout/>
+				</s:layout>
+			</s:Group>
+			<mx:HDividedBox width="100%" height="100%">
+			<mx:VBox label="游戏大厅" width="234" height="100%">
+				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar">
+				</mx:TabBar>
+				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar">
+				</mx:LinkBar>
+				<!--这个viewstack只是用来控制上面的显示按钮的，事实上，点击并不改变真实的tree对象-->
+				<mx:ViewStack id="gameViewStack" width="0" height="0">
+					<mx:Canvas label="游戏大厅" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas width="100%" height="100%" label="双扣">
+					</mx:Canvas>
+					<mx:Canvas width="100%" height="100%" label="房间">
+					</mx:Canvas>
+				</mx:ViewStack>
+      			<mx:Tree width="100%" height="100%" id="GameListTree" 
+      				dataProvider="{treeData}" labelField="@label" itemDoubleClick="GameListTree_itemDoubleClickHandler(event)" doubleClickEnabled="true"></mx:Tree>
+			</mx:VBox>
+				<mx:Form width="100%" height="100%">
+				</mx:Form>
+			</mx:HDividedBox>
 		</s:VGroup>
-		<s:layout>
-			<s:BasicLayout/>
-		</s:layout>
 	</s:Panel>
-<!--    <s:Panel title="HDividedBox Container Example"
-            width="75%" height="75%"
-            horizontalCenter="0" verticalCenter="0">
-        <s:VGroup left="10" right="10" top="10" bottom="10">
-            <s:SimpleText width="100%" color="blue"
-                    text="Drag the divider side to side to resize the children."/>
-            <mx:HDividedBox width="100%" height="100%">
-                <mx:Canvas label="Canvas 1" width="100%" height="100%" backgroundColor="#FFFFCC">
-                    <mx:Label text="Add components here" fontWeight="bold"/>
-                </mx:Canvas>
-                <mx:Canvas label="Canvas 2" width="100%" height="100%" backgroundColor="#99CCFF">
-                    <mx:Label text="Add components here" fontWeight="bold"/>
-                </mx:Canvas>
-            </mx:HDividedBox>
-        </s:VGroup>
-    </s:Panel>-->
-	
+    <fx:Declarations>
+        <fx:XMLList id="treeData">
+            <node label="游戏大厅">
+                <node label="双扣">
+                </node>
+            </node>
+        </fx:XMLList>
+    </fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
+			import flashx.textLayout.tlf_internal;
 			import mx.collections.XMLListCollection;
 			[Bindable]
 			public var menubarCollection:XMLListCollection;
@@ -67,10 +71,25 @@
 				<menuitem label="游戏帮助" data="1E"/> 
 				</menuitem>
 			</>
+			
+			/////////////////////////////////////////////////////////
+			// tree data provider
+			private var treeXML:XML;
 			private function init():void
 			{
+				// 创建上面的按钮条
 				menubarCollection = new XMLListCollection(menubarXML);
+				// 最开始初始化游戏，只有一个双扣在大厅的游戏列表里
+				var node:XMLList = new XMLList();
+				//treeData.@node = "";
 			}
+
+			protected function GameListTree_itemDoubleClickHandler(event:ListEvent):void
+			{
+				// TODO Auto-generated method stub
+				LobyManager.Instance.LobyTreeItemClick(event);
+			}
+
 		]]>
 	</fx:Script>
 </s:Application>
