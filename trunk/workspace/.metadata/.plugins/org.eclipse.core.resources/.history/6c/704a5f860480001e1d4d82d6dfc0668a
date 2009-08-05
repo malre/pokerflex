@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="550" height="400" creationComplete="createComplete()">
+	<mx:TitleWindow x="1" y="1" width="550" height="400" layout="absolute" showCloseButton="true" id="panelCardView">
+	</mx:TitleWindow>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Image;
+			private function createComplete():void
+			{
+
+				// 创建108个image对象，并按照一定的顺序排列在菜单上
+				var i:int, j:int =0;
+				var img:Image = null;
+				for(j=0;j<4;j++)
+				{
+					for(i=0;i<27; i++)	// 自己
+					{
+						img = new Image();
+						img.x = 10+i*20;
+						img.y = 10+j*100;
+						var id:int = i+j*27;
+						img.id = "img"+id;
+						img.name = img.id;
+						img.load(ResourceManager.Card01);
+						this.panelCardView.addChild(img);
+					}
+				}
+				setCards();
+			}
+			
+			public function setCards():void
+			{
+				var panel:Panel = Panel(this.getChildByName("panelCardView"));
+				//var child:Array = new Array();
+				//child = panel.getChildren();
+				//var obj:Object = panel.getChildByName("img0");
+				var img:Image = Image(panel.getChildByName("img1"));
+				img.load(ResourceManager.Card03);
+			}
+		]]>
+	</mx:Script>	
+</mx:Application>

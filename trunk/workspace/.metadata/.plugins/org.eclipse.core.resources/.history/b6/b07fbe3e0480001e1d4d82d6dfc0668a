@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="550" height="400" creationComplete="createComplete()">
+	<mx:Panel x="0" y="0" width="550" height="400" layout="absolute" cornerRadius="0" id="panelCardView" title="出牌查看">
+		<mx:Form x="10" y="10" width="510" height="161" borderColor="#0795F9" borderStyle="outset">
+			<mx:TitleWindow width="250" height="200" layout="absolute" showCloseButton="true">
+			</mx:TitleWindow>
+			<mx:FormItem label="Label">
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Form x="10" y="179" width="510" height="159" borderColor="#FF4B27" borderStyle="outset">
+		</mx:Form>
+		<mx:Button x="516" y="-31" label="Button" width="34" height="32" icon="@Embed(source='../res/cross.png')"/>
+	</mx:Panel>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Image;
+			private function createComplete():void
+			{
+
+				// 创建108个image对象，并按照一定的顺序排列在菜单上
+				var i:int, j:int =0;
+				var img:Image = null;
+				for(j=0;j<4;j++)
+				{
+					for(i=0;i<27; i++)	// 自己
+					{
+						img = new Image();
+						img.x = 10+i*20;
+						img.y = 10+j*100;
+						var id:int = i+j*27;
+						img.id = "img"+id;
+						img.name = img.id;
+						img.load(ResourceManager.Card01);
+						this.panelCardView.addChild(img);
+					}
+				}
+				setCards();
+			}
+			
+			public function setCards():void
+			{
+				var panel:Panel = Panel(this.getChildByName("panelCardView"));
+				//var child:Array = new Array();
+				//child = panel.getChildren();
+				//var obj:Object = panel.getChildByName("img0");
+				var img:Image = Image(panel.getChildByName("img1"));
+				img.load(ResourceManager.Card03);
+			}
+		]]>
+	</mx:Script>	
+</mx:Application>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560" currentState="GameRoom"
+	initialize="init()">
+	<s:states>
+		<s:State name="GameHall"/>
+		<s:State name="GameRoomSelect"/>
+		<s:State name="GameRoom"/>
+	</s:states>
+	<s:Panel width="780" height="560" x.GameRoom="0" horizontalCenter.GameHall="0" horizontalCenter.GameRoomSelect="0" y.GameRoom="1" verticalCenter.GameHall="0" verticalCenter.GameRoomSelect="0">
+		<mx:Form x="-1.35" y="0.45" width="782" height="90" borderColor="#EB1313" themeColor="#000810" borderStyle="none" backgroundColor="#0F71F5" backgroundAlpha="0.8">
+		</mx:Form>
+		<s:Group x="0" y="88" width="250" height="440" width.GameRoom="500">
+			<s:layout.GameRoom>
+				<s:BasicLayout/>
+			</s:layout.GameRoom>
+			<mx:TabBar dataProvider="viewstack1" height="36" width="250" x.GameRoom="1" y.GameRoom="0" x.GameHall="1" y.GameHall="0" x.GameRoomSelect="1" y.GameRoomSelect="0">
+			</mx:TabBar>
+			<mx:LinkBar x="1.55" y="39" borderStyle="inset" width="123" height="38" width.GameRoom="247">
+			</mx:LinkBar>
+			<mx:ViewStack x="0" y="80" id="viewstack1" width="250" width.GameRoom="100%" height="100%">
+				<mx:Form label="游戏大厅" width="100%" height="100%">
+					<mx:Tree width.GameHall="100%" height.GameHall="100%" includeIn="GameHall,GameRoomSelect" width.GameRoomSelect="100%" height.GameRoomSelect="100%"></mx:Tree>
+				</mx:Form>
+				<mx:Form label="双扣" width="100%" height="100%" includeIn="GameRoom,GameRoomSelect">
+					<mx:FormItem label="双扣" width="77" required="false">
+					</mx:FormItem>
+					<s:Button label="Button" includeIn="GameRoomSelect"/>
+				</mx:Form>
+			</mx:ViewStack>
+			<mx:MenuBar includeIn="GameRoom" x="333" y="38.05" width="155" height="37" labelField="@label" dataProvider="{menubarCollection}">
+			</mx:MenuBar>
+		</s:Group>
+		<mx:Form includeIn="GameHall" x="251.45" y="91.65" width="526" height="435">
+		</mx:Form>
+		<mx:Form x="251.45" y="91.65" width="526" height="435" includeIn="GameRoom,GameRoomSelect" width.GameRoom="278" x.GameRoom="500">
+		</mx:Form>
+		<s:layout>
+			<s:BasicLayout/>
+		</s:layout>
+	</s:Panel>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			[Bindable]
+			public var menubarCollection:XMLListCollection;
+			private var menubarXML:XMLList =
+			<>
+				<menuitem label="更多功能" data="top">
+				<menuitem label="找人" data="1A"/>
+				<menuitem label="投诉" data="1B"/> 
+				<menuitem label="创建房间" data="1C"/>
+				<menuitem label="论坛" data="1D">
+					<meneitem label="论坛1" data="2A"/>
+					<meneitem label="论坛2" data="2B"/>
+				</menuitem>
+				<menuitem label="游戏帮助" data="1E"/> 
+				</menuitem>
+			</>
+			private function init():void
+			{
+				menubarCollection = new XMLListCollection(menubarXML);
+			}
+		]]>
+	</fx:Script>
+</s:Application>

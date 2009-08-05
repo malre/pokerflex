@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="300" height="250" verticalAlign="middle" horizontalAlign="center"
+	borderSkin="CustomPanelSkin" creationComplete="createComplete()" borderColor="#001975" alpha="1.0" color="#021A1F" backgroundColor="#619CEC"
+	hideEffect="{fadeout}" showEffect="{fadein}">
+	
+	<mx:Style>
+		.customPopUp{
+			header-height:2;
+			color:#ffff00;
+		}
+	</mx:Style>
+	<mx:Button label="继续" x="60" y="178" id="popupBtnContinue" width="57" fontSize="12" click="gameContinue(event)"/>
+	<mx:Button label="退出" x="166" y="178" id="popupBtnExit" width="58" fontSize="12"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
+			[Bindable]
+			public var message:String;
+			
+			private function handleClose(evt:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			private function createComplete():void
+			{
+				x = (this.parent.width - width)/2;
+				y = (this.parent.height - height)/2;
+				var bf:BlurFilter = new BlurFilter(0,0,0);
+				var myfilter:Array = new Array();
+				myfilter.push(bf);
+				this.filters = myfilter;
+				//
+				this.visible = true;
+			}
+			
+			private function gameContinue(event:MouseEvent):void
+			{
+				//this.visible = false;
+				Game.Instance.gameState = 3;	// 3 发送举手消息以前
+				// 关闭几个和出牌有关的按钮的显示
+				Application.application.btnReady.visible = true;
+				Application.application.btnReady.enabled = true;
+				Application.application.btnSendCards.visible = false;
+				Application.application.btnDiscard.visible = false;
+				Application.application.btnHint.visible = false;
+				// “等待其他玩家” 该信息不显示
+				Application.application.labelWait.visible = false;
+				handleClose(null);
+				//this.visible = false;
+			}
+		]]>
+	</mx:Script>
+	<mx:Image x="88" y="0" source="@Embed('../res/tongji.png')" autoLoad="true" scaleContent="false"/>
+	<mx:Label x="22" y="54" text="玩家一" fontSize="14" fontWeight="bold" id="popupPlayer0"/>
+	<mx:Label x="22" y="85" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
+	<mx:Label x="22" y="116" text="玩家三" fontSize="14" fontWeight="bold" id="popupPlayer2"/>
+	<mx:Label x="22" y="147" text="玩家四" fontSize="14" fontWeight="bold" id="popupPlayer3"/>
+	<mx:Label x="82" y="31" text="本局得分" width="66" height="22" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="156" y="31" text="累计" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="210" y="31" text="总积分" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="103" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Benju"/>
+	<mx:Label x="103" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Benju"/>
+	<mx:Label x="156" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Leiji"/>
+	<mx:Label x="156" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Leiji"/>
+	<mx:Label x="156" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Leiji"/>
+	<mx:Label x="156" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Leiji"/>
+	<mx:Label x="223" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Total"/>
+	<mx:Label x="223" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Total"/>
+	<mx:Label x="223" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Total"/>
+	<mx:Label x="223" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Total"/>
+	<mx:Label x="103" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Benju"/>
+	<mx:Label x="103" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Benju"/>
+	<mx:Fade id="fadein" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+	<mx:Fade id="fadeout" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
+</mx:TitleWindow>

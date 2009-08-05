@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560" currentState="GameHall"
+	initialize="init()">
+	<s:states>
+		<s:State name="GameHall"/>
+	</s:states>
+	<s:Panel width="780" height="560" horizontalCenter="0" verticalCenter="0" title="游戏大厅">
+		<s:VGroup x="0" y="-0.35" width="100%" height="100%">
+			<mx:Form width="100%" height="66" borderStyle="solid">
+			</mx:Form>
+            <mx:HDividedBox width="100%" height="100%">
+        		<mx:VBox label="游戏大厅" width="242" height="100%">
+	            	<mx:TabBar>
+	            	</mx:TabBar>
+	            	<mx:LinkBar>
+	            	</mx:LinkBar>
+	            	<mx:ViewStack id="gameViewStack" width="241" height="382">
+	            		<mx:Form label="游戏大厅" width="100%" height="100%">
+	            		</mx:Form>
+	            	</mx:ViewStack>
+        		</mx:VBox>
+            	<mx:Form width="394" height="100%">
+            	</mx:Form>
+            </mx:HDividedBox>
+		</s:VGroup>
+		<s:layout>
+			<s:BasicLayout/>
+		</s:layout>
+	</s:Panel>
+<!--    <s:Panel title="HDividedBox Container Example"
+            width="75%" height="75%"
+            horizontalCenter="0" verticalCenter="0">
+        <s:VGroup left="10" right="10" top="10" bottom="10">
+            <s:SimpleText width="100%" color="blue"
+                    text="Drag the divider side to side to resize the children."/>
+            <mx:HDividedBox width="100%" height="100%">
+                <mx:Canvas label="Canvas 1" width="100%" height="100%" backgroundColor="#FFFFCC">
+                    <mx:Label text="Add components here" fontWeight="bold"/>
+                </mx:Canvas>
+                <mx:Canvas label="Canvas 2" width="100%" height="100%" backgroundColor="#99CCFF">
+                    <mx:Label text="Add components here" fontWeight="bold"/>
+                </mx:Canvas>
+            </mx:HDividedBox>
+        </s:VGroup>
+    </s:Panel>-->
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			[Bindable]
+			public var menubarCollection:XMLListCollection;
+			private var menubarXML:XMLList =
+			<>
+				<menuitem label="更多功能" data="top">
+				<menuitem label="找人" data="1A"/>
+				<menuitem label="投诉" data="1B"/> 
+				<menuitem label="创建房间" data="1C"/>
+				<menuitem label="论坛" data="1D">
+					<meneitem label="论坛1" data="2A"/>
+					<meneitem label="论坛2" data="2B"/>
+				</menuitem>
+				<menuitem label="游戏帮助" data="1E"/> 
+				</menuitem>
+			</>
+			private function init():void
+			{
+				menubarCollection = new XMLListCollection(menubarXML);
+			}
+		]]>
+	</fx:Script>
+</s:Application>
