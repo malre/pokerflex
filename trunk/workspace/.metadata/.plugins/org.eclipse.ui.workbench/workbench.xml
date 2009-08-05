@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="42" version="2.0">
+<workbench progressCount="32" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="227" y="80">
 <fastViewData fastViewLocation="1024"/>
@@ -18,7 +18,7 @@
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="175" y="22"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
 <coolItem id="com.adobe.flexbuilder.editors.css.editors.CSSEditor" itemType="typePlaceholder" x="-1" y="-1"/>
-<coolItem id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.help" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
@@ -28,47 +28,10 @@
 <editorArea activeWorkbook="DefaultEditorWorkbook">
 <info part="DefaultEditorWorkbook">
 <folder appearance="1" expanded="2">
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
-<part id="1"/>
-<part id="2"/>
-<part id="3"/>
-<part id="4"/>
-<part id="5"/>
-<part id="6"/>
-<part id="7"/>
-</presentation>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
 </editorArea>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="NetManager.as" partName="NetManager.as" path="H:/Work/flex/pokerflex/src/NetManager.as" title="NetManager.as" tooltip="Poker/src/NetManager.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/NetManager.as"/>
-<editorState selectionLength="0" selectionOffset="10388"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="CardViewer.mxml" partName="CardViewer.mxml" path="H:/Work/flex/pokerflex/src/CardViewer.mxml" title="CardViewer.mxml" tooltip="Poker/src/CardViewer.mxml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/CardViewer.mxml"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Game.as" partName="Game.as" path="H:/Work/flex/pokerflex/src/Game.as" title="Game.as" tooltip="Poker/src/Game.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/Game.as"/>
-<editorState selectionLength="0" selectionOffset="8639"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="GameEndPopup.mxml" partName="GameEndPopup.mxml" path="H:/Work/flex/pokerflex/src/GameEndPopup.mxml" title="GameEndPopup.mxml" tooltip="Poker/src/GameEndPopup.mxml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/GameEndPopup.mxml"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="GameObjectManager.as" partName="GameObjectManager.as" path="H:/Work/flex/pokerflex/src/GameObjectManager.as" title="GameObjectManager.as" tooltip="Poker/src/GameObjectManager.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/GameObjectManager.as"/>
-<editorState selectionLength="0" selectionOffset="1492"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="Poker.mxml" partName="Poker.mxml" path="H:/Work/flex/pokerflex/src/Poker.mxml" title="Poker.mxml" tooltip="Poker/src/Poker.mxml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/Poker.mxml"/>
-</editor>
-<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="CardPattern.as" partName="CardPattern.as" path="H:/Work/flex/pokerflex/src/CardPattern.as" title="CardPattern.as" tooltip="Poker/src/CardPattern.as" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Poker/src/CardPattern.as"/>
-<editorState selectionLength="0" selectionOffset="418"/>
-</editor>
-<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="Loby.mxml" partName="Loby.mxml" path="H:/Work/flex/workspace/Loby/src/Loby.mxml" title="Loby.mxml" tooltip="Loby/src/Loby.mxml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Loby/src/Loby.mxml"/>
-</editor>
 </editors>
 <views>
 <view id="org.eclipse.help.ui.HelpView" partName="Help">
@@ -82,38 +45,20 @@
 <view id="org.eclipse.debug.ui.DebugView" partName="Debug">
 <viewState/>
 </view>
-<view id="com.adobe.flexbuilder.as.editor.asdocviewer" partName="ASDoc">
-<viewState/>
-</view>
 <view id="com.adobe.flexbuilder.packageexplorer" partName="Package Explorer">
 <viewState LINK_NAVIGATOR_TO_EDITOR="0" fpeIsFlat="0" sorter="1">
-<fpeExpanded>
-<fpeElement fpePath="/Loby"/>
-<fpeElement fpePath="/Loby/src"/>
-<fpeElement fpePath="/Loby/src/%typeDefaultPackage"/>
-<fpeElement fpePath="/Poker"/>
-<fpeElement fpePath="/Poker/src"/>
-<fpeElement fpePath="/Poker/src/%typeDefaultPackage"/>
-</fpeExpanded>
-<fpeSelection>
-<fpeElement fpePath="/Loby/src/Loby.mxml"/>
-</fpeSelection>
 <filters>
 <filter element="*.class" isEnabled="false"/>
 <filter element=".*" isEnabled="false"/>
 <filter element="*.class" isEnabled="false"/>
 <filter element=".*" isEnabled="false"/>
 </filters>
-<expanded>
-<element path="/Loby"/>
-<element path="/Poker"/>
-</expanded>
-<selection>
-<element path="/Loby/src/Loby.mxml"/>
-</selection>
 </viewState>
 </view>
 <view id="com.adobe.flexbuilder.dcrad.views.DataServicesView" partName="Data/Services">
+<viewState/>
+</view>
+<view id="com.adobe.flexbuilder.as.editor.asdocviewer" partName="ASDoc">
 <viewState/>
 </view>
 <view id="org.eclipse.jdt.ui.TypeHierarchy" partName="Hierarchy"/>
@@ -163,11 +108,6 @@
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
-<expanded>
-<category IMemento.internal.id="Warnings"/>
-<category IMemento.internal.id="Errors"/>
-<category IMemento.internal.id="Errors (1 item)"/>
-</expanded>
 <columnWidths org.eclipse.ui.ide.locationField="54" org.eclipse.ui.ide.markerType="79" org.eclipse.ui.ide.pathField="104" org.eclipse.ui.ide.resourceField="79" org.eclipse.ui.ide.severityAndDescriptionField="583"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
@@ -177,7 +117,7 @@
 </viewState>
 </view>
 </views>
-<perspectives activePart="com.adobe.flexbuilder.editors.mxml.MXMLEditor" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
+<perspectives activePart="com.adobe.flexbuilder.packageexplorer" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
@@ -297,8 +237,8 @@
 <alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
 <alwaysOnActionSet id="com.adobe.flexbuilder.debug.ui.flexDebuggingActionSet"/>
 <alwaysOnActionSet id="com.adobe.flexbuilder.zzz.editors.common.ui.project.publish"/>
-<alwaysOnActionSet id="com.adobe.flexbuilder.as.editor.ui.NavigationActions"/>
 <alwaysOnActionSet id="com.adobe.flexbuilder.dcrad.actionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.as.editor.ui.NavigationActions"/>
 <show_view_action id="com.adobe.flexbuilder.mxml.editor.AppearanceView"/>
 <show_view_action id="com.adobe.flexbuilder.mxml.editor.components.ComponentsView"/>
 <show_view_action id="com.adobe.flexbuilder.packageexplorer"/>
@@ -356,7 +296,7 @@
 </folder>
 </info>
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@e414d2" ratio="0.19968553" ratioLeft="254" ratioRight="1018" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1621b4d">
-<folder appearance="2" expanded="0">
+<folder appearance="2" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
@@ -390,12 +330,12 @@
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.25" ratioLeft="165" ratioRight="495" relationship="4" relative="org.eclipse.ui.internal.ViewStack@e414d2"/>
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@1c59667" ratio="0.74950886" ratioLeft="763" ratioRight="255" relationship="2" relative="org.eclipse.ui.editorss">
-<folder appearance="2" expanded="0">
+<folder appearance="2" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@1e4f698" ratio="0.74950886" ratioLeft="763" ratioRight="255" relationship="2" relative="org.eclipse.ui.editorss">
-<folder appearance="2" expanded="0">
+<folder appearance="2" expanded="2">
 <page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
@@ -502,179 +442,14 @@
 </perspective>
 </perspectives>
 <workingSets/>
-<navigationHistory>
-<editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.mxml.editor.MXMLCodeEditor" path="/Loby/src/Loby.mxml"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" path="/Poker/src/NetManager.as"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/Loby/src/Loby.mxml"/>
-</editors>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="897" y="49"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="1100" y="35"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="963" y="36"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="897" y="49"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="881" y="0"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="965" y="36"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="1102" y="35"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="462" y="80"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="NetManager.as" index="1">
-<position info="not_deleted" x="10388" y="0"/>
-</item>
-<item historyLabel="Loby.mxml" index="2">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="562" y="0"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="547" y="9"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position info="not_deleted" x="581" y="0"/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-<item active="true" historyLabel="Loby.mxml" index="0">
-<position/>
-</item>
-</navigationHistory>
+<navigationHistory/>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
 <workbenchWindowAdvisor/>
 <actionBarAdvisor/>
 <trimLayout>
-<trimArea IMemento.internal.id="16384">
-<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@1621b4d"/>
-</trimArea>
 <trimArea IMemento.internal.id="131072">
-<trimItem IMemento.internal.id="org.eclipse.ui.editorss"/>
-<trimItem IMemento.internal.id="stickyFolderRight"/>
-<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@e414d2"/>
-<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@1c59667"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@1e4f698"/>
-<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@167a929"/>
-<trimItem IMemento.internal.id="propertiesHolder"/>
 </trimArea>
 <trimArea IMemento.internal.id="128">
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
@@ -683,8 +458,6 @@
 <trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
 <trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
-<trimItem IMemento.internal.id="outlineHolder"/>
-<trimItem IMemento.internal.id="bottomLayout"/>
 </trimArea>
 </trimLayout>
 </window>
