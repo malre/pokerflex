@@ -8,24 +8,24 @@
 		<s:State name="GameHall"/>
 		<s:State name="GameRoom"/>
 	</s:states>
-	<s:Panel width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
+	<mx:Panel width="100%" height="100%" horizontalCenter="0" verticalCenter="0" backgroundColor="#c0f6fb" baseColor="#c0f6fb" cornerRadius.GameRoom="14">
 		<s:VGroup width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
 			<s:Group width="780" height="60">
 				<mx:Image x="0" y="0" width="100%" height="60" source="@Embed('../res/titlebar.png')" scaleContent="false"/>
 				<mx:Image x="10" y="4" width="53" height="52"/>
 				<mx:Label x="73" y="6" text="Playername"/>
-				<s:Button x="75" y="33" label="Button" width="22" height="22"/>
-				<s:Button x="109" y="33" label="Button" width="22" height="22"/>
-				<s:Button x="143" y="33" label="Button" width="22" height="22"/>
+				<mx:Button x="75" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-1.png')"/>
+				<mx:Button x="109" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-2.png')"/>
+				<mx:Button x="143" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-3.png')"/>
 				<s:layout>
 					<s:BasicLayout/>
 				</s:layout>
 			</s:Group>
-			<mx:HDividedBox width="100%" height="100%">
-			<mx:VBox label="游戏大厅" width="234" height="100%" width.GameRoom="557">
+			<mx:HDividedBox width="100%" height="100%" dividerDrag.GameRoom="hdividedbox1_dividerDragHandler(event)">
+			<mx:VBox width="210" height="100%" width.GameRoom="506" label.GameHall="游戏大厅" backgroundColor.GameRoom="#4D7CDB" backgroundAlpha.GameRoom="0.67" verticalGap.GameRoom="0">
 				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar">
 				</mx:TabBar>
-				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar">
+				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar" alpha.GameRoom="1.0" backgroundColor.GameRoom="#FFFFFF">
 				</mx:LinkBar>
 				<!--这个viewstack只是用来控制上面的显示按钮的，事实上，点击并不改变真实的tree对象-->
 				<mx:ViewStack id="gameViewStack" width="0" height="0">
@@ -34,28 +34,28 @@
 				</mx:ViewStack>
       			<mx:Tree width="100%" height="100%" id="GameListTree" 
       				dataProvider="{treeData}" labelField="@label" itemDoubleClick="GameListTree_itemDoubleClickHandler(event)" doubleClickEnabled="true" includeIn="GameHall"></mx:Tree>
-      			<s:HGroup includeIn="GameRoom" width="100%" height="100%">
-      			</s:HGroup>
+      			<mx:Canvas id="gameRoomCanvas" width="100%" height="100%">
+      			</mx:Canvas>
 			</mx:VBox>
-				<mx:Form width="100%" height="100%" width.GameRoom="353">
-					<mx:DataGrid width="100%" includeIn="GameRoom" editable="false">
+				<mx:Form width="100%" height="100%" width.GameRoom="305" id="gameRoomForm">
+					<mx:DataGrid width="100%" includeIn="GameRoom" editable="false" id="dataGrid">
 						<mx:columns>
 							<mx:DataGridColumn headerText="列 1" dataField="col1"/>
 							<mx:DataGridColumn headerText="列 2" dataField="col2"/>
 							<mx:DataGridColumn headerText="列 3" dataField="col3"/>
 						</mx:columns>
 					</mx:DataGrid>
-					<s:TextArea width="100%" height="193" includeIn="GameRoom" text="XXX：hello" editable="false"/>
+					<s:TextArea width="100%" height="193" includeIn="GameRoom" text="XXX:hello" editable="false"/>
 					<mx:ButtonBar width="100%" height="34" includeIn="GameRoom">
 					</mx:ButtonBar>
 					<s:HGroup width="100%" height="36" includeIn="GameRoom">
-						<s:TextInput width="100%" height="35" text="输入文字"/>
-						<s:Button label="发送" width="50" height="33"/>
+						<s:TextInput width="100%" height="35" text="发送消息"/>
+						<s:Button label="发送" width="44" height="33"/>
 					</s:HGroup>
 				</mx:Form>
 			</mx:HDividedBox>
 		</s:VGroup>
-	</s:Panel>
+	</mx:Panel>
     <fx:Declarations>
         <fx:XMLList id="treeData">
             <node label="游戏大厅">
@@ -66,12 +66,21 @@
     </fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Button;
+			import spark.components.Button;
+			import mx.events.DragEvent;
+			import mx.binding.utils.BindingUtils;
+			import mx.events.DividerEvent;
+			import mx.events.FlexEvent;
+			import mx.controls.Alert;
 			import mx.containers.Canvas;
 			import mx.events.ListEvent;
 			import flashx.textLayout.tlf_internal;
 			import mx.collections.XMLListCollection;
 			[Bindable]
 			public var menubarCollection:XMLListCollection;
+			[Bindable]
+			public var roombg_width:int = 25;
 			private var menubarXML:XMLList =
 			<>
 				<menuitem label="更多功能" data="top">
@@ -85,6 +94,8 @@
 				<menuitem label="游戏帮助" data="1E"/> 
 				</menuitem>
 			</>
+			
+			//////////
 			
 			/////////////////////////////////////////////////////////
 			// tree data provider
@@ -104,6 +115,17 @@
 				LobyManager.Instance.LobyTreeItemClick(event);
 				currentState = "GameRoom";
 				trace(GameListTree.selectedItem);
+				var newbtn:mx.controls.Button = new mx.controls.Button();
+				newbtn.x =10;
+				newbtn.y = 800;
+				gameRoomCanvas.addChild(newbtn);
+			}
+
+
+			protected function hdividedbox1_dividerDragHandler(event:DividerEvent):void
+			{
+				// TODO Auto-generated method stub
+				roombg_width = Number(gameRoomForm.width*25/500);
 			}
 
 		]]>
