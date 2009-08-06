@@ -53,7 +53,9 @@ package
 				{
 					var newCanvas:Canvas = new Canvas();
 					newCanvas.label = "room1";
-					FlexGlobals.topLevelApplication.gameViewStack.addChild(newCanvas);					
+					FlexGlobals.topLevelApplication.gameViewStack.addChild(newCanvas);
+					// send request
+					LobyNetManager.Instance.send(LobyNetManager.roomInfo);					
 				}
 //				var newCanvas:Canvas = new Canvas();
 //				newCanvas.label = "Room 1";
@@ -64,6 +66,12 @@ package
 //					</mx:Canvas>
 
 			}
+		}
+		
+		// 当在房间里面的时候，描画房间里面的桌子
+		public function RoomTableDraw():void
+		{
+			
 		}
 	}
 }
