@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560"
 	initialize="init()" currentState="GameHall" width="780" height="560">
+	<fx:Style source="RoomButton.css"/>	
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -14,16 +15,17 @@
 				<mx:Image x="0" y="0" width="100%" height="60" source="@Embed('../res/titlebar.png')" scaleContent="false"/>
 				<mx:Image x="10" y="4" width="53" height="52"/>
 				<mx:Label x="73" y="6" text="Playername"/>
-				<mx:Button x="75" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-1.png')"/>
+				<mx:Button id="btn01" x="75" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-1.png')"/>
 				<mx:Button x="109" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-2.png')"/>
 				<mx:Button x="143" y="33" label="Button" width="22" height="22" icon="@Embed(source='../res/22x22-3.png')"/>
+				<s:Button x="172" y="33" label="Button" width="22" height="22" id="Refresh" click="Refresh_clickHandler(event)"/>
 				<s:layout>
 					<s:BasicLayout/>
 				</s:layout>
 			</s:Group>
 			<mx:HDividedBox width="100%" height="100%" dividerDrag.GameRoom="hdividedbox1_dividerDragHandler(event)">
 			<mx:VBox width="210" height="100%" width.GameRoom="506" label.GameHall="游戏大厅" backgroundColor.GameRoom="#4D7CDB" backgroundAlpha.GameRoom="0.67" verticalGap.GameRoom="0">
-				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar">
+				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar" itemClick="GameHallTabbar_itemClickHandler(event)">
 				</mx:TabBar>
 				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar" alpha.GameRoom="1.0" backgroundColor.GameRoom="#FFFFFF">
 				</mx:LinkBar>
@@ -33,11 +35,11 @@
 					</mx:Canvas>
 				</mx:ViewStack>
       			<mx:Tree width="100%" height="100%" id="GameListTree" 
-      				dataProvider="{treeData}" labelField="@label" itemDoubleClick="GameListTree_itemDoubleClickHandler(event)" doubleClickEnabled="true" includeIn="GameHall"></mx:Tree>
-      			<mx:Canvas id="gameRoomCanvas" width="100%" height="100%">
+      				dataProvider="{treeData}" labelField="@label" itemDoubleClick="GameListTree_itemDoubleClickHandler(event)" doubleClickEnabled="true" includeIn="GameHall" defaultLeafIcon="@Embed(source='../res/22x22-1.png')" folderClosedIcon="@Embed(source='../res/treeroomiconClose.png')" folderOpenIcon="@Embed(source='../res/treeroomiconOpen.png')"></mx:Tree>
+      			<mx:Canvas id="gameRoomCanvas" width="100%" height="100%" width.GameHall="0" height.GameHall="0">
       			</mx:Canvas>
 			</mx:VBox>
-				<mx:Form width="100%" height="100%" width.GameRoom="305" id="gameRoomForm">
+				<mx:Form width="100%" height="100%" width.GameRoom="305" id="gameRoomForm" includeInLayout.GameHall="true">
 					<mx:DataGrid width="100%" includeIn="GameRoom" editable="false" id="dataGrid">
 						<mx:columns>
 							<mx:DataGridColumn headerText="列 1" dataField="col1"/>
@@ -66,6 +68,7 @@
     </fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import mx.events.ItemClickEvent;
 			import mx.controls.Button;
 			import spark.components.Button;
 			import mx.events.DragEvent;
@@ -111,14 +114,12 @@
 
 			protected function GameListTree_itemDoubleClickHandler(event:ListEvent):void
 			{
-				// TODO Auto-generated method stub
+				// 房间数被双击
 				LobyManager.Instance.LobyTreeItemClick(event);
-				currentState = "GameRoom";
-				trace(GameListTree.selectedItem);
-				var newbtn:mx.controls.Button = new mx.controls.Button();
-				newbtn.x =10;
-				newbtn.y = 800;
-				gameRoomCanvas.addChild(newbtn);
+				//
+				
+				GameListTree.expandItem(GameListTree.selectedItem, 
+					!GameListTree.isItemOpen(GameListTree.selectedItem), true);
 			}
 
 
@@ -126,6 +127,27 @@
 			{
 				// TODO Auto-generated method stub
 				roombg_width = Number(gameRoomForm.width*25/500);
+			}
+
+
+			protected function Refresh_clickHandler(event:MouseEvent):void
+			{
+				// 用来手动向服务器发出请求
+				LobyNetManager.Instance.send(LobyNetManager.roomInfo);				
+			}
+
+
+			protected function GameHallTabbar_itemClickHandler(event:ItemClickEvent):void
+			{
+				// 处理tab按键的点击事件
+				if(event.label == "游戏大厅" || event.label == "双扣")
+				{
+					this.currentState = "GameHall";
+				}
+				else
+				{
+					this.currentState = "GameRoom";
+				}
 			}
 
 		]]>
