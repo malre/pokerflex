@@ -1,7 +1,5 @@
 package
 {
-	import com.adobe.serializers.json.JSONSerializationFilter;
-	
 	import flash.events.Event;
 	
 	import json.JSON;
@@ -17,7 +15,7 @@ package
 		////////////// 常数定义	///////////////
 		// 请求的地址定义
 		static private var URL_lobyAddress:String = "http://192.168.18.24/web/world/";
-		static private var URL_roomInfo:String = "game/list/index";
+		static private var URL_roomInfo:String = "game/list/list";
 		static private var URL_playerInfo:String = "game/index/identity";
 		// 各种请求定义
 		static public var playerInfo:String = "request player info";
@@ -69,6 +67,21 @@ package
 		{
 			result = JSON.decode(httpser.lastResult.toString());
 			CursorManager.removeBusyCursor();
+			var flag:Boolean = true;
+			var index:int = 0;
+			while(flag)
+			{
+				if(result.hasOwnProperty(index.toString()))
+				{
+					
+					index++;
+				}
+				else
+				{
+					index = 0;
+					flag = false;
+				}
+			}
 			
 		}
 		
