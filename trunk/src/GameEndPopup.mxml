@@ -13,6 +13,7 @@
 	<mx:Button label="退出" x="166" y="178" id="popupBtnExit" width="58" fontSize="12"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.core.FlexGlobals;
 			import mx.core.Application;
 			import mx.managers.PopUpManager;
 			import mx.events.CloseEvent;
@@ -40,13 +41,13 @@
 				//this.visible = false;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
 				// 关闭几个和出牌有关的按钮的显示
-				Application.application.btnReady.visible = true;
-				Application.application.btnReady.enabled = true;
-				Application.application.btnSendCards.visible = false;
-				Application.application.btnDiscard.visible = false;
-				Application.application.btnHint.visible = false;
+				FlexGlobals.topLevelApplication.btnReady.visible = true;
+				FlexGlobals.topLevelApplication.btnReady.enabled = true;
+				FlexGlobals.topLevelApplication.btnSendCards.visible = false;
+				FlexGlobals.topLevelApplication.btnDiscard.visible = false;
+				FlexGlobals.topLevelApplication.btnHint.visible = false;
 				// “等待其他玩家” 该信息不显示
-				Application.application.labelWait.visible = false;
+				FlexGlobals.topLevelApplication.labelWait.visible = false;
 				handleClose(null);
 				//this.visible = false;
 			}

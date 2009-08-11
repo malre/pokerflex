@@ -39,7 +39,7 @@ package
 			if ( instance != null )
 				throw new Error( "Only one Singleton instance should be instantiated" ); 
 				
-			backBuffer = new BitmapData(Application.application.width, Application.application.height, false);
+			backBuffer = new BitmapData(FlexGlobals.topLevelApplication.width, FlexGlobals.topLevelApplication.height, false);
 		}
 		
 		public function startup():void
