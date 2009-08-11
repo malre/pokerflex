@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="550" height="400" creationComplete="createComplete()">
-	<mx:Panel x="0" y="0" width="550" height="400" layout="absolute" cornerRadius="0" id="panelCardView" title="出牌查看">
-		<mx:Form x="10" y="10" width="510" height="161" borderColor="#0795F9" borderStyle="outset">
-		</mx:Form>
-		<mx:Form x="10" y="179" width="510" height="159" borderColor="#FF4B27" borderStyle="outset">
-		</mx:Form>
-	</mx:Panel>
+	<mx:TitleWindow x="1" y="1" width="550" height="400" layout="absolute" showCloseButton="true" id="panelCardView">
+	</mx:TitleWindow>
 	<mx:Script>
 		<![CDATA[
 			import mx.controls.Image;
@@ -34,7 +30,7 @@
 			
 			public function setCards():void
 			{
-				var panel:Panel = Panel(this.getChildByName("panelCardView"));
+				var panel:TitleWindow = TitleWindow(this.getChildByName("panelCardView"));
 				//var child:Array = new Array();
 				//child = panel.getChildren();
 				//var obj:Object = panel.getChildByName("img0");

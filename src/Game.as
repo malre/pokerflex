@@ -5,7 +5,7 @@ package
 	import flash.geom.Rectangle;
 	
 	import mx.collections.ArrayCollection;
-	import mx.core.Application;
+	import mx.core.FlexGlobals;
 	
 	public class Game
 	{
@@ -162,12 +162,12 @@ package
 		// 准备界面的所有的按钮的初始化
 		public function readyStateInit():void
 		{
-			Application.application.imgPlayerLeftPrepare.visible = false;
-			Application.application.imgPlayerLeftReady.visible = false;
-			Application.application.imgPlayerUpPrepare.visible = false;
-			Application.application.imgPlayerUpReady.visible = false;
-			Application.application.imgPlayerRightPrepare.visible = false;
-			Application.application.imgPlayerRightReady.visible = false;
+			FlexGlobals.topLevelApplication.imgPlayerLeftPrepare.visible = false;
+			FlexGlobals.topLevelApplication.imgPlayerLeftReady.visible = false;
+			FlexGlobals.topLevelApplication.imgPlayerUpPrepare.visible = false;
+			FlexGlobals.topLevelApplication.imgPlayerUpReady.visible = false;
+			FlexGlobals.topLevelApplication.imgPlayerRightPrepare.visible = false;
+			FlexGlobals.topLevelApplication.imgPlayerRightReady.visible = false;
 		}
 	
 		//
@@ -215,10 +215,10 @@ package
 		public function drawOtherCards(cards:Array):void
 		{
 			// reset
-			Application.application.imgDiscardDown.visible = false;
-			Application.application.imgDiscardRight.visible = false;
-			Application.application.imgDiscardUp.visible = false;
-			Application.application.imgDiscardLeft.visible = false;
+			FlexGlobals.topLevelApplication.imgDiscardDown.visible = false;
+			FlexGlobals.topLevelApplication.imgDiscardRight.visible = false;
+			FlexGlobals.topLevelApplication.imgDiscardUp.visible = false;
+			FlexGlobals.topLevelApplication.imgDiscardLeft.visible = false;
 			
 			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
 			var pt:Point;
@@ -230,7 +230,7 @@ package
 			if(curPlayer == selfseat)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-				Application.application.imgDiscardDown.visible = false;
+				FlexGlobals.topLevelApplication.imgDiscardDown.visible = false;
 			}
 			else
 			{
@@ -241,7 +241,7 @@ package
 				else if(cards[selfseat] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-					Application.application.imgDiscardDown.visible = true;
+					FlexGlobals.topLevelApplication.imgDiscardDown.visible = true;
 				}
 				else
 				{
@@ -293,7 +293,7 @@ package
 			if(curPlayer == id)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-				Application.application.imgDiscardRight.visible = false;
+				FlexGlobals.topLevelApplication.imgDiscardRight.visible = false;
 			}
 			else
 			{
@@ -304,7 +304,7 @@ package
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-					Application.application.imgDiscardRight.visible = true;
+					FlexGlobals.topLevelApplication.imgDiscardRight.visible = true;
 				}
 				else
 				{
@@ -348,7 +348,7 @@ package
 			if(curPlayer == id)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-				Application.application.imgDiscardUp.visible = false;
+				FlexGlobals.topLevelApplication.imgDiscardUp.visible = false;
 			}
 			else
 			{
@@ -359,7 +359,7 @@ package
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-					Application.application.imgDiscardUp.visible = true;
+					FlexGlobals.topLevelApplication.imgDiscardUp.visible = true;
 				}
 				else
 				{
@@ -402,7 +402,7 @@ package
 			if(curPlayer == id)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-				Application.application.imgDiscardLeft.visible = false;
+				FlexGlobals.topLevelApplication.imgDiscardLeft.visible = false;
 			}
 			else
 			{
@@ -413,7 +413,7 @@ package
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-					Application.application.imgDiscardLeft.visible = true;
+					FlexGlobals.topLevelApplication.imgDiscardLeft.visible = true;
 				}
 				else
 				{
@@ -458,23 +458,23 @@ package
 			// 玩家的姓名，显示在右上
 			if(NetManager.Instance.json1.hasOwnProperty("players"))
 			{
-				Application.application.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
+				FlexGlobals.topLevelApplication.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
 
 				// partner
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
 				{
-					Application.application.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
-					Application.application.Lable_playernameUp.text = Application.application.textPlayerPartner.text;
+					FlexGlobals.topLevelApplication.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
+					FlexGlobals.topLevelApplication.Lable_playernameUp.text = FlexGlobals.topLevelApplication.textPlayerPartner.text;
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
 				{
-					Application.application.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
-					Application.application.Lable_playernameRight.text = Application.application.textPlayerEmy1.text; 
+					FlexGlobals.topLevelApplication.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
+					FlexGlobals.topLevelApplication.Lable_playernameRight.text = FlexGlobals.topLevelApplication.textPlayerEmy1.text; 
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
 				{
-					Application.application.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
-					Application.application.Lable_playernameLeft.text = Application.application.textPlayerEmy2.text;
+					FlexGlobals.topLevelApplication.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
+					FlexGlobals.topLevelApplication.Lable_playernameLeft.text = FlexGlobals.topLevelApplication.textPlayerEmy2.text;
 				}
 			}
 			
@@ -484,26 +484,26 @@ package
 				if(NetManager.Instance.json1.play.hasOwnProperty("next"))
 				{
 					// 将显示的图打开 
-					Application.application.label_thinking.visible = true;
+					FlexGlobals.topLevelApplication.label_thinking.visible = true;
 					if(NetManager.Instance.json1.play.next == (selfseat+1)%4)
 					{
-						Application.application.label_thinking.x =485;
-						Application.application.label_thinking.y =250;
+						FlexGlobals.topLevelApplication.label_thinking.x =485;
+						FlexGlobals.topLevelApplication.label_thinking.y =250;
 					}
 					else if(NetManager.Instance.json1.play.next == (selfseat+2)%4)
 					{
-						Application.application.label_thinking.x =250;
-						Application.application.label_thinking.y =40;
+						FlexGlobals.topLevelApplication.label_thinking.x =250;
+						FlexGlobals.topLevelApplication.label_thinking.y =40;
 					}
 					else if(NetManager.Instance.json1.play.next == (selfseat+3)%4)
 					{
-						Application.application.label_thinking.x =30;
-						Application.application.label_thinking.y =250;
+						FlexGlobals.topLevelApplication.label_thinking.x =30;
+						FlexGlobals.topLevelApplication.label_thinking.y =250;
 					}
 					else
 					{
 						// 将显示的图打开 
-						Application.application.label_thinking.visible = false;
+						FlexGlobals.topLevelApplication.label_thinking.visible = false;
 					}
 				}
 			}
@@ -519,39 +519,39 @@ package
 				{
 					if(NetManager.Instance.json1.players[(selfseat+2)%4].ready)
 					{
-						Application.application.imgPlayerUpPrepare.visible = false;
-						Application.application.imgPlayerUpReady.visible = true;
+						FlexGlobals.topLevelApplication.imgPlayerUpPrepare.visible = false;
+						FlexGlobals.topLevelApplication.imgPlayerUpReady.visible = true;
 					}
 					else
 					{
-						Application.application.imgPlayerUpPrepare.visible = true;
-						Application.application.imgPlayerUpReady.visible = false;
+						FlexGlobals.topLevelApplication.imgPlayerUpPrepare.visible = true;
+						FlexGlobals.topLevelApplication.imgPlayerUpReady.visible = false;
 					}
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
 				{
 					if(NetManager.Instance.json1.players[(selfseat+1)%4].ready)
 					{
-						Application.application.imgPlayerRightPrepare.visible = false;
-						Application.application.imgPlayerRightReady.visible = true;
+						FlexGlobals.topLevelApplication.imgPlayerRightPrepare.visible = false;
+						FlexGlobals.topLevelApplication.imgPlayerRightReady.visible = true;
 					}
 					else
 					{
-						Application.application.imgPlayerRightPrepare.visible = true;
-						Application.application.imgPlayerRightReady.visible = false;
+						FlexGlobals.topLevelApplication.imgPlayerRightPrepare.visible = true;
+						FlexGlobals.topLevelApplication.imgPlayerRightReady.visible = false;
 					}
 				}
 				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
 				{
 					if(NetManager.Instance.json1.players[(selfseat+3)%4].ready)
 					{
-						Application.application.imgPlayerLeftPrepare.visible = false;
-						Application.application.imgPlayerLeftReady.visible = true;
+						FlexGlobals.topLevelApplication.imgPlayerLeftPrepare.visible = false;
+						FlexGlobals.topLevelApplication.imgPlayerLeftReady.visible = true;
 					}
 					else
 					{
-						Application.application.imgPlayerLeftPrepare.visible = true;
-						Application.application.imgPlayerLeftReady.visible = false;
+						FlexGlobals.topLevelApplication.imgPlayerLeftPrepare.visible = true;
+						FlexGlobals.topLevelApplication.imgPlayerLeftReady.visible = false;
 					}
 				}
 			}
@@ -562,44 +562,44 @@ package
 			// partner
 			if(NetManager.Instance.json1.cards.hasOwnProperty( ((selfseat+2)%4).toString() ))
 			{
-				Application.application.Label_leftcardsnumUp.text = "("+NetManager.Instance.json1.cards[(selfseat+2)%4].number+")";
-				Application.application.Label_leftcardsnumUp.visible = true;
+				FlexGlobals.topLevelApplication.Label_leftcardsnumUp.text = "("+NetManager.Instance.json1.cards[(selfseat+2)%4].number+")";
+				FlexGlobals.topLevelApplication.Label_leftcardsnumUp.visible = true;
 			}
 			if(NetManager.Instance.json1.cards.hasOwnProperty( ((selfseat+1)%4).toString() ))
 			{
-				Application.application.Label_leftcardsnumRight.text = "("+NetManager.Instance.json1.cards[(selfseat+1)%4].number+")";
-				Application.application.Label_leftcardsnumRight.visible = true;
+				FlexGlobals.topLevelApplication.Label_leftcardsnumRight.text = "("+NetManager.Instance.json1.cards[(selfseat+1)%4].number+")";
+				FlexGlobals.topLevelApplication.Label_leftcardsnumRight.visible = true;
 			}
 			if(NetManager.Instance.json1.cards.hasOwnProperty( ((selfseat+3)%4).toString() ))
 			{
-				Application.application.Label_leftcardsnumLeft.text = "("+NetManager.Instance.json1.cards[(selfseat+3)%4].number+")";
-				Application.application.Label_leftcardsnumLeft.visible = true;
+				FlexGlobals.topLevelApplication.Label_leftcardsnumLeft.text = "("+NetManager.Instance.json1.cards[(selfseat+3)%4].number+")";
+				FlexGlobals.topLevelApplication.Label_leftcardsnumLeft.visible = true;
 			}
 			
 			// 当前出牌玩家，显示在主画面上
 			if(NetManager.Instance.json1.play.hasOwnProperty("next"))
 			{
 				// 将显示的图打开 
-				Application.application.label_thinking.visible = true;
+				FlexGlobals.topLevelApplication.label_thinking.visible = true;
 				if(NetManager.Instance.json1.play.next == (selfseat+1)%4)
 				{
-					Application.application.label_thinking.x =485;
-					Application.application.label_thinking.y =250;
+					FlexGlobals.topLevelApplication.label_thinking.x =485;
+					FlexGlobals.topLevelApplication.label_thinking.y =250;
 				}
 				else if(NetManager.Instance.json1.play.next == (selfseat+2)%4)
 				{
-					Application.application.label_thinking.x =250;
-					Application.application.label_thinking.y =40;
+					FlexGlobals.topLevelApplication.label_thinking.x =250;
+					FlexGlobals.topLevelApplication.label_thinking.y =40;
 				}
 				else if(NetManager.Instance.json1.play.next == (selfseat+3)%4)
 				{
-					Application.application.label_thinking.x =30;
-					Application.application.label_thinking.y =250;
+					FlexGlobals.topLevelApplication.label_thinking.x =30;
+					FlexGlobals.topLevelApplication.label_thinking.y =250;
 				}
 				else
 				{
 					// 将显示的图打开 
-					Application.application.label_thinking.visible = false;
+					FlexGlobals.topLevelApplication.label_thinking.visible = false;
 				}
 			}
 		}
@@ -630,9 +630,9 @@ package
 							{
 								NetManager.Instance.send(NetManager.send_updateWhileGame);
 								requestFlag = false;
-								Application.application.btnSendCards.visible = false;
-								Application.application.btnDiscard.visible = false;
-								Application.application.btnHint.visible = false;
+								FlexGlobals.topLevelApplication.btnSendCards.visible = false;
+								FlexGlobals.topLevelApplication.btnDiscard.visible = false;
+								FlexGlobals.topLevelApplication.btnHint.visible = false;
 							}
 						}
 						if(NetManager.Instance.requestSuccess 
@@ -651,7 +651,7 @@ package
 								{
 									// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
 									// 这个时候不能够放弃
-									Application.application.btnDiscard.enabled = false;
+									FlexGlobals.topLevelApplication.btnDiscard.enabled = false;
 								}
 								else
 								{
@@ -660,11 +660,11 @@ package
 								if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
 								{
 									// make chupai enable
-									Application.application.btnSendCards.enabled = true;
+									FlexGlobals.topLevelApplication.btnSendCards.enabled = true;
 								}
 								else
 								{
-									Application.application.btnSendCards.enabled = false;
+									FlexGlobals.topLevelApplication.btnSendCards.enabled = false;
 								}
 							    checkarr = null;
 							}

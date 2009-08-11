@@ -6,13 +6,14 @@ package
 	
 	import mx.controls.Alert;
 	import mx.core.Application;
+	import mx.core.FlexGlobals;
 	
 	public class NetManager
 	{
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
+		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
 		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
@@ -90,41 +91,41 @@ package
 				
 			if(type == send_joinRoom)
 			{
-				Application.application.httpService.request={roomid:Application.application.roomid.text, getPlayers:"true"};
-				Application.application.httpService.url = sendURL_join;
+				FlexGlobals.topLevelApplication.httpService.request={roomid:FlexGlobals.topLevelApplication.roomid.text, getPlayers:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_join;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_leave)
 			{
-				Application.application.httpService.request = {};
-				Application.application.httpService.url = sendURL_leave;
+				FlexGlobals.topLevelApplication.httpService.request = {};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_leave;
 			}
 			else if(type == send_requestinfo)
 			{
-				Application.application.httpService.request = {};
-				Application.application.httpService.url = sendURL_requestinfo;
+				FlexGlobals.topLevelApplication.httpService.request = {};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_requestinfo;
 			}
 			else if(type == send_iamReady)
 			{
 				// 游戏状态变成 发送举手消息以后
 				//Game.Instance.gameState = 4;
-				Application.application.httpService.request = {getPlayers:"true"};
-				Application.application.httpService.url = sendURL_ready;
+				FlexGlobals.topLevelApplication.httpService.request = {getPlayers:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_ready;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_updateWhileWait)
 			{
-				Application.application.httpService.request = {getPlayers:"true"};
-				Application.application.httpService.url = sendURL_game;
+				FlexGlobals.topLevelApplication.httpService.request = {getPlayers:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_updateWhileGame)
 			{
-				Application.application.httpService.request = {getPlay:"true",getCards:"true"};
-				Application.application.httpService.url = sendURL_game;
+				FlexGlobals.topLevelApplication.httpService.request = {getPlay:"true",getCards:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
@@ -140,31 +141,31 @@ package
 						data += ",";
 				}
 				
-				Application.application.httpService.request={play:data, getPlay:"true", getCards:"true"};
-				Application.application.httpService.url = sendURL_game;
+				FlexGlobals.topLevelApplication.httpService.request={play:data, getPlay:"true", getCards:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
 			}
 			else if(type == send_passWhileGame)
 			{
-				Application.application.httpService.request={play:"pass", getPlay:"true", getCards:"true"};
-				Application.application.httpService.url = sendURL_game;
+				FlexGlobals.topLevelApplication.httpService.request={play:"pass", getPlay:"true", getCards:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
 			}
 			else if(type == send_viewCardsHistory)
 			{
-				Application.application.httpService.request={getPlay:"true", getCards:"true", getHistory:"true"};
-				Application.application.httpService.url = sendURL_game;
+				FlexGlobals.topLevelApplication.httpService.request={getPlay:"true", getCards:"true", getHistory:"true"};
+				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
 				request_type_history = true;
 			}
 
-			Application.application.httpService.send();
+			FlexGlobals.topLevelApplication.httpService.send();
 		}
 		
 		public function resultProcess(event:Event):void
@@ -175,7 +176,7 @@ package
 			// 
 			var str:String=null;
 			json1 = null;
-			json1 = JSON.decode(Application.application.httpService.lastResult.toString());
+			json1 = JSON.decode(FlexGlobals.topLevelApplication.httpService.lastResult.toString());
 			
 			// 首先分析数据，本次请求成功还是失败,当数据没有发生变动的时候，返回是“null”,暂时未对应
 			// 然后看是否得到了预期的数据
@@ -239,18 +240,18 @@ package
 					// 链接成功，开始等待玩家点击准备完成按钮
 					// 进入等待状态
 					send_type = send_updateWhileWait;
-					Application.application.currentState = "Game";
+					FlexGlobals.topLevelApplication.currentState = "Game";
 					Game.Instance.gameState = 3;	// 3 发送举手消息以前
 					// 关闭几个和出牌有关的按钮的显示
-					Application.application.btnReady.visible = true;
-					Application.application.btnReady.enabled = true;
-					Application.application.btnSendCards.visible = false;
-					Application.application.btnDiscard.visible = false;
-					Application.application.btnHint.visible = false;
+					FlexGlobals.topLevelApplication.btnReady.visible = true;
+					FlexGlobals.topLevelApplication.btnReady.enabled = true;
+					FlexGlobals.topLevelApplication.btnSendCards.visible = false;
+					FlexGlobals.topLevelApplication.btnDiscard.visible = false;
+					FlexGlobals.topLevelApplication.btnHint.visible = false;
 					// 初始化玩家的准备用按钮
 					Game.Instance.readyStateInit();
 					// “等待其他玩家” 该信息不显示
-					Application.application.labelWait.visible = false;
+					FlexGlobals.topLevelApplication.labelWait.visible = false;
 					// 
 					requestSuccess = true;
 				}
@@ -279,8 +280,8 @@ package
 				if(json1.success)
 				{
 					// 将准备按钮的文字修改
-					Application.application.btnReady.enabled = false;
-					Application.application.labelWait.visible = true;
+					FlexGlobals.topLevelApplication.btnReady.enabled = false;
+					FlexGlobals.topLevelApplication.labelWait.visible = true;
 				}
 			}
 			else if(send_type == send_updateWhileWait)
@@ -304,8 +305,8 @@ package
 						Game.Instance.getSelfseat();
 
 						// 将准备按钮隐藏
-						Application.application.btnReady.visible = false;
-						Application.application.labelWait.visible = false;
+						FlexGlobals.topLevelApplication.btnReady.visible = false;
+						FlexGlobals.topLevelApplication.labelWait.visible = false;
 						// 准备状态按钮初始化
 						Game.Instance.readyStateInit();
 					}
@@ -335,14 +336,14 @@ package
 							if(json1.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								Application.application.btnSendCards.visible = true;
-								Application.application.btnSendCards.enabled = false;
-								Application.application.btnDiscard.visible = true;
-								Application.application.btnDiscard.enabled = true;
-								Application.application.btnHint.visible = true;
+								FlexGlobals.topLevelApplication.btnSendCards.visible = true;
+								FlexGlobals.topLevelApplication.btnSendCards.enabled = false;
+								FlexGlobals.topLevelApplication.btnDiscard.visible = true;
+								FlexGlobals.topLevelApplication.btnDiscard.enabled = true;
+								FlexGlobals.topLevelApplication.btnHint.visible = true;
 								if(json1.play.last == json1.play.next)
 								{
-									Application.application.btnDiscard.enabled = false;
+									FlexGlobals.topLevelApplication.btnDiscard.enabled = false;
 								}
 							}
 						}
@@ -356,14 +357,14 @@ package
 							if(json1.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								Application.application.btnSendCards.visible = true;
-								Application.application.btnSendCards.enabled = false;
-								Application.application.btnDiscard.visible = true;
-								Application.application.btnDiscard.enabled = true;
-								Application.application.btnHint.visible = true;
+								FlexGlobals.topLevelApplication.btnSendCards.visible = true;
+								FlexGlobals.topLevelApplication.btnSendCards.enabled = false;
+								FlexGlobals.topLevelApplication.btnDiscard.visible = true;
+								FlexGlobals.topLevelApplication.btnDiscard.enabled = true;
+								FlexGlobals.topLevelApplication.btnHint.visible = true;
 								if(json1.play.last == json1.play.next)
 								{
-									Application.application.btnDiscard.enabled = false;
+									FlexGlobals.topLevelApplication.btnDiscard.enabled = false;
 								}
 							}
 							// 对游戏正常结束的判断。
@@ -373,7 +374,7 @@ package
 						{
 							Alert.show("游戏意外结束，重新开始","有玩家推出了房间");
 //							GameObjectManager.Instance.shutdown();
-//							Application.application.currentState = "MainMenu";
+//							FlexGlobals.topLevelApplication.currentState = "MainMenu";
 						}
 						// 游戏胜利
 						else if(json1.status == 2)
@@ -382,7 +383,7 @@ package
 							// 背景还是要保留
 							GameObjectManager.Instance.setVisibleByName("BG", true);
 							Game.Instance.gameState = 5;
-							Application.application.showPopupDlg();
+							FlexGlobals.topLevelApplication.showPopupDlg();
 						}
 					}
 
@@ -405,11 +406,11 @@ package
 			Alert.show("接收消息失败", "错误");
 			if(send_type == send_joinRoom)
 			{
-				Application.application.loginlog.text = "connect failed. join room";
+				FlexGlobals.topLevelApplication.loginlog.text = "connect failed. join room";
 			}
 			else if(send_type == send_iamReady)
 			{
-				Application.application.loginlog.text = "connect failed. wait for ready";
+				FlexGlobals.topLevelApplication.loginlog.text = "connect failed. wait for ready";
 			}
 			else if(send_type == send_updateWhileWait)
 			{
