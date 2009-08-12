@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560"
-	initialize="init()" currentState="GameHall" width="780" height="560">
+	initialize="init()" width="780" height="560" currentState="GameHall">
 	<fx:Style source="RoomButton.css"/>	
 	<s:layout>
 		<s:BasicLayout/>
@@ -23,11 +23,11 @@
 					<s:BasicLayout/>
 				</s:layout>
 			</s:Group>
-			<mx:HDividedBox width="100%" height="100%" dividerDrag.GameRoom="hdividedbox1_dividerDragHandler(event)">
-			<mx:VBox width="210" height="100%" width.GameRoom="506" label.GameHall="游戏大厅" backgroundColor.GameRoom="#4D7CDB" backgroundAlpha.GameRoom="0.67" verticalGap.GameRoom="0">
-				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar" itemClick="GameHallTabbar_itemClickHandler(event)">
+			<mx:HDividedBox width="100%" height="100%" dividerDrag.GameRoom="hdividedbox1_dividerDragHandler(event)" liveDragging.GameHall="false" horizontalGap.GameHall="10">
+			<mx:VBox width="210" height="100%" width.GameRoom="506" label.GameHall="游戏大厅" backgroundColor.GameRoom="#4D7CDB" backgroundAlpha.GameRoom="0.67" verticalGap.GameRoom="0" verticalGap.GameHall="0">
+				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar" itemClick="GameHallTabbar_itemClickHandler(event)" height.GameHall="30">
 				</mx:TabBar>
-				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar" alpha.GameRoom="1.0" backgroundColor.GameRoom="#FFFFFF">
+				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar" alpha.GameRoom="1.0" backgroundColor.GameRoom="#FFFFFF" height.GameHall="23" verticalAlign.GameHall="top" borderStyle.GameHall="solid" separatorSkin.GameHall="@Embed(source='../res/linkbarSeperator.png')">
 				</mx:LinkBar>
 				<!--这个viewstack只是用来控制上面的显示按钮的，事实上，点击并不改变真实的tree对象-->
 				<mx:ViewStack id="gameViewStack" width="0" height="0">
@@ -58,6 +58,7 @@
 			</mx:HDividedBox>
 		</s:VGroup>
 	</mx:Panel>
+	<mx:SWFLoader includeIn="GameRoom" source="file:///H|/Work/flex/pokerflex/bin-release/Poker.swf" autoLoad="true" id="gameFlash" x="0" y="0"/>
     <fx:Declarations>
         <fx:XMLList id="treeData">
             <node label="游戏大厅">
@@ -68,6 +69,7 @@
     </fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import json.JSON;
 			import mx.events.ItemClickEvent;
 			import mx.controls.Button;
 			import spark.components.Button;
@@ -133,7 +135,8 @@
 			protected function Refresh_clickHandler(event:MouseEvent):void
 			{
 				// 用来手动向服务器发出请求
-				LobyNetManager.Instance.send(LobyNetManager.roomInfo);				
+				// for debug
+				LobyNetManager.Instance.send(LobyNetManager.tableInfo);				
 			}
 
 
