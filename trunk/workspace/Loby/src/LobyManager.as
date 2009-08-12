@@ -6,6 +6,7 @@ package
 	import mx.controls.Alert;
 	import mx.controls.Button;
 	import mx.controls.Image;
+	import mx.controls.Label;
 	import mx.core.FlexGlobals;
 	import mx.events.ListEvent;
 
@@ -19,8 +20,11 @@ package
 		private var intervalX:int = 110;
 		private var intervalY:int = 110;
 		private var roomTableMax:int = 20;
-		private var roomTableRawMax:int = 4;
+		private var roomTableRowMax:int = 4;
 		private var roomTableColumnMax:int = 3;
+		
+		// 房间里面桌子的总数
+		private var tableTotal:int = 0;
 		
 		static public function get Instance():LobyManager
 		{
@@ -39,8 +43,14 @@ package
 		{
 			
 		}
+		
+		// 当结构树被点击的时候，进行子节点的构造
 		public function LobyTreeItemClick(event:ListEvent):void
 		{
+			// 如果这次请求是点开数，才处理，关闭树不进行处理
+			if(FlexGlobals.topLevelApplication.GameListTree.isItemOpen(FlexGlobals.topLevelApplication.GameListTree.selectedItem))
+				return;
+				
 			var obj:Object = FlexGlobals.topLevelApplication.GameListTree.selectedItem;
 			if(obj != null)
 			{
@@ -50,19 +60,10 @@ package
 				}
 				else if(obj.@label == "双扣")
 				{
-				 	var xmllist:XMLList = FlexGlobals.topLevelApplication.treeData.node.(@label == "双扣");
-				 	if(xmllist.length() > 0)
-				 	{
-				 		for(var i:int=0;i<10;i++)
-				 		{
-				 			var newnode:XML = <node/>;
-							newnode.@label = "房间"+(i+1).toString();
-							newnode.@id = i;
-				 			xmllist.appendChild(newnode);
-				 		}
-				 	}
+					// 首先请求实际连接的大厅的地址,成功以后才能继续请求房间的信息
+					LobyNetManager.Instance.send(LobyNetManager.getlobyaddress);
 				}
-				else		
+				else if(obj.@label == "")
 				{
 					// 加入了一个房间，更新标签页
 				 	// 增加标签页一个，内容是双扣，或者也可能是其他游戏
@@ -91,40 +92,94 @@ package
 			}
 		
 		// 当在房间里面的时候，描画房间里面的桌子
-		public function RoomTableDraw():void
+		public function RoomTableDraw(obj:Object):Boolean
 		{
+			// 如果这个数组没有成员，直接返回
+			if(obj.length <= 0)
+				return false;
+			
 			var canvas:Canvas = FlexGlobals.topLevelApplication.gameRoomCanvas;
-			for(var i:int =0; i<roomTableRawMax; i++)
+			var i:int,j:int;
+			// 本次更新得到的数据比上一次的要少，要删除部分显示的桌子
+			if(obj.length <= tableTotal)
 			{
-				for(var j:int =0; j<roomTableColumnMax; j++)
+				// 删除多余的桌子
+				for(i=obj.length;i<tableTotal;i++)
 				{
-					var img:Image = new Image();
-					img.x = tableStartX + (intervalX+51)*j;
-					img.y = tableStartY + (intervalY+52)*i;
-					img.load(ResourceManager.imgTable);
-					canvas.addChild(img);
-					
-					// 创建按钮需要和实际的房间信息结合起来
-					// 如果该位置有玩家存在，则无按钮，否则有按钮
-					var id:int = i*roomTableColumnMax +j;
-					canvas.addChild(createRoomBtn(id.toString(), "up", img.x+10, img.y-40));
-
-					canvas.addChild(createRoomBtn(id.toString(), "left", img.x-40, img.y+10));
-
-					canvas.addChild(createRoomBtn(id.toString(), "down", img.x+10, img.y+52+10));
-					
-					canvas.addChild(createRoomBtn(id.toString(), "right", img.x+51+10, img.y+10));
+					canvas.removeChild(canvas.getChildByName("table"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("tag"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("up"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("left"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("down"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("right"+i.toString()));
+				}
+				tableTotal = obj.length;
+			}
+			else	// 这次的数据比上次的多，也包括了第一次的情况，需要动态的增加桌子的数量
+			{
+				for(i =tableTotal/roomTableColumnMax; i<roomTableRowMax; i++)
+				{
+					for(j =tableTotal%roomTableRowMax; j<roomTableColumnMax; j++)
+					{
+						// 如果超出了界限，直接返回
+						if(i*roomTableColumnMax+j >= obj.length)
+						{
+							tableTotal = obj.length;
+							return true;
+						}
+							
+						var id:int = i*roomTableColumnMax +j;
+						var roomid:int = obj[id].rid;
+						var img:Image = new Image();
+						img.x = tableStartX + (intervalX+51)*j;
+						img.y = tableStartY + (intervalY+52)*i;
+						img.load(ResourceManager.imgTable);
+						img.name = "table"+id.toString();
+						canvas.addChild(img);
+						
+						// 桌子上的桌号
+						var label:Label = new Label();
+						if((id+1) >= 10)
+						{
+							label.x = img.x+1;
+						}
+						else
+						{
+							label.x = img.x +12;
+						}
+						label.y = img.y ;
+						label.text = (id+1).toString();
+						label.setStyle("fontSize", 40);
+						label.setStyle("fontWeight", "bold");
+						label.setStyle("color","#333333"); 
+						label.name = "tag"+id.toString();
+						canvas.addChild(label);
+						
+						// 创建按钮需要和实际的房间信息结合起来
+						// 如果该位置有玩家存在，则无按钮，否则有按钮
+						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+10, img.y-40));
+	
+						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+10));
+	
+						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+10, img.y+52+10));
+						
+						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+51+10, img.y+10));
+					}
 				}
 			}
+			tableTotal = obj.length;
+			return true;
 		}
-		private function createRoomBtn(id:String, name:String, x:int, y:int):Button
+		
+		private function createTableBtn(id:String, name:String, x:int, y:int):Button
 		{
 			var btn:mx.controls.Button = new mx.controls.Button();
 			btn.x = x;
 			btn.y = y;
 			btn.id = id;
 			btn.name = name;
-			btn.addEventListener(MouseEvent.CLICK, roomBtnHandler);
+//			btn.u
+			btn.addEventListener(MouseEvent.CLICK, tableBtnHandler);
 			btn.width = 30;
 			btn.height = 30;
 			btn.setStyle("cornerRadius", 13);
@@ -132,12 +187,15 @@ package
 			return btn;
 		}
 		
-		private function roomBtnHandler(event:MouseEvent):void
+		// 当桌子上的座位被点击了以后，会发出加入游戏的请求。
+		private function tableBtnHandler(event:MouseEvent):void
 		{
 			if(event.target.id == 0 && event.target.name == "up")
 			{
 				Alert.show("id = 0","");
 			}
+			// 向服务器发出加入一张桌子的请求
+			LobyNetManager.Instance.send(LobyNetManager.joinTable, event.target.id, event.target.name);
 		}
 	}
 }
