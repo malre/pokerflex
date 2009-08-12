@@ -13,7 +13,7 @@ package
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
+		public var sendURL_serverIP:String = "http://192.168.18.24/web/world";
 		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
 		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
 		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
@@ -175,10 +175,18 @@ package
 			requestSuccess = false;
 			// 
 			var str:String=null;
+			
+			// 当数据没有发生变动的时候，返回是“null”
+			// 这个时候不做任何的更新，直接返回
+			if(FlexGlobals.topLevelApplication.httpService.lastResult.toString() == "null")
+			{
+				return;
+			}
+			
 			json1 = null;
 			json1 = JSON.decode(FlexGlobals.topLevelApplication.httpService.lastResult.toString());
 			
-			// 首先分析数据，本次请求成功还是失败,当数据没有发生变动的时候，返回是“null”,暂时未对应
+			// 首先分析数据，本次请求成功还是失败,
 			// 然后看是否得到了预期的数据
 			if(json1.hasOwnProperty("success"))
 			{

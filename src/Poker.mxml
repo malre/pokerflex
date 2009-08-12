@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" frameRate="30" currentState="MainMenu"
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" frameRate="30" currentState="Game"
 	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
 	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
 
@@ -23,10 +23,6 @@
 			<mx:SetProperty target="{myCanvas}" name="height" value="560"/>
 			<mx:SetStyle target="{myCanvas}" name="borderStyle" value="inset"/>
 			<mx:SetStyle target="{myCanvas}" name="borderColor" value="#B7BABC"/>
-			<mx:SetProperty target="{myCanvas}" name="x"/>
-			<mx:SetStyle target="{myCanvas}" name="horizontalCenter" value="0"/>
-			<mx:SetProperty target="{myCanvas}" name="y"/>
-			<mx:SetStyle target="{myCanvas}" name="verticalCenter" value="0"/>
 			<mx:SetStyle name="cornerRadius" value="0"/>
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="250.9" y="319.2" label="准备好了" width="73.7" height="53.05" id="btnReady" click="gameReadyClicked(event)" icon="@Embed(source='../res/btnSelfread.png')"/>
@@ -100,6 +96,10 @@
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()"/>
 			</mx:AddChild>
+			<mx:SetProperty name="width" value="780"/>
+			<mx:SetProperty name="height" value="560"/>
+			<mx:SetProperty name="minWidth" value="780"/>
+			<mx:SetProperty name="minHeight" value="560"/>
 		</mx:State>
 		<mx:State 
 			name="LevelEnd">
@@ -152,6 +152,10 @@
 			<mx:AddChild relativeTo="{myCanvas}" position="lastChild">
 				<mx:Button x="534" y="413.85" label="获得玩家号" id="btnGetpid" click="getpidClicked(event)" enabled="false"/>
 			</mx:AddChild>
+			<mx:SetProperty name="width" value="780"/>
+			<mx:SetProperty name="height" value="560"/>
+			<mx:SetProperty name="minWidth" value="780"/>
+			<mx:SetProperty name="minHeight" value="560"/>
 		</mx:State>
 		<mx:State name="WaitReady">
 		</mx:State>
@@ -288,16 +292,17 @@
 			//public var loadedSM:SystemManager;
 			public function creationComplete():void
 			{
-				//loadedSM = SystemManager(swfbtn_OK.content);
-				//Button(loadedSM.application["ok"]).addEventListener(MouseEvent.CLICK,testfunction);
-				//swfloader.getChildAt(0).addEventListener(MouseEvent.CLICK, swfclick);
-				//var loader:Loader = new Loader();
-				//var urlrequest:URLRequest = new URLRequest("hello.swf");
-				//loader.load(urlrequest);
-				//var classname:String = getQualifiedClassName(loader);
-				//var refclass:Class = Class(getDefinitionByName(classname));
-				//var instance:Object = new refclass();
-				//instance.helloworld();
+				Game.Instance.gameState = 3;	// 3 发送举手消息以前
+				// 关闭几个和出牌有关的按钮的显示
+				btnReady.visible = true;
+				btnReady.enabled = true;
+				btnSendCards.visible = false;
+				btnDiscard.visible = false;
+				btnHint.visible = false;
+				// 初始化玩家的准备用按钮
+				Game.Instance.readyStateInit();
+				// “等待其他玩家” 该信息不显示
+				labelWait.visible = false;
 			}
 			public function swfclick(evt:MouseEvent):void
 			{
