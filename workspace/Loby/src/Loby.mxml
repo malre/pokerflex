@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="780" minHeight="560"
-	initialize="init()" width="780" height="560" currentState="GameHall">
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+	 minWidth="780" minHeight="560" width="780" height="560"
+	initialize="init()" enterFrame="enterFrame(event)"
+	currentState="GameHall">
 	<fx:Style source="RoomButton.css"/>	
 	<s:layout>
 		<s:BasicLayout/>
@@ -27,10 +29,15 @@
 			<mx:VBox width="210" height="100%" width.GameRoom="506" label.GameHall="游戏大厅" backgroundColor.GameRoom="#4D7CDB" backgroundAlpha.GameRoom="0.67" verticalGap.GameRoom="0" verticalGap.GameHall="0">
 				<mx:TabBar width="100%" height="37" dataProvider="gameViewStack" id="GameHallTabbar" itemClick="GameHallTabbar_itemClickHandler(event)" height.GameHall="30">
 				</mx:TabBar>
-				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack" id="GameHallLinkbar" alpha.GameRoom="1.0" backgroundColor.GameRoom="#FFFFFF" height.GameHall="23" verticalAlign.GameHall="top" borderStyle.GameHall="solid" separatorSkin.GameHall="@Embed(source='../res/linkbarSeperator.png')">
+				<mx:LinkBar width="100%" height="47" dataProvider="gameViewStack2" id="GameHallLinkbar" alpha.GameRoom="1.0" backgroundColor.GameRoom="#FFFFFF" height.GameHall="23" verticalAlign.GameHall="top" borderStyle.GameHall="solid" separatorSkin.GameHall="@Embed(source='../res/linkbarSeperator.png')" separatorWidth.GameHall="100">
 				</mx:LinkBar>
-				<!--这个viewstack只是用来控制上面的显示按钮的，事实上，点击并不改变真实的tree对象-->
+				<!--这个viewstack只是用来控制上面的显示按钮的，事实上，点击并不改变真实的tree对象,这个控制tabbar-->
 				<mx:ViewStack id="gameViewStack" width="0" height="0">
+					<mx:Canvas label="游戏大厅" width="100%" height="100%">
+					</mx:Canvas>
+				</mx:ViewStack>
+				<!--这个控制linkbar-->
+				<mx:ViewStack id="gameViewStack2" width="0" height="0">
 					<mx:Canvas label="游戏大厅" width="100%" height="100%">
 					</mx:Canvas>
 				</mx:ViewStack>
@@ -39,7 +46,7 @@
       			<mx:Canvas id="gameRoomCanvas" width="100%" height="100%" width.GameHall="0" height.GameHall="0">
       			</mx:Canvas>
 			</mx:VBox>
-				<mx:Form width="100%" height="100%" width.GameRoom="305" id="gameRoomForm" includeInLayout.GameHall="true">
+				<mx:Form width="100%" height="100%" width.GameRoom="305" id="gameRoomForm" includeInLayout.GameHall="true" backgroundColor.GameHall="#8EE4FA">
 					<mx:DataGrid width="100%" includeIn="GameRoom" editable="false" id="dataGrid">
 						<mx:columns>
 							<mx:DataGridColumn headerText="列 1" dataField="col1"/>
@@ -58,7 +65,7 @@
 			</mx:HDividedBox>
 		</s:VGroup>
 	</mx:Panel>
-	<mx:SWFLoader includeIn="GameRoom" source="file:///H|/Work/flex/pokerflex/bin-release/Poker.swf" autoLoad="true" id="gameFlash" x="0" y="0"/>
+	<mx:SWFLoader includeIn="GameRoom" source="file:///H|/Work/flex/workspace/poker/bin-release/poker.swf" autoLoad="false" id="gameFlash" x="0" y="0" scaleContent="false"/>
     <fx:Declarations>
         <fx:XMLList id="treeData">
             <node label="游戏大厅">
@@ -99,7 +106,6 @@
 				<menuitem label="游戏帮助" data="1E"/> 
 				</menuitem>
 			</>
-			
 			//////////
 			
 			/////////////////////////////////////////////////////////
@@ -111,9 +117,11 @@
 				menubarCollection = new XMLListCollection(menubarXML);
 				// 最开始初始化游戏，只有一个双扣在大厅的游戏列表里
 				var node:XMLList = new XMLList();
-				//treeData.@node = "";
 			}
-
+			private function enterFrame(event:Event):void
+			{
+				
+			}
 			protected function GameListTree_itemDoubleClickHandler(event:ListEvent):void
 			{
 				// 房间数被双击
