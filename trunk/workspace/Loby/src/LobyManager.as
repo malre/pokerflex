@@ -26,6 +26,10 @@ package
 		// 房间里面桌子的总数
 		private var tableTotal:int = 0;
 		
+		//////////////////////////////////////////
+		//子flash， game部分的被载入flash的管理
+		public var isGameLoaded:Boolean = false;
+		
 		static public function get Instance():LobyManager
 		{
 			if(instance == null)
@@ -72,6 +76,14 @@ package
 			}
 		}
 		
+		// 成功加入游戏区，增加标签
+		public function joinShuangkou():void
+		{
+			var newCanvas:Canvas = new Canvas();
+			newCanvas.label = "双扣";
+			FlexGlobals.topLevelApplication.gameViewStack.addChild(newCanvas);
+			FlexGlobals.topLevelApplication.gameViewStack2.addChild(newCanvas);
+		}
 		//
 		public function TabBarChange(obj:Object):void
 		{
@@ -89,7 +101,7 @@ package
 //					<mx:Canvas width="100%" height="100%" label="房间">
 //					</mx:Canvas>
 
-			}
+		}
 		
 		// 当在房间里面的时候，描画房间里面的桌子
 		public function RoomTableDraw(obj:Object):Boolean
@@ -196,6 +208,11 @@ package
 			}
 			// 向服务器发出加入一张桌子的请求
 			LobyNetManager.Instance.send(LobyNetManager.joinTable, event.target.id, event.target.name);
+		}
+		
+		public function closeGame():void
+		{
+			FlexGlobals.topLevelApplication.gameFlash.visible = false;
 		}
 	}
 }

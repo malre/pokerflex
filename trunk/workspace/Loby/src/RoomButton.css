@@ -17,3 +17,8 @@
    fontFamily: Arial;
    fontSize: 9;
 }
+global
+{
+	textAlign: left;
+	verticalAlign: top;
+}

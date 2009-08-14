@@ -9,7 +9,7 @@ package
 	import mx.managers.CursorManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-	import mx.rpc.http.mxml.HTTPService;
+	import mx.rpc.http.HTTPService;
 
 	// 对服务器发出连接和请求，并作出回应
 	public class LobyNetManager
@@ -20,8 +20,10 @@ package
 		// 首先向一个统一的地址请求房间信息，我们称这个地址为固定loby地址，对这个地址的请求我们会得到一个
 		// 新的loby地址
 		static private var URL_lobyAddress:String = "http://192.168.18.24/web/world/";
+		//static private var URL_lobyAddress:String = "http://192.168.18.199/web/world/";
 		// 我们将这个loby地址保存下来，这个被我们称为动态loby地址，它可能会有变化
 		private var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
+		//private var URL_lobysonAddress:String = "http://192.168.18.199/web/world/";
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
 		static private var URL_roomInfo:String = "game/list/list";
 		static private var URL_playerInfo:String = "game/index/identity";
@@ -74,6 +76,10 @@ package
 				instance = new LobyNetManager();
 			return instance;
 		}
+		public function get httpservice():HTTPService
+		{
+			return httpser;
+		}
 		
 		public function set RequestEnable(val:Boolean):void
 		{
@@ -112,15 +118,17 @@ package
 			}
 			else if(type == roomInfo)
 			{
-				httpser.url = URL_lobysonAddress+URL_roomInfo;
-				httpser.send();
-				request_roominfo = true;
-			}
+				//httpser.url = URL_lobysonAddress+URL_roomInfo;
+				//httpser.send();
+				//request_roominfo = true;
+		}
 			else if(type == tableInfo)
 			{
-				httpser.url = URL_lobysonAddress+URL_tableInfo;
-				httpser.send();
-				request_tableinfo = true;
+//				httpser.url = URL_lobysonAddress+URL_tableInfo;
+//				httpser.send();
+//				request_tableinfo = true;
+				StateManager.Instance.changeState(StateUpdateRoomInfo.Instance);
+				StateManager.Instance.send();
 			}
 			else if(type == joinTable)
 			{
@@ -154,7 +162,7 @@ package
 			// 恢复请求许可
 			requestEnable = true;
 			
-			result = JSON.decode(httpser.lastResult.toString());
+ 			result = JSON.decode(httpser.lastResult.toString());
 			CursorManager.removeBusyCursor();
 			
 			if(request_lobyaddress)		// 解析得到的动态大厅的链接地址
@@ -166,6 +174,8 @@ package
 					//URL_lobysonAddress = result.address;
 					// 请求房间信息
 					send(LobyNetManager.roomInfo);
+					// 成功的情况下， 把进入的游戏的名字加入到标签里面
+					LobyManager.Instance.joinShuangkou();
 				}
 				else
 				{
@@ -199,9 +209,18 @@ package
 			{
 				if(result.success)
 				{
-					//开始调用游戏的flash
-					FlexGlobals.topLevelApplication.gameFlash.addEventListener(Event.INIT, initlisten);
-					FlexGlobals.topLevelApplication.gameFlash.load();
+					if(LobyManager.Instance.isGameLoaded)
+					{
+						FlexGlobals.topLevelApplication.gameFlash.visible = true;
+					}
+					else
+					{
+						//开始调用游戏的flash
+						FlexGlobals.topLevelApplication.gameFlash.addEventListener(Event.INIT, initlisten);
+						FlexGlobals.topLevelApplication.gameFlash.load();
+						// 生成local connection的本体， 并注册connect name
+						LobyLocalConnReceiver.Instance.getGameOver();
+					}
 					
 					lastRlt = result;
 				}
@@ -218,6 +237,8 @@ package
             // Initialize variables with information from
             // the loaded application.
 			FlexGlobals.topLevelApplication.gameFlash.visible = true;
+			//
+			LobyManager.Instance.isGameLoaded = true;
 		}
 		public function httpFault(event:Event):void
 		{
