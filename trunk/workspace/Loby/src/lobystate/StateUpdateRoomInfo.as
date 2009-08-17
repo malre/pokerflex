@@ -1,4 +1,4 @@
-package
+package lobystate
 {
 	public class StateUpdateRoomInfo extends NetRequestState
 	{
@@ -6,6 +6,7 @@ package
 		// construct
 		public function StateUpdateRoomInfo()
 		{
+			super();
 		}
 		
 		public static function get Instance():StateUpdateRoomInfo
@@ -18,7 +19,7 @@ package
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = "http://192.168.18.24/web/world/game/list/list";
+			LobyNetManager.Instance.httpservice.url = LobyNetManager.Instance.URL_lobysonAddress + LobyNetManager.URL_roomInfo;
 			LobyNetManager.Instance.httpservice.send();
 			//request_roominfo = true;
 		}

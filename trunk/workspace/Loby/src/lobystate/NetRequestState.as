@@ -1,4 +1,4 @@
-package
+package lobystate
 {
 	public class NetRequestState
 	{
