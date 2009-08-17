@@ -3,7 +3,7 @@ package
 	import flash.events.Event;
 	
 	import json.JSON;
-	
+	import lobystate.*;
 	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	import mx.managers.CursorManager;
@@ -19,16 +19,16 @@ package
 		// 连接地址的规范
 		// 首先向一个统一的地址请求房间信息，我们称这个地址为固定loby地址，对这个地址的请求我们会得到一个
 		// 新的loby地址
-		static private var URL_lobyAddress:String = "http://192.168.18.24/web/world/";
+		static public var URL_lobyAddress:String = "http://192.168.18.24/web/world/";
 		//static private var URL_lobyAddress:String = "http://192.168.18.199/web/world/";
 		// 我们将这个loby地址保存下来，这个被我们称为动态loby地址，它可能会有变化
-		private var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
+		public var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
 		//private var URL_lobysonAddress:String = "http://192.168.18.199/web/world/";
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
-		static private var URL_roomInfo:String = "game/list/list";
-		static private var URL_playerInfo:String = "game/index/identity";
-		static private var URL_tableInfo:String = "game/list/list";
-		static private var URL_joinTable:String = "/game/room/add";
+		static public var URL_roomInfo:String = "game/list/list";
+		static public var URL_playerInfo:String = "game/index/identity";
+		static public var URL_tableInfo:String = "game/list/list";
+		static public var URL_joinTable:String = "/game/room/add";
 		//private var URL_
 		// 各种请求定义
 		static public var getlobyaddress:String = "request loby";
@@ -106,29 +106,19 @@ package
 				
 			if(type == getlobyaddress)
 			{
-				httpser.url = URL_lobyAddress+URL_playerInfo;
-				httpser.send();
-				request_lobyaddress = true;
+				StateManager.Instance.changeState(StateGetLobyAddress.Instance);
 			}
 			else if(type == playerInfo)
 			{
-				httpser.url = URL_lobysonAddress+URL_playerInfo;
-				httpser.send();
-				request_playerinfo = true;
+				StateManager.Instance.changeState(StateGetPlayerInfo.Instance);
 			}
 			else if(type == roomInfo)
 			{
-				//httpser.url = URL_lobysonAddress+URL_roomInfo;
-				//httpser.send();
-				//request_roominfo = true;
-		}
+				StateManager.Instance.changeState(StateUpdateRoomInfo.Instance);
+			}
 			else if(type == tableInfo)
 			{
-//				httpser.url = URL_lobysonAddress+URL_tableInfo;
-//				httpser.send();
-//				request_tableinfo = true;
-				StateManager.Instance.changeState(StateUpdateRoomInfo.Instance);
-				StateManager.Instance.send();
+				StateManager.Instance.changeState(StateGetTableInfo.Instance);
 			}
 			else if(type == joinTable)
 			{
@@ -146,15 +136,16 @@ package
 				else if(param2 == "down"+param1)
 				{
 					p = 2;
-				} 
+				}
 				else if(param2 == "right"+param1)
 				{
 					p = 3;
 				}
-				httpser.request = {roomid:lastRlt[param1].rid.toString(),pos:p};
-				httpser.send();
-				request_jointable = true;
+				StateManager.Instance.changeState(StateLobyJoinTable.Instance);
+				var rq:Object = {roomid:lastRlt[param1].rid.toString(),pos:p};
+				StateLobyJoinTable.Instance.setRequest(rq);
 			}
+			StateManager.Instance.send();
 		}
 		
 		public function httpResult(event:Event):void
@@ -165,6 +156,7 @@ package
  			result = JSON.decode(httpser.lastResult.toString());
 			CursorManager.removeBusyCursor();
 			
+			StateManager.Instance.receive();
 			if(request_lobyaddress)		// 解析得到的动态大厅的链接地址
 			{
 				// success or false
