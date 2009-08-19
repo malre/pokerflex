@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application 
+        xmlns:fx="http://ns.adobe.com/mxml/2009" 
+        xmlns:d="http://ns.adobe.com/fxg/2008/dt"
+        xmlns:s="library://ns.adobe.com/flex/spark" 
+        width="780" height="560" backgroundColor="#ffffff" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:components="components.*"
+        creationComplete="createcomplete(event)" enterFrame="enterframe(event)" xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Script>
+		<![CDATA[
+			import flash.debugger.enterDebugger;
+
+			protected function Buttonitem_click():void
+			{
+				customcomponent0.currentState='State1_item';
+			}
+
+
+			protected function Buttonvita_click():void
+			{
+				customcomponent0.currentState='State3_vita';
+			}
+
+
+			protected function Buttonfriend_click():void
+			{
+				customcomponent0.currentState='State4_friend';
+			}
+
+
+			protected function Buttonshop_click():void
+			{
+				customcomponent0.currentState='State2_shop';
+			}
+
+
+			protected function Button_click():void
+			{
+				customcomponent21.currentState='State2';
+				customcomponent31.currentState='State3';
+				customcomponent0.currentState='State1';
+			}
+
+			protected function createcomplete(event:Event):void
+			{
+				LobyManager.Instance;
+				// 发送更新大厅请求
+				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+			}
+			
+			protected function enterframe(event:Event):void
+			{
+				
+			}
+		]]>
+
+	</fx:Script>
+	<s:states>
+		<s:State name="Page1" th:color="0xcc0000"/>
+	</s:states>
+	<fx:DesignLayer d:userLabel="bgp">
+		<s:BitmapImage source="@Embed('/assets/bgp6.png')" resizeMode="scale" id="bitmapimage2"/>
+		<components:CustomComponent3 x="504" y="94" id="customcomponent31">
+		</components:CustomComponent3>
+		<s:BitmapImage source="@Embed('/assets/hand.png')" resizeMode="scale" id="bitmapimage3" x="30" y="34"/>
+	</fx:DesignLayer>
+	<fx:DesignLayer d:userLabel="button">
+		<s:Button x="201" y="49" skinClass="components.Button1" d:userLabel="Button friend" click="Buttonfriend_click()"/>
+		<s:Button x="106" y="50" skinClass="components.Button2" d:userLabel="Button item" click="Buttonitem_click()"/>
+		<s:Button x="156" y="50" skinClass="components.Button3" d:userLabel="Button vita" click="Buttonvita_click()"/>
+		<s:Button x="291" y="30" skinClass="components.Button4" d:userLabel="Button shop" click="Buttonshop_click()"/>
+	</fx:DesignLayer>
+	<fx:DesignLayer d:userLabel="massage" th:visible.Page1="false" th:visible.Page2="false">
+		<components:CustomComponent1 x="131" y="130" id="customcomponent11" visible="false" th:origVisible.Page1="true" th:origVisible.Page2="true">
+		</components:CustomComponent1>
+	</fx:DesignLayer>
+	<fx:DesignLayer d:userLabel="game lest">
+		<components:CustomComponent2 x="5" y="94" id="customcomponent21" d:userLabel="Game lbby">
+		</components:CustomComponent2>
+		<components:CustomComponent1 x="131" y="130" id="customcomponent0" th:origVisible.Page1="true" th:origVisible.Page2="true" d:userLabel="Custom Component 1">
+		</components:CustomComponent1>
+		<!--<s:Button label="Button" x="90" y="192" id="button1" click="Button_click()"/>-->
+	</fx:DesignLayer>
+	<mx:Tree x="7" y="146" width="245" height="408" id="gameTreeView" doubleClickEnabled="true" itemDoubleClick="{LobyManager.Instance.LobyTreeItemClick(event)}"/>
+	<mx:Canvas x="17" y="94" width="487" height="460" id="gameRoomCanvas"/>
+</s:Application>

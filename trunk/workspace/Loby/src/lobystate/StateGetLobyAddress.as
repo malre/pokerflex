@@ -19,13 +19,18 @@ package lobystate
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = LobyNetManager.Instance.URL_lobysonAddress + LobyNetManager.URL_playerInfo;
+			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_playerInfo;
 			LobyNetManager.Instance.httpservice.send();
 			//request_playerinfo = true;
 		}
-		override public function receive(obj:StateManager):void
+		override public function receive(obj:Object):void
 		{
-			
+			// 把成功得到的loby地址记录下来
+			//URL_lobysonAddress = result.address;
+			// 请求房间信息
+			LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+			// 成功的情况下， 把进入的游戏的名字加入到标签里面
+			// LobyManager.Instance.joinShuangkou();
 		}
 	}
 }

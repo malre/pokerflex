@@ -26,9 +26,9 @@ package lobystate
 		{
 			state.send(this);
 		}
-		public function receive():void
+		public function receive(obj:Object):void
 		{
-			state.receive(this);
+			state.receive(obj);
 		} 
 	}
 }

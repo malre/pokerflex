@@ -11,7 +11,7 @@ package lobystate
 		public function send(obj:StateManager):void
 		{
 		}
-		public function receive(obj:StateManager):void
+		public function receive(obj:Object):void
 		{
 		}
 	}

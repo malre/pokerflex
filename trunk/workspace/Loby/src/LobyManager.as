@@ -26,6 +26,11 @@ package
 		// 房间里面桌子的总数
 		private var tableTotal:int = 0;
 		
+		// 主画面显示元素用数据
+		[Bindable]
+		private var treeData:XML = <node name="游戏大厅" lid="-1" parent="-1" address=""/>
+		
+		
 		//////////////////////////////////////////
 		//子flash， game部分的被载入flash的管理
 		public var isGameLoaded:Boolean = false;
@@ -40,40 +45,70 @@ package
 		
 		public function LobyManager()
 		{
+			FlexGlobals.topLevelApplication.gameTreeView.labelField = "@name";
+			FlexGlobals.topLevelApplication.gameTreeView.dataProvider = treeData;
 		}
 		
 		// 控制树形结构内的显示
-		public function LobyTreeCtrl():void
+		public function LobyTreeCtrl(obj:Object):void
 		{
-			
+			delete treeData.node;
+			arr2xml(obj);
+		}
+		
+		// 把数组数据变成xml数据，供tree结构使用
+		private function arr2xml(obj:Object):void
+		{
+			for(var i:int=0;i<obj.length;i++)
+			{
+				var xml:XML = <node/>;
+				xml.@name = obj[i].name;
+				xml.@lid = obj[i].lid;
+				xml.@parent = obj[i].parent;
+				xml.@address = "http://"+obj[i].address;
+				
+				// 根节点是否是要连接的点
+				if(treeData.@lid == obj[i].parent)
+				{
+					treeData.appendChild(xml);
+				}
+				else{
+					var node:XMLList = treeData..*.(@lid == obj[i].parent);
+					node.appendChild(xml);
+				}
+			}
 		}
 		
 		// 当结构树被点击的时候，进行子节点的构造
 		public function LobyTreeItemClick(event:ListEvent):void
 		{
 			// 如果这次请求是点开数，才处理，关闭树不进行处理
-			if(FlexGlobals.topLevelApplication.GameListTree.isItemOpen(FlexGlobals.topLevelApplication.GameListTree.selectedItem))
+			if(FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem))
 				return;
 				
-			var obj:Object = FlexGlobals.topLevelApplication.GameListTree.selectedItem;
+			var obj:Object = FlexGlobals.topLevelApplication.gameTreeView.selectedItem;
 			if(obj != null)
 			{
-				if(obj.@label == "游戏大厅")
+				if(obj.@name == "游戏大厅")
 				{
 					// do nothings
 				}
-				else if(obj.@label == "双扣")
+				else if(obj.@name == "双扣")
 				{
 					// 首先请求实际连接的大厅的地址,成功以后才能继续请求房间的信息
-					LobyNetManager.Instance.send(LobyNetManager.getlobyaddress);
+					//LobyNetManager.Instance.send(LobyNetManager.getlobyaddress);
 				}
-				else if(obj.@label == "")
+				else
+				{
+					LobyNetManager.Instance.send(LobyNetManager.tableInfo);
+				}
+/*				else if(obj.@label == "")
 				{
 					// 加入了一个房间，更新标签页
 				 	// 增加标签页一个，内容是双扣，或者也可能是其他游戏
 				 	TabBarChange(obj);
 				}
-			}
+*/			}
 		}
 		
 		// 成功加入游戏区，增加标签

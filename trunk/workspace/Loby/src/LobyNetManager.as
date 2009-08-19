@@ -3,7 +3,9 @@ package
 	import flash.events.Event;
 	
 	import json.JSON;
+	
 	import lobystate.*;
+	
 	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	import mx.managers.CursorManager;
@@ -22,10 +24,10 @@ package
 		static public var URL_lobyAddress:String = "http://192.168.18.24/web/world/";
 		//static private var URL_lobyAddress:String = "http://192.168.18.199/web/world/";
 		// 我们将这个loby地址保存下来，这个被我们称为动态loby地址，它可能会有变化
-		public var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
+		static public var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
 		//private var URL_lobysonAddress:String = "http://192.168.18.199/web/world/";
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
-		static public var URL_roomInfo:String = "game/list/list";
+		static public var URL_roomInfo:String = "lobby/info/list";
 		static public var URL_playerInfo:String = "game/index/identity";
 		static public var URL_tableInfo:String = "game/list/list";
 		static public var URL_joinTable:String = "/game/room/add";
@@ -152,12 +154,27 @@ package
 		{
 			// 恢复请求许可
 			requestEnable = true;
-			
- 			result = JSON.decode(httpser.lastResult.toString());
 			CursorManager.removeBusyCursor();
+
+			try{
+ 			result = JSON.decode(httpser.lastResult.toString());
+ 			}catch(error:ArgumentError){
+ 				trace("json decode error");
+ 			}
+			if(result.hasOwnProperty("success"))
+			{
+				if(!result.success)
+				{
+					if(result.hasOwnProperty("error"))
+					{
+						Alert.show(result.error.message);
+					}
+					return;
+				}
+			}
 			
-			StateManager.Instance.receive();
-			if(request_lobyaddress)		// 解析得到的动态大厅的链接地址
+			StateManager.Instance.receive(result);
+/*			if(request_lobyaddress)		// 解析得到的动态大厅的链接地址
 			{
 				// success or false
 				if(1)
@@ -220,7 +237,7 @@ package
 				{
 					Alert.show(result.error.message, "");
 				}
-			}
+			}*/
 			
 		}
 		private function initlisten(event:Event):void
