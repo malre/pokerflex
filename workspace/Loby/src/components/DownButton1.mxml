@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+	ADOBE SYSTEMS INCORPORATED
+	Copyright 2008 Adobe Systems Incorporated
+	All Rights Reserved.
+
+	NOTICE: Adobe permits you to use, modify, and distribute this file
+	in accordance with the terms of the license agreement accompanying it.
+
+-->
+
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+    <s:transitions>
+        <s:Transition fromState="up" toState="over" autoReverse="true">
+            <s:Parallel>
+                <s:Parallel target="{bitmapimage1}">
+                    <s:Fade duration="0"/>
+                </s:Parallel>
+                <s:Parallel target="{bitmapimage0}">
+                    <s:Fade duration="0"/>
+                </s:Parallel>
+            </s:Parallel>
+        </s:Transition>
+        <s:Transition fromState="down" toState="up" autoReverse="true">
+            <s:Parallel>
+                <s:Parallel target="{bitmapimage1}">
+                    <s:Fade duration="0"/>
+                </s:Parallel>
+                <s:Parallel target="{bitmapimage2}">
+                    <s:Fade duration="0"/>
+                </s:Parallel>
+            </s:Parallel>
+        </s:Transition>
+        <s:Transition fromState="disabled" toState="up" autoReverse="true">
+            <s:Parallel>
+                <s:Parallel target="{bitmapimage1}">
+                    <s:Fade duration="0"/>
+                </s:Parallel>
+                <s:Parallel target="{bitmapimage3}">
+                    <s:Fade duration="0"/>
+                </s:Parallel>
+            </s:Parallel>
+        </s:Transition>
+    </s:transitions>
+
+    <fx:Metadata>
+    	[HostComponent("spark.components.Button")]
+    </fx:Metadata> 
+    
+    <s:states>
+        <s:State name="up" />
+        <s:State name="over"/>
+        <s:State name="down" />
+        <s:State name="disabled" />
+    </s:states>
+
+    <!-- background -->
+	<!-- shadow (down state only) -->
+    <!-- arrow -->
+    <s:BitmapImage source="@Embed('/assets/vs_3.png')" resizeMode="scale" includeIn="up" id="bitmapimage1"/>
+    <s:BitmapImage source="@Embed('/assets/vs_3.png')" resizeMode="scale" id="bitmapimage0" includeIn="over"/>
+    <s:BitmapImage source="@Embed('/assets/vs_3.png')" resizeMode="scale" id="bitmapimage2" includeIn="down"/>
+    <s:BitmapImage source="@Embed('/assets/vs_3.png')" resizeMode="scale" id="bitmapimage3" includeIn="disabled"/>
+
+</s:Skin>

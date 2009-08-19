@@ -19,13 +19,13 @@ package lobystate
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = LobyNetManager.Instance.URL_lobysonAddress + LobyNetManager.URL_roomInfo;
+			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobyAddress + LobyNetManager.URL_roomInfo;
 			LobyNetManager.Instance.httpservice.send();
 			//request_roominfo = true;
 		}
-		override public function receive(obj:StateManager):void
+		override public function receive(obj:Object):void
 		{
-			
+			LobyManager.Instance.LobyTreeCtrl(obj);
 		}
 	}
 }
