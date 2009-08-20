@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" 
-	minHeight="560" minWidth="780" width="780" height="560" 
-	currentState="Game"
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" 
+	width="780" height="560"
 	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
 	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
-	<s:states>
-		<s:State name="Game"/>
-	</s:states>
-	<mx:Canvas x="0" y="0" width="100%" height="100%" id="myCanvas">
+
 	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
 	<mx:Button x="400" y="385" label="放弃" width="65" height="22" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')" click="discardClicked(event)"/>
 	<mx:Button x="495" y="385" label="提示" width="65" height="22" id="btnHint" enabled="false"/>
@@ -39,7 +35,6 @@
 	<mx:Button x="649" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnSetting.png')" id="btnSetting" click="btnSetting_clickHandler(event)"/>
 	<mx:Button x="583" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnHelp.png')" id="btnHelp" click="btnHelp_clickHandler(event)"/>
 	<mx:Button x="715" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnExitroom.png')" id="btnExit" click="btnExit_clickHandler(event)"/>
-	</mx:Canvas>
 	<fx:Declarations>
 	    <mx:HTTPService useProxy="false" id="httpService" method="POST" showBusyCursor="false"
 	    	url=""
@@ -193,10 +188,10 @@
 		    	if (inGame)
 		    	{
 		    		// 描画部分的循环
-		    		myCanvas.graphics.clear();
-		    		myCanvas.graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
-		    		myCanvas.graphics.drawRect(0, 0, this.width, this.height);
-		    		myCanvas.graphics.endFill();
+		    		graphics.clear();
+		    		graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
+		    		graphics.drawRect(0, 0, this.width, this.height);
+		    		graphics.endFill();
 		    	}
 			}
 			
@@ -243,4 +238,4 @@
 
     	]]>
     </fx:Script>
-</s:Application>
+</mx:Canvas>

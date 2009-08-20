@@ -1,4 +1,4 @@
-package
+package poker
 {
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -123,7 +123,7 @@ package
 			GameObjectManager.Instance.startup();
 			//创建所有的图像对象，并放到集合中去
 			BGImg = new GameObject();
-			BGImg.startupGameObject(GraphicsResource(ResourceManager.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
+			BGImg.startupGameObject(GraphicsResource(ResourceManagerPoker.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
 			BGImg.setVisible(true);
 			BGImg.setName("BG");
 			// 104 cards
@@ -138,22 +138,22 @@ package
 					var pt:Point = new Point();
 					var rt:Rectangle = new Rectangle(0, 0, cardsHeight, cardsWidth);
 					// 传入的是左上的位置坐标
-					go.startupGameObject(GraphicsResource(ResourceManager.CardsRes.getItemAt(j)), pt, rt,0);
+					go.startupGameObject(GraphicsResource(ResourceManagerPoker.CardsRes.getItemAt(j)), pt, rt,0);
 				}
 			}
 			// 左边的玩家
 			var cardbackleft:GameObject = new GameObject();
-			cardbackleft.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
+			cardbackleft.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
 					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
 			cardbackleft.setName("Cardback");
 			// 上面的玩家
 			var cardbackup:GameObject = new GameObject();
-			cardbackup.startupGameObject(GraphicsResource(ResourceManager.CardBack2Res), new Point(upCardback_x,upCardback_y), 
+			cardbackup.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack2Res), new Point(upCardback_x,upCardback_y), 
 					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
 			cardbackup.setName("Cardback");
 			// 右边的玩家
 			var cardbackright:GameObject = new GameObject();
-			cardbackright.startupGameObject(GraphicsResource(ResourceManager.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
+			cardbackright.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
 					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
 			cardbackright.setName("Cardback");
 		}

@@ -1,4 +1,4 @@
-package
+package poker
 {
 	import flash.events.StatusEvent;
 	import flash.net.LocalConnection;
