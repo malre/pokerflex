@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:th="http://ns.adobe.com/thermo/2009">
+	<s:transitions>
+		<s:Transition fromState="up" toState="over" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage5}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage4}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="disabled" toState="up" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage3}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage4}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="over" toState="up" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage4}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage5}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="down" toState="up" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage4}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage6}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:BitmapImage source="@Embed('/assets/friend.png')" d:userLabel="button friend" width="25" height="25" y="4.35" x="3.35" id="bitmapimage3" resizeMode="scale" includeIn="disabled"/>
+	<s:BitmapImage source="@Embed('/assets/Button_friend_up.png')" resizeMode="scale" includeIn="up" id="bitmapimage4" y="0.9" x="0.85"/>
+	<s:BitmapImage source="@Embed('/assets/Button_friend_over.png')" resizeMode="scale" includeIn="over" id="bitmapimage5" y="0.9" x="0.85"/>
+	<s:BitmapImage source="@Embed('/assets/Button_friend_down1.png')" resizeMode="scale" includeIn="down" id="bitmapimage6" y="0.95" x="0.9"/>
+	<fx:Private>
+		<th:Guide x="3"/>
+		<th:Guide y="5"/>
+	</fx:Private>
+</s:Skin>
