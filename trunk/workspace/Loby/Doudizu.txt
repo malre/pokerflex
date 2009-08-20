@@ -1,0 +1,609 @@
+		//////////////////////斗地主////////////////////////////
+		private function initDoudizhu():void
+		{
+			//?? = 1,
+			//?子 = 2,
+			//双王 = 3,
+			//三?相同 = 4,
+			//三?一 = 5,
+			//炸? = 6,
+			//五??子 = 7,
+			//六??子 = 8,
+			//三?? = 9,
+			//四?二 = 10,
+			//二??机 = 11,
+			//七??子 = 12,
+			//四?? = 13,
+			//八??子 = 14,
+			//?机?翅膀 = 15,
+			//九??子 = 16,
+			//三??机 = 17,
+			//五?? = 18,
+			//十??子 = 19,
+			//十一??子 = 20,
+			//十二??子 = 21,
+			//四??机 = 22,
+			//三??机?翅膀 = 23,
+			//六?? = 24,
+			  //没有13
+			//七?? = 25,
+			//五??机 = 26,
+			//八?? = 27,
+			//四??机?翅膀 = 28,
+			  //没有17
+			//九?? = 29,
+			//六??机 = 30,
+			  //没有19
+			//十?? = 31,
+			//五??机?翅膀 = 32
+		
+		    //下面是各?牌???的牌的?数
+		     //?? = 1,
+		    //?子 = 2,
+		    //双王 = 2,
+		    //三?相同 = 3,
+		    //三?一 = 4,
+		    //炸? = 4,
+		    //五??子 = 5,
+		    //六??子 = 6,
+		    //三?? = 6,
+		    //四?二 = 6,
+		    //二??机 = 6,
+		    //七??子 = 7,
+		    //四?? = 8,
+		    //八??子 = 8,
+		    //?机?翅膀 = 8,
+		    //九??子 = 9,
+		    //三??机 = 9,
+		    //五?? = 10,
+		    //十??子 = 10,
+		    //十一??子 = 11,
+		    //十二??子 = 12,
+		    //四??机 = 12,
+		    //三??机?翅膀 = 12,
+		    //六?? = 12,
+		    ////没有13
+		    //七?? = 14,
+		    //五??机 = 15,
+		    //八?? = 16,
+		    //四??机?翅膀 = 16,
+		    ////没有17
+		    //九?? = 18,
+		    //六??机 = 18,
+		    ////没有19
+		    //十?? = 20,
+		    //五??机?翅膀 = 20
+		}
+		private function getTypeDoudizhu(arr:Array):int
+		{
+        /// ??所出牌?是否符合游???
+        //public static bool IsRules(PokerGroup leadPokers) //判断所出牌??型以及其是否符合??
+            var isRule:Boolean = false;
+            var cardtype:int = -1;
+            var type:int = 0;
+            switch (arr.length)
+            {
+                case 0:
+                    break;
+                case 1:
+					// ??
+                    cardtype = 1;
+                    break;
+                case 2:
+                    if (IsSame(leadPokers,2))
+                    {
+                        isRule = true;
+                        type = 2;
+                    }
+                    break;
+                case 3:
+                    if (IsSame(leadPokers,3))
+                    {
+                        type = 4;
+                        isRule = true;
+                    }
+                    break;
+                case 4:
+                    if (IsSame(leadPokers, 4))
+                    {
+                        type = 4;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsThreeLinkPokers(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.三?一;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            isRule = false;
+                        }
+                    }
+                    break;
+                case 5:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.五??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        isRule = false;
+                    }
+                    break;
+                case 6:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.六??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsLinkPair(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.三??;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            if (IsSame(leadPokers, 4))
+                            {
+                                leadPokers.type = PokerGroupType.四?二;
+                                isRule = true;
+                            }
+                            else
+                            {
+                                if (IsThreeLinkPokers(leadPokers))
+                                {
+                                    leadPokers.type = PokerGroupType.二??机;
+                                    isRule = true;
+                                }
+                                else
+                                {
+                                    isRule = false;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 7:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.七??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        isRule = false;
+                    }
+                    break;
+                case 8:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.八??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsLinkPair(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.四??;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            if (IsThreeLinkPokers(leadPokers))
+                            {
+                                leadPokers.type = PokerGroupType.?机?翅膀;
+                                isRule = true;
+                            }
+                            else
+                            {
+                                isRule = false;
+                            }
+                        }
+                    }
+                    break;
+                case 9:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.九??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsThreeLinkPokers(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.三??机;
+                        }
+                        else
+                        {
+                            isRule = false;
+                        }
+                    }
+                    break;
+                case 10:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.十??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsLinkPair(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.五??;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            isRule = false;
+                        }
+                    }
+                    break;
+                case 11:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.十一??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        isRule = false;
+                    }
+                    break;
+                case 12:
+                    if (IsStraight(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.十二??子;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsLinkPair(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.六??;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            if (IsThreeLinkPokers(leadPokers))
+                            {
+                                //12有三??机?翅膀和四??机??情况,所以在IsThreeLinkPokers中做了特殊?理,此?不用?type??.
+                                isRule = true;
+                            }
+                            else
+                            {
+                                isRule = false;
+                            }
+                        }
+                    }
+                    break;
+                case 13:
+                    isRule = false;
+                    break;
+                case 14:
+                    if (IsLinkPair(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.七??;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        isRule = false;
+                    }
+                    break;
+                case 15:
+                    if (IsThreeLinkPokers(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.五??机;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        isRule = false;
+                    }
+                    break;
+                case 16:
+                    if (IsLinkPair(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.八??;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsThreeLinkPokers(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.四??机?翅膀;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            isRule = false;
+                        }
+                    }
+                    break;
+                case 17:
+                    isRule = false;
+                    break;
+                case 18:
+                    if (IsLinkPair(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.六??;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsThreeLinkPokers(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.六??机;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            isRule = false;
+                        }
+                    }
+                    break;
+                case 19:
+                    isRule = false;
+                    break;
+                case 20:
+                    if (IsLinkPair(leadPokers))
+                    {
+                        leadPokers.type = PokerGroupType.十??;
+                        isRule = true;
+                    }
+                    else
+                    {
+                        if (IsThreeLinkPokers(leadPokers))
+                        {
+                            leadPokers.type = PokerGroupType.五??机?翅膀;
+                            isRule = true;
+                        }
+                        else
+                        {
+                            isRule = false;
+                        }
+                    }
+                    break;
+            }
+            return isRule;
+        }
+        /// 判断一个牌?指定数量相?的牌是否??相同
+        /// <param name="PG">牌??象</param>
+        /// <param name="amount">指定数量的相?牌?</param>
+        /// <returns>指定数量的相?牌是否??相同</returns>
+        public function IsSame(arr:Array, int amount):Boolean
+        {
+        	for(var i:int =0;i<arr.length-1;i++)
+        	{
+       			if(arr[i]/4 != arr[i+1]/4)
+       				return false;
+        	}
+        	return true;
+        }
+        /// 判断牌?是否??子
+        /// <param name="PG">牌?</param>
+        /// <returns>是否??子</returns>
+        public function IsStraight(PokerGroup PG):Boolean
+        {
+            bool IsStraight = false;
+            foreach (Poker poker in PG)//不能包含2、小王、大王
+            {
+                if (poker == PokerNum.P2 || poker == PokerNum.小王 || poker == PokerNum.大王)
+                {
+                    IsStraight = false;
+                    return IsStraight;
+                }
+            }
+            for (int i = 0; i < PG.Count - 1; i++)
+            {
+                if (PG[i].pokerNum - 1 == PG[i + 1].pokerNum)
+                {
+                    IsStraight = true;
+                }
+                else
+                {
+                    IsStraight = false;
+                    break;
+                }
+            }
+            return IsStraight;
+        }
+        /// 判断牌?是否???
+        /// <param name="PG">牌?</param>
+        /// <returns>是否???</returns>
+        public function IsLinkPair(PokerGroup PG):Boolean
+        {
+            bool IsLinkPair = false;
+            foreach (Poker poker in PG) //不能包含2、小王、大王
+            {
+                if (poker == PokerNum.P2 || poker == PokerNum.小王 || poker == PokerNum.大王)
+                {
+                    IsLinkPair = false;
+                    return IsLinkPair;
+                }
+            }
+            for (int i = 0; i < PG.Count - 2; i += 2)  //首先比?是否都??子，再比?第一个?子的点数-1是否等于第二个?子，最后?察最小的?个是否??子（?里的for循?无法??到最小的?个，所以需要拿出来?独??）
+            {
+                if (PG[i] == PG[i + 1] && PG[i].pokerNum - 1 == PG[i + 2].pokerNum && PG[i + 2] == PG[i + 3])
+                {
+                    IsLinkPair = true;
+                }
+                else
+                {
+                    IsLinkPair = false;
+                    break;
+                }
+            }
+            return IsLinkPair;
+        }
+        /// 判断牌?是否???三?牌,?机,?机?翅膀
+        /// <param name="PG">牌?</param>
+        /// <returns>是否???三?牌</returns>
+        public function IsThreeLinkPokers(PokerGroup PG):Boolean //判断三?牌方法?判断??相?的牌,如果??相?的牌相同,?count自加1.最后根据count的?判断牌的?型?多少个??三?
+        {
+            bool IsThreeLinkPokers = false;
+            int HowMuchLinkThree = 0;  //?机的数量
+            PG = SameThreeSort(PG); //排序,把?机放在前面
+            for (int i = 2; i < PG.Count; i++)  //得到牌?中有几个?机
+            {
+                if (PG[i] == PG[i - 1] && PG[i] == PG[i - 2])
+                {
+                    HowMuchLinkThree++;
+                }
+            }
+            if (HowMuchLinkThree > 0)  //当牌?里面有三个?
+            {
+                if (HowMuchLinkThree > 1)  //当牌???机?
+                {
+                    for (int i = 0; i < HowMuchLinkThree * 3 - 3; i += 3) //判断?机之?的点数是否相差1
+                    {
+                        if (PG[i] != PokerNum.P2 && PG[i].pokerNum - 1 == PG[i + 3].pokerNum) //2点不能当?机出
+                        {
+                            IsThreeLinkPokers = true;
+                        }
+                        else
+                        {
+                            IsThreeLinkPokers = false; 
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    IsThreeLinkPokers = true; //牌??普通三个,直接返回true
+                }
+            }
+            else
+            {
+                IsThreeLinkPokers = false;
+            }
+            if (HowMuchLinkThree == 4)
+            {
+                PG.type = PokerGroupType.四??机;
+            }
+            if (HowMuchLinkThree == 3 && PG.Count == 12)
+            {
+                PG.type = PokerGroupType.三??机?翅膀;
+            }
+            return IsThreeLinkPokers;
+
+        }
+        /// ??机和?机?翅膀?行排序,把?机放在前面,翅膀放在后面.
+        /// <param name="PG">牌?</param>
+        /// <returns>是否???三?牌</returns>
+        public function SameThreeSort(PokerGroup PG):void
+        {
+            Poker FourPoker = null;  //如果把4?当三?出并且?4?的?外一?,就需要特殊?理,?里??出???情况的牌的点数.
+            bool FindedThree = false;  //已找到三?相同的牌
+            PokerGroup tempPokerGroup = new PokerGroup();  //??三?相同的牌
+            int count = 0; //??在??三?牌前面的翅膀的?数
+            int Four = 0; // ??是否??出?三三相同,如果出???情况?表明出?把4?牌(炸?)当中的三?和其他牌配成?机?翅膀,并且翅膀中有炸?牌的点数.
+            // 比如有如下牌?: 998887777666 玩家要出的牌??上??? 888777666?997,但是??从大到小的排序后?成了998887777666 一不美?,二不容易比?.
+            for (int i = 2; i < PG.Count; i++)  //直接从2?始循?,因?PG[0],PG[1]的引用已?存?在其他?量中,直接比?即可
+            {
+                if (PG[i] == PG[i - 2] && PG[i] == PG[i - 1])// 比?PG[i]与PG[i-1],PG[i]与PG[i-2]是否同?相等,如果相等??明?是三?相同牌
+                {
+                    if (Four >= 1) //默?的Four?0,所以第一次?行??里?false,直接?行else
+                                   //一旦??出??个三三相等,就会?行?里的if
+                    {
+                        FourPoker = PG[i]; //当找到四?牌?,??下4?牌的点数
+                        Poker changePoker; 
+                        for (int k = i; k > 0; k--) //把四?牌中的一?移?到最前面.
+                        {
+                            changePoker = PG[k];
+                            PG[k] = PG[k - 1];
+                            PG[k - 1] = changePoker;
+                        }
+                        count++; //由于此?已?找到三?牌,下面?count??的程序不会?行,所以?里要手?+1
+                    }
+                    else
+                    {
+                        Four++; //??本次循?,因?本次循?找到了三三相等的牌,如果???次找到三三相等的牌??明找到四?牌(炸?)
+                        tempPokerGroup.Add(PG[i]); //把本次循?的PG[i]??下来,即??下三?牌的点数
+                    }
+                    FindedThree = true; //??已找到三?牌
+                }
+                else
+                {
+                    Four = 0; //没有找到?,??找到三?牌的?志Four?零
+                    if (!FindedThree) //只有没有找到三?牌?才?count增加.如果已?找到三?牌,?不再?count??.
+                    {
+                        count = i - 1;
+                    }
+                }
+            }
+            foreach (Poker tempPoker in tempPokerGroup)  //迭代所有的三?牌点数
+            {
+                Poker changePoker;  //??交?Poker
+                for (int i = 0; i < PG.Count; i++)  //把所有的三?牌往前移?
+                {
+                    if (PG[i] == tempPoker)  //当PG[i]等于三?牌的点数?
+                    {
+                        if (PG[i] == FourPoker) //由于上面已?把4?牌中的一?放到的最前面,??牌也会与tempPoker相匹配所以?里?行?理
+                                                // 当第一次遇到四?牌的点数?,把??四?牌的FourPoker???null,并中断本次循?.由于FourPoker已??Null,所以下次再次遇到四?牌的点数?会按照正常情况?行.
+                        {
+                            FourPoker = null;
+                            continue;
+                        }
+                        changePoker = PG[i - count];
+                        PG[i - count] = PG[i];
+                        PG[i] = changePoker;
+                    }
+                }
+            }
+            return PG;
+        }			
+		}
+		public function operator >(PokerGroup LP, PokerGroup RP):Boolean
+		{
+		    bool IsGreater = false;
+		    if (LP.type != RP.type && LP.type != PokerGroupType.炸? && LP.type != PokerGroupType.双王)
+		    {
+		        IsGreater = false;
+		    }
+		    else
+		    {
+		        if (LP.type == PokerGroupType.炸? && RP.type == PokerGroupType.炸?) //LPRP都?炸?
+		        {
+		            if (LP[0] > RP[0]) //比?大小
+		            {
+		                IsGreater = true;
+		            }
+		            else
+		            {
+		                IsGreater = false;
+		            }
+		        }
+		        else
+		        {
+		            if (LP.type == PokerGroupType.炸?) //只有LP?炸?
+		            {
+		                IsGreater = true;
+		            }
+		            else
+		            {
+		                if (LP.type == PokerGroupType.双王) //LP?双王
+		                {
+		                    IsGreater = true;
+		                }
+		                else
+		                {
+		                    if (LP[0] > RP[0]) //LP?普通牌?
+		                    {
+		                        IsGreater = true;
+		                    }
+		                    else
+		                    {
+		                        IsGreater = false;
+		                    }
+		                }
+		            }
+		        }
+		    }
+		    return IsGreater;
+		}//public static bool operator >(PokerGroup LP, PokerGroup RP)

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" 
+	minHeight="560" minWidth="780" width="780" height="560" 
+	currentState="Game"
+	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
+	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
+	<s:states>
+		<s:State name="Game"/>
+	</s:states>
+	<mx:Canvas x="0" y="0" width="100%" height="100%" id="myCanvas">
+	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
+	<mx:Button x="400" y="385" label="放弃" width="65" height="22" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')" click="discardClicked(event)"/>
+	<mx:Button x="495" y="385" label="提示" width="65" height="22" id="btnHint" enabled="false"/>
+	<mx:Button x="250" y="319" label="准备好了" width="74" height="53" id="btnReady" click="gameReadyClicked(event)" icon="@Embed(source='../res/btnSelfread.png')"/>
+	<mx:Label x="262" y="49" id="label_thinking" text="出牌"/>
+	<mx:Label x="350" y="49" id="Lable_playernameUp"/>
+	<mx:Label x="350" y="74" id="Label_leftcardsnumUp"/>
+	<mx:Image x="266" y="102" id="imgPlayerUpReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="266" y="102" id="imgPlayerUpPrepare" source="@Embed('../res/notRready.png')"/>
+	<mx:Image x="262" y="169" id="imgDiscardUp" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
+	<mx:Image x="139" y="240" id="imgDiscardLeft" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
+	<mx:Image x="72" y="277" id="imgPlayerLeftReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="72" y="277" id="imgPlayerLeftPrepare" source="@Embed('../res/notRready.png')"/>
+	<mx:Image x="262" y="356" id="imgDiscardDown" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
+	<mx:Image x="423" y="240" id="imgDiscardRight" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
+	<mx:Image x="390" y="277" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="390" y="277" id="imgPlayerRightPrepare" source="@Embed('../res/notRready.png')"/>
+	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait"/>
+	<mx:Label x="25" y="330" id="Lable_playernameLeft"/>
+	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft"/>
+	<mx:Label x="510" y="330" id="Lable_playernameRight"/>
+	<mx:Label x="510" y="356" id="Label_leftcardsnumRight"/>
+	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()"/>
+	<mx:Label x="667" y="10" id="textPlayerSelf" width="76" height="24"/>
+	<mx:Label x="653" y="91" id="textPlayerPartner" width="90" height="19"/>
+	<mx:Label x="653" y="155" id="textPlayerEmy1" width="90" height="19"/>
+	<mx:Label x="653" y="203" id="textPlayerEmy2" width="90" height="19"/>
+	<mx:Button x="583" y="253" label="Button" height="55" width="62"/>
+	<mx:Button x="649" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnSetting.png')" id="btnSetting" click="btnSetting_clickHandler(event)"/>
+	<mx:Button x="583" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnHelp.png')" id="btnHelp" click="btnHelp_clickHandler(event)"/>
+	<mx:Button x="715" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnExitroom.png')" id="btnExit" click="btnExit_clickHandler(event)"/>
+	</mx:Canvas>
+	<fx:Declarations>
+	    <mx:HTTPService useProxy="false" id="httpService" method="POST" showBusyCursor="false"
+	    	url=""
+	    	result="{NetManager.Instance.resultProcess(event)}" fault="{NetManager.Instance.failProcess(event)}">
+	        <mx:request>
+	            <data>"{NetManager.getSendData()}"</data>
+	        </mx:request>
+	    </mx:HTTPService>
+		
+	</fx:Declarations>
+    
+    <fx:Script>
+    	<![CDATA[
+    		import mx.managers.PopUpManager;
+    		import mx.controls.Alert;
+			protected var inGame:Boolean = false;
+
+			private function enterGame(event:Event):void
+			{
+				//Game.Instance.init();
+				inGame = true;
+				//
+				Label_leftcardsnumRight.visible = false;
+				Label_leftcardsnumUp.visible = false;
+				Label_leftcardsnumLeft.visible = false;
+				// 放弃图
+				imgDiscardDown.visible = false;
+				imgDiscardLeft.visible = false;
+				imgDiscardUp.visible = false;
+				imgDiscardRight.visible = false;
+				//
+				label_thinking.visible = false;
+			}
+			
+			private function exitGame(event:Event):void
+			{
+				GameObjectManager.Instance.shutdown();
+				inGame = false;
+				// 
+				Label_leftcardsnumRight.visible = false;
+				Label_leftcardsnumUp.visible = false;
+				Label_leftcardsnumLeft.visible = false;
+			}
+			
+			private function startGameClicked(event:Event):void
+			{
+				// 首先获得玩家id,用来显示玩家的牌用
+				NetManager.Instance.requestEnable = true;
+				NetManager.Instance.send(NetManager.send_requestinfo);
+				// 检查房间输入，如果不是数字就报错
+				//NetManager.Instance.send(NetManager.send_joinRoom);
+			}
+			private function getpidClicked(event:Event):void
+			{
+				// 获得玩家自己的pid
+				NetManager.Instance.send(NetManager.send_requestinfo);
+			}
+
+			private function leaveGameClicked(event:Event):void
+			{
+				NetManager.Instance.requestEnable = true;
+				NetManager.Instance.send(NetManager.send_leave);
+				//Alert.show("leave room success!", "");
+			}
+			private function requestCardHistory():void
+			{
+				//NetManager.Instance.requestEnable = true;
+				//NetManager.Instance.send(NetManager.send_viewCardsHistory);
+				//btnCardView.enabled = false;
+				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
+			}
+			private function startDebugClicked(event:Event):void
+			{
+				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
+				// 增加一个键盘监听事件
+				//this.addEventListener(KeyboardEvent.KEY_DOWN, keydown);
+				
+			}
+			private function keydown(evt:KeyboardEvent):void
+			{
+
+			}
+
+			private function gameReadyClicked(event:Event):void
+			{
+				NetManager.Instance.requestEnable = true;
+				NetManager.Instance.send(NetManager.send_iamReady);
+				btnReady.enabled = false;
+			}
+			
+			private function sendCardsClicked(event:Event):void
+			{
+				if(!Game.Instance.btnState)
+				{
+					Game.Instance.sendcards();
+					//Game.Instance.btnState = 1;
+					btnSendCards.enabled = false;
+				}
+			}
+
+			private function discardClicked(event:Event):void
+			{
+				if(!Game.Instance.btnState)
+				{
+					Game.Instance.pass();
+					//Game.Instance.btnState = 1;
+					btnDiscard.enabled = false;
+				}
+			}
+			
+			private function btnContinueClicked(event:Event):void
+			{
+			}
+
+			//public var loadedSM:SystemManager;
+			public function creationComplete():void
+			{
+				//
+				Label_leftcardsnumRight.visible = false;
+				Label_leftcardsnumUp.visible = false;
+				Label_leftcardsnumLeft.visible = false;
+				// 放弃图
+				imgDiscardDown.visible = false;
+				imgDiscardLeft.visible = false;
+				imgDiscardUp.visible = false;
+				imgDiscardRight.visible = false;
+				//
+				label_thinking.visible = false;
+				inGame = true;
+				Game.Instance.gameState = 3;	// 3 发送举手消息以前
+				// 关闭几个和出牌有关的按钮的显示
+				btnReady.visible = true;
+				btnReady.enabled = true;
+				btnSendCards.visible = false;
+				btnDiscard.visible = false;
+				btnHint.visible = false;
+				// 初始化玩家的准备用按钮
+				Game.Instance.readyStateInit();
+				// “等待其他玩家” 该信息不显示
+				labelWait.visible = false;
+			}
+			public function swfclick(evt:MouseEvent):void
+			{
+				Alert.show("get click", "");
+			}
+			
+			public function enterFrame(event:Event):void
+			{
+	    		// 逻辑部分的循环
+	    		Game.Instance.taskLoop(currentState);
+		    	if (inGame)
+		    	{
+		    		// 描画部分的循环
+		    		myCanvas.graphics.clear();
+		    		myCanvas.graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
+		    		myCanvas.graphics.drawRect(0, 0, this.width, this.height);
+		    		myCanvas.graphics.endFill();
+		    	}
+			}
+			
+			public function click(event:MouseEvent):void
+			{
+				Game.Instance.click(event);
+			}
+			
+			public function mouseDown(even:MouseEvent):void
+			{
+			
+			}
+			
+			public function mouseUp(event:MouseEvent):void
+			{
+			
+			}
+			
+			public function mouseMove(event:MouseEvent):void
+			{
+				
+			}
+			// 被调用函数
+			public function showPopupDlg():void
+			{
+				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
+				popup.visible = false;
+			}    		
+
+    		protected function btnHelp_clickHandler(event:MouseEvent):void
+    		{
+    			// TODO Auto-generated method stub
+    		}
+    		
+    		protected function btnSetting_clickHandler(event:MouseEvent):void
+    		{
+    			// TODO Auto-generated method stub
+    		}
+    		
+    		protected function btnExit_clickHandler(event:MouseEvent):void
+    		{
+    			NetManager.Instance.send(NetManager.send_leave);
+    		}
+
+    	]]>
+    </fx:Script>
+</s:Application>
