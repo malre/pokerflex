@@ -9,6 +9,8 @@ package
 	import mx.controls.Label;
 	import mx.core.FlexGlobals;
 	import mx.events.ListEvent;
+	
+	import poker.poker;
 
 	// 用来控制和管理大厅的数据
 	public class LobyManager
@@ -26,15 +28,31 @@ package
 		// 房间里面桌子的总数
 		private var tableTotal:int = 0;
 		
+		//state
+		private var _state:int;
+		
 		// 主画面显示元素用数据
 		[Bindable]
 		private var treeData:XML = <node name="游戏大厅" lid="-1" parent="-1" address=""/>
+		
+		// 正确的调用应该在房间中点击桌子以后
+		public var gamePoker:poker;
 		
 		
 		//////////////////////////////////////////
 		//子flash， game部分的被载入flash的管理
 		public var isGameLoaded:Boolean = false;
 		
+		public function get state():int
+		{
+			return _state;
+		}
+
+		public function set state(v:int):void
+		{
+			_state = v;
+		}
+
 		static public function get Instance():LobyManager
 		{
 			if(instance == null)
@@ -47,11 +65,24 @@ package
 		{
 			FlexGlobals.topLevelApplication.gameTreeView.labelField = "@name";
 			FlexGlobals.topLevelApplication.gameTreeView.dataProvider = treeData;
+			// create poker game flash
+			gamePoker = new poker();
+				// add it to main application
+			FlexGlobals.topLevelApplication.addElement(gamePoker);
 		}
 		
 		public function enterFrame():void
 		{
 			// 进行间隔一定时间一次的大厅数据刷新
+			switch(state)
+			{
+				case 0:	// null
+				break;
+				case 1:	// normal
+				break;
+				case 2:	// game
+				break;
+			}
 		}
 		
 		// 控制树形结构内的显示
