@@ -48,6 +48,8 @@
     
     <fx:Script>
     	<![CDATA[
+    		import mx.rpc.events.ResultEvent;
+    		import mx.rpc.events.FaultEvent;
     		import mx.managers.PopUpManager;
     		import mx.controls.Alert;
 			protected var inGame:Boolean = false;
@@ -175,6 +177,14 @@
 				Game.Instance.readyStateInit();
 				// “等待其他玩家” 该信息不显示
 				labelWait.visible = false;
+				//把http的处理函数定义到自己的函数来
+				LobyNetManager.Instance.httpservice.removeEventListener(ResultEvent.RESULT, LobyNetManager.Instance.httpResult);
+				LobyNetManager.Instance.httpservice.removeEventListener(FaultEvent.FAULT, LobyNetManager.Instance.httpFault);
+				
+				LobyNetManager.Instance.httpservice.addEventListener(ResultEvent.RESULT, NetManager.Instance.resultProcess);
+				LobyNetManager.Instance.httpservice.addEventListener(FaultEvent.FAULT, NetManager.Instance.failProcess);
+
+				
 			}
 			public function swfclick(evt:MouseEvent):void
 			{

@@ -7,6 +7,7 @@
         creationComplete="createcomplete(event)" enterFrame="enterframe(event)" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
+			import poker.poker;
 			
 
 			protected function Buttonitem_click():void
@@ -42,7 +43,7 @@
 			}
 			protected function createcomplete(event:Event):void
 			{
-				LobyManager.Instance;
+				LobyManager.Instance.state = 1;
 				// 发送更新大厅请求
 				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
 			}

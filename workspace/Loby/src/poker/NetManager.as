@@ -5,7 +5,6 @@ package poker
 	import json.JSON;
 	
 	import mx.controls.Alert;
-	import mx.core.Application;
 	import mx.core.FlexGlobals;
 	
 	public class NetManager
@@ -91,41 +90,41 @@ package poker
 				
 			if(type == send_joinRoom)
 			{
-				FlexGlobals.topLevelApplication.httpService.request={roomid:FlexGlobals.topLevelApplication.roomid.text, getPlayers:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_join;
+				LobyNetManager.Instance.httpservice.request={roomid:FlexGlobals.topLevelApplication.roomid.text, getPlayers:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_join;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_leave)
 			{
-				FlexGlobals.topLevelApplication.httpService.request = {};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_leave;
+				LobyNetManager.Instance.httpservice.request = {};
+				LobyNetManager.Instance.httpservice.url = sendURL_leave;
 			}
 			else if(type == send_requestinfo)
 			{
-				FlexGlobals.topLevelApplication.httpService.request = {};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_requestinfo;
+				LobyNetManager.Instance.httpservice.request = {};
+				LobyNetManager.Instance.httpservice.url = sendURL_requestinfo;
 			}
 			else if(type == send_iamReady)
 			{
 				// 游戏状态变成 发送举手消息以后
 				//Game.Instance.gameState = 4;
-				FlexGlobals.topLevelApplication.httpService.request = {getPlayers:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_ready;
+				LobyNetManager.Instance.httpservice.request = {getPlayers:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_ready;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_updateWhileWait)
 			{
-				FlexGlobals.topLevelApplication.httpService.request = {getPlayers:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
+				LobyNetManager.Instance.httpservice.request = {getPlayers:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
 			else if(type == send_updateWhileGame)
 			{
-				FlexGlobals.topLevelApplication.httpService.request = {getPlay:"true",getCards:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
+				LobyNetManager.Instance.httpservice.request = {getPlay:"true",getCards:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
@@ -141,31 +140,31 @@ package poker
 						data += ",";
 				}
 				
-				FlexGlobals.topLevelApplication.httpService.request={play:data, getPlay:"true", getCards:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
+				LobyNetManager.Instance.httpservice.request={play:data, getPlay:"true", getCards:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
 			}
 			else if(type == send_passWhileGame)
 			{
-				FlexGlobals.topLevelApplication.httpService.request={play:"pass", getPlay:"true", getCards:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
+				LobyNetManager.Instance.httpservice.request={play:"pass", getPlay:"true", getCards:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
 			}
 			else if(type == send_viewCardsHistory)
 			{
-				FlexGlobals.topLevelApplication.httpService.request={getPlay:"true", getCards:"true", getHistory:"true"};
-				FlexGlobals.topLevelApplication.httpService.url = sendURL_game;
+				LobyNetManager.Instance.httpservice.request={getPlay:"true", getCards:"true", getHistory:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
 				request_type_cards = true;
 				request_type_history = true;
 			}
 
-			FlexGlobals.topLevelApplication.httpService.send();
+			LobyNetManager.Instance.httpservice.send();
 		}
 		
 		public function resultProcess(event:Event):void
@@ -178,13 +177,13 @@ package poker
 			
 			// 当数据没有发生变动的时候，返回是“null”
 			// 这个时候不做任何的更新，直接返回
-			if(FlexGlobals.topLevelApplication.httpService.lastResult.toString() == "null")
+			if(LobyNetManager.Instance.httpservice.lastResult.toString() == "null")
 			{
 				return;
 			}
 			
 			json1 = null;
-			json1 = JSON.decode(FlexGlobals.topLevelApplication.httpService.lastResult.toString());
+			json1 = JSON.decode(LobyNetManager.Instance.httpservice.lastResult.toString());
 			
 			// 首先分析数据，本次请求成功还是失败,
 			// 然后看是否得到了预期的数据
