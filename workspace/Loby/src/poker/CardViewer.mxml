@@ -22,7 +22,7 @@
 						var id:int = i+j*27;
 						img.id = "img"+id;
 						img.name = img.id;
-						img.load(ResourceManager.Card01);
+						img.load(ResourceManagerPoker.Card01);
 						this.addChild(img);
 					}
 				}
@@ -36,7 +36,7 @@
 				//child = panel.getChildren();
 				//var obj:Object = panel.getChildByName("img0");
 				var img:Image = Image(panel.getChildByName("img1"));
-				img.load(ResourceManager.Card03);
+				img.load(ResourceManagerPoker.Card03);
 			}
 			
 		]]>

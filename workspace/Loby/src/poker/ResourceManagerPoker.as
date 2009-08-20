@@ -1,4 +1,4 @@
-package 
+package poker
 {
 	import flash.display.*;
 	import flash.geom.*;
@@ -6,7 +6,7 @@ package
 	import mx.collections.ArrayCollection;
 	import mx.core.*;
 	
-	public final class ResourceManager
+	public final class ResourceManagerPoker
 	{
 		public static var CardsRes:ArrayCollection = new ArrayCollection();
 		
