@@ -5,7 +5,6 @@ package poker
 	import flash.geom.Rectangle;
 	
 	import mx.collections.ArrayCollection;
-	import mx.core.FlexGlobals;
 	
 	public class Game
 	{
@@ -184,6 +183,10 @@ package poker
 			PlayerCards.reverse();
 		}
 		
+		public function clearPlayerCards():void
+		{
+			PlayerCards.length = 0;
+		}
 		// 描画玩家手上的牌
 		public function drawPlayerCards(cards:Array):void
 		{
@@ -452,29 +455,60 @@ package poker
 			}
 		}
 		
+		// function for find player pos
+		private function getPlayerIndexByPos(pos:int):int
+		{
+			var index:int = -1;
+			
+			for(var i:int=0;i<4;i++)
+			{
+				if(NetManager.Instance.json1.players.hasOwnProperty(i))
+				{
+					if(NetManager.Instance.json1.players[i].pos == pos)
+						return i;
+				}
+			}
+			
+			return index; 
+		}
 		// 更新玩家的信息
 		public function updatePlayerName():void
 		{
 			// 玩家的姓名，显示在右上
 			if(NetManager.Instance.json1.hasOwnProperty("players"))
 			{
-				LobyManager.Instance.gamePoker.textPlayerSelf.text = NetManager.Instance.json1.players[selfseat].name;
+				LobyManager.Instance.gamePoker.textPlayerSelf.text = NetManager.Instance.json1.players[getPlayerIndexByPos(selfseat)].name;
 
 				// partner
-				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
+				if(getPlayerIndexByPos((selfseat+2)%4) != -1)
 				{
-					LobyManager.Instance.gamePoker.textPlayerPartner.text = NetManager.Instance.json1.players[(selfseat+2)%4].name;
+					LobyManager.Instance.gamePoker.textPlayerPartner.text = NetManager.Instance.json1.players[getPlayerIndexByPos((selfseat+2)%4)].name;
 					LobyManager.Instance.gamePoker.Lable_playernameUp.text = LobyManager.Instance.gamePoker.textPlayerPartner.text;
 				}
-				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
+				else
 				{
-					LobyManager.Instance.gamePoker.textPlayerEmy1.text = NetManager.Instance.json1.players[(selfseat+1)%4].name;
+					LobyManager.Instance.gamePoker.textPlayerPartner.text = "";
+					LobyManager.Instance.gamePoker.Lable_playernameUp.text = "";
+				}
+				if(getPlayerIndexByPos((selfseat+1)%4) != -1)
+				{
+					LobyManager.Instance.gamePoker.textPlayerEmy1.text = NetManager.Instance.json1.players[getPlayerIndexByPos((selfseat+1)%4)].name;
 					LobyManager.Instance.gamePoker.Lable_playernameRight.text = LobyManager.Instance.gamePoker.textPlayerEmy1.text; 
 				}
-				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
+				else
 				{
-					LobyManager.Instance.gamePoker.textPlayerEmy2.text = NetManager.Instance.json1.players[(selfseat+3)%4].name;
+					LobyManager.Instance.gamePoker.textPlayerEmy1.text = "";
+					LobyManager.Instance.gamePoker.Lable_playernameRight.text = ""; 
+				}
+				if(getPlayerIndexByPos((selfseat+3)%4) != -1)
+				{
+					LobyManager.Instance.gamePoker.textPlayerEmy2.text = NetManager.Instance.json1.players[getPlayerIndexByPos((selfseat+3)%4)].name;
 					LobyManager.Instance.gamePoker.Lable_playernameLeft.text = LobyManager.Instance.gamePoker.textPlayerEmy2.text;
+				}
+				else
+				{
+					LobyManager.Instance.gamePoker.textPlayerEmy2.text = "";
+					LobyManager.Instance.gamePoker.Lable_playernameLeft.text = "";
 				}
 			}
 			
@@ -515,9 +549,9 @@ package poker
 			if(NetManager.Instance.json1.hasOwnProperty("players"))
 			{
 				// partner
-				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+2)%4).toString() ))
+				if(NetManager.Instance.json1.players.hasOwnProperty( getPlayerIndexByPos((selfseat+2)%4) ))
 				{
-					if(NetManager.Instance.json1.players[(selfseat+2)%4].ready)
+					if(NetManager.Instance.json1.players[getPlayerIndexByPos((selfseat+2)%4)].ready)
 					{
 						LobyManager.Instance.gamePoker.imgPlayerUpPrepare.visible = false;
 						LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = true;
@@ -528,9 +562,9 @@ package poker
 						LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
 					}
 				}
-				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+1)%4).toString() ))
+				if(NetManager.Instance.json1.players.hasOwnProperty( getPlayerIndexByPos((selfseat+1)%4)))
 				{
-					if(NetManager.Instance.json1.players[(selfseat+1)%4].ready)
+					if(NetManager.Instance.json1.players[getPlayerIndexByPos((selfseat+1)%4)].ready)
 					{
 						LobyManager.Instance.gamePoker.imgPlayerRightPrepare.visible = false;
 						LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = true;
@@ -541,9 +575,9 @@ package poker
 						LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
 					}
 				}
-				if(NetManager.Instance.json1.players.hasOwnProperty( ((selfseat+3)%4).toString() ))
+				if(NetManager.Instance.json1.players.hasOwnProperty( getPlayerIndexByPos((selfseat+3)%4) ))
 				{
-					if(NetManager.Instance.json1.players[(selfseat+3)%4].ready)
+					if(NetManager.Instance.json1.players[getPlayerIndexByPos((selfseat+3)%4)].ready)
 					{
 						LobyManager.Instance.gamePoker.imgPlayerLeftPrepare.visible = false;
 						LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = true;
@@ -615,95 +649,83 @@ package poker
 	    		lastFrameTime = thisFrame;
 			}
 
-			if(state == "Game")
+			switch(gameState)
 			{
-				switch(gameState)
-				{
-					case 0:
-					break;
-					case 1:
-					break;
-					case 2:
-						if(requestFlag)
-						{
-							if(curPlayer != selfseat)
-							{
-								NetManager.Instance.send(NetManager.send_updateWhileGame);
-								requestFlag = false;
-								LobyManager.Instance.gamePoker.btnSendCards.visible = false;
-								LobyManager.Instance.gamePoker.btnDiscard.visible = false;
-								LobyManager.Instance.gamePoker.btnHint.visible = false;
-							}
-						}
-						if(NetManager.Instance.requestSuccess 
-						&& NetManager.Instance.request_type_cards && NetManager.Instance.request_type_play)
-						{
-							curPlayer = NetManager.Instance.json1.play.next;
-							drawPlayerCards(null);
-							drawOtherCards(NetManager.Instance.json1.play.history);
-							updatePlayerCardsInfo();
-							// 轮到自己出牌,并且按钮没有被按下
-							if(selfseat == NetManager.Instance.json1.play.next && !btnState)
-							{
-								// 检测该次的出牌是否符合要求，能否出牌。
-								var checkarr:Array = new Array();
-								if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
-								{
-									// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
-									// 这个时候不能够放弃
-									LobyManager.Instance.gamePoker.btnDiscard.enabled = false;
-								}
-								else
-								{
-									checkarr = checkarr.concat(NetManager.Instance.json1.play.last_card);
-								}
-								if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
-								{
-									// make chupai enable
-									LobyManager.Instance.gamePoker.btnSendCards.enabled = true;
-								}
-								else
-								{
-									LobyManager.Instance.gamePoker.btnSendCards.enabled = false;
-								}
-							    checkarr = null;
-							}
-						}
-
-					    GameObjectManager.Instance.enterFrame();
-					break;
-					case 3:
-						if(requestFlag)
-						{
-							NetManager.Instance.send(NetManager.send_updateWhileWait);
-							requestFlag = false;
-						}
-						if(NetManager.Instance.requestSuccess)
-						{
-							updatePlayerName();
-							updatePlayerReadyState();
-						}
-						GameObjectManager.Instance.enterFrame();
-					break;
-					case 4:	// 等待其他玩家准备完成
-						// 在一定的频率下，发送消息，更新自己的数据。
-						if(requestFlag)
+				case 0:
+				break;
+				case 1:
+				break;
+				case 2:
+					if(requestFlag)
+					{
+						if(curPlayer != selfseat)
 						{
 							NetManager.Instance.send(NetManager.send_updateWhileGame);
 							requestFlag = false;
+							LobyManager.Instance.gamePoker.btnSendCards.visible = false;
+							LobyManager.Instance.gamePoker.btnDiscard.visible = false;
+							LobyManager.Instance.gamePoker.btnHint.visible = false;
 						}
-						GameObjectManager.Instance.enterFrame();
-					break;
-				}
-			}
-			else if(state == "MainMenu")
-			{
-				if(menuState == 0)	// nothing
-				{
-				}
-				else if(menuState == 1)
-				{
-				}
+					}
+					if(NetManager.Instance.requestSuccess 
+					&& NetManager.Instance.request_type_cards && NetManager.Instance.request_type_play)
+					{
+						curPlayer = NetManager.Instance.json1.play.next;
+						drawPlayerCards(null);
+						drawOtherCards(NetManager.Instance.json1.play.history);
+						updatePlayerCardsInfo();
+						// 轮到自己出牌,并且按钮没有被按下
+						if(selfseat == NetManager.Instance.json1.play.next && !btnState)
+						{
+							// 检测该次的出牌是否符合要求，能否出牌。
+							var checkarr:Array = new Array();
+							if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
+							{
+								// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
+								// 这个时候不能够放弃
+								LobyManager.Instance.gamePoker.btnDiscard.enabled = false;
+							}
+							else
+							{
+								checkarr = checkarr.concat(NetManager.Instance.json1.play.last_card);
+							}
+							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+							{
+								// make chupai enable
+								LobyManager.Instance.gamePoker.btnSendCards.enabled = true;
+							}
+							else
+							{
+								LobyManager.Instance.gamePoker.btnSendCards.enabled = false;
+							}
+						    checkarr = null;
+						}
+					}
+
+				    GameObjectManager.Instance.enterFrame();
+				break;
+				case 3:
+					if(requestFlag)
+					{
+						NetManager.Instance.send(NetManager.send_updateWhileWait);
+						requestFlag = false;
+					}
+					if(NetManager.Instance.requestSuccess)
+					{
+						updatePlayerName();
+						updatePlayerReadyState();
+					}
+					GameObjectManager.Instance.enterFrame();
+				break;
+				case 4:	// 等待其他玩家准备完成
+					// 在一定的频率下，发送消息，更新自己的数据。
+					if(requestFlag)
+					{
+						NetManager.Instance.send(NetManager.send_updateWhileGame);
+						requestFlag = false;
+					}
+					GameObjectManager.Instance.enterFrame();
+				break;
 			}
 		}
 		
@@ -716,7 +738,7 @@ package poker
 					if(NetManager.Instance.json1.players[i].pid == pid)		// 28 should be the play id,the we recorded
 					{
 						// 获得玩家的座位号
-						selfseat = i;
+						selfseat = NetManager.Instance.json1.players[i].pos;
 						break;
 					}
 				}

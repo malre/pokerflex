@@ -23,14 +23,22 @@ package lobystate
 			LobyNetManager.Instance.httpservice.send();
 			//request_playerinfo = true;
 		}
-		override public function receive(obj:Object):void
+		override public function receive(obj:Object):Boolean
 		{
-			// 把成功得到的loby地址记录下来
-			//URL_lobysonAddress = result.address;
-			// 请求房间信息
-			LobyNetManager.Instance.send(LobyNetManager.roomInfo);
-			// 成功的情况下， 把进入的游戏的名字加入到标签里面
-			// LobyManager.Instance.joinShuangkou();
+			if(super.receive(obj))
+			{
+				// 把成功得到的loby地址记录下来
+				//URL_lobysonAddress = result.address;
+				// 请求房间信息
+				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+				// 成功的情况下， 把进入的游戏的名字加入到标签里面
+				// LobyManager.Instance.joinShuangkou();
+				return true;
+			}
+			else{
+				LobyErrorState.Instance.errorId = LobyErrorState.ERR_NOTLOGIN;
+				return false;
+			}
 		}
 	}
 }

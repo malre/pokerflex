@@ -43,7 +43,8 @@
 			}
 			protected function createcomplete(event:Event):void
 			{
-				LobyManager.Instance.state = 1;
+				// 使大厅进入正常状态,并且完成大厅的初始化
+				LobyManager.Instance.state = 0;
 				// 发送更新大厅请求
 				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
 			}
@@ -64,8 +65,8 @@
 		<components:CustomComponent3 x="504" y="94" id="customcomponent31" d:userLabel="player_information&amp;chat_window">
 		</components:CustomComponent3>
 		<s:BitmapImage source="@Embed('/assets/hand.png')" resizeMode="scale" id="bitmapimage3" x="30" y="34" d:userLabel="player_image"/>
-		<mx:Image x="36" y="40" id="imgAvatar" autoLoad="true" />
-		<mx:Label x="82" y="31" id="textPlayname" height="17" width="50" fontWeight="bold" fontStyle="normal" textDecoration="none"/>
+		<mx:Image x="36" y="40" id="imgAvatar" autoLoad="true"  scaleContent="true"/>
+		<mx:Label x="82" y="31" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>
 	</fx:DesignLayer>
 	<mx:Canvas x="17" y="94" width="487" height="460" id="gameRoomCanvas"/>
 	<fx:DesignLayer d:userLabel="button">
@@ -74,14 +75,15 @@
 		<s:Button x="151" y="53" skinClass="components.Button3" d:userLabel="Button vita" click="Buttonvita_click()"/>
 		<s:Button x="291" y="29" skinClass="components.Button4" d:userLabel="Button shop" click="Buttonshop_click()"/>
 	</fx:DesignLayer>
-	<fx:DesignLayer d:userLabel="massage" th:visible.Page2="false">
-		<components:CustomComponent1 x="131" y="130" id="customcomponent11" th:origVisible.Page2="true" d:userLabel="massage_page">
-		</components:CustomComponent1>
-	</fx:DesignLayer>
 	<fx:DesignLayer d:userLabel="game lest">
 		<components:CustomComponent2 x="5" y="94" id="customcomponent21" d:userLabel="Game lbby">
 		</components:CustomComponent2>
 		<mx:Tree x="7" y="146" width="245" height="408" id="gameTreeView" doubleClickEnabled="true" itemDoubleClick="{LobyManager.Instance.LobyTreeItemClick(event)}" folderOpenIcon="@Embed(source='../res/treeroomiconOpen.png')" folderClosedIcon="@Embed(source='../res/treeroomiconClose.png')" defaultLeafIcon="@Embed(source='../res/treeroomiconNode.png')"/>
 		<!--<s:Button x="90" y="192" skinClass="components.Button8" click="Button_click()"/>-->
 	</fx:DesignLayer>
+	<fx:DesignLayer d:userLabel="massage" th:visible.Page2="false">
+		<components:CustomComponent1 x="131" y="130" id="customcomponent11" th:origVisible.Page2="true" d:userLabel="massage_page">
+		</components:CustomComponent1>
+	</fx:DesignLayer>
+	<mx:Label x="620" y="6" text="ver 1.1.2" width="64" textAlign="right"/>
 </s:Application>

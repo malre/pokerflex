@@ -21,22 +21,44 @@ package lobystate
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_tableInfo;
-			LobyNetManager.Instance.httpservice.send();
-			// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
-			LobyNetManager.URL_lobysonAddress = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address;
-		}
-		override public function receive(obj:Object):void
-		{
-			if(LobyManager.Instance.RoomTableDraw(obj))
+			if(LobyManager.Instance.state == 1)
 			{
-				// 对得到的table数据进行分析和描画，并跳转
-				//FlexGlobals.topLevelApplication.currentState = "GameRoom";
-				FlexGlobals.topLevelApplication.customcomponent21.currentState='State2';
-				FlexGlobals.topLevelApplication.customcomponent31.currentState='State3';
-				FlexGlobals.topLevelApplication.customcomponent11.currentState='State1';
-				// make tree invisible
-				FlexGlobals.topLevelApplication.gameTreeView.visible = false;
+				LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_tableInfo;
+				LobyNetManager.Instance.httpservice.send();
+				// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
+				LobyNetManager.URL_lobysonAddress = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address;
+			}
+			else
+			{
+				var tree:XML = LobyManager.Instance.TreeData;
+				var node:XMLList = tree..*.(@lid == LobyManager.Instance.playerInfo.player.lid);
+				LobyNetManager.Instance.httpservice.url = node.@address + LobyNetManager.URL_tableInfo;
+				LobyNetManager.Instance.httpservice.send();
+				// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
+				LobyNetManager.URL_lobysonAddress = node.@address;
+			}
+		}
+		override public function receive(obj:Object):Boolean
+		{
+			if(super.receive(obj))
+			{
+				LobyNetManager.Instance.tabledata = obj;
+				LobyManager.Instance.getintoRoom(obj);
+				if(LobyManager.Instance.state == 3)
+				{
+					LobyManager.Instance.changeState(1);	// normal
+				}
+				if(LobyManager.Instance.state == 4)
+				{
+					// 继续进入游戏的请求
+					// 这里先省略
+				}
+				// 请求玩家列表
+				LobyNetManager.Instance.send(LobyNetManager.getRoomPlayerlist);
+				return true;
+			}
+			else{
+				return false;
 			}
 		}
 	}

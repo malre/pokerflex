@@ -25,9 +25,17 @@ package lobystate
 			LobyNetManager.Instance.httpservice.send();
 			//request_playerinfo = true;
 		}
-		override public function receive(obj:Object):void
+		override public function receive(obj:Object):Boolean
 		{
-			Alert.show("成功退出游戏桌","");
+			if(super.receive(obj))
+			{
+				Alert.show("成功退出游戏桌","");
+				
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 	}
 }
