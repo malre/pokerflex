@@ -1,6 +1,7 @@
 package lobystate
 {
 	import flash.events.Event;
+	
 	import mx.core.FlexGlobals;
 	import mx.rpc.http.HTTPService;
 
@@ -35,21 +36,18 @@ package lobystate
 			hp.request = request;
 			hp.send();
 		}
-		override public function receive(obj:Object):void
+		override public function receive(obj:Object):Boolean
 		{
-			if(LobyManager.Instance.isGameLoaded)
+			if(super.receive(obj))
 			{
-				FlexGlobals.topLevelApplication.gameFlash.visible = true;
+				LobyManager.Instance.gamePoker.startup(obj);
+				// 
+				LobyManager.Instance.changeState(2);
+				return true;
 			}
-			else
-			{
-				//开始调用游戏的flash
-				FlexGlobals.topLevelApplication.gameFlash.addEventListener(Event.INIT, initlisten);
-				FlexGlobals.topLevelApplication.gameFlash.load();
-				// 生成local connection的本体， 并注册connect name
-				LobyLocalConnReceiver.Instance;
+			else{
+				return false;
 			}
-			
 		}
 		private function initlisten(event:Event):void
 		{

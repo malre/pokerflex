@@ -2,10 +2,10 @@
 <mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
 	 width="300" height="250"
 	 creationComplete="createComplete()"
-	 borderColor="#001975" alpha="1.0" color="#021A1F" backgroundColor="#619CEC" layout="absolute">
+	 borderColor="#001975" alpha="1.0" color="#021A1F" backgroundColor="#619CEC" layout="absolute" 
+	 modalTransparency="0" modalTransparencyBlur="0"
+	 showCloseButton="true" close="gameContinue(event)">
 
-	<mx:Button label="继续" x="60" y="178" id="popupBtnContinue" width="57" fontSize="12" click="gameContinue(event)"/>
-	<mx:Button label="退出" x="166" y="178" id="popupBtnExit" width="58" fontSize="12"/>
 	<mx:Image x="90" y="0" source="@Embed('../res/tongji.png')" autoLoad="true" scaleContent="false"/>
 	<mx:Label x="22" y="54" text="玩家一" fontSize="14" fontWeight="bold" id="popupPlayer0"/>
 	<mx:Label x="22" y="85" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
@@ -51,18 +51,18 @@
 				this.visible = true;
 			}
 			
-			private function gameContinue(event:MouseEvent):void
+			private function gameContinue(event:CloseEvent):void
 			{
 				//this.visible = false;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
 				// 关闭几个和出牌有关的按钮的显示
-				FlexGlobals.topLevelApplication.btnReady.visible = true;
-				FlexGlobals.topLevelApplication.btnReady.enabled = true;
-				FlexGlobals.topLevelApplication.btnSendCards.visible = false;
-				FlexGlobals.topLevelApplication.btnDiscard.visible = false;
-				FlexGlobals.topLevelApplication.btnHint.visible = false;
+				LobyManager.Instance.gamePoker.btnReady.visible = true;
+				LobyManager.Instance.gamePoker.btnReady.enabled = true;
+				LobyManager.Instance.gamePoker.btnSendCards.visible = false;
+				LobyManager.Instance.gamePoker.btnDiscard.visible = false;
+				LobyManager.Instance.gamePoker.btnHint.visible = false;
 				// “等待其他玩家” 该信息不显示
-				FlexGlobals.topLevelApplication.labelWait.visible = false;
+				LobyManager.Instance.gamePoker.labelWait.visible = false;
 				handleClose(null);
 				//this.visible = false;
 			}

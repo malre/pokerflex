@@ -5,7 +5,6 @@ package poker
 	import json.JSON;
 	
 	import mx.controls.Alert;
-	import mx.core.FlexGlobals;
 	
 	public class NetManager
 	{
@@ -28,6 +27,7 @@ package poker
 		public static var send_iamReady:String = "i am ready";
 		public static var send_updateWhileWait:String = "update While Wait";
 		public static var send_updateWhileGame:String = "update While Game";
+		public static var send_updateWhileGameFirstframe:String = "for getting cards";
 		public static var send_requestinfo:String = "request player info";
 		public static var send_sendcardsWhileGame:String = "send cards";
 		public static var send_passWhileGame:String = "pass";
@@ -90,8 +90,8 @@ package poker
 				
 			if(type == send_joinRoom)
 			{
-				LobyNetManager.Instance.httpservice.request={roomid:FlexGlobals.topLevelApplication.roomid.text, getPlayers:"true"};
-				LobyNetManager.Instance.httpservice.url = sendURL_join;
+				//LobyNetManager.Instance.httpservice.request={roomid:LobyManager.Instance.gamePoker.roomid.text, getPlayers:"true"};
+				//LobyNetManager.Instance.httpservice.url = sendURL_join;
 				//置上请求内容的标志位
 				request_type_players = true;
 			}
@@ -124,6 +124,14 @@ package poker
 			else if(type == send_updateWhileGame)
 			{
 				LobyNetManager.Instance.httpservice.request = {getPlay:"true",getCards:"true"};
+				LobyNetManager.Instance.httpservice.url = sendURL_game;
+				//置上请求内容的标志位
+				request_type_play = true;
+				request_type_cards = true;
+			}
+			else if(type == send_updateWhileGameFirstframe)
+			{
+				LobyNetManager.Instance.httpservice.request = {getPlay:"true",getCards:"true",update:"0.0"};
 				LobyNetManager.Instance.httpservice.url = sendURL_game;
 				//置上请求内容的标志位
 				request_type_play = true;
@@ -248,25 +256,28 @@ package poker
 					// 链接成功，开始等待玩家点击准备完成按钮
 					// 进入等待状态
 					send_type = send_updateWhileWait;
-					FlexGlobals.topLevelApplication.currentState = "Game";
+					//LobyManager.Instance.gamePoker.currentState = "Game";
 					Game.Instance.gameState = 3;	// 3 发送举手消息以前
 					// 关闭几个和出牌有关的按钮的显示
-					FlexGlobals.topLevelApplication.btnReady.visible = true;
-					FlexGlobals.topLevelApplication.btnReady.enabled = true;
-					FlexGlobals.topLevelApplication.btnSendCards.visible = false;
-					FlexGlobals.topLevelApplication.btnDiscard.visible = false;
-					FlexGlobals.topLevelApplication.btnHint.visible = false;
+					LobyManager.Instance.gamePoker.btnReady.visible = true;
+					LobyManager.Instance.gamePoker.btnReady.enabled = true;
+					LobyManager.Instance.gamePoker.btnSendCards.visible = false;
+					LobyManager.Instance.gamePoker.btnDiscard.visible = false;
+					LobyManager.Instance.gamePoker.btnHint.visible = false;
 					// 初始化玩家的准备用按钮
 					Game.Instance.readyStateInit();
 					// “等待其他玩家” 该信息不显示
-					FlexGlobals.topLevelApplication.labelWait.visible = false;
+					LobyManager.Instance.gamePoker.labelWait.visible = false;
 					// 
 					requestSuccess = true;
 				}
 			}
 			else if(send_type == send_leave)
 			{
-    			RoomDirectiveDeal.Instance.sendMessage();
+    			// 使游戏本体不见，并回到游戏房间，刷新房间
+    			LobyManager.Instance.gamePoker.endup();
+    			// 回到游戏
+    			LobyManager.Instance.changeState(1);
 			}
 			else if(send_type == send_requestinfo)
 			{
@@ -289,8 +300,8 @@ package poker
 				if(json1.success)
 				{
 					// 将准备按钮的文字修改
-					FlexGlobals.topLevelApplication.btnReady.enabled = false;
-					FlexGlobals.topLevelApplication.labelWait.visible = true;
+					LobyManager.Instance.gamePoker.btnReady.enabled = false;
+					LobyManager.Instance.gamePoker.labelWait.visible = true;
 				}
 			}
 			else if(send_type == send_updateWhileWait)
@@ -309,13 +320,14 @@ package poker
 					{
 						// 进入游戏逻辑，先转到游戏之前的状态，来获得一帧牌的数据，然后再跳转到正式的游戏中
 						requestEnable = true;
-						send(send_updateWhileGame);
+						send(send_updateWhileGameFirstframe);
+						setSendType(send_updateWhileGame);
 						Game.Instance.gameState = 4;
 						Game.Instance.getSelfseat();
 
 						// 将准备按钮隐藏
-						FlexGlobals.topLevelApplication.btnReady.visible = false;
-						FlexGlobals.topLevelApplication.labelWait.visible = false;
+						LobyManager.Instance.gamePoker.btnReady.visible = false;
+						LobyManager.Instance.gamePoker.labelWait.visible = false;
 						// 准备状态按钮初始化
 						Game.Instance.readyStateInit();
 					}
@@ -345,14 +357,14 @@ package poker
 							if(json1.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								FlexGlobals.topLevelApplication.btnSendCards.visible = true;
-								FlexGlobals.topLevelApplication.btnSendCards.enabled = false;
-								FlexGlobals.topLevelApplication.btnDiscard.visible = true;
-								FlexGlobals.topLevelApplication.btnDiscard.enabled = true;
-								FlexGlobals.topLevelApplication.btnHint.visible = true;
+								LobyManager.Instance.gamePoker.btnSendCards.visible = true;
+								LobyManager.Instance.gamePoker.btnSendCards.enabled = false;
+								LobyManager.Instance.gamePoker.btnDiscard.visible = true;
+								LobyManager.Instance.gamePoker.btnDiscard.enabled = true;
+								LobyManager.Instance.gamePoker.btnHint.visible = true;
 								if(json1.play.last == json1.play.next)
 								{
-									FlexGlobals.topLevelApplication.btnDiscard.enabled = false;
+									LobyManager.Instance.gamePoker.btnDiscard.enabled = false;
 								}
 							}
 						}
@@ -366,14 +378,14 @@ package poker
 							if(json1.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								FlexGlobals.topLevelApplication.btnSendCards.visible = true;
-								FlexGlobals.topLevelApplication.btnSendCards.enabled = false;
-								FlexGlobals.topLevelApplication.btnDiscard.visible = true;
-								FlexGlobals.topLevelApplication.btnDiscard.enabled = true;
-								FlexGlobals.topLevelApplication.btnHint.visible = true;
+								LobyManager.Instance.gamePoker.btnSendCards.visible = true;
+								LobyManager.Instance.gamePoker.btnSendCards.enabled = false;
+								LobyManager.Instance.gamePoker.btnDiscard.visible = true;
+								LobyManager.Instance.gamePoker.btnDiscard.enabled = true;
+								LobyManager.Instance.gamePoker.btnHint.visible = true;
 								if(json1.play.last == json1.play.next)
 								{
-									FlexGlobals.topLevelApplication.btnDiscard.enabled = false;
+									LobyManager.Instance.gamePoker.btnDiscard.enabled = false;
 								}
 							}
 							// 对游戏正常结束的判断。
@@ -383,7 +395,7 @@ package poker
 						{
 							Alert.show("游戏意外结束，重新开始","有玩家推出了房间");
 //							GameObjectManager.Instance.shutdown();
-//							FlexGlobals.topLevelApplication.currentState = "MainMenu";
+//							LobyManager.Instance.gamePoker.currentState = "MainMenu";
 						}
 						// 游戏胜利
 						else if(json1.status == 2)
@@ -392,7 +404,7 @@ package poker
 							// 背景还是要保留
 							GameObjectManager.Instance.setVisibleByName("BG", true);
 							Game.Instance.gameState = 5;
-							FlexGlobals.topLevelApplication.showPopupDlg();
+							LobyManager.Instance.gamePoker.showPopupDlg();
 						}
 					}
 
@@ -407,6 +419,7 @@ package poker
 					Alert.show(str, "");
 				}
 			}
+			json2 = json1;
 		}
 
 		public function failProcess(event:Event):void
@@ -415,11 +428,11 @@ package poker
 			Alert.show("接收消息失败", "错误");
 			if(send_type == send_joinRoom)
 			{
-				FlexGlobals.topLevelApplication.loginlog.text = "connect failed. join room";
+				//LobyManager.Instance.gamePoker.loginlog.text = "connect failed. join room";
 			}
 			else if(send_type == send_iamReady)
 			{
-				FlexGlobals.topLevelApplication.loginlog.text = "connect failed. wait for ready";
+				//LobyManager.Instance.gamePoker.loginlog.text = "connect failed. wait for ready";
 			}
 			else if(send_type == send_updateWhileWait)
 			{

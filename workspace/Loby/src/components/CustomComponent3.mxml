@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009">
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:mx="library://ns.adobe.com/flex/halo">
+
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import lobystate.StateGetRoomPlayerlist;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				LobyNetManager.Instance.send(LobyNetManager.leaveTable);
+                
+			}
+			
+		]]>
+	</fx:Script>
+
 	<s:transitions>
 		<s:Transition fromState="State3" toState="State2" autoReverse="true">
 			<s:Parallel>
@@ -13,5 +27,14 @@
 		<s:State name="State2" th:color="0x0081cc"/>
 		<s:State name="State3"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/p_22.png')" resizeMode="scale" id="bitmapimage1" includeIn="State3"/>
+	<s:BitmapImage source="@Embed('/assets/p_22.png')" resizeMode="scale" id="bitmapimage1" includeIn="State3" x="1" y="-6"/>
+	<s:Button includeIn="State3" x="10" y="423" label="exit table" click="button1_clickHandler(event)"/>
+	<mx:DataGrid includeIn="State3" x="15" y="21" width="257" editable="false" height="173" dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="昵称" dataField="name"/>
+			<mx:DataGridColumn headerText="金币数" dataField="money"/>
+			<mx:DataGridColumn headerText="级别" dataField="level"/>
+			<mx:DataGridColumn headerText="积分" dataField="score"/>
+		</mx:columns>
+	</mx:DataGrid>
 </s:Group>

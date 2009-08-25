@@ -8,9 +8,9 @@
 	<mx:Button x="400" y="385" label="放弃" width="65" height="22" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')" click="discardClicked(event)"/>
 	<mx:Button x="495" y="385" label="提示" width="65" height="22" id="btnHint" enabled="false"/>
 	<mx:Button x="250" y="319" label="准备好了" width="74" height="53" id="btnReady" click="gameReadyClicked(event)" icon="@Embed(source='../res/btnSelfread.png')"/>
-	<mx:Label x="262" y="49" id="label_thinking" text="出牌"/>
-	<mx:Label x="350" y="49" id="Lable_playernameUp"/>
-	<mx:Label x="350" y="74" id="Label_leftcardsnumUp"/>
+	<mx:Image x="262" y="49" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
+	<mx:Label x="350" y="49" id="Lable_playernameUp" color="#FFFFFF"/>
+	<mx:Label x="350" y="74" id="Label_leftcardsnumUp" color="#FFFFFF"/>
 	<mx:Image x="266" y="102" id="imgPlayerUpReady" source="@Embed('../res/ready.png')"/>
 	<mx:Image x="266" y="102" id="imgPlayerUpPrepare" source="@Embed('../res/notRready.png')"/>
 	<mx:Image x="262" y="169" id="imgDiscardUp" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
@@ -22,11 +22,11 @@
 	<mx:Image x="390" y="277" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
 	<mx:Image x="390" y="277" id="imgPlayerRightPrepare" source="@Embed('../res/notRready.png')"/>
 	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait"/>
-	<mx:Label x="25" y="330" id="Lable_playernameLeft"/>
-	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft"/>
-	<mx:Label x="510" y="330" id="Lable_playernameRight"/>
-	<mx:Label x="510" y="356" id="Label_leftcardsnumRight"/>
-	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()"/>
+	<mx:Label x="25" y="330" id="Lable_playernameLeft" color="#FFFFFF"/>
+	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft" color="#FFFFFF"/>
+	<mx:Label x="510" y="330" id="Lable_playernameRight" color="#FFFFFF"/>
+	<mx:Label x="510" y="356" id="Label_leftcardsnumRight" color="#FFFFFF"/>
+	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="false"/>
 	<mx:Label x="667" y="10" id="textPlayerSelf" width="76" height="24"/>
 	<mx:Label x="653" y="91" id="textPlayerPartner" width="90" height="19"/>
 	<mx:Label x="653" y="155" id="textPlayerEmy1" width="90" height="19"/>
@@ -106,7 +106,7 @@
 				//NetManager.Instance.requestEnable = true;
 				//NetManager.Instance.send(NetManager.send_viewCardsHistory);
 				//btnCardView.enabled = false;
-				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
+				//var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
 			}
 			private function startDebugClicked(event:Event):void
 			{
@@ -154,6 +154,15 @@
 			//public var loadedSM:SystemManager;
 			public function creationComplete():void
 			{
+
+			}
+			public function startup(obj:Object):void
+			{
+				this.visible = true;
+				// 把得到的返回数据复制给本游戏的处理返回的result对象
+				NetManager.Instance.json1 = obj;
+				NetManager.Instance.requestSuccess = true;
+				Game.Instance.getSelfseat();
 				//
 				Label_leftcardsnumRight.visible = false;
 				Label_leftcardsnumUp.visible = false;
@@ -178,17 +187,43 @@
 				// “等待其他玩家” 该信息不显示
 				labelWait.visible = false;
 				//把http的处理函数定义到自己的函数来
-				LobyNetManager.Instance.httpservice.removeEventListener(ResultEvent.RESULT, LobyNetManager.Instance.httpResult);
-				LobyNetManager.Instance.httpservice.removeEventListener(FaultEvent.FAULT, LobyNetManager.Instance.httpFault);
+				// 我使用了移除函数，并且我认为没有错误，但是实际的效果是，前一个监听器并没有被移除
+				//LobyNetManager.Instance.httpservice.removeEventListener(ResultEvent.RESULT, LobyNetManager.Instance.httpResult);
+				//LobyNetManager.Instance.httpservice.removeEventListener(FaultEvent.FAULT, LobyNetManager.Instance.httpFault);
 				
-				LobyNetManager.Instance.httpservice.addEventListener(ResultEvent.RESULT, NetManager.Instance.resultProcess);
-				LobyNetManager.Instance.httpservice.addEventListener(FaultEvent.FAULT, NetManager.Instance.failProcess);
-
-				
+				//LobyNetManager.Instance.httpservice.addEventListener(ResultEvent.RESULT, NetManager.Instance.resultProcess);
+				//LobyNetManager.Instance.httpservice.addEventListener(FaultEvent.FAULT, NetManager.Instance.failProcess);			
 			}
-			public function swfclick(evt:MouseEvent):void
+			public function endup():void
 			{
-				Alert.show("get click", "");
+				this.visible = false;
+				//
+				Label_leftcardsnumRight.visible = false;
+				Label_leftcardsnumUp.visible = false;
+				Label_leftcardsnumLeft.visible = false;
+				// 放弃图
+				imgDiscardDown.visible = false;
+				imgDiscardLeft.visible = false;
+				imgDiscardUp.visible = false;
+				imgDiscardRight.visible = false;
+				//
+				label_thinking.visible = false;
+				inGame = false;
+				Game.Instance.gameState = 0;	// null
+				// 关闭几个和出牌有关的按钮的显示
+				btnReady.visible = true;
+				btnReady.enabled = true;
+				btnSendCards.visible = false;
+				btnDiscard.visible = false;
+				btnHint.visible = false;
+				// 初始化玩家的准备用按钮
+				Game.Instance.readyStateInit();
+				// “等待其他玩家” 该信息不显示
+				labelWait.visible = false;				
+				GameObjectManager.Instance.shutdown();
+				// 背景还是要保留
+				GameObjectManager.Instance.setVisibleByName("BG", true);
+				Game.Instance.clearPlayerCards();
 			}
 			
 			public function enterFrame(event:Event):void
@@ -229,11 +264,13 @@
 			{
 				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
 				popup.visible = false;
-			}    		
+			}
 
     		protected function btnHelp_clickHandler(event:MouseEvent):void
     		{
     			// TODO Auto-generated method stub
+				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
+				popup.visible = false;
     		}
     		
     		protected function btnSetting_clickHandler(event:MouseEvent):void

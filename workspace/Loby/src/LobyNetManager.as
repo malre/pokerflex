@@ -12,6 +12,8 @@ package
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
+	
+	import poker.NetManager;
 
 	// 对服务器发出连接和请求，并作出回应
 	public class LobyNetManager
@@ -24,22 +26,28 @@ package
 		static public var URL_lobyAddress:String = "http://192.168.18.199/web/world/";
 		//static private var URL_lobyAddress:String = "http://192.168.18.199/web/world/";
 		// 我们将这个loby地址保存下来，这个被我们称为动态loby地址，它可能会有变化
-		static public var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
+		static public var URL_lobysonAddress:String = "http://192.168.18.199/web/world/";
 		//private var URL_lobysonAddress:String = "http://192.168.18.199/web/world/";
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
 		static public var URL_roomInfo:String = "lobby/info/list";
-		static public var URL_playerInfo:String = "game/index/identity";
+		static public var URL_addloby:String = "lobby/player/add";
+		static public var URL_leaveloby:String = "lobby/player/remove";
+		static public var URL_roomPlayerlist:String = "lobby/player/list";
+		static public var URL_playerInfo:String = "default/account/identity";
 		static public var URL_tableInfo:String = "game/list/list";
 		static public var URL_joinTable:String = "game/room/add";
 		static public var URL_leaveTable:String = "game/room/remove";
 		//private var URL_
 		// 各种请求定义
 		static public var getlobyaddress:String = "request loby";
+		static public var addloby:String = "join to loby";
+		static public var leaveloby:String = "leave loby";
 		static public var playerInfo:String = "request player info";
 		static public var roomInfo:String = "request room info";
 		static public var tableInfo:String = "request table info";
 		static public var joinTable:String = "join table game";
 		static public var leaveTable:String = "leave table";
+		static public var getRoomPlayerlist:String = "get player list";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -60,11 +68,13 @@ package
 		
 		private var result:Object = new Object();
 		private var lastRlt:Object = new Object();
+			// store for table data
+		public var tabledata:Object = new Object();
 		
 		public function LobyNetManager()
 		{
 			httpser.method = "POST";
-			httpser.showBusyCursor = true;
+			httpser.showBusyCursor = false;
 			httpser.addEventListener(ResultEvent.RESULT, httpResult);
 			httpser.addEventListener(FaultEvent.FAULT, httpFault);
 			
@@ -112,6 +122,15 @@ package
 			{
 				StateManager.Instance.changeState(StateGetLobyAddress.Instance);
 			}
+			else if(type == addloby)
+			{
+				StateJoinLoby.Instance.setLobyid(FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@lid);
+				StateManager.Instance.changeState(StateJoinLoby.Instance);
+			}
+			else if(type == leaveloby)
+			{
+				StateManager.Instance.changeState(StateLeaveLoby.Instance);
+			}
 			else if(type == playerInfo)
 			{
 				StateManager.Instance.changeState(StateGetPlayerInfo.Instance);
@@ -146,57 +165,56 @@ package
 					p = 3;
 				}
 				StateManager.Instance.changeState(StateLobyJoinTable.Instance);
-				var rq:Object = {roomid:lastRlt[param1].rid.toString(),pos:p};
+				var rq:Object = {"roomid":tabledata[param1].rid.toString(), "pos":p, "getPlayers":"true"};
 				StateLobyJoinTable.Instance.setRequest(rq);
 			}
 			else if(type == leaveTable)
 			{
 				StateManager.Instance.changeState(StateLeaveTable.Instance);
 			}
+			else if(type == getRoomPlayerlist)
+			{
+				StateManager.Instance.changeState(StateGetRoomPlayerlist.Instance);
+			}
 			StateManager.Instance.send();
 		}
 		
 		public function httpResult(event:Event):void
 		{
-			// 恢复请求许可
-			requestEnable = true;
-			CursorManager.removeBusyCursor();
-
-			try{
- 			result = JSON.decode(httpser.lastResult.toString());
- 			}catch(error:ArgumentError){
- 				trace("json decode error");
- 			}
-			if(result.hasOwnProperty("success"))
+			if(LobyManager.Instance.gamePoker.visible)
 			{
-				if(!result.success)
-				{
-					if(result.hasOwnProperty("error"))
-					{
-						Alert.show(result.error.message);
-					}
-					return;
-				}
+				NetManager.Instance.resultProcess(event);
 			}
-			
-			StateManager.Instance.receive(result);
-			lastRlt = result;
+			else
+			{
+				// 恢复请求许可
+				requestEnable = true;
+				CursorManager.removeBusyCursor();
+	
+				try{
+	 			result = JSON.decode(httpser.lastResult.toString());
+	 			}catch(error:ArgumentError){
+	 				trace("json decode error");
+	 			}
+				
+				StateManager.Instance.receive(result);
+				lastRlt = result;
+			}
 		}
-		private function initlisten(event:Event):void
-		{
 
-            // Initialize variables with information from
-            // the loaded application.
-			FlexGlobals.topLevelApplication.gameFlash.visible = true;
-			//
-			LobyManager.Instance.isGameLoaded = true;
-		}
 		public function httpFault(event:Event):void
 		{
-			// 恢复请求许可
-			requestEnable = true;
-			
-			CursorManager.removeBusyCursor();
+			if(LobyManager.Instance.gamePoker.visible)
+			{
+				NetManager.Instance.failProcess(event);
+			}
+			else
+			{
+				// 恢复请求许可
+				requestEnable = true;
+				
+				CursorManager.removeBusyCursor();
+			}
 		}
 		
 		// 对得到的房间数据进行分析，并进行设置

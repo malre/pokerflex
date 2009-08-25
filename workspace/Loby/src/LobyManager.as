@@ -8,9 +8,10 @@ package
 	import mx.controls.Image;
 	import mx.controls.Label;
 	import mx.core.FlexGlobals;
+	import mx.events.CloseEvent;
 	import mx.events.ListEvent;
 	
-	import poker.poker;
+	import poker.*;
 
 	// 用来控制和管理大厅的数据
 	public class LobyManager
@@ -28,16 +29,33 @@ package
 		// 房间里面桌子的总数
 		private var tableTotal:int = 0;
 		
-		//state
-		private var _state:int;
+		// 主状态，用来控制大厅的运作
+		// STATE  0 空状态
+		// 1 大厅正常
+		// 2 游戏中
+		// 3 restore 当上次是意外中断的时候，该状态用来恢复上次的，自动运行到最后的指定状态，
+		// 回到指定的大厅
+		// 4 restore
+		// 回到指定的游戏 
+		private var _state:int = 0;
+			// 恢复用记录玩家信息
+			public var playerInfo:Object = new Object();
+		// 大厅更新时间
+		private var freshTime:int = 10;		
+		private var freshCount:int = 0;
+		private var lastFrameTime:Date = new Date();
+		public var refreshflag:Boolean = false;
 		
-		// 主画面显示元素用数据
+		////////////// 主画面显示元素用数据
 		[Bindable]
-		private var treeData:XML = <node name="游戏大厅" lid="-1" parent="-1" address=""/>
+		private var treeData:XML = <node name="游戏大厅" lid="-1" parent="-1" address="" type="0"/>
+		public function get TreeData():XML
+		{
+			return treeData;
+		}
 		
-		// 正确的调用应该在房间中点击桌子以后
+		// 双扣游戏的本体
 		public var gamePoker:poker;
-		
 		
 		//////////////////////////////////////////
 		//子flash， game部分的被载入flash的管理
@@ -69,19 +87,79 @@ package
 			gamePoker = new poker();
 				// add it to main application
 			FlexGlobals.topLevelApplication.addElement(gamePoker);
+			gamePoker.visible = false;
 		}
 		
 		public function enterFrame():void
 		{
-			// 进行间隔一定时间一次的大厅数据刷新
 			switch(state)
 			{
 				case 0:	// null
 				break;
 				case 1:	// normal
+					// 进行间隔一定时间一次的大厅数据刷新
+					var thisFrame:Date = new Date();
+					var seconds:Number = (thisFrame.getTime() - lastFrameTime.getTime())/1000.0;
+					if(seconds > freshTime)
+					{
+						if(LobyNetManager.Instance.RequestEnable)
+						{
+							if(LobyErrorState.Instance.errorId > 0 && LobyErrorState.Instance.errorId <= 100)
+								break;
+								 
+							refreshflag = true;
+							// 当能请求的情况下，进行请求
+							if(ifPlayerInRoom())
+							{
+								LobyNetManager.Instance.send(LobyNetManager.tableInfo);
+							}
+							else{
+								LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+							}
+							
+			    			lastFrameTime = thisFrame;
+			   			}
+					}
+					
 				break;
 				case 2:	// game
 				break;
+					// restore state
+				case 3:
+					// 请求房间信息，并自动进入房间
+				break;
+				case 4:
+				break;
+			}
+		}
+		public function changeState(state:int):void
+		{
+			if(state == 0)
+			{
+				_state = 0;
+			}
+			else if(state == 1)
+			{
+				if(_state == 3 || _state == 4)
+				{
+				}
+				else{
+					// 进行一次桌子数据的请求
+					LobyNetManager.Instance.send(LobyNetManager.tableInfo);
+				}
+				_state = 1;
+			}
+			else if(state == 2)
+			{
+				_state = 2;
+			}
+			else if(state == 3)
+			{
+				_state = 3;
+			}
+			else if(state == 4)
+			{
+				_state = 4;
 			}
 		}
 		
@@ -102,6 +180,7 @@ package
 				xml.@lid = obj[i].lid;
 				xml.@parent = obj[i].parent;
 				xml.@address = "http://"+obj[i].address;
+				xml.@type = obj[i].type;
 				
 				// 根节点是否是要连接的点
 				if(treeData.@lid == obj[i].parent)
@@ -110,6 +189,7 @@ package
 				}
 				else{
 					var node:XMLList = treeData..*.(@lid == obj[i].parent);
+					// 这个地方是一个bug点，如果返回超过1个数据，会出错。
 					node.appendChild(xml);
 				}
 			}
@@ -118,6 +198,9 @@ package
 		// 当结构树被点击的时候，进行子节点的构造
 		public function LobyTreeItemClick(event:ListEvent):void
 		{
+			FlexGlobals.topLevelApplication.gameTreeView.expandItem(FlexGlobals.topLevelApplication.gameTreeView.selectedItem, 
+			!FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem), true);
+			
 			// 如果这次请求是点开数，才处理，关闭树不进行处理
 			if(FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem))
 				return;
@@ -136,7 +219,15 @@ package
 				}
 				else
 				{
-					LobyNetManager.Instance.send(LobyNetManager.tableInfo);
+					//判断原来是否在房间中
+					if(ifPlayerInRoom())
+					{
+						// 首先讯问是否要离开房间
+						Alert.show("加入房间会退出您原来所在的房间，确定吗？", "", Alert.YES|Alert.NO, null/*Application(FlexGlobals.topLevelApplication)*/, alertClickHandler);
+					}
+					else{
+						LobyNetManager.Instance.send(LobyNetManager.addloby);
+					}
 				}
 /*				else if(obj.@label == "")
 				{
@@ -145,6 +236,23 @@ package
 				 	TabBarChange(obj);
 				}
 */			}
+		}
+		private function alertClickHandler(event:CloseEvent):void{
+			if(event.detail == Alert.YES){
+				LobyNetManager.Instance.send(LobyNetManager.leaveloby);
+			}
+			else{
+			}
+		}
+		
+		// 判断玩家是否在房间中，返回房间编号
+		private function ifPlayerInRoom():Boolean
+		{
+			var xmllist:XMLList = treeData..*.(@lid == playerInfo.player.lid);
+			if(xmllist.@type == 1)
+				return true;
+				
+			return false;
 		}
 		
 		// 成功加入游戏区，增加标签
@@ -174,6 +282,22 @@ package
 
 		}
 		
+		// 进入房间并更新房间内信息
+		public function getintoRoom(obj:Object):void
+		{
+			RoomTableDraw(obj);
+			//if(!refreshflag)
+			{
+				// 对得到的table数据进行分析和描画，并跳转
+				//FlexGlobals.topLevelApplication.currentState = "GameRoom";
+				FlexGlobals.topLevelApplication.customcomponent21.currentState='State2';
+				FlexGlobals.topLevelApplication.customcomponent31.currentState='State3';
+				FlexGlobals.topLevelApplication.customcomponent11.currentState='State1';
+				// make tree invisible
+				FlexGlobals.topLevelApplication.gameTreeView.visible = false;
+			}
+		}
+
 		// 当在房间里面的时候，描画房间里面的桌子
 		public function RoomTableDraw(obj:Object):Boolean
 		{
@@ -182,9 +306,10 @@ package
 				return false;
 			
 			var canvas:Canvas = FlexGlobals.topLevelApplication.gameRoomCanvas;
+			canvas.removeAllChildren();
 			var i:int,j:int;
 			// 本次更新得到的数据比上一次的要少，要删除部分显示的桌子
-			if(obj.length <= tableTotal)
+/*			if(obj.length <= tableTotal)
 			{
 				// 删除多余的桌子
 				for(i=obj.length;i<tableTotal;i++)
@@ -195,14 +320,22 @@ package
 					canvas.removeChild(canvas.getChildByName("left"+i.toString()));
 					canvas.removeChild(canvas.getChildByName("down"+i.toString()));
 					canvas.removeChild(canvas.getChildByName("right"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("avatarup"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("avatarleft"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("avatardown"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("avatarright"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("nameup"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("nameleft"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("namedown"+i.toString()));
+					canvas.removeChild(canvas.getChildByName("nameright"+i.toString()));
 				}
 				tableTotal = obj.length;
 			}
 			else	// 这次的数据比上次的多，也包括了第一次的情况，需要动态的增加桌子的数量
-			{
-				for(i =tableTotal/roomTableColumnMax; i<roomTableRowMax; i++)
+			{*/
+				for(i =0; i<roomTableRowMax; i++)
 				{
-					for(j =tableTotal%roomTableRowMax; j<roomTableColumnMax; j++)
+					for(j =0; j<roomTableColumnMax; j++)
 					{
 						// 如果超出了界限，直接返回
 						if(i*roomTableColumnMax+j >= obj.length)
@@ -219,6 +352,11 @@ package
 						img.load(ResourceManager.imgTable);
 						img.name = "table"+id.toString();
 						canvas.addChild(img);
+						var tablename:Label = new Label();
+						tablename.x = img.x +3;
+						tablename.y = img.y;
+						tablename.text = obj[id].name;
+						canvas.addChild(tablename);
 						
 						// 桌子上的桌号
 						var label:Label = new Label();
@@ -241,15 +379,48 @@ package
 						// 创建按钮需要和实际的房间信息结合起来
 						// 如果该位置有玩家存在，则无按钮，否则有按钮
 						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+10, img.y-40));
-	
 						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+10));
-	
 						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+10, img.y+52+10));
-						
 						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+51+10, img.y+10));
+						// 描画桌子上的人的信息
+						var farr:Array = new Array(0,0,0,0);
+						for(var n:int=0;n<4;n++)
+						{
+							if(obj[id].players.hasOwnProperty(n))
+							{
+								if(obj[id].players[n].pos == 0)
+								{
+									createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+10, img.y-40);
+									farr[0] = 1;
+								}
+								else if(obj[id].players[n].pos == 1)
+								{
+									createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-40, img.y+10);
+									farr[1] = 1;
+								}
+								else if(obj[id].players[n].pos == 2)
+								{
+									createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+10, img.y+52+10);
+									farr[2] = 1;
+								}
+								else if(obj[id].players[n].pos == 3)
+								{
+									createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+10, img.y+10);
+									farr[3] = 1;
+								}
+							}
+						}
+						if(farr[0] == 0)
+							createAvatarAndName(null, "up"+id.toString(), img.x+10, img.y-40);
+						if(farr[1] == 0)
+							createAvatarAndName(null, "left"+id.toString(), img.x+10, img.y-40);
+						if(farr[2] == 0)
+							createAvatarAndName(null, "down"+id.toString(), img.x+10, img.y-40);
+						if(farr[3] == 0)
+							createAvatarAndName(null, "right"+id.toString(), img.x+10, img.y-40);
 					}
 				}
-			}
+			//}
 			tableTotal = obj.length;
 			return true;
 		}
@@ -261,13 +432,41 @@ package
 			btn.y = y;
 			btn.id = id;
 			btn.name = name;
-//			btn.u
 			btn.addEventListener(MouseEvent.CLICK, tableBtnHandler);
 			btn.width = 30;
 			btn.height = 30;
 			btn.setStyle("cornerRadius", 13);
 			btn.setStyle("borderColor", "#445c95");
 			return btn;
+		}
+		private function createAvatarAndName(obj:Object, name:String, x:int, y:int):Image
+		{
+			var img:Image = new Image();
+			var lbl:Label = new Label();
+			img.name = "avatar"+name;
+			lbl.name = "name"+name;
+			if(obj == null)
+			{
+				img.visible = false;
+				FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(img);
+				lbl.visible = false;
+				FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(lbl);
+				return null;
+			}
+			img.x = x;
+			img.y = y;
+			img.scaleX = 0.6;
+			img.scaleY = 0.6;
+			img.source = obj.avatar;
+			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(img);
+			if(obj.ready)
+				lbl.text = obj.name +"(o)";
+			else
+				lbl.text = obj.name +"(x)";
+			lbl.x = x;
+			lbl.y = y-14;
+			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(lbl);
+			return null;
 		}
 		
 		// 当桌子上的座位被点击了以后，会发出加入游戏的请求。

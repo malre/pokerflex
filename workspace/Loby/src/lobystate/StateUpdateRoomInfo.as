@@ -23,11 +23,22 @@ package lobystate
 			LobyNetManager.Instance.httpservice.send();
 			//request_roominfo = true;
 		}
-		override public function receive(obj:Object):void
+		override public function receive(obj:Object):Boolean
 		{
-			LobyManager.Instance.LobyTreeCtrl(obj);
-			// 继续请求玩家信息
-			LobyNetManager.Instance.send(LobyNetManager.playerInfo);			
+			if(super.receive(obj))
+			{
+				LobyManager.Instance.LobyTreeCtrl(obj);
+				// 继续请求玩家信息
+				LobyNetManager.Instance.send(LobyNetManager.playerInfo);
+				
+				return true;
+			}
+			else{
+				// if false
+				LobyErrorState.Instance.errorId = LobyErrorState.ERR_NOTLOGIN;
+				return false;
+			}
+			
 		}
 	}
 }
