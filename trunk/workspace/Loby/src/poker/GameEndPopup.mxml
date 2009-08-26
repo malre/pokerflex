@@ -56,6 +56,7 @@
 				//this.visible = false;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
 				// 关闭几个和出牌有关的按钮的显示
+				LobyManager.Instance.gamePoker.initGUI();
 				LobyManager.Instance.gamePoker.btnReady.visible = true;
 				LobyManager.Instance.gamePoker.btnReady.enabled = true;
 				LobyManager.Instance.gamePoker.btnSendCards.visible = false;

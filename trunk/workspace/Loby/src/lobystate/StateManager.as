@@ -2,7 +2,7 @@ package lobystate
 {
 	public class StateManager
 	{
-		private static var instance:StateManager = null;
+//		private static var instance:StateManager = null;
 		// state 
 		private var state:NetRequestState = null;
 		
@@ -10,12 +10,12 @@ package lobystate
 		{
 		}
 
-		public static function get Instance():StateManager
-		{
-			if(instance == null)
-				instance = new StateManager();
-			return instance;
-		}
+//		public static function get Instance():StateManager
+//		{
+//			if(instance == null)
+//				instance = new StateManager();
+//			return instance;
+//		}
 		
 		public function changeState(state:NetRequestState):void
 		{
@@ -24,11 +24,18 @@ package lobystate
 		
 		public function send():void
 		{
-			state.send(this);
+			if(state != null)
+				state.send(this);
 		}
 		public function receive(obj:Object):void
 		{
-			state.receive(obj);
+			if(state != null)
+				state.receive(obj);
 		} 
+		public function fault():void
+		{
+			if(state != null)
+				state.fault();
+		}
 	}
 }

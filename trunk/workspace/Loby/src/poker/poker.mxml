@@ -21,30 +21,19 @@
 	<mx:Image x="423" y="240" id="imgDiscardRight" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
 	<mx:Image x="390" y="277" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
 	<mx:Image x="390" y="277" id="imgPlayerRightPrepare" source="@Embed('../res/notRready.png')"/>
-	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait"/>
+	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" color="#FFFFFF"/>
 	<mx:Label x="25" y="330" id="Lable_playernameLeft" color="#FFFFFF"/>
 	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft" color="#FFFFFF"/>
 	<mx:Label x="510" y="330" id="Lable_playernameRight" color="#FFFFFF"/>
 	<mx:Label x="510" y="356" id="Label_leftcardsnumRight" color="#FFFFFF"/>
 	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="false"/>
-	<mx:Label x="667" y="10" id="textPlayerSelf" width="76" height="24"/>
-	<mx:Label x="653" y="91" id="textPlayerPartner" width="90" height="19"/>
-	<mx:Label x="653" y="155" id="textPlayerEmy1" width="90" height="19"/>
-	<mx:Label x="653" y="203" id="textPlayerEmy2" width="90" height="19"/>
-	<mx:Button x="583" y="253" label="Button" height="55" width="62"/>
+	<mx:Label x="667" y="10" id="textPlayerSelf" width="76" height="24" color="#FFFFFF"/>
+	<mx:Label x="653" y="91" id="textPlayerPartner" width="90" height="19" color="#FFFFFF"/>
+	<mx:Label x="653" y="155" id="textPlayerEmy1" width="90" height="19" color="#FFFFFF"/>
+	<mx:Label x="653" y="203" id="textPlayerEmy2" width="90" height="19" color="#FFFFFF"/>
 	<mx:Button x="649" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnSetting.png')" id="btnSetting" click="btnSetting_clickHandler(event)"/>
 	<mx:Button x="583" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnHelp.png')" id="btnHelp" click="btnHelp_clickHandler(event)"/>
 	<mx:Button x="715" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnExitroom.png')" id="btnExit" click="btnExit_clickHandler(event)"/>
-	<fx:Declarations>
-	    <mx:HTTPService useProxy="false" id="httpService" method="POST" showBusyCursor="false"
-	    	url=""
-	    	result="{NetManager.Instance.resultProcess(event)}" fault="{NetManager.Instance.failProcess(event)}">
-	        <mx:request>
-	            <data>"{NetManager.getSendData()}"</data>
-	        </mx:request>
-	    </mx:HTTPService>
-		
-	</fx:Declarations>
     
     <fx:Script>
     	<![CDATA[
@@ -122,6 +111,7 @@
 
 			private function gameReadyClicked(event:Event):void
 			{
+				// 发送准备好的消息，如果失败，将会自动重发，
 				NetManager.Instance.requestEnable = true;
 				NetManager.Instance.send(NetManager.send_iamReady);
 				btnReady.enabled = false;
@@ -129,17 +119,15 @@
 			
 			private function sendCardsClicked(event:Event):void
 			{
-				if(!Game.Instance.btnState)
-				{
-					Game.Instance.sendcards();
-					//Game.Instance.btnState = 1;
-					btnSendCards.enabled = false;
-				}
+				// 发送出牌的消息，如果失败，将会自动重发，
+				Game.Instance.sendcards();
+				//Game.Instance.btnState = 1;
+				btnSendCards.enabled = false;
 			}
 
 			private function discardClicked(event:Event):void
 			{
-				if(!Game.Instance.btnState)
+				if(NetManager.Instance.requestEnable)
 				{
 					Game.Instance.pass();
 					//Game.Instance.btnState = 1;
@@ -225,6 +213,36 @@
 				GameObjectManager.Instance.setVisibleByName("BG", true);
 				Game.Instance.clearPlayerCards();
 			}
+			public function initGUI():void
+			{
+				btnSendCards.visible = false;
+				btnDiscard.visible = false;
+				btnHint.visible = false;
+				btnReady.visible = false;
+				label_thinking.visible = false;
+				imgPlayerUpReady.visible = false;
+				imgPlayerUpPrepare.visible = false;
+				imgDiscardUp.visible = false;
+				imgDiscardLeft.visible = false;
+				imgPlayerLeftReady.visible = false;
+				imgPlayerLeftPrepare.visible = false;
+				imgDiscardDown.visible = false;
+				imgDiscardRight.visible = false;
+				imgPlayerRightReady.visible = false;
+				imgPlayerRightPrepare.visible = false;
+				labelWait.visible = false;
+				btnCardView.visible = false;
+				Lable_playernameUp.text = "";
+				Label_leftcardsnumUp.text = "";
+				Lable_playernameLeft.text = "";
+				Label_leftcardsnumLeft.text = "";
+				Lable_playernameRight.text = "";
+				Label_leftcardsnumRight.text = "";
+				textPlayerSelf.text = "";
+				textPlayerPartner.text = "";
+				textPlayerEmy1.text = "";
+				textPlayerEmy2.text = "";
+			}
 			
 			public function enterFrame(event:Event):void
 			{
@@ -268,9 +286,6 @@
 
     		protected function btnHelp_clickHandler(event:MouseEvent):void
     		{
-    			// TODO Auto-generated method stub
-				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
-				popup.visible = false;
     		}
     		
     		protected function btnSetting_clickHandler(event:MouseEvent):void

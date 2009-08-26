@@ -1,6 +1,6 @@
 package lobystate
 {
-	import mx.core.FlexGlobals;
+	
 
 	public class StateGetTableInfo extends NetRequestState
 	{
@@ -21,17 +21,17 @@ package lobystate
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			if(LobyManager.Instance.state == 1)
-			{
-				LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_tableInfo;
-				LobyNetManager.Instance.httpservice.send();
-				// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
-				LobyNetManager.URL_lobysonAddress = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address;
-			}
-			else
+//			if(LobyManager.Instance.state == 1)
+//			{
+//				LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_tableInfo;
+//				LobyNetManager.Instance.httpservice.send();
+//				// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
+//				LobyNetManager.URL_lobysonAddress = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address;
+//			}
+//			else
 			{
 				var tree:XML = LobyManager.Instance.TreeData;
-				var node:XMLList = tree..*.(@lid == LobyManager.Instance.playerInfo.player.lid);
+				var node:XMLList = tree..*.(@lid == StateGetPlayerInfo.Instance.lastSuccData.player.lid);
 				LobyNetManager.Instance.httpservice.url = node.@address + LobyNetManager.URL_tableInfo;
 				LobyNetManager.Instance.httpservice.send();
 				// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
@@ -51,7 +51,11 @@ package lobystate
 				if(LobyManager.Instance.state == 4)
 				{
 					// 继续进入游戏的请求
-					// 这里先省略
+					//LobyManager.Instance.gamePoker.startup(obj);
+					// 
+					//LobyManager.Instance.changeState(2);
+					//return true;
+					LobyManager.Instance.changeState(1);
 				}
 				// 请求玩家列表
 				LobyNetManager.Instance.send(LobyNetManager.getRoomPlayerlist);
@@ -60,6 +64,10 @@ package lobystate
 			else{
 				return false;
 			}
+		}
+		override public function fault():void
+		{
+			
 		}
 	}
 }

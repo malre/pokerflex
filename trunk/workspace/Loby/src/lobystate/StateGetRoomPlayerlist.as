@@ -40,5 +40,9 @@ package lobystate
 				return false;
 			}
 		}
+		override public function fault():void
+		{
+			
+		}
 	}
 }

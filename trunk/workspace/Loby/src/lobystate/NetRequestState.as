@@ -1,7 +1,5 @@
 package lobystate
 {
-	import mx.controls.Alert;
-
 	public class NetRequestState
 	{
 		public var lastSuccData:Object = new Object();
@@ -22,13 +20,18 @@ package lobystate
 				{
 					if(obj.hasOwnProperty("error"))
 					{
-						Alert.show(obj.error.message);
+						LobyErrorState.Instance.showErrMsg(obj.error.message);
 					}
 					return false;
 				}
 			}
 			lastSuccData = obj;
 			return true;
+		}
+		
+		public function fault():void
+		{
+			
 		}
 	}
 }

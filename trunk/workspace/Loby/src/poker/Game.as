@@ -94,7 +94,7 @@ package poker
 		public var menuState:int	= 0;
 		// 计时器
 		private var lastFrameTime:Date = new Date();
-		private static var requestInterval:Number = 1.0;
+		private static var requestInterval:Number = 2;
 		private var requestFlag:Boolean = false;
 		
 		// 按键对应的判断变量,用来控制按键不会被多次按下
@@ -656,12 +656,15 @@ package poker
 				case 1:
 				break;
 				case 2:
-					if(requestFlag)
+					if(requestFlag && NetManager.Instance.requestEnable)
 					{
-						if(curPlayer != selfseat)
+						//if(curPlayer != selfseat)
 						{
 							NetManager.Instance.send(NetManager.send_updateWhileGame);
 							requestFlag = false;
+						}
+						if(curPlayer != selfseat)
+						{
 							LobyManager.Instance.gamePoker.btnSendCards.visible = false;
 							LobyManager.Instance.gamePoker.btnDiscard.visible = false;
 							LobyManager.Instance.gamePoker.btnHint.visible = false;
@@ -675,11 +678,11 @@ package poker
 						drawOtherCards(NetManager.Instance.json1.play.history);
 						updatePlayerCardsInfo();
 						// 轮到自己出牌,并且按钮没有被按下
-						if(selfseat == NetManager.Instance.json1.play.next && !btnState)
+						if(selfseat == NetManager.Instance.json2.play.next && !btnState)
 						{
 							// 检测该次的出牌是否符合要求，能否出牌。
 							var checkarr:Array = new Array();
-							if(NetManager.Instance.json1.play.last == NetManager.Instance.json1.play.next)
+							if(NetManager.Instance.json2.play.last == NetManager.Instance.json2.play.next)
 							{
 								// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
 								// 这个时候不能够放弃
@@ -687,7 +690,7 @@ package poker
 							}
 							else
 							{
-								checkarr = checkarr.concat(NetManager.Instance.json1.play.last_card);
+								checkarr = checkarr.concat(NetManager.Instance.json2.play.last_card);
 							}
 							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
 							{
