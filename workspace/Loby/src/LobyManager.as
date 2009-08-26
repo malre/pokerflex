@@ -2,6 +2,8 @@ package
 {
 	import flash.events.MouseEvent;
 	
+	import lobystate.StateGetPlayerInfo;
+	
 	import mx.containers.Canvas;
 	import mx.controls.Alert;
 	import mx.controls.Button;
@@ -23,7 +25,7 @@ package
 		private var intervalX:int = 110;
 		private var intervalY:int = 110;
 		private var roomTableMax:int = 20;
-		private var roomTableRowMax:int = 4;
+		private var roomTableRowMax:int = 7;
 		private var roomTableColumnMax:int = 3;
 		
 		// 房间里面桌子的总数
@@ -109,13 +111,13 @@ package
 								 
 							refreshflag = true;
 							// 当能请求的情况下，进行请求
-							if(ifPlayerInRoom())
+							if(StateGetPlayerInfo.Instance.lastSuccData.player.lid != "null")
 							{
 								LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 							}
-							else{
-								LobyNetManager.Instance.send(LobyNetManager.roomInfo);
-							}
+//							else{
+//								LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+//							}
 							
 			    			lastFrameTime = thisFrame;
 			   			}
@@ -202,31 +204,29 @@ package
 			!FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem), true);
 			
 			// 如果这次请求是点开数，才处理，关闭树不进行处理
-			if(FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem))
+//			if(FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem))
+//				return;
+				
+			if(LobyManager.instance.state != 1)
 				return;
 				
 			var obj:Object = FlexGlobals.topLevelApplication.gameTreeView.selectedItem;
 			if(obj != null)
 			{
-				if(obj.@name == "游戏大厅")
-				{
-					// do nothings
-				}
-				else if(obj.@name == "双扣")
-				{
-					// 首先请求实际连接的大厅的地址,成功以后才能继续请求房间的信息
-					//LobyNetManager.Instance.send(LobyNetManager.getlobyaddress);
-				}
-				else
+				if(obj.@type == "1")
 				{
 					//判断原来是否在房间中
-					if(ifPlayerInRoom())
+					var rlt:int = ifPlayerInRoom(obj); 
+					if( rlt == 0)
 					{
+						LobyNetManager.Instance.send(LobyNetManager.addloby);
+					}
+					else if(rlt == 1){
+						
+					}
+					else if(rlt == 2){
 						// 首先讯问是否要离开房间
 						Alert.show("加入房间会退出您原来所在的房间，确定吗？", "", Alert.YES|Alert.NO, null/*Application(FlexGlobals.topLevelApplication)*/, alertClickHandler);
-					}
-					else{
-						LobyNetManager.Instance.send(LobyNetManager.addloby);
 					}
 				}
 /*				else if(obj.@label == "")
@@ -245,14 +245,20 @@ package
 			}
 		}
 		
-		// 判断玩家是否在房间中，返回房间编号
-		private function ifPlayerInRoom():Boolean
+		// 判断玩家是否在房间中，如果在
+		private function ifPlayerInRoom(selRoom:Object):int
 		{
-			var xmllist:XMLList = treeData..*.(@lid == playerInfo.player.lid);
-			if(xmllist.@type == 1)
-				return true;
-				
-			return false;
+			//var xmllist:XMLList = treeData..*.(@lid == playerInfo.player.lid);
+			if(StateGetPlayerInfo.Instance.lastSuccData.player.lid == "null")
+			{
+				return 0;
+			}
+			else if(StateGetPlayerInfo.Instance.lastSuccData.player.lid == selRoom.@lid)
+			{
+				return 1;
+			}
+			else
+				return 2;
 		}
 		
 		// 成功加入游戏区，增加标签
@@ -472,10 +478,6 @@ package
 		// 当桌子上的座位被点击了以后，会发出加入游戏的请求。
 		private function tableBtnHandler(event:MouseEvent):void
 		{
-			if(event.target.id == 0 && event.target.name == "up")
-			{
-				Alert.show("id = 0","");
-			}
 			// 向服务器发出加入一张桌子的请求
 			LobyNetManager.Instance.send(LobyNetManager.joinTable, event.target.id, event.target.name);
 		}

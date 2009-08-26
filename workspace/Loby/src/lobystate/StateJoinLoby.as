@@ -1,5 +1,7 @@
 package lobystate
 {
+	import mx.core.FlexGlobals;
+
 	public class StateJoinLoby extends NetRequestState
 	{
 		private static var instance:StateJoinLoby = null;
@@ -21,17 +23,18 @@ package lobystate
 		}
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_addloby;
-			LobyNetManager.Instance.httpservice.request = {"lid":lobyid};
+			LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_addloby;
+			LobyNetManager.Instance.httpservice.request = {"lid":lobyid}; 
 			LobyNetManager.Instance.httpservice.send();
 		}
 		override public function receive(obj:Object):Boolean
 		{
 			if(super.receive(obj))
 			{
-				LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 				// 成功之后需要把player对象的lid进行赋值
-				LobyManager.Instance.playerInfo.player.lid = lobyid;
+				StateGetPlayerInfo.Instance.lastSuccData.player.lid = lobyid;
+
+				LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 				
 				return true;
 			}
@@ -39,6 +42,10 @@ package lobystate
 				return false;
 			}
 			
+		}
+		override public function fault():void
+		{
+			LobyErrorState.Instance.showErrMsg("加入房间失败");
 		}
 		
 	}

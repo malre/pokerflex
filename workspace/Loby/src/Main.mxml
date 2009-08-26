@@ -85,5 +85,5 @@
 		<components:CustomComponent1 x="131" y="130" id="customcomponent11" th:origVisible.Page2="true" d:userLabel="massage_page">
 		</components:CustomComponent1>
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.1.2" width="64" textAlign="right"/>
+	<mx:Label x="620" y="6" text="ver 1.2.0" width="64" textAlign="right"/>
 </s:Application>

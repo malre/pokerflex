@@ -25,7 +25,8 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				if(LobyManager.Instance.state == 1)
+				StateGetPlayerInfo.Instance.lastSuccData.player.lid = "null";
+				//if(LobyManager.Instance.state == 1)
 				{
 					LobyNetManager.Instance.send(LobyNetManager.addloby);
 				}
@@ -34,6 +35,10 @@ package lobystate
 			else{
 				return false;
 			}
+		}
+		override public function fault():void
+		{
+			
 		}
 
 	}

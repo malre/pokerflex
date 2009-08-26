@@ -1,41 +1,40 @@
-package lobystate
+package poker.gamestate
 {
-	import mx.controls.Alert;
-
+	import lobystate.NetRequestState;
+	
 	public class StateLeaveTable extends NetRequestState
 	{
-		private static var instance:StateLeaveTable = null;
+		private static var instance:StateNotifyReady = null;
 
 		public function StateLeaveTable()
 		{
 			super();
 		}
-		
-		public static function get Instance():StateLeaveTable
+
+		public static function get Instance():StateNotifyReady
 		{
 			if(instance == null)
-				instance = new StateLeaveTable();
+				instance = new StateNotifyReady();
 			return instance;
 		}
-		
+
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_leaveTable;
-			LobyNetManager.Instance.httpservice.send();
-			//request_playerinfo = true;
+			NetManager.updater.url = NetManager.sendURL_ready;
+			NetManager.updater.request = {getPlayers:"true"};
+			NetManager.updater.send();
 		}
 		override public function receive(obj:Object):Boolean
 		{
 			if(super.receive(obj))
 			{
-				Alert.show("成功退出游戏桌","");
-				
 				return true;
 			}
 			else{
 				return false;
 			}
+			
 		}
 		override public function fault():void
 		{

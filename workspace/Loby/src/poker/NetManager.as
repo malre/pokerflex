@@ -4,19 +4,29 @@ package poker
 	
 	import json.JSON;
 	
+	import lobystate.StateManager;
+	
 	import mx.controls.Alert;
+	import mx.rpc.events.FaultEvent;
+	import mx.rpc.events.ResultEvent;
+	import mx.rpc.http.HTTPService;
+	
+	import poker.gamestate.StateNotifyReady;
+	import poker.gamestate.StateUpdateWhileWait;
+	import poker.gamestate.StateUpdateWhileGame;
 	
 	public class NetManager
 	{
 		//
 		protected static var instance:NetManager = null;
 		//定义了进行连接的服务器地址
-		public var sendURL_serverIP:String = "http://192.168.18.199/web/world";
-		public var sendURL_join:String = sendURL_serverIP+"/game/room/add";
-		public var sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
-		public var sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
-		public var sendURL_ready:String = sendURL_serverIP+"/game/room/start";
-		public var sendURL_game:String = sendURL_serverIP+"/game/room/update";
+		public static const sendURL_serverIP:String = LobyNetManager.URL_lobyAddress;
+		public static const sendURL_join:String = sendURL_serverIP+"/game/room/add";
+		public static const sendURL_requestinfo:String = sendURL_serverIP+"/game/index/identity";
+		public static const sendURL_leave:String = sendURL_serverIP+"/game/room/remove";
+		public static const sendURL_ready:String = sendURL_serverIP+"/game/room/start";
+		public static const sendURL_notready:String = sendURL_serverIP+"";
+		public static const sendURL_game:String = sendURL_serverIP+"/game/room/update";
 		//传送的数据内容
 		private var sendData:String = null;
 		//
@@ -25,6 +35,7 @@ package poker
 		public static var send_joinRoom:String = "join Room";
 		public static var send_leave:String = "leave Room";
 		public static var send_iamReady:String = "i am ready";
+		public static var send_cancelReady:String = "not ready";
 		public static var send_updateWhileWait:String = "update While Wait";
 		public static var send_updateWhileGame:String = "update While Game";
 		public static var send_updateWhileGameFirstframe:String = "for getting cards";
@@ -44,6 +55,11 @@ package poker
 		public var requestEnable:Boolean = true;
 		public var requestSuccess:Boolean = false;
 		
+		static public var updater:HTTPService = new HTTPService();
+		static public var sender:HTTPService = new HTTPService();
+		private var updaterStateManager:StateManager = new StateManager();
+		private var senderStateManager:StateManager = new StateManager();
+
 		////////////////////////////////////////////////////////
 		// 用来处理收到的json数据
  		public var json1:Object = new Object();
@@ -51,6 +67,17 @@ package poker
 		
 		public function NetManager()
 		{
+			updater.method = "GET";
+			updater.requestTimeout = 3;
+			updater.showBusyCursor = false;
+			updater.addEventListener(ResultEvent.RESULT, updateResultProcess);
+			updater.addEventListener(FaultEvent.FAULT, updateFailProcess);
+			
+			sender.method = "POST";
+			sender.requestTimeout = 3;
+			sender.showBusyCursor = true;
+			sender.addEventListener(ResultEvent.RESULT, sendResultProcess);
+			sender.addEventListener(FaultEvent.FAULT, sendFailProcess);
 		}
 		
 		public static function get Instance():NetManager
@@ -108,26 +135,18 @@ package poker
 			else if(type == send_iamReady)
 			{
 				// 游戏状态变成 发送举手消息以后
-				//Game.Instance.gameState = 4;
-				LobyNetManager.Instance.httpservice.request = {getPlayers:"true"};
-				LobyNetManager.Instance.httpservice.url = sendURL_ready;
-				//置上请求内容的标志位
-				request_type_players = true;
+				senderStateManager.changeState(StateNotifyReady.Instance);
+				sender.send();
 			}
 			else if(type == send_updateWhileWait)
 			{
-				LobyNetManager.Instance.httpservice.request = {getPlayers:"true"};
-				LobyNetManager.Instance.httpservice.url = sendURL_game;
-				//置上请求内容的标志位
-				request_type_players = true;
+				updaterStateManager.changeState(StateUpdateWhileWait.Instance);
+				updater.send();
 			}
 			else if(type == send_updateWhileGame)
 			{
-				LobyNetManager.Instance.httpservice.request = {getPlay:"true",getCards:"true"};
-				LobyNetManager.Instance.httpservice.url = sendURL_game;
-				//置上请求内容的标志位
-				request_type_play = true;
-				request_type_cards = true;
+				updaterStateManager.changeState(StateUpdateWhileGame.Instance);
+				updater.send();
 			}
 			else if(type == send_updateWhileGameFirstframe)
 			{
@@ -172,10 +191,9 @@ package poker
 				request_type_history = true;
 			}
 
-			LobyNetManager.Instance.httpservice.send();
 		}
 		
-		public function resultProcess(event:Event):void
+		public function updateResultProcess(event:Event):void
 		{
 			// 本次的请求到达，可以进行下一次请求
 			requestEnable = true;
@@ -185,14 +203,18 @@ package poker
 			
 			// 当数据没有发生变动的时候，返回是“null”
 			// 这个时候不做任何的更新，直接返回
-			if(LobyNetManager.Instance.httpservice.lastResult.toString() == "null")
+			if(updater.lastResult.toString() == "null")
 			{
 				return;
 			}
 			
-			json1 = null;
-			json1 = JSON.decode(LobyNetManager.Instance.httpservice.lastResult.toString());
-			
+			//json1 = null;
+				try{
+					json1 = JSON.decode(updater.lastResult.toString());
+	 			}catch(error:ArgumentError){
+	 				trace("json decode error");
+	 			}
+			updaterStateManager.receive(json1);
 			// 首先分析数据，本次请求成功还是失败,
 			// 然后看是否得到了预期的数据
 			if(json1.hasOwnProperty("success"))
@@ -422,25 +444,24 @@ package poker
 			json2 = json1;
 		}
 
-		public function failProcess(event:Event):void
+		public function updateFailProcess(event:Event):void
 		{
 			requestEnable = true;
-			Alert.show("接收消息失败", "错误");
-			if(send_type == send_joinRoom)
-			{
-				//LobyManager.Instance.gamePoker.loginlog.text = "connect failed. join room";
-			}
-			else if(send_type == send_iamReady)
-			{
-				//LobyManager.Instance.gamePoker.loginlog.text = "connect failed. wait for ready";
-			}
-			else if(send_type == send_updateWhileWait)
-			{
-				
-			}
-			else if(send_type == send_updateWhileGame)
-			{
-			}
+			updaterStateManager.fault();
+		}
+		private function sendResultProcess():void
+		{
+			try{
+				json2 = JSON.decode(sender.lastResult.toString());
+ 			}catch(error:ArgumentError){
+ 				trace("json decode error");
+ 			}
+
+			senderStateManager.receive(json2);			
+		}
+		private function sendFailProcess():void
+		{
+			senderStateManager.fault();
 		}
 	}
 }

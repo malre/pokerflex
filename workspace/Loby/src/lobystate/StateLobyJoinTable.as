@@ -62,5 +62,9 @@ package lobystate
 			//
 			LobyManager.Instance.isGameLoaded = true;
 		}
+		override public function fault():void
+		{
+			
+		}
 	}
 }

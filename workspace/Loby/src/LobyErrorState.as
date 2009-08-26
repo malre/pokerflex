@@ -1,5 +1,8 @@
 package
 {
+	import mx.controls.Alert;
+	import mx.events.CloseEvent;
+
 	// 这个类用来记录所有的错误情况，并针对错误进行分类处理
 	// 在网络类收到消息以后，可以对这个类进行设置，然后主流程会询问错误的情况，来决定后面的走向
 	public class LobyErrorState
@@ -17,7 +20,9 @@ package
 		public static const ERR_JSONDECODE:int = 101;
 		// 201-300 C
 		//
-		private var _errorId:int = 0; 
+		private var _errorId:int = 0;
+		//
+		private var isErrMsgShowing:Boolean = false; 
 		
 		private static var instance:LobyErrorState;
 		
@@ -46,6 +51,20 @@ package
 			
 			_errorId = v;
 		}
+		
+		public function showErrMsg(content:String, title:String=null):void
+		{
+			if(!isErrMsgShowing)
+			{
+				Alert.okLabel = "确定";
+				Alert.show(content, title, Alert.OK, null, alertClickHandler);
+				isErrMsgShowing = true;
+			}
+		}
 
+		private function alertClickHandler(event:CloseEvent):void
+		{
+			isErrMsgShowing = false;
+		}
 	}
 }
