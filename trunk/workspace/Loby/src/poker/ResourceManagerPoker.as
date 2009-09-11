@@ -10,170 +10,170 @@ package poker
 	{
 		public static var CardsRes:ArrayCollection = new ArrayCollection();
 		
-		[Embed(source="../res/00.png")]
+		[Embed(source="../res/00.gif")]
 		public static var Card00:Class;
 		
-		[Embed(source="../res/01.png")]
+		[Embed(source="../res/01.gif")]
 		public static var Card01:Class;
 
-		[Embed(source="../res/02.png")]
+		[Embed(source="../res/02.gif")]
 		public static var Card02:Class;
 
-		[Embed(source="../res/03.png")]
+		[Embed(source="../res/03.gif")]
 		public static var Card03:Class;
 
-		[Embed(source="../res/04.png")]
+		[Embed(source="../res/04.gif")]
 		public static var Card04:Class;
 
-		[Embed(source="../res/05.png")]
+		[Embed(source="../res/05.gif")]
 		public static var Card05:Class;
 
-		[Embed(source="../res/06.png")]
+		[Embed(source="../res/06.gif")]
 		public static var Card06:Class;
 
-		[Embed(source="../res/07.png")]
+		[Embed(source="../res/07.gif")]
 		public static var Card07:Class;
 
-		[Embed(source="../res/08.png")]
+		[Embed(source="../res/08.gif")]
 		public static var Card08:Class;
 
-		[Embed(source="../res/09.png")]
+		[Embed(source="../res/09.gif")]
 		public static var Card09:Class;
 
-		[Embed(source="../res/10.png")]
+		[Embed(source="../res/10.gif")]
 		public static var Card10:Class;
 
-		[Embed(source="../res/11.png")]
+		[Embed(source="../res/11.gif")]
 		public static var Card11:Class;
 
-		[Embed(source="../res/12.png")]
+		[Embed(source="../res/12.gif")]
 		public static var Card12:Class;
 
-		[Embed(source="../res/13.png")]
+		[Embed(source="../res/13.gif")]
 		public static var Card13:Class;
 
-		[Embed(source="../res/14.png")]
+		[Embed(source="../res/14.gif")]
 		public static var Card14:Class;
 
-		[Embed(source="../res/15.png")]
+		[Embed(source="../res/15.gif")]
 		public static var Card15:Class;
 
-		[Embed(source="../res/16.png")]
+		[Embed(source="../res/16.gif")]
 		public static var Card16:Class;
 
-		[Embed(source="../res/17.png")]
+		[Embed(source="../res/17.gif")]
 		public static var Card17:Class;
 
-		[Embed(source="../res/18.png")]
+		[Embed(source="../res/18.gif")]
 		public static var Card18:Class;
 
-		[Embed(source="../res/19.png")]
+		[Embed(source="../res/19.gif")]
 		public static var Card19:Class;
 
-		[Embed(source="../res/20.png")]
+		[Embed(source="../res/20.gif")]
 		public static var Card20:Class;
 
-		[Embed(source="../res/21.png")]
+		[Embed(source="../res/21.gif")]
 		public static var Card21:Class;
 
-		[Embed(source="../res/22.png")]
+		[Embed(source="../res/22.gif")]
 		public static var Card22:Class;
 
-		[Embed(source="../res/23.png")]
+		[Embed(source="../res/23.gif")]
 		public static var Card23:Class;
 
-		[Embed(source="../res/24.png")]
+		[Embed(source="../res/24.gif")]
 		public static var Card24:Class;
 
-		[Embed(source="../res/25.png")]
+		[Embed(source="../res/25.gif")]
 		public static var Card25:Class;
 
-		[Embed(source="../res/26.png")]
+		[Embed(source="../res/26.gif")]
 		public static var Card26:Class;
 
-		[Embed(source="../res/27.png")]
+		[Embed(source="../res/27.gif")]
 		public static var Card27:Class;
 
-		[Embed(source="../res/28.png")]
+		[Embed(source="../res/28.gif")]
 		public static var Card28:Class;
 
-		[Embed(source="../res/29.png")]
+		[Embed(source="../res/29.gif")]
 		public static var Card29:Class;
 
-		[Embed(source="../res/30.png")]
+		[Embed(source="../res/30.gif")]
 		public static var Card30:Class;
 
-		[Embed(source="../res/31.png")]
+		[Embed(source="../res/31.gif")]
 		public static var Card31:Class;
 
-		[Embed(source="../res/32.png")]
+		[Embed(source="../res/32.gif")]
 		public static var Card32:Class;
 
-		[Embed(source="../res/33.png")]
+		[Embed(source="../res/33.gif")]
 		public static var Card33:Class;
 
-		[Embed(source="../res/34.png")]
+		[Embed(source="../res/34.gif")]
 		public static var Card34:Class;
 
-		[Embed(source="../res/35.png")]
+		[Embed(source="../res/35.gif")]
 		public static var Card35:Class;
 
-		[Embed(source="../res/36.png")]
+		[Embed(source="../res/36.gif")]
 		public static var Card36:Class;
 
-		[Embed(source="../res/37.png")]
+		[Embed(source="../res/37.gif")]
 		public static var Card37:Class;
 
-		[Embed(source="../res/38.png")]
+		[Embed(source="../res/38.gif")]
 		public static var Card38:Class;
 
-		[Embed(source="../res/39.png")]
+		[Embed(source="../res/39.gif")]
 		public static var Card39:Class;
 
-		[Embed(source="../res/40.png")]
+		[Embed(source="../res/40.gif")]
 		public static var Card40:Class;
 
-		[Embed(source="../res/41.png")]
+		[Embed(source="../res/41.gif")]
 		public static var Card41:Class;
 
-		[Embed(source="../res/42.png")]
+		[Embed(source="../res/42.gif")]
 		public static var Card42:Class;
 
-		[Embed(source="../res/43.png")]
+		[Embed(source="../res/43.gif")]
 		public static var Card43:Class;
 
-		[Embed(source="../res/44.png")]
+		[Embed(source="../res/44.gif")]
 		public static var Card44:Class;
 
-		[Embed(source="../res/45.png")]
+		[Embed(source="../res/45.gif")]
 		public static var Card45:Class;
 
-		[Embed(source="../res/46.png")]
+		[Embed(source="../res/46.gif")]
 		public static var Card46:Class;
 
-		[Embed(source="../res/47.png")]
+		[Embed(source="../res/47.gif")]
 		public static var Card47:Class;
 
-		[Embed(source="../res/48.png")]
+		[Embed(source="../res/48.gif")]
 		public static var Card48:Class;
 
-		[Embed(source="../res/49.png")]
+		[Embed(source="../res/49.gif")]
 		public static var Card49:Class;
 
-		[Embed(source="../res/50.png")]
+		[Embed(source="../res/50.gif")]
 		public static var Card50:Class;
 
-		[Embed(source="../res/51.png")]
+		[Embed(source="../res/51.gif")]
 		public static var Card51:Class;
 
-		[Embed(source="../res/52.png")]
+		[Embed(source="../res/52.gif")]
 		public static var Card52:Class;
 
-		[Embed(source="../res/53.png")]
+		[Embed(source="../res/53.gif")]
 		public static var Card53:Class;
 
-		[Embed(source="../res/54.png")]							// back of card
-		public static var Card54:Class;
+//		[Embed(source="../res/54.png")]							// back of card
+//		public static var Card54:Class;
 
 		CardsRes.addItem(new GraphicsResource(new Card02()));		//3
 		CardsRes.addItem(new GraphicsResource(new Card15()));

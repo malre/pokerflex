@@ -22,6 +22,7 @@ package lobystate
 		override public function send(obj:StateManager):void
 		{
 			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_leaveTable;
+			LobyNetManager.Instance.httpservice.request = {};
 			LobyNetManager.Instance.httpservice.send();
 			//request_playerinfo = true;
 		}
