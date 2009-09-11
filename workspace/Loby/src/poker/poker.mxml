@@ -26,7 +26,7 @@
 	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft" color="#FFFFFF"/>
 	<mx:Label x="510" y="330" id="Lable_playernameRight" color="#FFFFFF"/>
 	<mx:Label x="510" y="356" id="Label_leftcardsnumRight" color="#FFFFFF"/>
-	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="false"/>
+	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="true"/>
 	<mx:Label x="667" y="10" id="textPlayerSelf" width="76" height="24" color="#FFFFFF"/>
 	<mx:Label x="653" y="91" id="textPlayerPartner" width="90" height="19" color="#FFFFFF"/>
 	<mx:Label x="653" y="155" id="textPlayerEmy1" width="90" height="19" color="#FFFFFF"/>
@@ -34,6 +34,7 @@
 	<mx:Button x="649" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnSetting.png')" id="btnSetting" click="btnSetting_clickHandler(event)"/>
 	<mx:Button x="583" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnHelp.png')" id="btnHelp" click="btnHelp_clickHandler(event)"/>
 	<mx:Button x="715" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnExitroom.png')" id="btnExit" click="btnExit_clickHandler(event)"/>
+	<mx:Label x="260" y="77" text="Label" width="45" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#FFFFFF"/>
     
     <fx:Script>
     	<![CDATA[
@@ -70,32 +71,9 @@
 				Label_leftcardsnumLeft.visible = false;
 			}
 			
-			private function startGameClicked(event:Event):void
-			{
-				// 首先获得玩家id,用来显示玩家的牌用
-				NetManager.Instance.requestEnable = true;
-				NetManager.Instance.send(NetManager.send_requestinfo);
-				// 检查房间输入，如果不是数字就报错
-				//NetManager.Instance.send(NetManager.send_joinRoom);
-			}
-			private function getpidClicked(event:Event):void
-			{
-				// 获得玩家自己的pid
-				NetManager.Instance.send(NetManager.send_requestinfo);
-			}
-
-			private function leaveGameClicked(event:Event):void
-			{
-				NetManager.Instance.requestEnable = true;
-				NetManager.Instance.send(NetManager.send_leave);
-				//Alert.show("leave room success!", "");
-			}
 			private function requestCardHistory():void
 			{
-				//NetManager.Instance.requestEnable = true;
-				//NetManager.Instance.send(NetManager.send_viewCardsHistory);
-				//btnCardView.enabled = false;
-				//var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
+				NetManager.Instance.send(NetManager.send_itemGetPlayedCards);
 			}
 			private function startDebugClicked(event:Event):void
 			{
@@ -109,30 +87,25 @@
 
 			}
 
+			// 准备界面时，准备完成点击用按钮
 			private function gameReadyClicked(event:Event):void
 			{
 				// 发送准备好的消息，如果失败，将会自动重发，
-				NetManager.Instance.requestEnable = true;
 				NetManager.Instance.send(NetManager.send_iamReady);
 				btnReady.enabled = false;
 			}
 			
 			private function sendCardsClicked(event:Event):void
 			{
+				btnSendCards.enabled = false;
 				// 发送出牌的消息，如果失败，将会自动重发，
 				Game.Instance.sendcards();
-				//Game.Instance.btnState = 1;
-				btnSendCards.enabled = false;
 			}
 
 			private function discardClicked(event:Event):void
 			{
-				if(NetManager.Instance.requestEnable)
-				{
-					Game.Instance.pass();
-					//Game.Instance.btnState = 1;
-					btnDiscard.enabled = false;
-				}
+				btnDiscard.enabled = false;
+				Game.Instance.pass();
 			}
 			
 			private function btnContinueClicked(event:Event):void
@@ -150,7 +123,7 @@
 				// 把得到的返回数据复制给本游戏的处理返回的result对象
 				NetManager.Instance.json1 = obj;
 				NetManager.Instance.requestSuccess = true;
-				Game.Instance.getSelfseat();
+				Game.Instance.getSelfseat(obj);
 				//
 				Label_leftcardsnumRight.visible = false;
 				Label_leftcardsnumUp.visible = false;
@@ -162,6 +135,7 @@
 				imgDiscardRight.visible = false;
 				//
 				label_thinking.visible = false;
+				label_leftTimeCounter.visible = false;
 				inGame = true;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
 				// 关闭几个和出牌有关的按钮的显示
@@ -196,6 +170,7 @@
 				imgDiscardRight.visible = false;
 				//
 				label_thinking.visible = false;
+				label_leftTimeCounter.visible = false;
 				inGame = false;
 				Game.Instance.gameState = 0;	// null
 				// 关闭几个和出牌有关的按钮的显示
@@ -220,6 +195,7 @@
 				btnHint.visible = false;
 				btnReady.visible = false;
 				label_thinking.visible = false;
+				label_leftTimeCounter.visible = false;
 				imgPlayerUpReady.visible = false;
 				imgPlayerUpPrepare.visible = false;
 				imgDiscardUp.visible = false;
@@ -278,10 +254,14 @@
 				
 			}
 			// 被调用函数
-			public function showPopupDlg():void
+			public function showPopupDlg(data:Object):void
 			{
 				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
+				popup.setData(data);
 				popup.visible = false;
+			}
+			public function showCardViewer(data:Object):void
+			{
 			}
 
     		protected function btnHelp_clickHandler(event:MouseEvent):void
@@ -290,7 +270,6 @@
     		
     		protected function btnSetting_clickHandler(event:MouseEvent):void
     		{
-    			// TODO Auto-generated method stub
     		}
     		
     		protected function btnExit_clickHandler(event:MouseEvent):void

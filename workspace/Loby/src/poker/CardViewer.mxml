@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
 	 width="550" height="400" layout="absolute" showCloseButton="true"
-	 creationComplete="createComplete()" title="panelCardView">
-	
+	 creationComplete="createComplete()" title="panelCardView" close="handleClose(event)">
+	<mx:Label x="300" y="201" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
+	<mx:Label x="300" y="199" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
+	<mx:Label x="299" y="200" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
+	<mx:Label x="301" y="200" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
+	<mx:Label x="300" y="200" text="飞黄" fontSize="16" color="#ffffff"/>
 	<fx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
 			import mx.controls.Image;
 			private function createComplete():void
 			{
-
 				// 创建108个image对象，并按照一定的顺序排列在菜单上
 				var i:int, j:int =0;
 				var img:Image = null;
@@ -19,24 +24,46 @@
 						img = new Image();
 						img.x = 10+i*20;
 						img.y = 10+j*100;
-						var id:int = i+j*27;
-						img.id = "img"+id;
-						img.name = img.id;
-						img.load(ResourceManagerPoker.Card01);
+						img.name = "img"+j+""+i;
 						this.addChild(img);
 					}
 				}
-				setCards();
+			}
+
+			private function handleClose(evt:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
 			}
 			
-			public function setCards():void
+			public function setCards(obj:Object):void
 			{
-				var panel:TitleWindow = TitleWindow(this.getChildByName("panelCardView"));
-				//var child:Array = new Array();
-				//child = panel.getChildren();
-				//var obj:Object = panel.getChildByName("img0");
-				var img:Image = Image(panel.getChildByName("img1"));
-				img.load(ResourceManagerPoker.Card03);
+				var cn:Array = [0,0,0,0];
+				// 对history数组进行分组归类
+				for(var i:int=0; i<obj.length; i++)
+				{
+					for(var j:int=0; j<obj[i].play.length; j++)
+					{
+						var img:Image = Image(this.getChildByName("img"+obj[i].pos+""+cn[obj[i].pos]));
+						cn[obj[i].pos] ++;
+						img.load(ResourceManagerPoker.CardsRes[obj[i].play[j]]);
+					}
+					
+					
+/* 					if(obj[i].pos == 0)
+					{
+						var img:Image = Image(this.getChildByName("img0"));
+						img.load(ResourceManagerPoker.Card03);
+					}
+					else if(obj[i].pos == 1){
+						
+					}
+					else if(obj[i].pos == 2){
+						
+					}
+					else if(obj[i].pos == 3){
+						
+					}
+ */				}
 			}
 			
 		]]>

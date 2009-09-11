@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:mx="library://ns.adobe.com/flex/halo">
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:mx="library://ns.adobe.com/flex/halo"
+	creationComplete="group1_creationCompleteHandler(event)">
 
 	<fx:Script>
 		<![CDATA[
+			import message.Messenger;
+			import mx.events.FlexEvent;
+			import mx.core.UIComponent;
+			import message.ContentViewer;
 			import mx.collections.ArrayCollection;
 			import lobystate.StateGetRoomPlayerlist;
+			
+			private var ui:UIComponent = new UIComponent();
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				LobyNetManager.Instance.send(LobyNetManager.leaveTable);
-                
 			}
 			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// 当窗口创建完成的时候
+				// 创建对话用的消息系统，并将视图绑定到主显示窗口上
+				Messenger.Instance;	// net part
+				ui.addChild(ContentViewer.Instance);	// view part   
+			}
+
+			protected function state1_enterStateHandler(event:FlexEvent):void
+			{
+				this.addElement(ui);  
+			}
+
 		]]>
 	</fx:Script>
 
@@ -25,10 +44,11 @@
 	</s:transitions>
 	<s:states>
 		<s:State name="State2" th:color="0x0081cc"/>
-		<s:State name="State3"/>
+		<s:State name="State3" enterState="state1_enterStateHandler(event)"/>
 	</s:states>
 	<s:BitmapImage source="@Embed('/assets/p_22.png')" resizeMode="scale" id="bitmapimage1" includeIn="State3" x="1" y="-6"/>
-	<s:Button includeIn="State3" x="10" y="423" label="exit table" click="button1_clickHandler(event)"/>
+
+	<s:Button includeIn="State3" x="10" y="407" label="exit table" click="button1_clickHandler(event)" width="66" height="16"/>
 	<mx:DataGrid includeIn="State3" x="15" y="21" width="257" editable="false" height="173" dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}">
 		<mx:columns>
 			<mx:DataGridColumn headerText="昵称" dataField="name"/>
@@ -37,4 +57,6 @@
 			<mx:DataGridColumn headerText="积分" dataField="score"/>
 		</mx:columns>
 	</mx:DataGrid>
-</s:Group>
+<!--	<s:Group id="textshow" includeIn="State3" x="15" y="199" width="256" height="207">
+	</s:Group>
+--></s:Group>

@@ -11,21 +11,16 @@
 	<mx:Label x="22" y="85" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
 	<mx:Label x="22" y="116" text="玩家三" fontSize="14" fontWeight="bold" id="popupPlayer2"/>
 	<mx:Label x="22" y="147" text="玩家四" fontSize="14" fontWeight="bold" id="popupPlayer3"/>
-	<mx:Label x="82" y="31" text="本局得分" width="66" height="22" fontWeight="bold" fontSize="14"/>
-	<mx:Label x="156" y="31" text="累计" fontWeight="bold" fontSize="14"/>
-	<mx:Label x="210" y="31" text="总积分" fontWeight="bold" fontSize="14"/>
-	<mx:Label x="103" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Benju"/>
-	<mx:Label x="103" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Benju"/>
-	<mx:Label x="156" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Leiji"/>
-	<mx:Label x="156" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Leiji"/>
-	<mx:Label x="156" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Leiji"/>
-	<mx:Label x="156" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Leiji"/>
-	<mx:Label x="223" y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Total"/>
-	<mx:Label x="223" y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Total"/>
-	<mx:Label x="223" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Total"/>
-	<mx:Label x="223" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Total"/>
-	<mx:Label x="103" y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Benju"/>
-	<mx:Label x="103" y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Benju"/>
+	<mx:Label x="108" y="31" text="获得积分" width="66" height="22" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="191" y="31" text="获得金币" fontWeight="bold" fontSize="14"/>
+	<mx:Label y="54" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer0Score" textAlign="right" right="142" width="26"/>
+	<mx:Label y="85" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer1Score" textAlign="right" right="142"/>
+	<mx:Label y="116" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer2Score" textAlign="right" right="142"/>
+	<mx:Label y="147" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer3Score" textAlign="right" right="142"/>
+	<mx:Label y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Gold" width="75" right="43"/>
+	<mx:Label y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Gold" width="75" right="43"/>
+	<mx:Label y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Gold" width="75" right="43"/>
+	<mx:Label y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Gold" width="75" right="43"/>
 	
 	<fx:Script>
 		<![CDATA[
@@ -41,8 +36,8 @@
 			}
 			private function createComplete():void
 			{
-//				x = (this.parent.width - width)/2;
-//				y = (this.parent.height - height)/2;
+				x = (this.parent.width - width)/2;
+				y = (this.parent.height - height)/2;
 //				var bf:BlurFilter = new BlurFilter(0,0,0);
 //				var myfilter:Array = new Array();
 //				myfilter.push(bf);
@@ -53,8 +48,13 @@
 			
 			private function gameContinue(event:CloseEvent):void
 			{
+				GameObjectManager.Instance.shutdown();
+				// 背景还是要保留
+				GameObjectManager.Instance.setVisibleByName("BG", true);
+
 				//this.visible = false;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
+				Game.Instance.clearPlayerCards();
 				// 关闭几个和出牌有关的按钮的显示
 				LobyManager.Instance.gamePoker.initGUI();
 				LobyManager.Instance.gamePoker.btnReady.visible = true;
@@ -66,6 +66,23 @@
 				LobyManager.Instance.gamePoker.labelWait.visible = false;
 				handleClose(null);
 				//this.visible = false;
+			}
+			public function setData(data:Object):void
+			{
+				popupPlayer0.text = data.score[0].name;
+				popupPlayer1.text = data.score[2].name;
+				popupPlayer2.text = data.score[1].name;
+				popupPlayer3.text = data.score[3].name;
+				// score
+				popupPlayer0Score.text = data.score[0].score;
+				popupPlayer1Score.text = data.score[2].score;
+				popupPlayer2Score.text = data.score[1].score;
+				popupPlayer3Score.text = data.score[3].score;
+				// gold
+				popupPlayer0Gold.text = "";
+				popupPlayer1Gold.text = "";
+				popupPlayer2Gold.text = "";
+				popupPlayer3Gold.text = "";
 			}
 		]]>
 	</fx:Script>

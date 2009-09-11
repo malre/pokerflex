@@ -20,8 +20,8 @@ package lobystate
 		override public function send(obj:StateManager):void
 		{
 			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobyAddress + LobyNetManager.URL_roomInfo;
+			LobyNetManager.Instance.httpservice.request = {};
 			LobyNetManager.Instance.httpservice.send();
-			//request_roominfo = true;
 		}
 		override public function receive(obj:Object):Boolean
 		{

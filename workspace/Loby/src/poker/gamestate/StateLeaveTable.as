@@ -1,34 +1,41 @@
 package poker.gamestate
 {
 	import lobystate.NetRequestState;
+	import lobystate.StateManager;
+	
+	import poker.NetManager;
 	
 	public class StateLeaveTable extends NetRequestState
 	{
-		private static var instance:StateNotifyReady = null;
+		private static var instance:StateLeaveTable = null;
 
 		public function StateLeaveTable()
 		{
 			super();
 		}
 
-		public static function get Instance():StateNotifyReady
+		public static function get Instance():StateLeaveTable
 		{
 			if(instance == null)
-				instance = new StateNotifyReady();
+				instance = new StateLeaveTable();
 			return instance;
 		}
 
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			NetManager.updater.url = NetManager.sendURL_ready;
-			NetManager.updater.request = {getPlayers:"true"};
-			NetManager.updater.send();
+			NetManager.sender.url = NetManager.sendURL_leave;
+			NetManager.sender.request = {};
+			NetManager.sender.send();
 		}
 		override public function receive(obj:Object):Boolean
 		{
 			if(super.receive(obj))
 			{
+    			// 使游戏本体不见，并回到游戏房间，刷新房间
+    			LobyManager.Instance.gamePoker.endup();
+    			// 回到游戏
+    			LobyManager.Instance.changeState(1);
 				return true;
 			}
 			else{
@@ -38,7 +45,7 @@ package poker.gamestate
 		}
 		override public function fault():void
 		{
-			
+			NetManager.Instance.send(NetManager.send_leave);
 		}
 	}
 }

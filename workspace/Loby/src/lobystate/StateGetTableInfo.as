@@ -33,6 +33,7 @@ package lobystate
 				var tree:XML = LobyManager.Instance.TreeData;
 				var node:XMLList = tree..*.(@lid == StateGetPlayerInfo.Instance.lastSuccData.player.lid);
 				LobyNetManager.Instance.httpservice.url = node.@address + LobyNetManager.URL_tableInfo;
+				LobyNetManager.Instance.httpservice.request = {};
 				LobyNetManager.Instance.httpservice.send();
 				// 设置lobysonaddress，该房间内的桌子请求都向这个地址发送
 				LobyNetManager.URL_lobysonAddress = node.@address;

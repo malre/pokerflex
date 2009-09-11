@@ -3,6 +3,7 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import poker.Game;
 	import poker.NetManager;
 	
 	public class StateNotifyReady extends NetRequestState
@@ -23,14 +24,23 @@ package poker.gamestate
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			NetManager.updater.url = NetManager.sendURL_ready;
-			NetManager.updater.request = {getPlayers:"true"};
-			NetManager.updater.send();
+			NetManager.sender.url = NetManager.sendURL_ready;
+			NetManager.sender.request = {getPlayers:"true"};
+			NetManager.sender.send();
 		}
 		override public function receive(obj:Object):Boolean
 		{
 			if(super.receive(obj))
 			{
+				if(obj.status == 0)
+				{
+					// 进入游戏逻辑，先转到游戏之前的状态，来获得一帧牌的数据，然后再跳转到正式的游戏中
+					NetManager.Instance.send(NetManager.send_updateWhileGameFirstframe);
+					Game.Instance.gameState = 4;
+					// 将准备按钮隐藏
+					LobyManager.Instance.gamePoker.btnReady.visible = false;
+					LobyManager.Instance.gamePoker.labelWait.visible = false;
+				}
 				return true;
 			}
 			else{
@@ -42,7 +52,8 @@ package poker.gamestate
 		}
 		override public function fault():void
 		{
-			
+			//重发准备完成消息
+			NetManager.Instance.send(NetManager.send_iamReady);
 		}
 	}
 }

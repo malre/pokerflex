@@ -3,6 +3,7 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import poker.Game;
 	import poker.NetManager;
 
 	public class StateUpdateWhileWait extends NetRequestState
@@ -30,6 +31,29 @@ package poker.gamestate
 		{
 			if(super.receive(obj))
 			{
+				// 链接成功，但游戏尚未开始
+				if(obj.status == 1)
+				{
+					// 继续等待其他玩家
+					Game.Instance.getSelfseat(obj);
+					// 更新其他玩家的名字和状态
+					Game.Instance.updatePlayerName(obj);
+					Game.Instance.updatePlayerReadyState(obj);
+				}
+				else if(obj.status == 0)
+				{
+					// 进入游戏逻辑，先转到游戏之前的状态，来获得一帧牌的数据，然后再跳转到正式的游戏中
+					NetManager.Instance.send(NetManager.send_updateWhileGameFirstframe);
+					Game.Instance.gameState = 4;
+
+					// 将准备按钮隐藏
+					LobyManager.Instance.gamePoker.btnReady.visible = false;
+					LobyManager.Instance.gamePoker.labelWait.visible = false;
+				}
+				else if(obj.status == 2)
+				{
+					Game.Instance.getSelfseat(obj);
+				}
 				return true;
 			}
 			else{
@@ -38,6 +62,8 @@ package poker.gamestate
 		}
 		override public function fault():void
 		{
+			// 如果此次发送超时， 同样的内容将会被重发
+			NetManager.Instance.send(NetManager.send_updateWhileWait);
 		}
 	}
 }
