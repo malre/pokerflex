@@ -2,6 +2,8 @@ package lobystate
 {
 	import flash.events.Event;
 	
+	import message.Messenger;
+	
 	import mx.core.FlexGlobals;
 	import mx.rpc.http.HTTPService;
 
@@ -43,6 +45,9 @@ package lobystate
 				LobyManager.Instance.gamePoker.startup(obj);
 				// 
 				LobyManager.Instance.changeState(2);
+				// 在这里改变聊天消息，不再接收大厅的消息，改成桌子的消息
+				Messenger.Instance.stopLobby();
+				Messenger.Instance.startGame();
 				return true;
 			}
 			else{

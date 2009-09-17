@@ -12,6 +12,8 @@ package message
 	
 	import message.httpController.lobbyChatRec;
 	import message.httpController.lobbyChatSend;
+	import message.httpController.tableChatRec;
+	import message.httpController.tableChatSend;
 
 	public class Messenger
 	{
@@ -50,6 +52,8 @@ package message
 		// net worker instance
 		public var lobbySend:lobbyChatSend;
 		public var lobbyRec:lobbyChatRec;
+		public var tableSend:tableChatSend;
+		public var tableRec:tableChatRec;
 
 		public static function get Instance():Messenger
 		{
@@ -64,13 +68,37 @@ package message
 			lobbySend = new lobbyChatSend();
 			lobbySend.setmethod("POST");
 			lobbyRec = new lobbyChatRec();
-			lobbyRec.setmethod("GET");
-//			lobbySend.startTimer(5000);
+			lobbyRec.setmethod("POST");
+			tableSend = new tableChatSend();
+			tableSend.setmethod("POST");
+			tableRec = new tableChatRec();
+			tableRec.setmethod("POST");
+		}
+
+		public function startLobby():void
+		{
+			lobbyRec.startTimer(5000);
+		}
+		public function stopLobby():void
+		{
+			lobbyRec.stopTimer();
+		}
+		public function startGame():void
+		{
+			tableRec.startTimer(5000);
+		}
+		public function stopGame():void
+		{
+			tableRec.stopTimer();
 		}
 		public function send(obj:Object, type:int):void
 		{
 			if(type == sendLobby){
 				lobbySend.send(obj);
+			}
+			else if(type == receiveLobby)
+			{
+				lobbyRec.send();
 			}
 			
 		}

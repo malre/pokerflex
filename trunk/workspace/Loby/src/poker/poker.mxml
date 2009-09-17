@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" 
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
 	width="780" height="560"
 	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
-	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
+	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)" xmlns:components="components.*">
 
+	<!--<mx:Image x="0" y="0" source="@Embed('../res/BG_G_01.jpg')"/>-->
 	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
 	<mx:Button x="400" y="385" label="放弃" width="65" height="22" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')" click="discardClicked(event)"/>
 	<mx:Button x="495" y="385" label="提示" width="65" height="22" id="btnHint" enabled="false"/>
-	<mx:Button x="250" y="319" label="准备好了" width="74" height="53" id="btnReady" click="gameReadyClicked(event)" icon="@Embed(source='../res/btnSelfread.png')"/>
+
+	<s:Button x="284" y="455" skinClass="components.ButtonReady" id="btnReady" click="gameReadyClicked(event)"/>
+	<s:Button x="702" y="525" skinClass="components.ButtonMsgEmotion"/>
+	<s:Button x="722" y="525" skinClass="components.ButtonMsgOption"/>
+	<s:Button x="742" y="525" skinClass="components.ButtonMsgToAll"/>
+	<s:Button x="682" y="312" skinClass="components.ButtonSetup" id="btnSetting" click="btnSetting_clickHandler(event)"/>
+	<s:Button x="644" y="312" skinClass="components.ButtonHelp" height="44" width="41" click="btnHelp_clickHandler(event)"/>
+	<s:Button x="720" y="313" skinClass="components.ButtonExit" click="btnExit_clickHandler(event)"/>
+
 	<mx:Image x="262" y="49" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
 	<mx:Label x="350" y="49" id="Lable_playernameUp" color="#FFFFFF"/>
 	<mx:Label x="350" y="74" id="Label_leftcardsnumUp" color="#FFFFFF"/>
@@ -26,23 +37,28 @@
 	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft" color="#FFFFFF"/>
 	<mx:Label x="510" y="330" id="Lable_playernameRight" color="#FFFFFF"/>
 	<mx:Label x="510" y="356" id="Label_leftcardsnumRight" color="#FFFFFF"/>
-	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="true"/>
-	<mx:Label x="667" y="10" id="textPlayerSelf" width="76" height="24" color="#FFFFFF"/>
-	<mx:Label x="653" y="91" id="textPlayerPartner" width="90" height="19" color="#FFFFFF"/>
-	<mx:Label x="653" y="155" id="textPlayerEmy1" width="90" height="19" color="#FFFFFF"/>
-	<mx:Label x="653" y="203" id="textPlayerEmy2" width="90" height="19" color="#FFFFFF"/>
-	<mx:Button x="649" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnSetting.png')" id="btnSetting" click="btnSetting_clickHandler(event)"/>
-	<mx:Button x="583" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnHelp.png')" id="btnHelp" click="btnHelp_clickHandler(event)"/>
-	<mx:Button x="715" y="253" label="Button" height="55" width="62" icon="@Embed(source='../res/btnExitroom.png')" id="btnExit" click="btnExit_clickHandler(event)"/>
+	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="true" visible="false"/>
+	<mx:Label x="705" y="60" id="textPlayerSelf" width="76" height="24" color="#FFFFFF"/>
+	<mx:Label x="650" y="186" id="textPlayerPartner" width="90" height="19" color="#FFFFFF"/>
+	<mx:Label x="650" y="206" id="textPlayerEmy1" width="90" height="19" color="#FFFFFF"/>
+	<mx:Label x="650" y="226" id="textPlayerEmy2" width="90" height="19" color="#FFFFFF"/>
 	<mx:Label x="260" y="77" text="Label" width="45" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#FFFFFF"/>
+	<s:Group x="578" y="386" width="182" height="137">
+	</s:Group>
     
     <fx:Script>
     	<![CDATA[
+    		import message.ContentViewer;
+    		import mx.core.UIComponent;
     		import mx.rpc.events.ResultEvent;
     		import mx.rpc.events.FaultEvent;
     		import mx.managers.PopUpManager;
     		import mx.controls.Alert;
 			protected var inGame:Boolean = false;
+			private var ui1:UIComponent = new UIComponent();
+			private var ui2:UIComponent = new UIComponent();
+			public var inputboxGame:ContentViewer = new ContentViewer();
+			public var showboxGame:ContentViewer = new ContentViewer();
 
 			private function enterGame(event:Event):void
 			{
@@ -115,11 +131,16 @@
 			//public var loadedSM:SystemManager;
 			public function creationComplete():void
 			{
+				ui1.addChild(inputboxGame.createInputbox(580, 520, 182, 20, 1));	// view part   
+				ui2.addChild(showboxGame.createTextLine(580, 388, 182, 137));
+				//showboxGame.textcontent.addEventListener(CompositionCompletionEvent.COMPOSITION_COMPLETE, scrollCtrl);
 
 			}
 			public function startup(obj:Object):void
 			{
 				this.visible = true;
+				this.addElement(ui1);
+				this.addElement(ui2);
 				// 把得到的返回数据复制给本游戏的处理返回的result对象
 				NetManager.Instance.json1 = obj;
 				NetManager.Instance.requestSuccess = true;

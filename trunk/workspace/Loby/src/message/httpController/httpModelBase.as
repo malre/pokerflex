@@ -17,12 +17,14 @@ package message.httpController
 	{
 		protected var httpservice:HTTPService;
 		protected var timer:Timer;
+		protected var lastSuccObj:Object;
 		
 		public function httpModelBase()
 		{
 			httpservice = new HTTPService();
 			httpservice.addEventListener(ResultEvent.RESULT, result);
 			httpservice.addEventListener(FaultEvent.FAULT, fault);
+			lastSuccObj = new Object();
 		}
 		/**
 		 * 发送http请求 
@@ -66,13 +68,17 @@ package message.httpController
 		 */		
 		public function startTimer(delay:int):void
 		{
-			timer = new Timer(delay);
-			timer.addEventListener(TimerEvent.TIMER, timeout);
+			if(timer == null)
+			{
+				timer = new Timer(delay);
+				timer.addEventListener(TimerEvent.TIMER, timeout);
+			}
 			timer.start();
 		}
 		public function stopTimer():void
 		{
-			timer.stop();
+			if(timer != null)
+				timer.stop();
 		}
 		/**
 		 * 当指定的时间间隔到了以后， 定时器会调用这个函数
