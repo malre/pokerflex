@@ -4,6 +4,9 @@
 
 	<fx:Script>
 		<![CDATA[
+			import message.chatEmotion;
+			import mx.events.ScrollEvent;
+			import flashx.textLayout.events.CompositionCompletionEvent;
 			import message.Messenger;
 			import mx.events.FlexEvent;
 			import mx.core.UIComponent;
@@ -11,7 +14,13 @@
 			import mx.collections.ArrayCollection;
 			import lobystate.StateGetRoomPlayerlist;
 			
-			private var ui:UIComponent = new UIComponent();
+			private var ui1:UIComponent = new UIComponent();
+			private var ui2:UIComponent = new UIComponent();
+			public var inputboxLobby:ContentViewer = new ContentViewer();
+			public var showboxLobby:ContentViewer = new ContentViewer();
+			// emotion panel
+			public var emotion:chatEmotion = new chatEmotion();
+			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				LobyNetManager.Instance.send(LobyNetManager.leaveTable);
@@ -22,12 +31,46 @@
 				// 当窗口创建完成的时候
 				// 创建对话用的消息系统，并将视图绑定到主显示窗口上
 				Messenger.Instance;	// net part
-				ui.addChild(ContentViewer.Instance);	// view part   
+				ui1.addChild(inputboxLobby.createInputbox(14, 426, 188, 20, 0));	// view part   
+				ui2.addChild(showboxLobby.createTextLine(1,0, 256, 207));
+				showboxLobby.textcontent.addEventListener(CompositionCompletionEvent.COMPOSITION_COMPLETE, scrollCtrl);
+				addElement(emotion);
+				emotion.visible = false;
 			}
 
 			protected function state1_enterStateHandler(event:FlexEvent):void
 			{
-				this.addElement(ui);  
+				Messenger.Instance.stopGame();
+				Messenger.Instance.startLobby();
+				this.addElement(ui1);
+				textshow.addElement(ui2);
+			}
+			
+			protected function scrollCtrl(event:CompositionCompletionEvent):void
+			{
+				var textHeight:int = Math.ceil(showboxLobby.controller.getContentBounds().height);
+				if (textHeight < showboxLobby.controller.compositionHeight) {
+					lobbyTextScroll.enabled = false;
+				} else {
+					lobbyTextScroll.enabled = true;
+					lobbyTextScroll.minScrollPosition = 0;
+					lobbyTextScroll.maxScrollPosition = textHeight - showboxLobby.controller.compositionHeight;// maxScrollPosition
+					lobbyTextScroll.scrollPosition = lobbyTextScroll.maxScrollPosition; 
+				}
+				showboxLobby.controller.verticalScrollPosition = showboxLobby.controller.getContentBounds().height;
+			}
+			protected function scrollListener(event:ScrollEvent):void
+			{
+				//showboxLobby.textcontent.removeEventListener(flashx.textLayout.events.ScrollEvent.SCROLL, scrollTextFlow);
+				showboxLobby.controller.verticalScrollPosition = event.position;
+				//showboxLobby.textcontent.addEventListener(flashx.textLayout.events.ScrollEvent.SCROLL, scrollTextFlow);
+			}
+
+			protected function btnEmotion_clickHandler(event:MouseEvent):void
+			{
+				emotion.x = 10;
+				emotion.y = 110;
+				emotion.visible = !emotion.visible;
 			}
 
 		]]>
@@ -57,6 +100,8 @@
 			<mx:DataGridColumn headerText="积分" dataField="score"/>
 		</mx:columns>
 	</mx:DataGrid>
-<!--	<s:Group id="textshow" includeIn="State3" x="15" y="199" width="256" height="207">
+	<s:Group id="textshow" includeIn="State3" x="15" y="199" width="241" height="207">
 	</s:Group>
---></s:Group>
+	<mx:VScrollBar x="242" y="0" height="206" x.State3="257" y.State3="199" id="lobbyTextScroll" scroll="scrollListener(event)"/>
+	<s:Button includeIn="State3" x="221" y="408" width="28" id="btnEmotion" label=":D" click="btnEmotion_clickHandler(event)"/>
+</s:Group>

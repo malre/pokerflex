@@ -46,11 +46,11 @@ package poker
 		// 牌值从 A开始到K结束,因为我对arraycollection不熟悉，所以是AAAA，然后2222,然后3333的顺序
 		// 最后的53，54是joker--司令。
 		private static var cardsRect:ArrayCollection = new ArrayCollection();
-		//
+		// 牌的排列间隔
 		public static const cardsWidth:int = 61;
 		public static const cardsHeight:int = 86;
-		public static const cardsIntervalX:int = 14;
-		public static const cardsIntervalY:int = 18;
+		public static const cardsIntervalX:int = 11;
+		public static const cardsIntervalY:int = 16;
 		// BG
 		private var BGImg:GameObject = null;
 		// 记录玩家的牌的数组

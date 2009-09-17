@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+	 width="240" height="240"
+	 creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+
+
+			protected function img_clickHandler(event:MouseEvent):void
+			{
+				var str:String = event.target.id;
+				var cv:ContentViewer = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby;
+				cv.insertEmotion(int(str.substr(1, 2)));
+			}
+
+		]]>
+	</fx:Script>
+
+	<mx:Image id="e00" width="24" height="24" source="{ResEmotion.Emo000}" click="img_clickHandler(event)"/>
+	<mx:Image id="e01" width="24" height="24" source="{ResEmotion.Emo001}" click="img_clickHandler(event)"/>
+	<mx:Image id="e02" width="24" height="24" source="{ResEmotion.Emo002}" click="img_clickHandler(event)"/>
+	<mx:Image id="e03" width="24" height="24" source="{ResEmotion.Emo003}" click="img_clickHandler(event)"/>
+	<mx:Image id="e04" width="24" height="24" source="{ResEmotion.Emo004}" click="img_clickHandler(event)"/>
+	<mx:Image id="e05" width="24" height="24" source="{ResEmotion.Emo005}" click="img_clickHandler(event)"/>
+	<mx:Image id="e06" width="24" height="24" source="{ResEmotion.Emo006}" click="img_clickHandler(event)"/>
+	<mx:Image id="e07" width="24" height="24" source="{ResEmotion.Emo007}" click="img_clickHandler(event)"/>
+	<mx:Image id="e08" width="24" height="24" source="{ResEmotion.Emo008}" click="img_clickHandler(event)"/>
+	<mx:Image id="e09" width="24" height="24" source="{ResEmotion.Emo009}" click="img_clickHandler(event)"/>
+	<mx:Image id="e10" width="24" height="24" source="{ResEmotion.Emo010}" click="img_clickHandler(event)"/>
+	<mx:Image id="e11" width="24" height="24" source="{ResEmotion.Emo011}" click="img_clickHandler(event)"/>
+	<mx:Image id="e12" width="24" height="24" source="{ResEmotion.Emo012}" click="img_clickHandler(event)"/>
+	<mx:Image id="e13" width="24" height="24" source="{ResEmotion.Emo013}" click="img_clickHandler(event)"/>
+	<mx:Image id="e14" width="24" height="24" source="{ResEmotion.Emo014}" click="img_clickHandler(event)"/>
+	<mx:Image id="e15" width="24" height="24" source="{ResEmotion.Emo015}" click="img_clickHandler(event)"/>
+	<mx:Image id="e16" width="24" height="24" source="{ResEmotion.Emo016}" click="img_clickHandler(event)"/>
+	<mx:Image id="e17" width="24" height="24" source="{ResEmotion.Emo017}" click="img_clickHandler(event)"/>
+	<mx:Image id="e18" width="24" height="24" source="{ResEmotion.Emo018}" click="img_clickHandler(event)"/>
+	<mx:Image id="e19" width="24" height="24" source="{ResEmotion.Emo019}" click="img_clickHandler(event)"/>
+	<mx:Image id="e20" width="24" height="24" source="{ResEmotion.Emo020}" click="img_clickHandler(event)"/>
+	<mx:Image id="e21" width="24" height="24" source="{ResEmotion.Emo021}" click="img_clickHandler(event)"/>
+	<mx:Image id="e22" width="24" height="24" source="{ResEmotion.Emo022}" click="img_clickHandler(event)"/>
+	<mx:Image id="e23" width="24" height="24" source="{ResEmotion.Emo023}" click="img_clickHandler(event)"/>
+	<mx:Image id="e24" width="24" height="24" source="{ResEmotion.Emo024}" click="img_clickHandler(event)"/>
+	<mx:Image id="e25" width="24" height="24" source="{ResEmotion.Emo025}" click="img_clickHandler(event)"/>
+	<mx:Image id="e26" width="24" height="24" source="{ResEmotion.Emo026}" click="img_clickHandler(event)"/>
+	<mx:Image id="e27" width="24" height="24" source="{ResEmotion.Emo027}" click="img_clickHandler(event)"/>
+	<mx:Image id="e28" width="24" height="24" source="{ResEmotion.Emo028}" click="img_clickHandler(event)"/>
+	<mx:Image id="e29" width="24" height="24" source="{ResEmotion.Emo029}" click="img_clickHandler(event)"/>
+	<s:layout>
+		<s:TileLayout/>
+	</s:layout>
+</s:Group>

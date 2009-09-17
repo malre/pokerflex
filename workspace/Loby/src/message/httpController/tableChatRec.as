@@ -4,21 +4,19 @@ package message.httpController
 	
 	import json.JSON;
 	
-	import message.ContentViewer;
 	import message.Messenger;
 	
 	import mx.core.FlexGlobals;
 
-	public class lobbyChatRec extends httpModelBase
+	public class tableChatRec extends httpModelBase
 	{
-		public function lobbyChatRec()
+		public function tableChatRec()
 		{
 			super();
 		}
-		
 		override public function send(val:Object=null) : void
 		{
-			httpservice.url = Messenger.Instance.chatReceiveLobby;
+			httpservice.url = Messenger.Instance.chatReceiveRoom;
 			if(lastSuccObj.hasOwnProperty("chat"))
 			{
 				if(lastSuccObj.chat.length != 0)
@@ -43,7 +41,7 @@ package message.httpController
 			// 传送给viewer来显示
 			for(var i:int =0; i<obj.chat.length; i++)
 			{
-				FlexGlobals.topLevelApplication.customcomponent31.showboxLobby.addNewMsg(obj.chat[(obj.chat.length-1)-i]);
+				LobyManager.Instance.gamePoker.showboxGame.addNewMsg(obj.chat[(obj.chat.length-1)-i]);
 			}
 		}
 		override public function fault(event:Event) : void
