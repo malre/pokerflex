@@ -4,9 +4,10 @@ package
 	
 	import lobystate.StateGetPlayerInfo;
 	
+	import message.Messenger;
+	
 	import mx.containers.Canvas;
 	import mx.controls.Alert;
-	import mx.controls.Button;
 	import mx.controls.Image;
 	import mx.controls.Label;
 	import mx.core.FlexGlobals;
@@ -20,9 +21,9 @@ package
 	{
 		private static var instance:LobyManager =null;
 		// 房间里面的桌子的描画控制
-		private var tableStartX:int = 50;
-		private var tableStartY:int = 60;
-		private var intervalX:int = 110;
+		private var tableStartX:int = 45;
+		private var tableStartY:int = 55;
+		private var intervalX:int = 100;
 		private var intervalY:int = 110;
 		private var roomTableMax:int = 20;
 		private var roomTableRowMax:int = 7;
@@ -150,10 +151,16 @@ package
 					LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 				}
 				_state = 1;
+				// 在这里改变聊天消息
+				Messenger.Instance.stopGame();
+				Messenger.Instance.startLobby();
 			}
 			else if(state == 2)
 			{
 				_state = 2;
+				// 在这里改变聊天消息，不再接收大厅的消息，改成桌子的消息
+				Messenger.Instance.stopLobby();
+				Messenger.Instance.startGame();
 			}
 			else if(state == 3)
 			{
@@ -295,12 +302,11 @@ package
 			//if(!refreshflag)
 			{
 				// 对得到的table数据进行分析和描画，并跳转
-				//FlexGlobals.topLevelApplication.currentState = "GameRoom";
+					// 关闭左边的选择界面
 				FlexGlobals.topLevelApplication.customcomponent21.currentState='State2';
-				FlexGlobals.topLevelApplication.customcomponent31.currentState='State3';
-				FlexGlobals.topLevelApplication.customcomponent11.currentState='State1';
-				// make tree invisible
 				FlexGlobals.topLevelApplication.gameTreeView.visible = false;
+					// 显示右边的信息和聊天面板
+				FlexGlobals.topLevelApplication.customcomponent31.currentState='State3';
 			}
 		}
 
@@ -358,36 +364,37 @@ package
 						img.load(ResourceManager.imgTable);
 						img.name = "table"+id.toString();
 						canvas.addChild(img);
-						var tablename:Label = new Label();
+/*						var tablename:Label = new Label();
 						tablename.x = img.x +3;
 						tablename.y = img.y;
+						tablename.
 						tablename.text = obj[id].name;
-						canvas.addChild(tablename);
+						canvas.addChild(tablename);*/
 						
 						// 桌子上的桌号
 						var label:Label = new Label();
 						if((id+1) >= 10)
 						{
-							label.x = img.x+1;
+							label.x = img.x+1-30;
 						}
 						else
 						{
-							label.x = img.x +12;
+							label.x = img.x +12-30;
 						}
-						label.y = img.y ;
+						label.y = img.y - 25 ;
 						label.text = (id+1).toString();
-						label.setStyle("fontSize", 40);
-						label.setStyle("fontWeight", "bold");
-						label.setStyle("color","#333333"); 
+						label.setStyle("fontSize", 14);
+						//label.setStyle("fontWeight", "bold");
+						label.setStyle("color","#ffcc33"); 
 						label.name = "tag"+id.toString();
 						canvas.addChild(label);
 						
 						// 创建按钮需要和实际的房间信息结合起来
 						// 如果该位置有玩家存在，则无按钮，否则有按钮
-						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+10, img.y-40));
-						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+10));
-						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+10, img.y+52+10));
-						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+51+10, img.y+10));
+						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+16, img.y-30, 0));
+						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-30, img.y+16, 1));
+						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+16, img.y+52+25, 2));
+						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+52+25, img.y+16, 3));
 						// 描画桌子上的人的信息
 						var farr:Array = new Array(0,0,0,0);
 						for(var n:int=0;n<4;n++)
@@ -396,22 +403,22 @@ package
 							{
 								if(obj[id].players[n].pos == 0)
 								{
-									createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+10, img.y-40);
+									createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+25, img.y-30);
 									farr[0] = 1;
 								}
 								else if(obj[id].players[n].pos == 1)
 								{
-									createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-40, img.y+10);
+									createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-25, img.y+25);
 									farr[1] = 1;
 								}
 								else if(obj[id].players[n].pos == 2)
 								{
-									createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+10, img.y+52+10);
+									createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+25, img.y+52+25);
 									farr[2] = 1;
 								}
 								else if(obj[id].players[n].pos == 3)
 								{
-									createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+10, img.y+10);
+									createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+25, img.y+25);
 									farr[3] = 1;
 								}
 							}
@@ -431,18 +438,33 @@ package
 			return true;
 		}
 		
-		private function createTableBtn(id:String, name:String, x:int, y:int):Button
+		private function createTableBtn(id:String, name:String, x:int, y:int, pos:int):Image
 		{
-			var btn:mx.controls.Button = new mx.controls.Button();
+			// 进行一定的修改，不再使用按钮，而是直接的椅子的图
+			//var btn:mx.controls.Button = new mx.controls.Button();、
+			var btn:Image = new Image();
+			if(pos == 0)
+			{
+				btn.source = ResourceManager.imgChair0;
+			}
+			else if(pos == 1){
+				btn.source = ResourceManager.imgChair1;	
+			} 
+			else if(pos == 2){
+				btn.source = ResourceManager.imgChair2;
+			}
+			else if(pos == 3){
+				btn.source = ResourceManager.imgChair3;
+			}
 			btn.x = x;
 			btn.y = y;
 			btn.id = id;
 			btn.name = name;
 			btn.addEventListener(MouseEvent.CLICK, tableBtnHandler);
-			btn.width = 30;
-			btn.height = 30;
-			btn.setStyle("cornerRadius", 13);
-			btn.setStyle("borderColor", "#445c95");
+//			btn.width = 30;
+//			btn.height = 30;
+//			btn.setStyle("cornerRadius", 13);
+//			btn.setStyle("borderColor", "#445c95");
 			return btn;
 		}
 		private function createAvatarAndName(obj:Object, name:String, x:int, y:int):Image
@@ -451,6 +473,7 @@ package
 			var lbl:Label = new Label();
 			img.name = "avatar"+name;
 			lbl.name = "name"+name;
+			lbl.setStyle("color", 0xFFFFFF);
 			if(obj == null)
 			{
 				img.visible = false;

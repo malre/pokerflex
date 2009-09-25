@@ -41,5 +41,17 @@ package message
 			}
 			super.keyDownHandler(event);
 		}
+		public function sendButtonPressed():void
+		{
+			if(inputtype == 0)
+			{
+				// 如果是回车，将会清空自己的输入栏，然后发送send消息
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendLobby);
+				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
+			}else if(inputtype == 1){
+				Messenger.Instance.send(LobyManager.Instance.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
+				LobyManager.Instance.gamePoker.inputboxGame.clearInput();
+			}
+		}
 	}
 }

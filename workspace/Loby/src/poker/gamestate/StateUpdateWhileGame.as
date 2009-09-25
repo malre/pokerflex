@@ -45,20 +45,16 @@ package poker.gamestate
 							if(obj.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								LobyManager.Instance.gamePoker.btnSendCards.visible = true;
-								LobyManager.Instance.gamePoker.btnSendCards.enabled = false;
-								LobyManager.Instance.gamePoker.btnDiscard.visible = true;
-								LobyManager.Instance.gamePoker.btnDiscard.enabled = true;
-								LobyManager.Instance.gamePoker.btnHint.visible = true;
+								LobyManager.Instance.gamePoker.commandbar.visible = true;
+								LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = false;
+								LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = true;
 								if(obj.play.last == obj.play.next)
 								{
-									LobyManager.Instance.gamePoker.btnDiscard.enabled = false;
+									LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = false;
 								}
 							}
 							else{
-								LobyManager.Instance.gamePoker.btnSendCards.visible = false;
-								LobyManager.Instance.gamePoker.btnDiscard.visible = false;
-								LobyManager.Instance.gamePoker.btnHint.visible = false;
+								LobyManager.Instance.gamePoker.commandbar.visible = false;
 							}
 							Game.Instance.lastPlayer = obj.play.last;
 							if(Game.Instance.curPlayer != obj.play.next)	// 出牌权交换

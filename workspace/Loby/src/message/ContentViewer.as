@@ -31,9 +31,14 @@ package message
 		
 		private var p:ParagraphElement = new ParagraphElement();
 
-		public var img:InlineGraphicElement = new InlineGraphicElement();
-		
 		public var controller:ContainerController;
+		// 玩家输入的字体的大小
+		private const fontsizeMin:int = 12;
+		private const fontsizeDef:int = 12;
+		private const fontsizeMax:int = 26;
+		public var fontsize:int = fontsizeDef;
+		// 玩家选择的字的颜色
+		public var fontcolor:int = 0xffffff;
 
 		public static function get Instance():ContentViewer
 		{
@@ -57,6 +62,7 @@ package message
 			addChild(sprite);
 			textcontent.fontFamily = "Arial";
 			textcontent.fontSize = 12;
+			textcontent.color = 0xffffff;
 			//textcontent.lineBreak = "explicit";
 			
 			controller = new ContainerController(sprite, width, height);
@@ -78,7 +84,7 @@ package message
 			textinput = new TextFlow();
 			var sprite:Sprite = new Sprite();
 			var g:Graphics = sprite.graphics;
-			g.beginFill(0xEEEEEE);
+			g.beginFill(0xa0a0a0);
 			g.drawRect(0, 0, width, height);
 			g.endFill();
 			sprite.x = x;
@@ -87,7 +93,7 @@ package message
 			
 			sprite = new Sprite();
 			sprite.x = x;
-			sprite.y = y+5;
+			sprite.y = y+3;
 			addChild(sprite);
 			
 			textinput.addChild(p);
@@ -105,7 +111,11 @@ package message
 			
 			return this;
 		}
-		
+		public function changeInputColor(color:int):void
+		{
+			textinput.color = color;
+			textinput.flowComposer.updateAllControllers();
+		}
 		/**
 		 * 向当前的话语的最后，加入指定id的表情符号
 		 * @param id
@@ -136,6 +146,19 @@ package message
 			EditManager(textinput.interactionManager).deleteText();
 			textinput.flowComposer.updateAllControllers();
 		}
+		public function clearContent():void
+		{
+			// 使用了替换来删除过往的记录，不知道会不会有问题，有待观察
+			textcontent.replaceChildren(0, textcontent.numChildren);
+			// 默认，选中所有的文字 
+//			for(var i:int=0; i<textcontent.numChildren;i++)
+//			{
+//				textcontent.removeChild(textcontent.getChildAtIndex(i));
+//			}
+			// 删除所有选中的文字
+//			EditManager(textcontent.interactionManager).deleteText();
+			textcontent.flowComposer.updateAllControllers();
+		}
 		public function getInputMsg():Object
 		{
 			var obj:Object = encode();
@@ -147,9 +170,9 @@ package message
 			var obj:Object;
 			var num:int = p.numChildren;
 			var output:Object = new Object(); 
-			output.size = textinput.fontSize;
+			output.size = fontsize;
 			if(textinput.color == null)
-				output.color = 0;
+				output.color = 0xffffff;
 			else
 				output.color = textinput.color;
 			output.content = new Array();
@@ -185,15 +208,18 @@ package message
 		{
 			var pp:ParagraphElement = new ParagraphElement();
 			var data:Object = JSON.decode(obj.message);
+			var span:SpanElement;
+			span = new SpanElement();
+			span.text = "["+obj.name+"]:";
+			span.color = 0xffff66;
+			span.fontSize = 12;
+			pp.addChild(span);
 			for(var i:int=0; i<data.content.length; i++)
 			{
 				if(data.content[i].type == "text")
 				{
-					var span:SpanElement = new SpanElement();
-					if(i == 0)
-						span.text = "["+obj.name+"]:"+ data.content[i].val;
-					else
-						span.text = data.content[i].val;
+					span = new SpanElement();
+					span.text = data.content[i].val;
 					pp.addChild(span);
 				}
 				else if(data.content[i].type == "img"){
@@ -206,10 +232,20 @@ package message
 			}
 			
 			pp.fontSize = data.size;
-			if(pp.color != null)
+			if(data.color != null)
 				pp.color = data.color;
+			else
+				pp.color = 0xffffff;
 			textcontent.addChild(pp);
 			textcontent.flowComposer.updateAllControllers();
+		}
+		public function setFontSize(size:int):void
+		{
+			
+		}
+		public function setColor(col:int):void
+		{
+			
 		}
 	}
 }

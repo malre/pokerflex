@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-	 width="240" height="240"
+	 width="240" height="117"
 	 creationComplete="group1_creationCompleteHandler(event)">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
 	<fx:Script>
 		<![CDATA[
 			import mx.core.FlexGlobals;
@@ -19,11 +22,23 @@
 				var str:String = event.target.id;
 				var cv:ContentViewer = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby;
 				cv.insertEmotion(int(str.substr(1, 2)));
+				this.visible = false;
 			}
 
 		]]>
 	</fx:Script>
-
+	<s:Rect height="100%" y="0" width="100%" x="0">
+        <s:stroke>            
+            <s:SolidColorStroke color="#6e6c9e"/>
+        </s:stroke>
+        <s:fill>
+        	<mx:SolidColor color="0xfefefe"/>
+        </s:fill>
+    </s:Rect>
+	<s:Group width="100%" height="100%">
+		<s:layout>
+			<s:TileLayout/>
+		</s:layout>
 	<mx:Image id="e00" width="24" height="24" source="{ResEmotion.Emo000}" click="img_clickHandler(event)"/>
 	<mx:Image id="e01" width="24" height="24" source="{ResEmotion.Emo001}" click="img_clickHandler(event)"/>
 	<mx:Image id="e02" width="24" height="24" source="{ResEmotion.Emo002}" click="img_clickHandler(event)"/>
@@ -54,7 +69,5 @@
 	<mx:Image id="e27" width="24" height="24" source="{ResEmotion.Emo027}" click="img_clickHandler(event)"/>
 	<mx:Image id="e28" width="24" height="24" source="{ResEmotion.Emo028}" click="img_clickHandler(event)"/>
 	<mx:Image id="e29" width="24" height="24" source="{ResEmotion.Emo029}" click="img_clickHandler(event)"/>
-	<s:layout>
-		<s:TileLayout/>
-	</s:layout>
+	</s:Group>
 </s:Group>

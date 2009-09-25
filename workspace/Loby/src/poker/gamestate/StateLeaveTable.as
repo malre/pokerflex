@@ -36,6 +36,8 @@ package poker.gamestate
     			LobyManager.Instance.gamePoker.endup();
     			// 回到游戏
     			LobyManager.Instance.changeState(1);
+    			// 退出的时候同时清除房间的聊天信息
+    			LobyManager.Instance.gamePoker.showboxGame.clearContent();
 				return true;
 			}
 			else{

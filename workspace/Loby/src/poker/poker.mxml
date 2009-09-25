@@ -7,11 +7,25 @@
 	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)" xmlns:components="components.*">
 
 	<!--<mx:Image x="0" y="0" source="@Embed('../res/BG_G_01.jpg')"/>-->
-	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
+<!--	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
 	<mx:Button x="400" y="385" label="放弃" width="65" height="22" id="btnDiscard" icon="@Embed(source='../res/fangqi.png')" click="discardClicked(event)"/>
-	<mx:Button x="495" y="385" label="提示" width="65" height="22" id="btnHint" enabled="false"/>
+	<mx:Button x="495" y="385" label="提示" width="65" height="22" id="btnHint" enabled="false"/>-->
+	<components:GameCardsCommand id="commandbar" x="295" y="350">
+	</components:GameCardsCommand>
+	<!--玩家头像-->
+	<mx:Image x="283" y="20" width="64" height="64" id="Img_playerAvatarUp"/>
+	<mx:Image x="25" y="238" width="64" height="64" id="Img_playerAvatarLeft"/>
+	<mx:Image x="283" y="472" width="64" height="64" id="Img_playerAvatarDown"/>
+	<mx:Image x="523" y="240" width="64" height="64" id="Img_playerAvatarRight"/>
+	<!--头像上的准备提示按钮-->
+ 	<mx:Image x="309" y="63" id="imgPlayerUpReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="51" y="281" id="imgPlayerLeftReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="549" y="283" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="309" y="515" id="imgPlayerDownReady" source="@Embed('../res/ready.png')"/>
+	<mx:Image x="281" y="472" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
 
 	<s:Button x="284" y="455" skinClass="components.ButtonReady" id="btnReady" click="gameReadyClicked(event)"/>
+	<s:Button x="680" y="526" skinClass="components.Button_GameTalk" click="gameSendMsg_clickHandler(event)"/>
 	<s:Button x="702" y="525" skinClass="components.ButtonMsgEmotion"/>
 	<s:Button x="722" y="525" skinClass="components.ButtonMsgOption"/>
 	<s:Button x="742" y="525" skinClass="components.ButtonMsgToAll"/>
@@ -19,35 +33,73 @@
 	<s:Button x="644" y="312" skinClass="components.ButtonHelp" height="44" width="41" click="btnHelp_clickHandler(event)"/>
 	<s:Button x="720" y="313" skinClass="components.ButtonExit" click="btnExit_clickHandler(event)"/>
 
-	<mx:Image x="262" y="49" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
-	<mx:Label x="350" y="49" id="Lable_playernameUp" color="#FFFFFF"/>
-	<mx:Label x="350" y="74" id="Label_leftcardsnumUp" color="#FFFFFF"/>
-	<mx:Image x="266" y="102" id="imgPlayerUpReady" source="@Embed('../res/ready.png')"/>
-	<mx:Image x="266" y="102" id="imgPlayerUpPrepare" source="@Embed('../res/notRready.png')"/>
-	<mx:Image x="262" y="169" id="imgDiscardUp" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
-	<mx:Image x="139" y="240" id="imgDiscardLeft" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
-	<mx:Image x="72" y="277" id="imgPlayerLeftReady" source="@Embed('../res/ready.png')"/>
-	<mx:Image x="72" y="277" id="imgPlayerLeftPrepare" source="@Embed('../res/notRready.png')"/>
-	<mx:Image x="262" y="356" id="imgDiscardDown" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
-	<mx:Image x="423" y="240" id="imgDiscardRight" source="@Embed('../res/fangqi2.png')" scaleContent="false"/>
-	<mx:Image x="390" y="277" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
-	<mx:Image x="390" y="277" id="imgPlayerRightPrepare" source="@Embed('../res/notRready.png')"/>
-	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" color="#FFFFFF"/>
-	<mx:Label x="25" y="330" id="Lable_playernameLeft" color="#FFFFFF"/>
-	<mx:Label x="25" y="356" id="Label_leftcardsnumLeft" color="#FFFFFF"/>
-	<mx:Label x="510" y="330" id="Lable_playernameRight" color="#FFFFFF"/>
-	<mx:Label x="510" y="356" id="Label_leftcardsnumRight" color="#FFFFFF"/>
+	<!--左边的玩家的属性-->
+	<s:Group id="playerinfoLeft" x="3" y="309" height="69" width="138">
+	<mx:Image x="0" y="0" id="img_playerLeftBG" source="@Embed('res/playerInfoBG.png')"/>
+	<mx:Label x="10" y="7" id="Lable_playernameLeft" color="#FFFFFF"/>
+	<mx:Label x="10" y="25" text="等   级：" height="18" color="#FFFFFF"/>
+	<mx:Label x="60" y="25" id="Lable_playerLevelLeft" color="#FFFFFF" height="18"/>
+	<mx:Label x="10" y="43" text="剩余牌：" color="#FFFFFF" height="18"/>
+	<mx:Label x="60" y="43" id="Label_leftcardsnumLeft" color="#FFFFFF" height="18"/>
+	</s:Group>
+
+	<!--上边的玩家的属性-->
+	<s:Group id="playerinfoUp" x="134" y="8" height="69" width="138">
+	<mx:Image x="0" y="0" id="img_playerUpBG" source="@Embed('res/playerInfoBG.png')"/>
+	<mx:Label x="10" y="7" id="Lable_playernameUp" color="#FFFFFF" height="18"/>
+	<mx:Label x="10" y="25" text="等   级：" height="18" color="#FFFFFF"/>
+	<mx:Label x="60" y="25" id="Lable_playerLevelUp" height="18" color="#FFFFFF"/>
+	<mx:Label x="10" y="43" color="#FFFFFF" height="18" text="剩余牌："/>
+	<mx:Label x="60" y="43" id="Label_leftcardsnumUp" height="18" color="#FFFFFF"/>
+	</s:Group>
+
+	<!--右边的玩家的属性-->
+	<s:Group id="playerinfoRight" x="468" y="159" height="69" width="138">
+	<mx:Image x="0" y="0" id="img_playerRightBG" source="@Embed('res/playerInfoBG.png')"/>
+	<mx:Label x="10" y="7" id="Lable_playernameRight" color="#FFFFFF"/>
+	<mx:Label x="10" y="25" text="等   级：" color="#FFFFFF"/>
+	<mx:Label x="60" y="25" height="18" color="#FFFFFF" id="Lable_playerLevelRight"/>
+	<mx:Label x="10" y="43" text="剩余牌：" color="#FFFFFF"/>
+	<mx:Label x="60" y="43" id="Label_leftcardsnumRight" color="#FFFFFF" height="18"/>
+	</s:Group>
+
+	<!--自己的属性-->
+	<s:Group id="playerinfoDown" x="358" y="485" height="69" width="138">
+	<mx:Image x="0" y="0" id="img_playerDownBG" source="@Embed('res/playerInfoBG.png')"/>
+	<mx:Label x="10" y="7" id="Lable_playernameDown" color="#FFFFFF"/>
+	<mx:Label x="10" y="25" text="等   级：" color="#FFFFFF"/>
+	<mx:Label x="60" y="25" height="18" id="Lable_playerLevelDown" color="#FFFFFF"/>
+	<mx:Label x="10" y="43" text="剩余牌：" color="#FFFFFF"/>
+	<mx:Label x="60" y="43" height="18" color="#FFFFFF" id="Label_leftcardsnumDown"/>
+	</s:Group>
+
 	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="true" visible="false"/>
-	<mx:Label x="705" y="60" id="textPlayerSelf" width="76" height="24" color="#FFFFFF"/>
+	<mx:Label x="705" y="60" id="textPlayerSelf" width="56" height="24" color="#FFFFFF"/>
 	<mx:Label x="650" y="186" id="textPlayerPartner" width="90" height="19" color="#FFFFFF"/>
 	<mx:Label x="650" y="206" id="textPlayerEmy1" width="90" height="19" color="#FFFFFF"/>
 	<mx:Label x="650" y="226" id="textPlayerEmy2" width="90" height="19" color="#FFFFFF"/>
-	<mx:Label x="260" y="77" text="Label" width="45" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#FFFFFF"/>
-	<s:Group x="578" y="386" width="182" height="137">
+	<!--倒计时的沙漏和数字-->
+	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" color="#FFFFFF"/>
+	<mx:Image x="247" y="129" id="imgDiscardUp" source="@Embed('../res/fangqi2.png')"/>
+	<mx:Image x="18" y="303" id="imgDiscardLeft" source="@Embed('../res/fangqi2.png')"/>
+	<mx:Image x="253" y="366" id="imgDiscardDown" source="@Embed('../res/fangqi2.png')"/>
+	<mx:Image x="305" y="303" id="imgDiscardRight" source="@Embed('../res/fangqi2.png')"/>
+
+	<mx:Image x="95" y="231" id="sandglass" source="@Embed('../res/sandglass.swf')" width="16" height="28"/>
+	<mx:Label x="260" y="77" width="45" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#FFFFFF"/>
+	<s:Group x="578" y="388" width="182" height="133" id="msgbox">
 	</s:Group>
-    
+	<mx:Image x="651" y="41" width="51" height="46" id="selfAvatar"/>
+	<mx:Label x="721" y="94" color="#FFFFFF" id="textPlayerSelf_score" height="18"/>
+	<mx:Label x="721" y="109" color="#FFFFFF" id="textPlayerSelf_level" height="18"/>
+	<mx:Label x="721" y="124" color="#FFFFFF" id="textPlayerSelf_gold" height="18"/>
+	<!--设置窗口-->
+	<components:OptionWindow x="254" y="145" id="optionWindow" currentState="State1"/>
+  
     <fx:Script>
     	<![CDATA[
+    		import message.inputEditManager;
+    		import flashx.textLayout.events.CompositionCompletionEvent;
     		import message.ContentViewer;
     		import mx.core.UIComponent;
     		import mx.rpc.events.ResultEvent;
@@ -98,10 +150,6 @@
 				//this.addEventListener(KeyboardEvent.KEY_DOWN, keydown);
 				
 			}
-			private function keydown(evt:KeyboardEvent):void
-			{
-
-			}
 
 			// 准备界面时，准备完成点击用按钮
 			private function gameReadyClicked(event:Event):void
@@ -109,19 +157,7 @@
 				// 发送准备好的消息，如果失败，将会自动重发，
 				NetManager.Instance.send(NetManager.send_iamReady);
 				btnReady.enabled = false;
-			}
-			
-			private function sendCardsClicked(event:Event):void
-			{
-				btnSendCards.enabled = false;
-				// 发送出牌的消息，如果失败，将会自动重发，
-				Game.Instance.sendcards();
-			}
-
-			private function discardClicked(event:Event):void
-			{
-				btnDiscard.enabled = false;
-				Game.Instance.pass();
+				// 点击准备按钮以后，消去这个按钮，然后显示玩家的头像在座位上
 			}
 			
 			private function btnContinueClicked(event:Event):void
@@ -131,16 +167,22 @@
 			//public var loadedSM:SystemManager;
 			public function creationComplete():void
 			{
-				ui1.addChild(inputboxGame.createInputbox(580, 520, 182, 20, 1));	// view part   
-				ui2.addChild(showboxGame.createTextLine(580, 388, 182, 137));
-				//showboxGame.textcontent.addEventListener(CompositionCompletionEvent.COMPOSITION_COMPLETE, scrollCtrl);
+				ui1.addChild(inputboxGame.createInputbox(579, 527, 100, 15, 1));	// view part   
+				ui2.addChild(showboxGame.createTextLine(0, 0, 182, 137));
+				showboxGame.textcontent.addEventListener(CompositionCompletionEvent.COMPOSITION_COMPLETE, scrollCtrl);
 
 			}
+			protected function scrollCtrl(event:CompositionCompletionEvent):void
+			{
+				showboxGame.controller.verticalScrollPosition = showboxGame.controller.getContentBounds().height;
+			}
+			
 			public function startup(obj:Object):void
 			{
+				initGUI();
 				this.visible = true;
 				this.addElement(ui1);
-				this.addElement(ui2);
+				msgbox.addElement(ui2);
 				// 把得到的返回数据复制给本游戏的处理返回的result对象
 				NetManager.Instance.json1 = obj;
 				NetManager.Instance.requestSuccess = true;
@@ -156,26 +198,18 @@
 				imgDiscardRight.visible = false;
 				//
 				label_thinking.visible = false;
+				sandglass.visible = false;
 				label_leftTimeCounter.visible = false;
 				inGame = true;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
 				// 关闭几个和出牌有关的按钮的显示
 				btnReady.visible = true;
 				btnReady.enabled = true;
-				btnSendCards.visible = false;
-				btnDiscard.visible = false;
-				btnHint.visible = false;
+				commandbar.visible = false;
 				// 初始化玩家的准备用按钮
 				Game.Instance.readyStateInit();
 				// “等待其他玩家” 该信息不显示
 				labelWait.visible = false;
-				//把http的处理函数定义到自己的函数来
-				// 我使用了移除函数，并且我认为没有错误，但是实际的效果是，前一个监听器并没有被移除
-				//LobyNetManager.Instance.httpservice.removeEventListener(ResultEvent.RESULT, LobyNetManager.Instance.httpResult);
-				//LobyNetManager.Instance.httpservice.removeEventListener(FaultEvent.FAULT, LobyNetManager.Instance.httpFault);
-				
-				//LobyNetManager.Instance.httpservice.addEventListener(ResultEvent.RESULT, NetManager.Instance.resultProcess);
-				//LobyNetManager.Instance.httpservice.addEventListener(FaultEvent.FAULT, NetManager.Instance.failProcess);			
 			}
 			public function endup():void
 			{
@@ -191,15 +225,14 @@
 				imgDiscardRight.visible = false;
 				//
 				label_thinking.visible = false;
+				sandglass.visible = false;
 				label_leftTimeCounter.visible = false;
 				inGame = false;
 				Game.Instance.gameState = 0;	// null
 				// 关闭几个和出牌有关的按钮的显示
 				btnReady.visible = true;
 				btnReady.enabled = true;
-				btnSendCards.visible = false;
-				btnDiscard.visible = false;
-				btnHint.visible = false;
+				commandbar.visible = false;
 				// 初始化玩家的准备用按钮
 				Game.Instance.readyStateInit();
 				// “等待其他玩家” 该信息不显示
@@ -208,25 +241,22 @@
 				// 背景还是要保留
 				GameObjectManager.Instance.setVisibleByName("BG", true);
 				Game.Instance.clearPlayerCards();
+				initGUI();
 			}
 			public function initGUI():void
 			{
-				btnSendCards.visible = false;
-				btnDiscard.visible = false;
-				btnHint.visible = false;
+				commandbar.visible = false;
 				btnReady.visible = false;
 				label_thinking.visible = false;
+				sandglass.visible = false;
 				label_leftTimeCounter.visible = false;
 				imgPlayerUpReady.visible = false;
-				imgPlayerUpPrepare.visible = false;
 				imgDiscardUp.visible = false;
 				imgDiscardLeft.visible = false;
 				imgPlayerLeftReady.visible = false;
-				imgPlayerLeftPrepare.visible = false;
 				imgDiscardDown.visible = false;
 				imgDiscardRight.visible = false;
 				imgPlayerRightReady.visible = false;
-				imgPlayerRightPrepare.visible = false;
 				labelWait.visible = false;
 				btnCardView.visible = false;
 				Lable_playernameUp.text = "";
@@ -235,10 +265,31 @@
 				Label_leftcardsnumLeft.text = "";
 				Lable_playernameRight.text = "";
 				Label_leftcardsnumRight.text = "";
+				Lable_playernameDown.text = "";
+				Label_leftcardsnumDown.text = "";
+				// 玩家头像和准备图
+				Img_playerAvatarUp.visible = false;
+				Img_playerAvatarLeft.visible = false;
+				Img_playerAvatarDown.visible = false;
+				Img_playerAvatarRight.visible = false;
+				imgPlayerUpReady.visible = false;
+				imgPlayerLeftReady.visible = false;
+				imgPlayerRightReady.visible = false;
+				imgPlayerDownReady.visible = false;
+				// 玩家信息框部分
+				playerinfoUp.visible = false;
+				playerinfoLeft.visible = false;
+				playerinfoDown.visible = false;
+				playerinfoRight.visible = false;
 				textPlayerSelf.text = "";
 				textPlayerPartner.text = "";
 				textPlayerEmy1.text = "";
 				textPlayerEmy2.text = "";
+				//
+				Lable_playerLevelDown.text = "";
+				Lable_playerLevelUp.text = "";
+				Lable_playerLevelLeft.text = "";
+				Lable_playerLevelRight.text = "";
 			}
 			
 			public function enterFrame(event:Event):void
@@ -291,11 +342,19 @@
     		
     		protected function btnSetting_clickHandler(event:MouseEvent):void
     		{
+    			if(optionWindow.currentState != "State2")
+    				optionWindow.currentState = "State2";
     		}
     		
     		protected function btnExit_clickHandler(event:MouseEvent):void
     		{
     			NetManager.Instance.send(NetManager.send_leave);
+    		}
+
+
+    		protected function gameSendMsg_clickHandler(event:MouseEvent):void
+    		{
+    			inputEditManager(inputboxGame.textinput.interactionManager).sendButtonPressed();
     		}
 
     	]]>
