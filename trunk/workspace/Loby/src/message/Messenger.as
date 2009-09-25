@@ -18,7 +18,9 @@ package message
 	public class Messenger
 	{
 		// 消息服务器地址定义
-		private var messengerServerAddress:String = "http://192.168.18.24/web/world/chat";
+		//private var messengerServerAddress:String = "http://192.168.18.24/web/world/chat";
+		//private var messengerServerAddress:String = "http://218.108.39.82:9000/web/world/chat";
+		private var messengerServerAddress:String = "http://192.168.18.199/web/tose/chat";
 		private var messengerReceive:String = messengerServerAddress + "/receive";
 		private var messengerSend:String = messengerServerAddress + "/send";
 		
@@ -100,7 +102,12 @@ package message
 			{
 				lobbyRec.send();
 			}
-			
+			else if(type == sendRoom){
+				tableSend.send(obj);
+			}
+			else if(type == receiveRoom){
+				tableRec.send();
+			}
 		}
 		public function updateMsg(event:TimerEvent):void
 		{

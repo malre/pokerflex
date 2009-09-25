@@ -243,7 +243,7 @@ package poker
 		CardsRes.addItem(new GraphicsResource(new Card53()));
 
 
-		[Embed(source="../res/BG.png")]							// background
+		[Embed(source="../res/BG.jpg")]							// background
 		public static var BG00:Class;
 		public static var BG00Res:GraphicsResource = new GraphicsResource(new BG00());
 

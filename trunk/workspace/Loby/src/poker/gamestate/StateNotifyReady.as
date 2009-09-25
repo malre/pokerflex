@@ -37,10 +37,12 @@ package poker.gamestate
 					// 进入游戏逻辑，先转到游戏之前的状态，来获得一帧牌的数据，然后再跳转到正式的游戏中
 					NetManager.Instance.send(NetManager.send_updateWhileGameFirstframe);
 					Game.Instance.gameState = 4;
-					// 将准备按钮隐藏
-					LobyManager.Instance.gamePoker.btnReady.visible = false;
+					// 提示文字
 					LobyManager.Instance.gamePoker.labelWait.visible = false;
 				}
+				// 将准备按钮隐藏
+				LobyManager.Instance.gamePoker.btnReady.visible = false;
+				
 				return true;
 			}
 			else{

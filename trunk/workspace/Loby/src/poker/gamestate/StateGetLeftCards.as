@@ -35,7 +35,8 @@ package poker.gamestate
 				for(var i:int=0;i<4;i++)
 				{
 					if(obj.cards[i].number != 0){
-						Game.Instance.drawPlayerHandCards(obj,i);
+						// 描画还有问题，暂时屏蔽
+						//Game.Instance.drawPlayerHandCards(obj,i);
 					}
 				}
 				NetManager.Instance.send(NetManager.send_getScore);

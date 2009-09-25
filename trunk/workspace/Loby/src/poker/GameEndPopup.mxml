@@ -59,9 +59,7 @@
 				LobyManager.Instance.gamePoker.initGUI();
 				LobyManager.Instance.gamePoker.btnReady.visible = true;
 				LobyManager.Instance.gamePoker.btnReady.enabled = true;
-				LobyManager.Instance.gamePoker.btnSendCards.visible = false;
-				LobyManager.Instance.gamePoker.btnDiscard.visible = false;
-				LobyManager.Instance.gamePoker.btnHint.visible = false;
+				LobyManager.Instance.gamePoker.commandbar.visible = false;
 				// “等待其他玩家” 该信息不显示
 				LobyManager.Instance.gamePoker.labelWait.visible = false;
 				handleClose(null);

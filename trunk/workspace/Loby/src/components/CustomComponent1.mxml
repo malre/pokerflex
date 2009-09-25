@@ -96,7 +96,7 @@
 		</s:stroke>
 	</s:Rect>
 	<s:VScrollBar skinClass="components.VerticalScrollbar1" fixedThumbSize="true" id="vscrollbar1" x="480" y="80" includeIn="State4_friend" visible="false"/>
-	<s:Button skinClass="components.Button5" id="button1" x="478" y="12" click="Button_click()" includeIn="State2_shop,State3_vita,State4_friend"/>
+	<s:Button skinClass="components.Button_DeleteWindow" id="button1" x="478" y="12" click="Button_click()" includeIn="State2_shop,State3_vita,State4_friend"/>
 	<s:Rect includeIn="State4_friend,State3_vita" y="35.5" height="101" width="105" x="45.5" id="rect2" visible.State4_friend="false">
 		<s:fill>
 			<s:SolidColor color="0xFFFFFF"/>
@@ -118,6 +118,6 @@
 			</s:stroke>
 		</s:Rect>
 		<s:VScrollBar skinClass="components.VerticalScrollbar1" fixedThumbSize="true" id="vscrollbar2" x="480" y="80" includeIn="State1_item"/>
-		<s:Button skinClass="components.Button5" id="button0" x="478" y="12" includeIn="State1_item" click="Button_click_1()"/>
+		<s:Button skinClass="components.Button_DeleteWindow" id="button0" x="478" y="12" includeIn="State1_item" click="Button_click_1()"/>
 	</fx:DesignLayer>
 </s:Group>

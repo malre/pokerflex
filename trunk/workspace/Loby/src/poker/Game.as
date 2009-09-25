@@ -1,5 +1,6 @@
 package poker
 {
+	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -14,26 +15,26 @@ package poker
 		// 总牌数
 		public static const cardsAmount:int = 54;
 		// 玩家的牌的中心基准点
-		public static const cardStandardX:int = 280;
-		public static const cardStandardY:int = 440;
-		public static const playedCardStdX:int = 280;
-		public static const playedCardStdY:int = 340;
+		public static const cardStandardX:int = 288;
+		public static const cardStandardY:int = 390;
+		public static const playedCardStdX:int = 288;
+		public static const playedCardStdY:int = 308;
 		// 其他玩家的牌堆的显示位置
 		// 左边玩家的位置，
-		private static const leftCardback_x:int = 26;
-		private static const leftCardback_y:int = 220;
-		private static const playedleftCardStdX:int = 120;
-		private static const playedleftCardStdY:int = 238;
+		private static const leftCardback_x:int = 97;
+		private static const leftCardback_y:int = 160;
+		private static const playedleftCardStdX:int = 150;
+		private static const playedleftCardStdY:int = 208;
 		// 上面玩家的位置，
-		private static const upCardback_x:int = 240;
-		private static const upCardback_y:int = 27;
+		private static const upCardback_x:int = 219;
+		private static const upCardback_y:int = 88;
 		private static const playedupCardStdX:int = 262;
-		private static const playedupCardStdY:int = 150;
+		private static const playedupCardStdY:int = 161;
 		// 右边玩家的位置
-		private static const rightCardback_x:int = 495;
-		private static const rightCardback_y:int = 220;
-		private static const playedrightCardStdX:int = 410;
-		private static const playedrightCardStdY:int = 239;
+		private static const rightCardback_x:int = 474;
+		private static const rightCardback_y:int = 164;
+		private static const playedrightCardStdX:int = 415;
+		private static const playedrightCardStdY:int = 220;
 		// 牌堆类型1的宽高
 		private static const cardback1_w:int = 56;//61;
 		private static const cardback1_h:int = 76;//95;
@@ -49,7 +50,7 @@ package poker
 		// 牌的排列间隔
 		public static const cardsWidth:int = 61;
 		public static const cardsHeight:int = 86;
-		public static const cardsIntervalX:int = 11;
+		public static const cardsIntervalX:int = 12;
 		public static const cardsIntervalY:int = 16;
 		// BG
 		private var BGImg:GameObject = null;
@@ -83,12 +84,12 @@ package poker
 		//////////////////////////////////////////////////////////////////////////////
 		// card height ZOrder
 		private var BG_BaseZOrder:int = 0;
-		private var card_BaseZOrder:int = 10;
 		private var cardback_BaseZOrder:int	 = 100;
 		private var cardplayed0_BaseZOrder:int	 = 200;
 		private var cardplayed1_BaseZOrder:int	 = 220;
 		private var cardplayed2_BaseZOrder:int	 = 240;
 		private var cardplayed3_BaseZOrder:int	 = 260;
+		private var card_BaseZOrder:int = 500;
 
 		
 		// 游戏中的各个阶段的状态定义
@@ -119,6 +120,12 @@ package poker
 		private var gamePlayerLeftTimeCounter:int = -1;
 		private var gpltStartTime:Date = new Date();
 		private var gpltPlusTime:int = 0;
+		// 增加四个用来控制pass动画的变量，
+		// 当显示过一次pass的动画以后就不会重复的显示了
+//		private var bPassAnimatePlayedUp:Boolean = false;
+//		private var bPassAnimatePlayedLeft:Boolean = false;
+//		private var bPassAnimatePlayedDown:Boolean = false;
+//		private var bPassAnimatePlayedRight:Boolean = false;
 
 		public function Game()
 		{
@@ -178,12 +185,10 @@ package poker
 		// 准备界面的所有的按钮的初始化
 		public function readyStateInit():void
 		{
-			LobyManager.Instance.gamePoker.imgPlayerLeftPrepare.visible = false;
 			LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = false;
-			LobyManager.Instance.gamePoker.imgPlayerUpPrepare.visible = false;
 			LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
-			LobyManager.Instance.gamePoker.imgPlayerRightPrepare.visible = false;
 			LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
+			LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = false;
 		}
 	
 		//
@@ -261,9 +266,19 @@ package poker
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 					LobyManager.Instance.gamePoker.imgDiscardDown.visible = true;
+//					// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
+//					if(!bPassAnimatePlayedDown)
+//					{
+//						LobyManager.Instance.gamePoker.imgDiscardDown.visible = true;
+//						MovieClip(LobyManager.Instance.gamePoker.imgDiscardDown.content).gotoAndPlay(0);
+//						bPassAnimatePlayedDown = true;
+//					}
 				}
 				else
 				{
+//					// 当状态发生了切换以后， pass的动画被重置，可以再次播放
+//					if(bPassAnimatePlayedDown)
+//						bPassAnimatePlayedDown = false;
 					// 查看本次得到的数据是否和上次的一样
 					var flag:Boolean = false;
 					if(cards[selfseat].length != deskCards0.length)
@@ -324,9 +339,19 @@ package poker
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 					LobyManager.Instance.gamePoker.imgDiscardRight.visible = true;
+//					// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
+//					if(!bPassAnimatePlayedRight)
+//					{
+//						LobyManager.Instance.gamePoker.imgDiscardRight.visible = true;
+//						MovieClip(LobyManager.Instance.gamePoker.imgDiscardRight.content).gotoAndPlay(0);
+//						bPassAnimatePlayedRight = true;
+//					}
 				}
 				else
 				{
+//					// 当状态发生了切换以后， pass的动画被重置，可以再次播放
+//					if(bPassAnimatePlayedRight)
+//						bPassAnimatePlayedRight = false;
 					flag = false;
 					if(cards[id].length != deskCards1.length)
 					{
@@ -378,10 +403,19 @@ package poker
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-					LobyManager.Instance.gamePoker.imgDiscardUp.visible = true;
+//					// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
+//					if(!bPassAnimatePlayedUp)
+//					{
+//						LobyManager.Instance.gamePoker.imgDiscardUp.visible = true;
+//						MovieClip(LobyManager.Instance.gamePoker.imgDiscardUp.content).gotoAndPlay(0);
+//						bPassAnimatePlayedUp = true;
+//					}
 				}
 				else
 				{
+//					// 当状态发生了切换以后， pass的动画被重置，可以再次播放
+//					if(bPassAnimatePlayedUp)
+//						bPassAnimatePlayedUp = false;
 					flag = false;
 					if(cards[id].length != deskCards2.length)
 					{
@@ -422,9 +456,19 @@ package poker
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 				LobyManager.Instance.gamePoker.imgDiscardLeft.visible = false;
+//				// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
+//				if(!bPassAnimatePlayedLeft)
+//				{
+//					LobyManager.Instance.gamePoker.imgDiscardLeft.visible = true;
+//					MovieClip(LobyManager.Instance.gamePoker.imgDiscardLeft.content).gotoAndPlay(0);
+//					bPassAnimatePlayedLeft = true;
+//				}
 			}
 			else
 			{
+//				// 当状态发生了切换以后， pass的动画被重置，可以再次播放
+//				if(bPassAnimatePlayedLeft)
+//					bPassAnimatePlayedLeft = false;
 				if(cards[id] == "null")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
@@ -581,44 +625,93 @@ package poker
 			
 			return index; 
 		}
-		// 更新玩家的信息
+		// 更新玩家的信息  和玩家的头像图片
 		public function updatePlayerName(obj:Object):void
 		{
 			// 玩家的姓名，显示在右上
 			if(obj.hasOwnProperty("players"))
 			{
 				LobyManager.Instance.gamePoker.textPlayerSelf.text = obj.players[getPlayerIndexByPos(obj, selfseat)].name;
+				LobyManager.Instance.gamePoker.Lable_playernameDown.text = LobyManager.Instance.gamePoker.textPlayerSelf.text;
+					// 玩家的下面显示等级
+				LobyManager.Instance.gamePoker.Lable_playerLevelDown.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, selfseat)].score);
+					// 玩家的右上部分积分，等级，金币
+				LobyManager.Instance.gamePoker.textPlayerSelf_score.text = obj.players[getPlayerIndexByPos(obj, selfseat)].score;
+				LobyManager.Instance.gamePoker.textPlayerSelf_level.text = LobyManager.Instance.gamePoker.Lable_playerLevelDown.text;
+				LobyManager.Instance.gamePoker.textPlayerSelf_gold.text = obj.players[getPlayerIndexByPos(obj, selfseat)].gold;
+				LobyManager.Instance.gamePoker.playerinfoDown.visible = true;
+				if(LobyManager.Instance.gamePoker.selfAvatar.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
+					LobyManager.Instance.gamePoker.selfAvatar.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
+				if(obj.players[getPlayerIndexByPos(obj,selfseat)].ready)
+				{
+					LobyManager.Instance.gamePoker.Img_playerAvatarDown.visible = true;
+					if(LobyManager.Instance.gamePoker.Img_playerAvatarDown.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
+						LobyManager.Instance.gamePoker.Img_playerAvatarDown.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
+				}
+				else{
+					LobyManager.Instance.gamePoker.Img_playerAvatarDown.visible = false;
+				}
 
 				// partner
 				if(getPlayerIndexByPos(obj, (selfseat+2)%4) != -1)
 				{
 					LobyManager.Instance.gamePoker.textPlayerPartner.text = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].name;
 					LobyManager.Instance.gamePoker.Lable_playernameUp.text = LobyManager.Instance.gamePoker.textPlayerPartner.text;
+					// level
+					LobyManager.Instance.gamePoker.Lable_playerLevelUp.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].score);
+					LobyManager.Instance.gamePoker.playerinfoUp.visible = true;
+					
+					LobyManager.Instance.gamePoker.Img_playerAvatarUp.visible = true;
+					if(LobyManager.Instance.gamePoker.Img_playerAvatarUp.source != obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar)
+						LobyManager.Instance.gamePoker.Img_playerAvatarUp.source = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar;
 				}
 				else
 				{
 					LobyManager.Instance.gamePoker.textPlayerPartner.text = "";
 					LobyManager.Instance.gamePoker.Lable_playernameUp.text = "";
+					LobyManager.Instance.gamePoker.Label_leftcardsnumUp.text = "";
+					LobyManager.Instance.gamePoker.Img_playerAvatarUp.visible = false;
+					LobyManager.Instance.gamePoker.playerinfoUp.visible = false;
 				}
 				if(getPlayerIndexByPos(obj,(selfseat+1)%4) != -1)
 				{
 					LobyManager.Instance.gamePoker.textPlayerEmy1.text = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].name;
-					LobyManager.Instance.gamePoker.Lable_playernameRight.text = LobyManager.Instance.gamePoker.textPlayerEmy1.text; 
+					LobyManager.Instance.gamePoker.Lable_playernameRight.text = LobyManager.Instance.gamePoker.textPlayerEmy1.text;
+					// level
+					LobyManager.Instance.gamePoker.Lable_playerLevelRight.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].score);
+					LobyManager.Instance.gamePoker.playerinfoRight.visible = true;
+
+					LobyManager.Instance.gamePoker.Img_playerAvatarRight.visible = true;
+					if(LobyManager.Instance.gamePoker.Img_playerAvatarRight.source != obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar)
+						LobyManager.Instance.gamePoker.Img_playerAvatarRight.source = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar;
 				}
 				else
 				{
 					LobyManager.Instance.gamePoker.textPlayerEmy1.text = "";
-					LobyManager.Instance.gamePoker.Lable_playernameRight.text = ""; 
+					LobyManager.Instance.gamePoker.Lable_playernameRight.text = "";
+					LobyManager.Instance.gamePoker.Label_leftcardsnumRight.text = "";
+					LobyManager.Instance.gamePoker.Img_playerAvatarRight.visible = false; 
+					LobyManager.Instance.gamePoker.playerinfoRight.visible = false;
 				}
 				if(getPlayerIndexByPos(obj, (selfseat+3)%4) != -1)
 				{
 					LobyManager.Instance.gamePoker.textPlayerEmy2.text = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].name;
 					LobyManager.Instance.gamePoker.Lable_playernameLeft.text = LobyManager.Instance.gamePoker.textPlayerEmy2.text;
+					// level
+					LobyManager.Instance.gamePoker.Lable_playerLevelLeft.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].score);
+					LobyManager.Instance.gamePoker.playerinfoLeft.visible = true;
+					
+					LobyManager.Instance.gamePoker.Img_playerAvatarLeft.visible = true;
+					if(LobyManager.Instance.gamePoker.Img_playerAvatarLeft.source != obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar)
+						LobyManager.Instance.gamePoker.Img_playerAvatarLeft.source = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar;
 				}
 				else
 				{
 					LobyManager.Instance.gamePoker.textPlayerEmy2.text = "";
 					LobyManager.Instance.gamePoker.Lable_playernameLeft.text = "";
+					LobyManager.Instance.gamePoker.Label_leftcardsnumLeft.text = "";
+					LobyManager.Instance.gamePoker.Img_playerAvatarLeft.visible = false;
+					LobyManager.Instance.gamePoker.playerinfoLeft.visible = false;
 				}
 			}
 		}
@@ -658,30 +751,36 @@ package poker
 			{
 				if(obj.time != -1)
 				{
+					// 显示沙漏动画和倒计时时间文字
+					LobyManager.Instance.gamePoker.sandglass.visible = true;
 					LobyManager.Instance.gamePoker.label_leftTimeCounter.visible = true;
 					LobyManager.Instance.gamePoker.label_leftTimeCounter.text = obj.time.toString();
+					// 调整沙漏和倒计时的文字位置
 					if(obj.play.next == (selfseat+1)%4)
 					{
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.x =485;
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.y =270;
+						LobyManager.Instance.gamePoker.sandglass.x = 474;
+						LobyManager.Instance.gamePoker.sandglass.y = 243;
 					}
 					else if(obj.play.next == (selfseat+2)%4)
 					{
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.x =250;
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.y =60;
+						LobyManager.Instance.gamePoker.sandglass.x = 270;
+						LobyManager.Instance.gamePoker.sandglass.y = 132;
 					}
 					else if(obj.play.next == (selfseat+3)%4)
 					{
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.x =30;
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.y =270;
+						LobyManager.Instance.gamePoker.sandglass.x = 98;
+						LobyManager.Instance.gamePoker.sandglass.y = 239;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.x =250;
-						LobyManager.Instance.gamePoker.label_leftTimeCounter.y =400;
+						LobyManager.Instance.gamePoker.sandglass.x = 272;
+						LobyManager.Instance.gamePoker.sandglass.y = 353;
 					}
+					LobyManager.Instance.gamePoker.label_leftTimeCounter.x = LobyManager.Instance.gamePoker.sandglass.x + LobyManager.Instance.gamePoker.sandglass.width;
+					LobyManager.Instance.gamePoker.label_leftTimeCounter.y = LobyManager.Instance.gamePoker.sandglass.y + 6;
 				}
 				else{
+					LobyManager.Instance.gamePoker.sandglass.visible = false;
 					LobyManager.Instance.gamePoker.label_leftTimeCounter.visible = false;
 				}
 			}
@@ -692,22 +791,35 @@ package poker
 			// 玩家的状态
 			if(obj.hasOwnProperty("players"))
 			{
+				// self
+				if(obj.players.hasOwnProperty( getPlayerIndexByPos(obj,selfseat) ))
+				{
+					if(obj.players[getPlayerIndexByPos(obj,selfseat)].ready)
+					{
+						LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = true;
+					}
+					else
+					{
+						LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = false;
+					}
+				}
+				else{
+					LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = false;
+				}
+
 				// partner
 				if(obj.players.hasOwnProperty( getPlayerIndexByPos(obj,(selfseat+2)%4) ))
 				{
 					if(obj.players[getPlayerIndexByPos(obj,(selfseat+2)%4)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerUpPrepare.visible = false;
 						LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = true;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerUpPrepare.visible = true;
 						LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerUpPrepare.visible = false;
 					LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
 				}
 				
@@ -715,17 +827,14 @@ package poker
 				{
 					if(obj.players[getPlayerIndexByPos(obj,(selfseat+1)%4)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerRightPrepare.visible = false;
 						LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = true;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerRightPrepare.visible = true;
 						LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerRightPrepare.visible = false;
 					LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
 				}
 				
@@ -733,17 +842,14 @@ package poker
 				{
 					if(obj.players[getPlayerIndexByPos(obj,(selfseat+3)%4)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerLeftPrepare.visible = false;
 						LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = true;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerLeftPrepare.visible = true;
 						LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerLeftPrepare.visible = false;
 					LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = false;
 				}
 			}
@@ -751,6 +857,10 @@ package poker
 		// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
 		public function updatePlayerCardsInfo(obj:Object):void
 		{
+			//显示自己的剩余牌数
+			LobyManager.Instance.gamePoker.Label_leftcardsnumDown.text = "("+obj.cards[selfseat].number+")";
+			LobyManager.Instance.gamePoker.Label_leftcardsnumDown.visible = true;
+			
 			// partner
 			if(obj.cards.hasOwnProperty( ((selfseat+2)%4).toString() ))
 			{
@@ -780,25 +890,30 @@ package poker
 				}
 			}
 			
-			// 当前出牌玩家，显示在主画面上
+			// 当前出牌玩家，显示在该玩家的头像的左上角
 			if(obj.play.hasOwnProperty("next"))
 			{
 				// 将显示的图打开 
 				LobyManager.Instance.gamePoker.label_thinking.visible = true;
-				if(obj.play.next == (selfseat+1)%4)
+				if(obj.play.next == selfseat)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x =485;
-					LobyManager.Instance.gamePoker.label_thinking.y =250;
+					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarDown.x;
+					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarDown.y;
+				}
+				else if(obj.play.next == (selfseat+1)%4)
+				{
+					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarRight.x;
+					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarRight.y;
 				}
 				else if(obj.play.next == (selfseat+2)%4)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x =250;
-					LobyManager.Instance.gamePoker.label_thinking.y =40;
+					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarUp.x;
+					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarUp.y;
 				}
 				else if(obj.play.next == (selfseat+3)%4)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x =30;
-					LobyManager.Instance.gamePoker.label_thinking.y =250;
+					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarLeft.x;
+					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarLeft.y;
 				}
 				else
 				{
@@ -815,18 +930,21 @@ package poker
 		}
 		public function updatePlayerLeftTime():void
 		{
-			// 每帧都进行时间的计算，并自动的进行计时
-			var thisFrame:Date = new Date();
-			var difference:Number = (thisFrame.getTime() - gpltStartTime.getTime())/1000.0;
-			gamePlayerLeftTimeCounter = gamePlayerLeftTimeDef - difference + gpltPlusTime;
-			// 计时时间到了，进行一次连接请求
-			if(gamePlayerLeftTimeCounter <= 0)
+			if(gamePlayerLeftTimeDef != -1)
 			{
-				gamePlayerLeftTimeCounter = 0;
-				// 这个立即更新，可能会因为前一次的更新没有完成而产生等待，并不是真正意义上的立即更新
-				updateImmediately();
+				// 每帧都进行时间的计算，并自动的进行计时
+				var thisFrame:Date = new Date();
+				var difference:Number = (thisFrame.getTime() - gpltStartTime.getTime())/1000.0;
+				gamePlayerLeftTimeCounter = gamePlayerLeftTimeDef - difference + gpltPlusTime;
+				// 计时时间到了，进行一次连接请求
+				if(gamePlayerLeftTimeCounter <= 0)
+				{
+					gamePlayerLeftTimeCounter = 0;
+					// 这个立即更新，可能会因为前一次的更新没有完成而产生等待，并不是真正意义上的立即更新
+					updateImmediately();
+				}
+				LobyManager.Instance.gamePoker.label_leftTimeCounter.text = gamePlayerLeftTimeCounter.toString();
 			}
-			LobyManager.Instance.gamePoker.label_leftTimeCounter.text = gamePlayerLeftTimeCounter.toString();
 		}
 		public function initPlayerLeftStartTime():void
 		{
@@ -864,9 +982,7 @@ package poker
 						requestFlag = false;
 						if(curPlayer != selfseat)
 						{
-							LobyManager.Instance.gamePoker.btnSendCards.visible = false;
-							LobyManager.Instance.gamePoker.btnDiscard.visible = false;
-							LobyManager.Instance.gamePoker.btnHint.visible = false;
+							LobyManager.Instance.gamePoker.commandbar.visible = false;
 						}
 					}
 					// 轮到自己出牌,并且按钮没有被按下
@@ -878,7 +994,7 @@ package poker
 						{
 							// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
 							// 这个时候不能够放弃
-							LobyManager.Instance.gamePoker.btnDiscard.enabled = false;
+							LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = false;
 						}
 						else
 						{
@@ -887,11 +1003,11 @@ package poker
 						if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
 						{
 							// make chupai enable
-							LobyManager.Instance.gamePoker.btnSendCards.enabled = true;
+							LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = true;
 						}
 						else
 						{
-							LobyManager.Instance.gamePoker.btnSendCards.enabled = false;
+							LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = false;
 						}
 					    checkarr = null;
 					}
@@ -927,7 +1043,7 @@ package poker
 			{
 				if(obj.players.hasOwnProperty(i.toString()))
 				{
-					if(obj.players[i].pid == pid)		// 28 should be the play id,the we recorded
+					if(obj.players[i].pid == pid)
 					{
 						// 获得玩家的座位号
 						selfseat = obj.players[i].pos;
