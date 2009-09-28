@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" width="31">
+
+	<fx:Script>
+		<![CDATA[
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+
+		]]>
+	</fx:Script>
+
+	
+<!--    <s:RichEditableText id="textView" text="{12}"
+              heightInLines="1"
+			  paddingLeft="4" paddingTop="4"
+              paddingRight="4" paddingBottom="4" color="#ffffff" fontWeight="normal" fontStyle="normal" height="18" y="1.2" x="2.15" width="34"/>-->
+              
+	<s:TextInput y="2" width="29" height="19" text="12" />	
+	<s:Button x="29" y="2" skinClass="components.Button_GameTalk_font_UpDown" click="button1_clickHandler(event)"/>
+	<s:Button x="38" y="19" skinClass="components.Button_GameTalk_font_UpDown" rotation="-180" click="button2_clickHandler(event)"/>
+</s:Group>

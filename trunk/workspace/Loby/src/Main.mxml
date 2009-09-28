@@ -7,12 +7,21 @@
         creationComplete="createcomplete(event)" enterFrame="enterframe(event)" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
+			import item.playerItemsRequester;
+			import item.shopRequester;
 			import poker.poker;
 			
 
 			protected function Buttonitem_click():void
 			{
-				shopmenu.currentState="StateShopMain";
+				if(shopmenu.visible == false)
+				{
+					shopmenu.visible = true;
+					shopmenu.currentState="StateItemMain";
+					// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+					playerItemsRequester.Instance().setRequest(0, 13);
+					playerItemsRequester.Instance().send();
+				}
 			}
 
 
@@ -30,7 +39,14 @@
 
 			protected function Buttonshop_click():void
 			{
-//				customcomponent11.currentState='State2_shop';
+				if(shopmenu.visible == false)
+				{
+					shopmenu.visible = true;
+					shopmenu.currentState="StateShopMain";
+					// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+					shopRequester.Instance().setRequest(0, 13);
+					shopRequester.Instance().send();
+				}
 			}
 
 
@@ -85,5 +101,5 @@
 		<components:Shop x="131" y="130" id="shopmenu">
 		</components:Shop>
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.4.5" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="620" y="6" text="ver 1.5.0" width="64" textAlign="right" color="#FFFFFF"/>
 </s:Application>

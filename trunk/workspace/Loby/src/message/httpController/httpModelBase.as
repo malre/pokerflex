@@ -17,7 +17,7 @@ package message.httpController
 	{
 		protected var httpservice:HTTPService;
 		protected var timer:Timer;
-		protected var lastSuccObj:Object;
+		public var lastSuccObj:Object;
 		
 		public function httpModelBase()
 		{

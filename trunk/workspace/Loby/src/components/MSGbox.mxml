@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:d="http://ns.adobe.com/fxg/2008/dt"
+	currentStateChange="msgbox_currentStateChangeHandler(event)"
+	currentState="State2" >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.StateChangeEvent;
+			protected function closeButton_click():void
+			{
+				currentState='State2';
+			}
+
+			protected function msgbox_currentStateChangeHandler(event:StateChangeEvent):void
+			{
+				if(event.currentTarget.currentState == "State2")
+				{
+					visible = false;
+				}
+			}
+
+		]]>
+
+	</fx:Script>
+	<s:transitions>
+		<s:Transition fromState="State2" toState="State1" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage6}">
+					<s:Fade duration="100" repeatCount="1"/>
+				</s:Parallel>
+				<s:Parallel target="{desc}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{button1}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="State1" toState="State2" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage6}">
+					<s:Fade duration="150"/>
+				</s:Parallel>
+				<s:Parallel target="{desc}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{button1}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="State2"/>
+	</s:states>
+	<s:BitmapImage source="@Embed('/assets/shop_Bg_2.png')" resizeMode="scale" id="bitmapimage6" includeIn="State1"/>
+	<s:RichText includeIn="State1" y="53" color="0x4769C4" x="49" text="Text" fontSize="18" fontFamily="宋体" id="desc" width="205" height="78"/>
+	<s:Button includeIn="State1" x="98" y="172" skinClass="components.Button_ItemUse" id="button1" click="closeButton_click()"/>
+</s:Group>
