@@ -18,9 +18,8 @@ package message
 	public class Messenger
 	{
 		// 消息服务器地址定义
-		//private var messengerServerAddress:String = "http://192.168.18.24/web/world/chat";
-		//private var messengerServerAddress:String = "http://218.108.39.82:9000/web/world/chat";
-		private var messengerServerAddress:String = "http://192.168.18.199/web/tose/chat";
+		include "../ServerAddress.ini"
+		private var messengerServerAddress:String = ServerAddress+"/web/"+ServerPerfix+"/chat";
 		private var messengerReceive:String = messengerServerAddress + "/receive";
 		private var messengerSend:String = messengerServerAddress + "/send";
 		

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:d="http://ns.adobe.com/fxg/2008/dt" 
+	xmlns:th="http://ns.adobe.com/thermo/2009">
+	<fx:Script>
+		<![CDATA[
+			protected function Button_click():void
+			{
+				currentState='State1';
+			}
+		]]>
+
+	</fx:Script>
+	<s:transitions>
+		<s:Transition fromState="State1" toState="State2" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{button1}">
+					<s:Fade duration="100" startDelay="100"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Fade duration="200"/>
+				</s:Parallel>
+				<s:Parallel target="{button2}">
+					<s:Fade duration="100" startDelay="100"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="State2" toState="State1" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Fade duration="200"/>
+				</s:Parallel>
+				<s:Parallel target="{button1}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{button2}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="State2"/>
+	</s:states>
+	<s:BitmapImage source="@Embed('/assets/OptionWindow.png')" resizeMode="scale" includeIn="State2" id="bitmapimage1"/>
+	<s:Button includeIn="State2" x="313" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="Button_click()"/>
+	<s:Button includeIn="State2" x="155" y="118" skinClass="components.OptionWindow_LevelButton" id="button2"/>
+	<fx:Private>
+		<th:Guide x="37"/>
+		<th:Guide y="51"/>
+	</fx:Private>
+</s:Group>

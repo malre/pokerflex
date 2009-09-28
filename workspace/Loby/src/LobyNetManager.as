@@ -22,13 +22,12 @@ package
 		// 连接地址的规范
 		// 首先向一个统一的地址请求房间信息，我们称这个地址为固定loby地址，对这个地址的请求我们会得到一个
 		// 新的loby地址
-		//static public var URL_lobyAddress:String = "http://192.168.18.24/web/world/";
-		//static public var URL_lobyAddress:String = "http://218.108.39.82:9000/web/world/";
-		static public var URL_lobyAddress:String = "http://192.168.18.199/web/tose/";
 		// 我们将这个loby地址保存下来，这个被我们称为动态loby地址，它可能会有变化
+		include "ServerAddress.ini"
+		static public var URL_lobyAddress:String = ServerAddress+"/web/"+ServerPerfix+"/";
 		//static public var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
 		//static public var URL_lobysonAddress:String = "http://218.108.39.82:9000/web/world/";
-		static public var URL_lobysonAddress:String = "http://192.168.18.199/web/tose/";
+		static public var URL_lobysonAddress:String = URL_lobyAddress;
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
 		static public var URL_roomInfo:String = "lobby/info/list";
 		static public var URL_addloby:String = "lobby/player/add";

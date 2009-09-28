@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009">
+	<s:transitions>
+		<s:Transition fromState="over" toState="up" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage2}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage3}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:BitmapImage source="@Embed('/assets/Button_open_up.png')" resizeMode="scale" id="bitmapimage2" includeIn="disabled,down,up" y="1"/>
+	<s:BitmapImage source="@Embed('/assets/Button_open_over.png')" resizeMode="scale" includeIn="over" id="bitmapimage3" y="0.95"/>
+	<fx:Private>
+		<th:Guide x="0"/>
+		<th:Guide y="-1"/>
+	</fx:Private>
+</s:Skin>

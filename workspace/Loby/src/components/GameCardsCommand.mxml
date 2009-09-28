@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:components="components.*">
+
+	<fx:Script>
+		<![CDATA[
+			import poker.Game;
+			protected function sendCardsClicked(event:Event):void
+			{
+				btnSendCards.enabled = false;
+				// 发送出牌的消息，如果失败，将会自动重发，
+				Game.Instance.sendcards();
+			}
+
+			protected function discardClicked(event:Event):void
+			{
+				btnDiscard.enabled = false;
+				Game.Instance.pass();
+			}
+			
+		]]>
+	</fx:Script>
+
+	<s:BitmapImage source="@Embed('/assets/ButtonBg.png')" resizeMode="scale" d:userLabel="ButtonBG" d:locked="true"/>
+	<s:Button id="btnSendCards" x="40" y="2" skinClass="components.Button_Chupai" click="sendCardsClicked(event)"/>
+	<s:Button id="btnDiscard" x="99" y="2" skinClass="components.Button_Chupai" click="discardClicked(event)"/>
+	<s:Button id="btnHint" x="159" y="2" skinClass="components.Button_Chupai" enabled="false"/>
+	<s:RichText y="5" color="#893808" x="53" text="出牌" fontSize="14" fontFamily="宋体" fontWeight="normal" fontStyle="normal"/>
+	<s:RichText y="5" color="#893808" x="113" text="放弃" fontSize="14" fontFamily="宋体" fontWeight="normal" fontStyle="normal"/>
+	<s:RichText y="6" color="#893808" x="173" text="提示" fontSize="14" fontFamily="宋体" fontWeight="normal" fontStyle="normal"/>
+	<fx:Private>
+	</fx:Private>
+</s:Group>
