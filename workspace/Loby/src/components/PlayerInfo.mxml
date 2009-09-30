@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	currentStateChange="playerinfo_currentStateChangeHandler(event)" 
+	currentState="StateStart" xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Script>
+		<![CDATA[
+			import poker.LevelDefine;
+			import lobystate.StateGetPlayerInfo;
+			import mx.events.StateChangeEvent;
+			protected function Button_click():void
+			{
+				currentState='StateStart';
+			}
+
+			protected function playerinfo_currentStateChangeHandler(event:StateChangeEvent):void
+			{
+				if(event.currentTarget.currentState == "StateStart")
+				{
+					visible = false;
+				}
+				else if(event.currentTarget.currentState == "StateMain")
+				{
+					scoreText.text = "";
+					// 对成绩赋值
+					for each(var obj:Object in StateGetPlayerInfo.Instance.lastSuccData.player.score)
+					{
+						scoreText.text += obj.name;
+						scoreText.text += ":  ";
+						scoreText.text += obj.score;
+						scoreText.text += "分          ";
+						scoreText.text += LevelDefine.getLevelName(int(obj.score));
+						scoreText.text += "\n";
+					}
+				}
+			}
+
+		]]>
+
+	</fx:Script>
+	<s:transitions>
+		<s:Transition fromState="StateMain" toState="StateStart" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Fade duration="150"/>
+				</s:Parallel>
+				<s:Parallel target="{button1}">
+					<s:Fade duration="50"/>
+				</s:Parallel>
+				<s:Parallel target="{scoreText}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{playername}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="StateStart" toState="StateMain" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{scoreText}">
+					<s:Fade duration="50"/>
+				</s:Parallel>
+				<s:Parallel target="{playername}">
+					<s:Fade duration="50"/>
+				</s:Parallel>
+				<s:Parallel target="{button1}">
+					<s:Fade duration="50"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<s:states>
+		<s:State name="StateMain"/>
+		<s:State name="StateStart"/>
+	</s:states>
+	<s:BitmapImage source="@Embed('/assets/Bg_gerenxinxi.png')" resizeMode="scale" includeIn="StateMain" id="bitmapimage1"/>
+	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="317" y="6" id="button1" includeIn="StateMain" click="Button_click()"/>
+	<s:RichText y="193" color="#000000" x="31" text="" fontSize="14" fontFamily="宋体" width="291" height="64" includeIn="StateMain" id="scoreText"/>
+	<s:RichText y="97" color="0x4769C4" x="154" text="{StateGetPlayerInfo.Instance.lastSuccData.player.name}" fontSize="14" fontFamily="宋体" width="163" height="42" includeIn="StateMain" id="playername"/>
+	<mx:Image includeIn="StateMain" x="32" y="65" width="83" height="79" id="avatar" source="{StateGetPlayerInfo.Instance.lastSuccData.player.avatar}"/>
+	<mx:Label includeIn="StateMain" x="128" y="163" text="{StateGetPlayerInfo.Instance.lastSuccData.player.money} 金币" width="68" fontFamily="宋体" fontSize="16" id="gold"/>
+</s:Group>
