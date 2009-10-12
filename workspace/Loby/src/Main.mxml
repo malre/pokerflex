@@ -7,6 +7,7 @@
         creationComplete="createcomplete(event)" enterFrame="enterframe(event)" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
+			import lobystate.StateGetPlayerInfo;
 			import mx.managers.PopUpManager;
 			import poker.CardViewer;
 			import item.playerItemsRequester;
@@ -17,11 +18,18 @@
 			{
 				if(shopmenu.visible == false && playerinfo.visible == false)
 				{
-					shopmenu.visible = true;
-					shopmenu.currentState="StateItemMain";
-					// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
-					playerItemsRequester.Instance().setRequest(0, 13);
-					playerItemsRequester.Instance().send();
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
+					{
+						if(StateGetPlayerInfo.Instance.lastSuccData.success)
+						{
+							shopmenu.visible = true;
+							shopmenu.currentState="StateItemMain";
+							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+							playerItemsRequester.Instance().setRequest(0, 13);
+							playerItemsRequester.Instance().send();
+						}
+					}
 				}
 			}
 
@@ -30,8 +38,15 @@
 			{
 				if(shopmenu.visible == false && playerinfo.visible == false)
 				{
-					playerinfo.visible = true;
-					playerinfo.currentState="StateMain";
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
+					{
+						if(StateGetPlayerInfo.Instance.lastSuccData.success)
+						{
+							playerinfo.visible = true;
+							playerinfo.currentState="StateMain";
+						}
+					}
 				}
 			}
 
@@ -47,11 +62,18 @@
 			{
 				if(shopmenu.visible == false && playerinfo.visible == false)
 				{
-					shopmenu.visible = true;
-					shopmenu.currentState="StateShopMain";
-					// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
-					shopRequester.Instance().setRequest(0, 13);
-					shopRequester.Instance().send();
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
+					{
+						if(StateGetPlayerInfo.Instance.lastSuccData.success)
+						{
+							shopmenu.visible = true;
+							shopmenu.currentState="StateShopMain";
+							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+							shopRequester.Instance().setRequest(0, 13);
+							shopRequester.Instance().send();
+						}
+					}
 				}
 			}
 
@@ -65,9 +87,9 @@
 //			}
 			protected function createcomplete(event:Event):void
 			{
-				// 使大厁E���E正常状态E并且完�E大厁E��初始化
+				// 大厅置成正常状态
 				LobyManager.Instance.state = 0;
-				// 发送更新大厁E���
+				// 发送更新大厅列表
 				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
 			}
 			
@@ -88,13 +110,13 @@
 		</components:CustomComponent3>
 		<mx:Image x="36" y="40" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true"/>
 		<mx:Label x="82" y="31" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>
-		<s:TextArea x="289" y="96" width="474" height="456" skinClass="components.CustomTextAreaSkin" editable="false" color="0xffffff">
+		<s:TextArea x="289" y="96" id="introduceText" width="474" height="456" skinClass="components.CustomTextAreaSkin" editable="false" color="0xffffff">
 			<s:content>
 				{ruleIntroduce.ruleText}
 			</s:content>
 		</s:TextArea>
 	</fx:DesignLayer>
-	<mx:Canvas x="17" y="94" width="487" height="460" id="gameRoomCanvas"/>
+	<mx:Canvas x="17" y="95" width="487" height="458" id="gameRoomCanvas"/>
 	<fx:DesignLayer d:userLabel="button">
 		<s:Button x="201" y="54" skinClass="components.Button_friend" d:userLabel="Button friend" click="Buttonfriend_click()"/>
 		<s:Button x="103" y="56" skinClass="components.Button_Item" d:userLabel="Button item" click="Buttonitem_click()"/>
@@ -114,5 +136,5 @@
 		<!--玩家信息-->
 		<components:PlayerInfo x="200" y="130" id="playerinfo"/>
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.5.2" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="620" y="6" text="ver 1.5.6" width="64" textAlign="right" color="#FFFFFF"/>
 </s:Application>

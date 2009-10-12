@@ -6,6 +6,7 @@
 	currentState="State2" >
 	<fx:Script>
 		<![CDATA[
+			import mx.core.FlexGlobals;
 			import mx.events.StateChangeEvent;
 			protected function closeButton_click():void
 			{
@@ -17,6 +18,7 @@
 				if(event.currentTarget.currentState == "State2")
 				{
 					visible = false;
+					FlexGlobals.topLevelApplication.shopmenu.BtnItemNotBuy();
 				}
 			}
 

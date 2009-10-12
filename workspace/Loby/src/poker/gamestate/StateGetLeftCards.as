@@ -36,7 +36,7 @@ package poker.gamestate
 				{
 					if(obj.cards[i].number != 0){
 						// 描画还有问题，暂时屏蔽
-						//Game.Instance.drawPlayerHandCards(obj,i);
+						Game.Instance.drawPlayerHandCards(obj,i);
 					}
 				}
 				NetManager.Instance.send(NetManager.send_getScore);

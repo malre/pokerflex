@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" width="157" height="28">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.ColorPickerEvent;
+			import mx.core.FlexGlobals;
+
+			protected function colorpicker1_changeHandler(event:ColorPickerEvent):void
+			{
+				LobyManager.Instance.gamePoker.inputboxGame.changeInputColor(event.color);
+			}
+
+
+			protected function numericstepper1_changeHandler(event:Event):void
+			{
+				LobyManager.Instance.gamePoker.inputboxGame.fontsize = event.currentTarget.value;
+			}
+
+		]]>
+	</fx:Script>
+	<s:Rect width="100%" height="100%" alpha="1.0">
+		<s:fill>
+			<mx:SolidColor color="#062e38"/>
+		</s:fill>
+	</s:Rect>
+	<s:NumericStepper x="51" y="2" minimum="12" maximum="30" color="#000000" change="numericstepper1_changeHandler(event)"/>
+	<mx:ColorPicker x="0" y="2" selectedColor="#FFFFFF" change="colorpicker1_changeHandler(event)"/>
+	<mx:Label x="24" y="4" text="颜色" color="#FFFFFF"/>
+	<mx:Label x="101" y="4" text="文字大小" color="#FFFFFF"/>
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+</s:Group>

@@ -19,7 +19,7 @@
 
 			protected function img_clickHandler(event:MouseEvent):void
 			{
-				var str:String = event.target.id;
+				var str:String = event.currentTarget.id;
 				var cv:ContentViewer = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby;
 				cv.insertEmotion(int(str.substr(1, 2)));
 				this.visible = false;
