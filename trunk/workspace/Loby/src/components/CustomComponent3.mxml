@@ -19,7 +19,6 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<s:Group id="textshow" includeIn="State3" x="13" y="205" width="241" height="206">
-		<s:Button includeIn="State3" x="214" y="184" label="et" click="button1_clickHandler(event)" width="24" height="21"/>
 	</s:Group>
 	<mx:VScrollBar height="206" x="257" y="199" id="lobbyTextScroll" scroll="scrollListener(event)" includeIn="State3" visible="false"/>
 	<mx:ColorPicker includeIn="State3" x="118" y="412" selectedColor="#FFFFFF" change="colorpicker1_changeHandler(event)"/>
@@ -28,7 +27,8 @@
 	<mx:Label x="144" y="414" text="颜色" color="#FFFFFF" includeIn="State3"/>
 	<mx:Label x="219" y="414" text="文字大小" color="#FFFFFF" includeIn="State3" width="54" textAlign="left"/>
 	<s:NumericStepper includeIn="State3" x="173" y="415" width="46" height="20" minimum="12" maximum="30" 
-		color="#000000" id="fontsizeStepper" value="@{inputboxLobby.fontsize}"/>
+		color="#000000" id="fontsizeStepper" change="fontsizeStepper_changeHandler(event)"/>
+	<s:Button includeIn="State3" x="263" y="413" label="et" click="button1_clickHandler(event)" width="15" height="21"/>
 	<s:transitions>
 		<s:Transition fromState="State2" toState="State3" autoReverse="true">
 			<s:Parallel>
@@ -131,6 +131,12 @@
 			protected function colorpicker1_changeHandler(event:ColorPickerEvent):void
 			{
 				inputboxLobby.changeInputColor(event.color);
+			}
+
+
+			protected function fontsizeStepper_changeHandler(event:Event):void
+			{
+				inputboxLobby.fontsize = fontsizeStepper.value;
 			}
 
 		]]>

@@ -12,10 +12,10 @@ package message
 	{
 		public static var EmotionRes:ArrayCollection = new ArrayCollection();
 
-		[Embed(source="res/000.gif")]
+		[Embed(source="res/000.swf")]
 		public static var Emo000:Class;
 		
-		[Embed(source="res/001.gif")]
+		[Embed(source="res/001.swf")]
 		public static var Emo001:Class;
 
 		[Embed(source="res/002.gif")]

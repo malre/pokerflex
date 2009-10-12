@@ -214,6 +214,7 @@ package
 //			if(FlexGlobals.topLevelApplication.gameTreeView.isItemOpen(FlexGlobals.topLevelApplication.gameTreeView.selectedItem))
 //				return;
 				
+			// 只有正常情况下的大厅登录点击才有效
 			if(LobyManager.instance.state != 1)
 				return;
 				
@@ -307,6 +308,8 @@ package
 				FlexGlobals.topLevelApplication.gameTreeView.visible = false;
 					// 显示右边的信息和聊天面板
 				FlexGlobals.topLevelApplication.customcomponent31.currentState='State3';
+					// 将说明文字关闭
+				FlexGlobals.topLevelApplication.introduceText.visible = false;
 			}
 		}
 

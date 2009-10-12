@@ -547,9 +547,9 @@ package poker
 					PlayerCardsRight.reverse();
 					for(k=0; k<PlayerCardsRight.length; k++)
 					{
-						pt = new Point(rightCardback_x,rightCardback_y-(PlayerCardsRight.length*cardsIntervalY/2)+k*cardsIntervalY);
+						pt = new Point(rightCardback_x,playedrightCardStdY-(PlayerCardsRight.length*cardsIntervalY/2)+k*cardsIntervalY);
 						// 传入的是左上的位置坐标
-						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsRight[i], "HandCardRight", pt, cardback_BaseZOrder+k, true);
+						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsRight[k], "HandCardRight", pt, cardback_BaseZOrder+k, true);
 						pt = null;
 					}
 				}
@@ -573,9 +573,9 @@ package poker
 					PlayerCardsUp.reverse();
 					for(k=0; k<PlayerCardsUp.length; k++)
 					{
-						pt = new Point(upCardback_x-(PlayerCardsUp.length*cardsIntervalX/2)+i*cardsIntervalX,upCardback_y);
+						pt = new Point(playedupCardStdX-(PlayerCardsUp.length*cardsIntervalX/2)+k*cardsIntervalX,upCardback_y);
 						// 传入的是左上的位置坐标
-						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsUp[i], "HandCardUp", pt, cardback_BaseZOrder+k, true);
+						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsUp[k], "HandCardUp", pt, cardback_BaseZOrder+k, true);
 						pt = null;
 					}
 				}
@@ -599,9 +599,9 @@ package poker
 					PlayerCardsLeft.reverse();
 					for(k=0; k<PlayerCardsLeft.length; k++)
 					{
-						pt = new Point(leftCardback_x,leftCardback_y-(PlayerCardsLeft.length*cardsIntervalY/2)+k*cardsIntervalY);
+						pt = new Point(leftCardback_x,playedleftCardStdY-(PlayerCardsLeft.length*cardsIntervalY/2)+k*cardsIntervalY);
 						// 传入的是左上的位置坐标
-						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsLeft[i], "HandCardLeft", pt, cardback_BaseZOrder+k, true);
+						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsLeft[k], "HandCardLeft", pt, cardback_BaseZOrder+k, true);
 						pt = null;
 					}
 				}

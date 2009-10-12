@@ -4,7 +4,7 @@
 	xmlns:mx="library://ns.adobe.com/flex/halo"
 	width="780" height="560"
 	creationComplete="creationComplete()" enterFrame="enterFrame(event)"
-	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)" xmlns:components="components.*">
+	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)" xmlns:components="components.*" xmlns:message="message.*">
 
 	<!--<mx:Image x="0" y="0" source="@Embed('../res/BG_G_01.jpg')"/>-->
 <!--	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
@@ -23,11 +23,11 @@
 	<mx:Image x="549" y="283" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
 	<mx:Image x="309" y="515" id="imgPlayerDownReady" source="@Embed('../res/ready.png')"/>
 	<mx:Image x="281" y="472" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
-
+	<!--聊天上的按钮和选项设置等等-->
 	<s:Button x="284" y="455" skinClass="components.ButtonReady" id="btnReady" click="gameReadyClicked(event)"/>
 	<s:Button x="680" y="526" skinClass="components.Button_GameTalk" click="gameSendMsg_clickHandler(event)"/>
-	<s:Button x="702" y="525" skinClass="components.ButtonMsgEmotion"/>
-	<s:Button x="722" y="525" skinClass="components.ButtonMsgOption"/>
+	<s:Button x="702" y="525" skinClass="components.ButtonMsgEmotion" click="chatEmotion_clickHandler(event)"/>
+	<s:Button x="722" y="525" skinClass="components.ButtonMsgOption" click="chatOptionBtn_clickHandler(event)"/>
 	<s:Button x="742" y="525" skinClass="components.ButtonMsgToAll"/>
 	<s:Button x="682" y="312" skinClass="components.ButtonSetup" id="btnSetting" click="btnSetting_clickHandler(event)"/>
 	<s:Button x="644" y="312" skinClass="components.ButtonHelp" height="44" width="41" click="btnHelp_clickHandler(event)"/>
@@ -79,16 +79,21 @@
 	<mx:Label x="650" y="206" id="textPlayerEmy1" width="90" height="19" color="#FFFFFF"/>
 	<mx:Label x="650" y="226" id="textPlayerEmy2" width="90" height="19" color="#FFFFFF"/>
 	<!--倒计时的沙漏和数字-->
-	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" color="#FFFFFF"/>
-	<mx:Image x="247" y="129" id="imgDiscardUp" source="@Embed('../res/fangqi2.png')"/>
-	<mx:Image x="18" y="303" id="imgDiscardLeft" source="@Embed('../res/fangqi2.png')"/>
-	<mx:Image x="253" y="366" id="imgDiscardDown" source="@Embed('../res/fangqi2.png')"/>
-	<mx:Image x="305" y="303" id="imgDiscardRight" source="@Embed('../res/fangqi2.png')"/>
-
 	<mx:Image x="95" y="231" id="sandglass" source="@Embed('../res/sandglass.swf')" width="16" height="28"/>
+	<mx:Label x="241" y="277" text="等待其他玩家中..." id="labelWait" color="#FFFFFF"/>
+	<!--放弃-->
+	<mx:Image x="232" y="134" id="imgDiscardUp" source="@Embed('../res/fangqi2.png')"/>
+	<mx:Image x="119" y="274" id="imgDiscardLeft" source="@Embed('../res/fangqi2.png')"/>
+	<mx:Image x="247" y="354" id="imgDiscardDown" source="@Embed('../res/fangqi2.png')"/>
+	<mx:Image x="304" y="274" id="imgDiscardRight" source="@Embed('../res/fangqi2.png')"/>
+
 	<mx:Label x="260" y="77" width="45" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#FFFFFF"/>
+	<!--玩家聊天部分的框体-->
 	<s:Group x="578" y="388" width="182" height="133" id="msgbox">
 	</s:Group>
+	<message:chatSetting x="603" y="493" id="chatsetting" visible="false"/>
+	<message:chatEmotion x="520" y="380" id="chatemotion" visible="false"/>
+	<!--玩家右上部分的信息-->
 	<mx:Image x="651" y="41" width="51" height="46" id="selfAvatar"/>
 	<mx:Label x="721" y="94" color="#FFFFFF" id="textPlayerSelf_score" height="18"/>
 	<mx:Label x="721" y="109" color="#FFFFFF" id="textPlayerSelf_level" height="18"/>
@@ -338,6 +343,10 @@
 
     		protected function btnHelp_clickHandler(event:MouseEvent):void
     		{
+    			// for debug
+    			var obj:Object = {"cards":[{"card":[],"number":0},{"card":[7,16,18,19,26,26,30,32,32,35,36,36,40,43],"number":14},{"card":[],"number":0},{"card":[1,3,8,10,11,24,27,33,34,39,39,40,41,46,47,51,51],"number":17}]};
+    			//var obj:Object = {"card":[1,3,8,10,11,24,27,33,34,39,39,40,41,46,47,51,51],"number":17};
+    			Game.Instance.drawPlayerHandCards(obj, 1);
     		}
     		
     		protected function btnSetting_clickHandler(event:MouseEvent):void
@@ -355,6 +364,18 @@
     		protected function gameSendMsg_clickHandler(event:MouseEvent):void
     		{
     			inputEditManager(inputboxGame.textinput.interactionManager).sendButtonPressed();
+    		}
+
+
+    		protected function chatOptionBtn_clickHandler(event:MouseEvent):void
+    		{
+    			chatsetting.visible = !chatsetting.visible;
+    		}
+
+
+    		protected function chatEmotion_clickHandler(event:MouseEvent):void
+    		{
+    			chatemotion.visible = !chatemotion.visible;
     		}
 
     	]]>
