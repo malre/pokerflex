@@ -2,16 +2,21 @@
 <mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
 	 width="550" height="400" layout="absolute" showCloseButton="true"
 	 creationComplete="createComplete()" title="panelCardView" close="handleClose(event)">
-	<mx:Label x="300" y="201" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
+<!--	<mx:Label x="300" y="201" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
 	<mx:Label x="300" y="199" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
 	<mx:Label x="299" y="200" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
 	<mx:Label x="301" y="200" text="飞黄" width="66" height="33" fontSize="16" color="#000000"/>
-	<mx:Label x="300" y="200" text="飞黄" fontSize="16" color="#ffffff"/>
+	<mx:Label x="300" y="200" text="飞黄" fontSize="16" color="#ffffff"/>-->
 	<fx:Script>
 		<![CDATA[
+			import mx.utils.object_proxy;
 			import mx.managers.PopUpManager;
 			import mx.events.CloseEvent;
 			import mx.controls.Image;
+
+			private var tempAry:Array = new Array();			
+//			private var carddata:String = [{\"pos\":0,\"play\":\"10,8,7,6,2,0\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"25,25,23,22,18,17\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"16,15,9,4,3\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"1\"},{\"pos\":3,\"play\":\"29\"},{\"pos\":0,\"play\":\"34\"},{\"pos\":1,\"play\":\"45\"},{\"pos\":2,\"play\":\"48\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"5,5\"},{\"pos\":3,\"play\":\"13,13\"},{\"pos\":0,\"play\":\"50,49\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"31,28,27,24,20,20,19,17\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"12\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"38,37,37\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"23,22,21,21\"},{\"pos\":0,\"play\":\"43,42,42,41\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"47\"},{\"pos\":1,\"play\":\"49\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"53\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":2,\"play\":\"14\"},{\"pos\":3,\"play\":\"33\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"38\"},{\"pos\":3,\"play\":\"50\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"52\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"35\"},{\"pos\":3,\"play\":\"44\"},{\"pos\":1,\"play\":\"52\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"11,9,6,4,2,0\"},{\"pos\":2,\"play\":\"31,30,29,28\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"48\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"53\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"15,14,12\"}];
+			private var carddata:Object = [{"pos":0,"play":"10,8,7,6,2,0"},{"pos":1,"play":"pass"},{"pos":2,"play":"25,25,23,22,18,17"},{"pos":3,"play":"pass"},{"pos":0,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"16,15,9,4,3"},{"pos":3,"play":"pass"},{"pos":0,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"1"},{"pos":3,"play":"29"},{"pos":0,"play":"34"},{"pos":1,"play":"45"},{"pos":2,"play":"48"},{"pos":3,"play":"pass"},{"pos":0,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"5,5"},{"pos":3,"play":"13,13"},{"pos":0,"play":"50,49"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"31,28,27,24,20,20,19,17"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"12"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"38,37,37"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"23,22,21,21"},{"pos":0,"play":"43,42,42,41"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"47"},{"pos":1,"play":"49"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"53"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":2,"play":"14"},{"pos":3,"play":"33"},{"pos":1,"play":"pass"},{"pos":2,"play":"38"},{"pos":3,"play":"50"},{"pos":1,"play":"pass"},{"pos":2,"play":"52"},{"pos":3,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"35"},{"pos":3,"play":"44"},{"pos":1,"play":"52"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":1,"play":"11,9,6,4,2,0"},{"pos":2,"play":"31,30,29,28"},{"pos":3,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"48"},{"pos":3,"play":"pass"},{"pos":1,"play":"53"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":1,"play":"15,14,12"}];
 			private function createComplete():void
 			{
 				// 创建108个image对象，并按照一定的顺序排列在菜单上
@@ -22,12 +27,14 @@
 					for(i=0;i<27; i++)	// 自己
 					{
 						img = new Image();
-						img.x = 10+i*20;
-						img.y = 10+j*100;
+						img.x = 10+i*10;
+						img.y = 10+j*90;
 						img.name = "img"+j+""+i;
+						//img.source = ResourceManagerPoker.CardsRes[0];//ResourceManagerPoker.Card06;
 						this.addChild(img);
 					}
 				}
+				setCards(carddata);
 			}
 
 			private function handleClose(evt:CloseEvent):void
@@ -41,11 +48,18 @@
 				// 对history数组进行分组归类
 				for(var i:int=0; i<obj.length; i++)
 				{
-					for(var j:int=0; j<obj[i].play.length; j++)
+					// play: "10,9,8,7,6"
+					// pos:	0
+					var ary:Array = parseCards(obj[i].play);
+					if(ary[0] == "pass" || ary[0] == "null")
+						continue;
+					for(var j:int=0; j<ary.length; j++)
 					{
 						var img:Image = Image(this.getChildByName("img"+obj[i].pos+""+cn[obj[i].pos]));
 						cn[obj[i].pos] ++;
-						img.load(ResourceManagerPoker.CardsRes[obj[i].play[j]]);
+						var imgRes:Object = ResourceManagerPoker;
+						//img.source = GraphicsResource(ResourceManagerPoker.CardsRes[ary[j]]).bitmap.;//imgRes.Card53
+						img.source = getCardRes(ary[j]);
 					}
 					
 					
@@ -64,6 +78,190 @@
 						
 					}
  */				}
+			}
+			
+			/*
+			* 
+			* @param data 
+			* 传入的牌的数据的字符，类似于 "10,9,8,7,6"
+			* @return
+			* 返回一个数组，以int类型存放了牌的值
+			*/
+			public function parseCards(data:String):Array
+			{
+				tempAry.length = 0;
+				var re:RegExp = /,/;
+				tempAry = data.split(re);
+				return tempAry;
+			}
+			
+			public function getCardRes(id:int):Object
+			{
+				switch(id){
+					case 0:
+						return ResourceManagerPoker.Card00;
+					break;
+					case 1:
+						return ResourceManagerPoker.Card01;
+					break;
+					case 2:
+						return ResourceManagerPoker.Card02;
+					break;
+					case 3:
+						return ResourceManagerPoker.Card03;
+					break;
+					case 4:
+						return ResourceManagerPoker.Card04;
+					break;
+					case 5:
+						return ResourceManagerPoker.Card05;
+					break;
+					case 6:
+						return ResourceManagerPoker.Card06;
+					break;
+					case 7:
+						return ResourceManagerPoker.Card07;
+					break;
+					case 8:
+						return ResourceManagerPoker.Card08;
+					break;
+					case 9:
+						return ResourceManagerPoker.Card09;
+					break;
+					case 10:
+						return ResourceManagerPoker.Card10;
+					break;
+					case 11:
+						return ResourceManagerPoker.Card11;
+					break;
+					case 12:
+						return ResourceManagerPoker.Card12;
+					break;
+					case 13:
+						return ResourceManagerPoker.Card13;
+					break;
+					case 14:
+						return ResourceManagerPoker.Card14;
+					break;
+					case 15:
+						return ResourceManagerPoker.Card15;
+					break;
+					case 16:
+						return ResourceManagerPoker.Card16;
+					break;
+					case 17:
+						return ResourceManagerPoker.Card17;
+					break;
+					case 18:
+						return ResourceManagerPoker.Card18;
+					break;
+					case 19:
+						return ResourceManagerPoker.Card19;
+					break;
+					case 20:
+						return ResourceManagerPoker.Card20;
+					break;
+					case 21:
+						return ResourceManagerPoker.Card21;
+					break;
+					case 22:
+						return ResourceManagerPoker.Card22;
+					break;
+					case 23:
+						return ResourceManagerPoker.Card23;
+					break;
+					case 24:
+						return ResourceManagerPoker.Card24;
+					break;
+					case 25:
+						return ResourceManagerPoker.Card25;
+					break;
+					case 26:
+						return ResourceManagerPoker.Card26;
+					break;
+					case 27:
+						return ResourceManagerPoker.Card27;
+					break;
+					case 28:
+						return ResourceManagerPoker.Card28;
+					break;
+					case 29:
+						return ResourceManagerPoker.Card29;
+					break;
+					case 30:
+						return ResourceManagerPoker.Card30;
+					break;
+					case 31:
+						return ResourceManagerPoker.Card31;
+					break;
+					case 32:
+						return ResourceManagerPoker.Card32;
+					break;
+					case 33:
+						return ResourceManagerPoker.Card33;
+					break;
+					case 34:
+						return ResourceManagerPoker.Card34;
+					break;
+					case 35:
+						return ResourceManagerPoker.Card35;
+					break;
+					case 36:
+						return ResourceManagerPoker.Card36;
+					break;
+					case 37:
+						return ResourceManagerPoker.Card37;
+					break;
+					case 38:
+						return ResourceManagerPoker.Card38;
+					break;
+					case 39:
+						return ResourceManagerPoker.Card39;
+					break;
+					case 40:
+						return ResourceManagerPoker.Card40;
+					break;
+					case 41:
+						return ResourceManagerPoker.Card41;
+					break;
+					case 42:
+						return ResourceManagerPoker.Card42;
+					break;
+					case 43:
+						return ResourceManagerPoker.Card43;
+					break;
+					case 44:
+						return ResourceManagerPoker.Card44;
+					break;
+					case 45:
+						return ResourceManagerPoker.Card45;
+					break;
+					case 46:
+						return ResourceManagerPoker.Card46;
+					break;
+					case 47:
+						return ResourceManagerPoker.Card47;
+					break;
+					case 48:
+						return ResourceManagerPoker.Card48;
+					break;
+					case 49:
+						return ResourceManagerPoker.Card49;
+					break;
+					case 50:
+						return ResourceManagerPoker.Card50;
+					break;
+					case 51:
+						return ResourceManagerPoker.Card51;
+					break;
+					case 52:
+						return ResourceManagerPoker.Card52;
+					break;
+					case 53:
+						return ResourceManagerPoker.Card53;
+					break;
+				}
+				return null;
 			}
 			
 		]]>

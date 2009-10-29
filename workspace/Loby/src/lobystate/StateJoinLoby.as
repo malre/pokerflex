@@ -39,6 +39,9 @@ package lobystate
 				return true;
 			}
 			else{
+				// 加入房间失败
+				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
+				FlexGlobals.topLevelApplication.BtnCreateTable.visible = false;
 				return false;
 			}
 			

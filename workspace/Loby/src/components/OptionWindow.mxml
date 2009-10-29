@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:s="library://ns.adobe.com/flex/spark" 
+<s:Group
+	xmlns:s="library://ns.adobe.com/flex/spark" 
 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:d="http://ns.adobe.com/fxg/2008/dt" 
-	xmlns:th="http://ns.adobe.com/thermo/2009">
+	xmlns:th="http://ns.adobe.com/thermo/2009" 
+	xmlns:components="components.*" xmlns:mx="library://ns.adobe.com/flex/halo"
+	creationComplete="createroom_creationCompleteHandler(event)"
+	>
 	<fx:Script>
 		<![CDATA[
-			protected function Button_click():void
+			import lobystate.StateCreateTable;
+			import mx.managers.PopUpManager;
+			import mx.events.FlexEvent;
+			import poker.LevelDefine;
+			
+			// 金币的倍数的设定
+			[Bindable]
+			private var goldplusrate:Array = ["1","2","3","4","6","8","10"];
+			
+			protected function closeButton_click():void
 			{
 				currentState='State1';
+				this.visible = false;
+				PopUpManager.removePopUp(this);
 			}
+
+			protected function createroom_creationCompleteHandler(event:FlexEvent):void
+			{
+				x = (this.parent.width - 360)/2;
+				y = (this.parent.height - 320)/2;
+				currentState='State2';
+				BtnConfirm.enabled = true;
+			}
+
+
+			protected function checkboxPassword_clickHandler(event:MouseEvent):void
+			{
+				if(CheckBox(event.currentTarget).selected){
+					inputboxPassword.enabled = true;
+				}else{
+					inputboxPassword.enabled = false;
+				}
+			}
+
+
+			protected function checkboxAllowGold_clickHandler(event:MouseEvent):void
+			{
+				if(CheckBox(event.currentTarget).selected){
+					goldplus.enabled = true;
+				}else{
+					goldplus.enabled = false;
+				}
+			}
+
+
+			public function BtnCancel_clickHandler(event:MouseEvent):void
+			{
+				closeButton_click();
+			}
+
+
+			protected function BtnConfirm_clickHandler(event:MouseEvent):void
+			{
+				if(validityCheck()){
+					labelErrormsg.visible = false;
+					BtnConfirm.enabled = false;
+					// 发送http请求
+					// 等级的0代表，等级不限
+					StateCreateTable.Instance.setOption(inputboxPassword.text, checkboxPassword.selected, 
+														lowlevel.selectedIndex, highlevel.selectedIndex,
+														int(goldplusrate[goldplus.selectedIndex]),checkboxAllowGold.selected,
+														checkboxAllowChat.selected);
+					LobyNetManager.Instance.send(LobyNetManager.createTable);
+					closeButton_click();
+				}else {
+					labelErrormsg.text = "等级范围输入有误，请重新输入！";
+					labelErrormsg.visible = true;
+				}
+			}
+			
+			// 验证数据的合理性
+			protected function validityCheck():Boolean
+			{
+				if(lowlevel.selectedIndex == 0 || highlevel.selectedIndex == 0)
+					return true;
+				else if(lowlevel.selectedIndex > highlevel.selectedIndex)
+					return false;
+				
+				return true;
+			}
+
 		]]>
 
 	</fx:Script>
@@ -16,26 +97,44 @@
 		<s:Transition fromState="State1" toState="State2" autoReverse="true">
 			<s:Parallel>
 				<s:Parallel target="{button1}">
-					<s:Fade duration="100" startDelay="100"/>
-				</s:Parallel>
-				<s:Parallel target="{bitmapimage1}">
-					<s:Fade duration="200"/>
+					<s:Fade duration="100"/>
 				</s:Parallel>
 				<s:Parallel target="{button2}">
-					<s:Fade duration="100" startDelay="100"/>
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage2}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{BtnConfirm}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{BtnCancel}">
+					<s:Fade duration="100"/>
 				</s:Parallel>
 			</s:Parallel>
 		</s:Transition>
 		<s:Transition fromState="State2" toState="State1" autoReverse="true">
 			<s:Parallel>
-				<s:Parallel target="{bitmapimage1}">
-					<s:Fade duration="200"/>
-				</s:Parallel>
 				<s:Parallel target="{button1}">
-					<s:Fade duration="100"/>
+					<s:Fade duration="50"/>
 				</s:Parallel>
 				<s:Parallel target="{button2}">
+					<s:Fade duration="50"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
 					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage2}">
+					<s:Fade duration="100"/>
+				</s:Parallel>
+				<s:Parallel target="{BtnConfirm}">
+					<s:Fade duration="50"/>
+				</s:Parallel>
+				<s:Parallel target="{BtnCancel}">
+					<s:Fade duration="50"/>
 				</s:Parallel>
 			</s:Parallel>
 		</s:Transition>
@@ -44,11 +143,28 @@
 		<s:State name="State1"/>
 		<s:State name="State2"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/OptionWindow.png')" resizeMode="scale" includeIn="State2" id="bitmapimage1"/>
-	<s:Button includeIn="State2" x="313" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="Button_click()"/>
-	<s:Button includeIn="State2" x="155" y="118" skinClass="components.OptionWindow_LevelButton" id="button2"/>
-	<fx:Private>
-		<th:Guide x="37"/>
-		<th:Guide y="51"/>
-	</fx:Private>
+	<s:BitmapImage includeIn="State2" source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" d:locked="true" id="bitmapimage1"/>
+	<s:Button includeIn="State2" x="315" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
+	<s:BitmapImage source="@Embed('/assets/OptionWindow_title.png')" resizeMode="scale" includeIn="State2" x="15" y="3" d:locked="true" id="bitmapimage2"/>
+	<s:Button includeIn="State2" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2"/>
+	<s:Button x="62" y="257" skinClass="components.Button_confirm" includeIn="State2" id="BtnConfirm" click="BtnConfirm_clickHandler(event)"/>
+	<s:Button x="193" y="257" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
+	<mx:ComboBox includeIn="State2" x="121" y="101" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel"/>
+	<mx:ComboBox includeIn="State2" x="228" y="102" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel"/>
+	<s:CheckBox includeIn="State2" x="126" y="133" id="checkboxAllowGold" click="checkboxAllowGold_clickHandler(event)" selected="true"/>
+	<mx:Label includeIn="State2" x="46" y="70" text="设置密码" fontSize="16" color="#FFFFFF"/>
+	<s:CheckBox includeIn="State2" x="125" y="74" selected="false" id="checkboxPassword" click="checkboxPassword_clickHandler(event)"/>
+	<s:TextInput includeIn="State2" x="157" y="70" width="126" displayAsPassword="true" maxChars="8" enabled="false" id="inputboxPassword"/>
+	<mx:Label includeIn="State2" x="46" y="100" text="等级范围" fontSize="16" color="#FFFFFF"/>
+	<mx:Label includeIn="State2" x="46" y="130" text="使用金币" color="#FFFFFF" fontSize="16"/>
+	<mx:Label includeIn="State2" x="46" y="160" text="允许聊天" color="#FFFFFF" fontSize="16"/>
+	<mx:Label includeIn="State2" x="156" y="129" text="金币倍数" color="#FFFFFF" fontSize="16"/>
+	<mx:Label includeIn="State2" x="46" y="190" text="背景音乐" color="#FFFFFF" fontSize="16"/>
+	<mx:Label includeIn="State2" x="204" y="160" text="音    效" color="#FFFFFF" fontSize="16"/>
+	<mx:Label includeIn="State2" x="202" y="98" text="－" color="#FFFFFF" fontSize="20" fontWeight="normal"/>
+	<mx:ComboBox includeIn="State2" x="250" y="130" dataProvider="{goldplusrate}" editable="false" width="50" id="goldplus"/>
+	<s:CheckBox includeIn="State2" x="126" y="163" id="checkboxAllowChat" selected="true"/>
+	<s:CheckBox includeIn="State2" x="267" y="165" id="checkboxSEEnable" selected="true"/>
+	<mx:ComboBox includeIn="State2" x="124" y="191" editable="true" enabled="false" id="inputboxSE"/>
+	<mx:Label includeIn="State2" x="52" y="229" text="等级范围输入有误，请重新输入！" color="#FF0012" fontSize="14" fontWeight="bold" id="labelErrormsg" visible="false"/>
 </s:Group>

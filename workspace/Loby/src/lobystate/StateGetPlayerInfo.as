@@ -1,5 +1,7 @@
 package lobystate
 {
+	import message.Messenger;
+	
 	import mx.core.FlexGlobals;
 	
 	import poker.Game;
@@ -43,6 +45,9 @@ package lobystate
 				Game.Instance.pid = obj.player.pid;
 				// 给恢复用的备用变量赋值
 				LobyManager.Instance.playerInfo = obj;
+				// 因为开始系统消息的获得只要一次，所以放在这里执行
+				Messenger.Instance.startSystem();
+				Messenger.Instance.startShout();
 				// 对玩家信息进行分析，看玩家上次是否是意外离开，需不需要恢复
 				if(obj.player.lid != "null")
 				{

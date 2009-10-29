@@ -7,12 +7,12 @@ package item
 		}
 		
 		include "../ServerAddress.ini"
-		public static var shoplistAdd:String = ServerAddress + "/web/"+ServerPerfix+"/item/shop/list";
+		public static var shoplistAdd:String = ServerAddress + ServerPerfix+"/item/shop/list";
 		
-		public static var itembuyAdd:String = ServerAddress + "/web/"+ServerPerfix+"/item/shop/buy";
+		public static var itembuyAdd:String = ServerAddress + ServerPerfix+"/item/shop/buy";
 		
-		public static var playeritemListAdd:String = ServerAddress + "/web/"+ServerPerfix+"/item/player/list";
+		public static var playeritemListAdd:String = ServerAddress + ServerPerfix+"/item/player/list";
 		
-		public static var playeritemUseAdd:String = ServerAddress + "/web/"+ServerPerfix+"/item/player/active";
+		public static var playeritemUseAdd:String = ServerAddress + ServerPerfix+"/item/player/active";
 	}
 }

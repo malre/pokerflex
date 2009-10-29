@@ -3,6 +3,8 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.core.FlexGlobals;
+	
 	import poker.Game;
 	import poker.GameObjectManager;
 	import poker.NetManager;
@@ -39,16 +41,16 @@ package poker.gamestate
 				if(obj.play.next == Game.Instance.selfseat)
 				{
 					// 显示所有的按钮
-					LobyManager.Instance.gamePoker.commandbar.visible = true;
-					LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = false;
-					LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = true;
+					FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
+					FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = true;
 					if(obj.play.last == obj.play.next)
 					{
-						LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = false;
+						FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.commandbar.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 				}
 				Game.Instance.lastPlayer = obj.play.last;
 				Game.Instance.curPlayer = obj.play.next;

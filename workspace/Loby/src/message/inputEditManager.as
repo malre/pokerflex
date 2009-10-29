@@ -34,8 +34,8 @@ package message
 					Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendLobby);
 					FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
 				}else if(inputtype == 1){
-					Messenger.Instance.send(LobyManager.Instance.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
-					LobyManager.Instance.gamePoker.inputboxGame.clearInput();
+					Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
+					FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
 				}
 				return;
 			}
@@ -49,8 +49,21 @@ package message
 				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendLobby);
 				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
 			}else if(inputtype == 1){
-				Messenger.Instance.send(LobyManager.Instance.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
-				LobyManager.Instance.gamePoker.inputboxGame.clearInput();
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
+				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
+			}
+		}
+		
+		public function shoutButtonPress():void
+		{
+			if(inputtype == 0)
+			{
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendShout);
+				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
+			}
+			else if(inputtype == 1){
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendShout);
+				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
 			}
 		}
 	}

@@ -3,6 +3,8 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.core.FlexGlobals;
+	
 	import poker.NetManager;
 	
 	public class StateGetScore extends NetRequestState
@@ -30,7 +32,7 @@ package poker.gamestate
 		{
 			if(super.receive(obj))
 			{
-				LobyManager.Instance.gamePoker.showPopupDlg(obj);
+				FlexGlobals.topLevelApplication.gamePoker.showPopupDlg(obj);
 				return true;
 			}
 			else{

@@ -255,11 +255,44 @@ package poker
 		public static var cardback2:Class;
 		public static var CardBack2Res:GraphicsResource = new GraphicsResource(new cardback2());
 
-//		[Embed(source="../res/bmp1.png")]
-//		public static var Club1:Class;
-//		public static var GreenGraphicsID1:GraphicsResource = new GraphicsResource(new GreenID1());
-//		[Embed(source="../media/gun1.mp3")]
-//		public static var Gun1Sound:Class;
-//		public static var Gun1FX:SoundAsset = new Gun1Sound() as SoundAsset;	
+		[Embed(source="../res/sound/start.mp3")]
+		public static var sound01:Class;
+		public static var SoundStart:SoundAsset = new sound01() as SoundAsset;	
+
+		[Embed(source="../res/sound/baojing.mp3")]
+		public static var sound02:Class;
+		public static var SoundYizhang:SoundAsset = new sound02() as SoundAsset;	
+
+		[Embed(source="../res/sound/buyao.mp3")]
+		public static var sound03:Class;
+		public static var SoundPass:SoundAsset = new sound03() as SoundAsset;	
+
+		[Embed(source="../res/sound/dui.mp3")]
+		public static var sound04:Class;
+		public static var SoundDuizi:SoundAsset = new sound04() as SoundAsset;	
+
+		[Embed(source="../res/sound/liandui.mp3")]
+		public static var sound05:Class;
+		public static var SoundLiandui:SoundAsset = new sound05() as SoundAsset;	
+
+		[Embed(source="../res/sound/sange.mp3")]
+		public static var sound06:Class;
+		public static var SoundSange:SoundAsset = new sound06() as SoundAsset;	
+
+		[Embed(source="../res/sound/shunzi.mp3")]
+		public static var sound07:Class;
+		public static var SoundShunzi:SoundAsset = new sound07() as SoundAsset;	
+
+		[Embed(source="../res/sound/wangzha.mp3")]
+		public static var sound08:Class;
+		public static var SoundWangzha:SoundAsset = new sound08() as SoundAsset;	
+
+		[Embed(source="../res/sound/win.mp3")]
+		public static var sound09:Class;
+		public static var SoundWin:SoundAsset = new sound09() as SoundAsset;	
+
+		[Embed(source="../res/sound/zhadan.mp3")]
+		public static var sound10:Class;
+		public static var SoundZhadan:SoundAsset = new sound10() as SoundAsset;	
 	}
 }

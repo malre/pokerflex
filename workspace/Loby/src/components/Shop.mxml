@@ -89,6 +89,8 @@
 	</s:transitions>
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.ToolTip;
+			import mx.events.ToolTipEvent;
 			import item.itemuseRequest;
 			import item.playerItemsRequester;
 			import item.itembuyRequest;
@@ -160,8 +162,14 @@
 					var img:Image = Image(item_icon_group.getChildByName("item"+i.toString()));
 					img.source = obj.items[i].image;
 					img.toolTip = obj.items[i].name;
+					img.addEventListener(ToolTipEvent.TOOL_TIP_CREATE, tooltipcreate);
 					img.visible = true;
 				}
+			}
+			private function tooltipcreate(event:ToolTipEvent):void
+			{
+				var tt:ToolTip = ToolTip(event.toolTip);
+				
 			}
 
 			protected function itemClicked(event:MouseEvent):void
@@ -289,7 +297,7 @@
 	</s:Group>
 	<s:Button includeIn="StateItemMain,StateShopMain" id="pageleft" x="130" y="281" skinClass="components.Button_Page" click="pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="上一页" enabled="false"/>
 	<s:Button includeIn="StateItemMain,StateShopMain" id="pageright" x="223" y="300" skinClass="components.Button_Page" rotation="180" click="pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="下一页"/>
-	<mx:Label includeIn="StateItemMain,StateShopMain" id="pagenumber" x="161" y="278" text="1" width="32" fontSize="16" textAlign="center" fontWeight="bold"/>
+	<mx:Label includeIn="StateItemMain,StateShopMain" id="pagenumber" x="161" y="278" text="1" width="32" fontSize="16" textAlign="center" fontWeight="bold" color="#000000"/>
 
 	<s:BitmapImage source="@Embed('/assets/shop_Bg_2.png')" resizeMode="scale" includeIn="StateItemSub,StateShopSub" id="bitmapimage6" x="29" y="49"/>
 	<mx:Image includeIn="StateItemSub,StateShopSub" id="Imgbuyitem" x="50" y="70"/>
@@ -299,7 +307,7 @@
 	<s:RichText includeIn="StateItemSub,StateShopSub" y="66" color="#c4ab47" x="150" text="说明" fontSize="18" fontFamily="宋体" id="itemDescribe" width="159" height="92"/>
 	<s:RichText includeIn="StateItemSub,StateShopSub" y="169" color="#000000" x="150" text="价格，使用限制" fontSize="18" fontFamily="宋体" id="itemPrice" width="157" height="60"/>
 	<s:RichText includeIn="StateItemSub,StateShopSub" y="138" color="#000000" x="41" text="道具名" fontSize="18" fontFamily="宋体" id="itemName" width="93" height="51"/>
-	<mx:Label includeIn="StateShopSub" x="76" y="197" text="1" fontWeight="bold" fontSize="16" id="itembuyNumber" textAlign="center"/>
+	<mx:Label includeIn="StateShopSub" x="76" y="197" text="1" fontWeight="bold" fontSize="16" id="itembuyNumber" textAlign="center" color="#000000"/>
 	<s:Button includeIn="StateShopSub" id="itemnumleft" x="43" y="200" skinClass="components.Button_Page" click="itemnumleft_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
 	<s:Button includeIn="StateShopSub" id="itemnumright" x="130" y="218" skinClass="components.Button_Page" rotation="180" click="itemnumright_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
 	<mx:Label includeIn="StateItemSub" x="39" y="193" width="94" fontFamily="宋体" fontSize="18" id="itemnumber" textAlign="center" color="#000000"/>

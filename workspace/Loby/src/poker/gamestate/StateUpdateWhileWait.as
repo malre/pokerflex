@@ -3,8 +3,11 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.core.FlexGlobals;
+	
 	import poker.Game;
 	import poker.NetManager;
+	import poker.ResourceManagerPoker;
 
 	public class StateUpdateWhileWait extends NetRequestState
 	{
@@ -45,10 +48,11 @@ package poker.gamestate
 					// 进入游戏逻辑，先转到游戏之前的状态，来获得一帧牌的数据，然后再跳转到正式的游戏中
 					NetManager.Instance.send(NetManager.send_updateWhileGameFirstframe);
 					Game.Instance.gameState = 4;
+					// 播放准备完成音效 
+					ResourceManagerPoker.SoundStart.play();
 
 					// 将准备按钮隐藏
-					LobyManager.Instance.gamePoker.btnReady.visible = false;
-					LobyManager.Instance.gamePoker.labelWait.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.btnReady.visible = false;
 				}
 				else if(obj.status == 2)
 				{

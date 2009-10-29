@@ -3,6 +3,8 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.core.FlexGlobals;
+	
 	import poker.NetManager;
 	
 	public class StateLeaveTable extends NetRequestState
@@ -33,11 +35,11 @@ package poker.gamestate
 			if(super.receive(obj))
 			{
     			// 使游戏本体不见，并回到游戏房间，刷新房间
-    			LobyManager.Instance.gamePoker.endup();
+    			FlexGlobals.topLevelApplication.gamePoker.endup();
     			// 回到游戏
     			LobyManager.Instance.changeState(1);
     			// 退出的时候同时清除房间的聊天信息
-    			LobyManager.Instance.gamePoker.showboxGame.clearContent();
+    			FlexGlobals.topLevelApplication.gamePoker.showboxGame.clearContent();
 				return true;
 			}
 			else{

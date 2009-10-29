@@ -12,6 +12,9 @@ package message
 	
 	import message.httpController.lobbyChatRec;
 	import message.httpController.lobbyChatSend;
+	import message.httpController.shoutChatRec;
+	import message.httpController.shoutChatSend;
+	import message.httpController.systemChatRec;
 	import message.httpController.tableChatRec;
 	import message.httpController.tableChatSend;
 
@@ -19,18 +22,20 @@ package message
 	{
 		// 消息服务器地址定义
 		include "../ServerAddress.ini"
-		private var messengerServerAddress:String = ServerAddress+"/web/"+ServerPerfix+"/chat";
+		private var messengerServerAddress:String = ServerAddress + ServerPerfix+"/chat";
 		private var messengerReceive:String = messengerServerAddress + "/receive";
 		private var messengerSend:String = messengerServerAddress + "/send";
 		
 		public var chatSendLobby:String = messengerSend + "/lobby";
 		public var chatSendRoom:String = messengerSend + "/room";
 		public var chatSendPlayer:String = messengerSend + "/player";
+		public var chatSendShout:String = messengerSend + "/yell";
 		
 		public var chatReceiveLobby:String = messengerReceive + "/lobby";
 		public var chatReceiveRoom:String = messengerReceive + "/room";
 		public var chatReceivePlayer:String = messengerReceive + "/player";
 		public var chatReceiveSystem:String = messengerReceive + "/system";
+		public var chatReceiveShout:String = messengerReceive + "/yell";
 		
 		private var addressSet:Array = [chatSendLobby, chatSendRoom, chatSendPlayer,
 			chatReceiveLobby, chatReceiveRoom, chatReceivePlayer, chatReceiveSystem];
@@ -42,6 +47,8 @@ package message
 		public static const receiveRoom:int = 4;
 		public static const receivePlayer:int = 5;
 		public static const receiveSystem:int = 6;
+		public static const sendShout:int = 7;
+		public static const receiveShout:int = 8;
 		
 		public static const listenMsgLobby:int = 1;
 		public static const listenMsgRoom:int = 2;
@@ -55,6 +62,9 @@ package message
 		public var lobbyRec:lobbyChatRec;
 		public var tableSend:tableChatSend;
 		public var tableRec:tableChatRec;
+		public var systemRec:systemChatRec;
+		public var shoutSend:shoutChatSend;
+		public var shoutRec:shoutChatRec;
 
 		public static function get Instance():Messenger
 		{
@@ -74,6 +84,13 @@ package message
 			tableSend.setmethod("POST");
 			tableRec = new tableChatRec();
 			tableRec.setmethod("POST");
+			systemRec = new systemChatRec();
+			systemRec.setmethod("POST");
+			
+			shoutSend = new shoutChatSend();
+			shoutSend.setmethod("POST");
+			shoutRec = new shoutChatRec();
+			shoutRec.setmethod("POST");
 		}
 
 		public function startLobby():void
@@ -92,6 +109,14 @@ package message
 		{
 			tableRec.stopTimer();
 		}
+		public function startSystem():void
+		{
+			systemRec.startTimer(5000);
+		}
+		public function startShout():void
+		{
+			shoutRec.startTimer(5000);
+		}
 		public function send(obj:Object, type:int):void
 		{
 			if(type == sendLobby){
@@ -106,6 +131,9 @@ package message
 			}
 			else if(type == receiveRoom){
 				tableRec.send();
+			}
+			else if(type == sendShout){
+				shoutSend.send(obj);
 			}
 		}
 		public function updateMsg(event:TimerEvent):void
