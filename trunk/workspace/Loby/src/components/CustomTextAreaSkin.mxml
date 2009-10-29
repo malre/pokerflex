@@ -15,19 +15,6 @@
     ]]>
     </fx:Metadata>
  
-    <fx:Script>
-        /* Define the skin elements that should not be colorized.
-           For text area, the skin itself is colorized but the individual parts are not. */
-        static private const exclusions:Array = ["background", "scroller"];
- 
-        override public function get colorizeExclusions():Array {return exclusions;}
- 
-        /* Define the content fill items that should be colored by the "contentBackgroundColor" style. */
-        static private const contentFill:Array = ["bgFill"];
- 
-        override public function get contentItems():Array {return contentFill};
-    </fx:Script>
- 
     <!-- border -->
     <s:Rect left="0" right="0" top="0" bottom="0">
         <s:stroke>
@@ -52,11 +39,8 @@
     </s:Rect>
  
     <!--- Defines the scroller used to scroll the RichEditableText. -->
-    <s:Scroller id="scroller" left="0" top="0" right="0" bottom="0">
-        <s:RichEditableText id="textView"
-                  heightInLines="10"
-                  paddingLeft="4" paddingTop="4"
-                  paddingRight="4" paddingBottom="4"/>
+    <s:Scroller id="scroller">
+        <s:RichEditableText id="textView"/>
     </s:Scroller>
  
 </s:SparkSkin>

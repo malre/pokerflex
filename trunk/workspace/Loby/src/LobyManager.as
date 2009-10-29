@@ -2,6 +2,8 @@ package
 {
 	import flash.events.MouseEvent;
 	
+	import json.JSON;
+	
 	import lobystate.StateGetPlayerInfo;
 	
 	import message.Messenger;
@@ -48,6 +50,11 @@ package
 		private var freshCount:int = 0;
 		private var lastFrameTime:Date = new Date();
 		public var refreshflag:Boolean = false;
+		// 公告显示部分的参数
+		private const looptimesdefine:int = 2;
+		private var looptimes:int = looptimesdefine;
+		private var curAnnounce:String;
+		public var isAnnouncePlaying:Boolean = false;
 		
 		////////////// 主画面显示元素用数据
 		[Bindable]
@@ -58,7 +65,7 @@ package
 		}
 		
 		// 双扣游戏的本体
-		public var gamePoker:poker;
+//		public var gamePoker:poker;
 		
 		//////////////////////////////////////////
 		//子flash， game部分的被载入flash的管理
@@ -86,11 +93,6 @@ package
 		{
 			FlexGlobals.topLevelApplication.gameTreeView.labelField = "@name";
 			FlexGlobals.topLevelApplication.gameTreeView.dataProvider = treeData;
-			// create poker game flash
-			gamePoker = new poker();
-				// add it to main application
-			FlexGlobals.topLevelApplication.addElement(gamePoker);
-			gamePoker.visible = false;
 		}
 		
 		public function enterFrame():void
@@ -123,9 +125,10 @@ package
 			    			lastFrameTime = thisFrame;
 			   			}
 					}
-					
+					animateAnouncement();
 				break;
 				case 2:	// game
+					animateAnouncement();
 				break;
 					// restore state
 				case 3:
@@ -201,6 +204,11 @@ package
 					// 这个地方是一个bug点，如果返回超过1个数据，会出错。
 					node.appendChild(xml);
 				}
+import mx.controls.Image;
+import mx.controls.ToolTip;
+
+import poker.LevelDefine;
+
 			}
 		}
 		
@@ -361,11 +369,35 @@ package
 							
 						var id:int = i*roomTableColumnMax +j;
 						var roomid:int = obj[id].rid;
+						// 桌子的图
 						var img:Image = new Image();
 						img.x = tableStartX + (intervalX+51)*j;
 						img.y = tableStartY + (intervalY+52)*i;
 						img.load(ResourceManager.imgTable);
 						img.name = "table"+id.toString();
+						img.toolTip = "游戏桌名："+obj[id].name +"\n";
+						if(obj[id].hasOwnProperty("password"))
+							img.toolTip += "该游戏桌设置有密码\n";
+						if(obj[id].hasOwnProperty("lowerlevellimit"))		
+							img.toolTip += "游戏等级下限为：" + LevelDefine.levelName[obj[id].lowerlevellimit]+"\n";
+						else
+							img.toolTip += "游戏无等级下限\n";
+						if(obj[id].hasOwnProperty("upperlevellimit"))
+							img.toolTip += "游戏等级上限为：" + LevelDefine.levelName[obj[id].upperlevellimit]+"\n";
+						else
+							img.toolTip += "游戏无等级下限\n";
+						if(obj[id].hasOwnProperty("magnification"))
+							img.toolTip += "金币倍率为："+ LevelDefine.levelName[obj[id].magnification]+"\n";
+						else
+							img.toolTip += "无金币倍率\n";
+						if(obj[id].hasOwnProperty("allowchat"))	{
+							if(obj[id].allowchat)
+								img.toolTip += "该游戏桌允许聊天\n"
+							else
+								img.toolTip += "该游戏桌禁止聊天\n"
+						}
+						else
+							img.toolTip += "该游戏桌禁止聊天\n"
 						canvas.addChild(img);
 /*						var tablename:Label = new Label();
 						tablename.x = img.x +3;
@@ -394,15 +426,15 @@ package
 						
 						// 创建按钮需要和实际的房间信息结合起来
 						// 如果该位置有玩家存在，则无按钮，否则有按钮
-						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+16, img.y-30, 0));
-						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-30, img.y+16, 1));
-						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+16, img.y+52+25, 2));
-						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+52+25, img.y+16, 3));
+						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+16, img.y-31, 0));
+						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-31, img.y+16, 1));
+						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+16, img.y+52+28, 2));
+						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+52+28, img.y+16, 3));
 						// 描画桌子上的人的信息
 						var farr:Array = new Array(0,0,0,0);
 						for(var n:int=0;n<4;n++)
 						{
-							if(obj[id].players.hasOwnProperty(n))
+							if(obj[id].players.hasOwnProperty(n.toString()))
 							{
 								if(obj[id].players[n].pos == 0)
 								{
@@ -511,6 +543,65 @@ package
 		public function closeGame():void
 		{
 			FlexGlobals.topLevelApplication.gameFlash.visible = false;
+		}
+		
+		/**
+		 * 用来控制公告的文字的显示
+		 */		
+		public function animateAnouncement():void
+		{
+			// 当前是否在演示中
+			if(isAnnouncePlaying)
+			{
+				// 对当前的公告进行动画显示
+				var txt:Label = FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText;
+				if(txt.x < (-txt.textWidth))
+				{
+					looptimes--;
+					if(looptimes <= 0)
+					{
+						// 结束这个条目，换下一个内容显示
+						isAnnouncePlaying = false;
+						
+						FlexGlobals.topLevelApplication.lobbyAnnounce.visible = false;
+					}
+					txt.x = FlexGlobals.topLevelApplication.lobbyAnnounce.width;
+				}
+				else{
+					txt.x --;
+				}
+			}
+			else{
+				var data:Object;
+				// 获得一个新的公告内容
+				curAnnounce =  Messenger.Instance.systemRec.getAnnouncement();
+				if(curAnnounce != null)
+				{
+					FlexGlobals.topLevelApplication.lobbyAnnounce.visible = true;
+					isAnnouncePlaying = true;
+					// 解释得到的消息文字
+					data = JSON.decode(curAnnounce);
+					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.setStyle("color", "#efefef");
+					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.text = data.content[0].val;
+					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.x = FlexGlobals.topLevelApplication.lobbyAnnounce.width;
+				}
+				// 在没有公告的情况下，查看是否有喊话
+				else{
+					curAnnounce =  Messenger.Instance.shoutRec.getShoutmsg();
+					if(curAnnounce != null)
+					{
+						FlexGlobals.topLevelApplication.lobbyAnnounce.visible = true;
+						isAnnouncePlaying = true;
+						// 解释得到的消息文字
+						data = JSON.decode(curAnnounce);
+						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.setStyle("color", "#308060");
+						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.text = data.content[0].val;
+						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.x = FlexGlobals.topLevelApplication.lobbyAnnounce.width;
+					}
+				}
+			}
+			
+			
 		}
 	}
 }

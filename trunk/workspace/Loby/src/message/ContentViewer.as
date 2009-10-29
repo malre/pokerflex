@@ -3,6 +3,7 @@ package message
 /**
 * 不可否认，在设计这个类的时候，我出现了偏差，事实上，这个类应该是包含了输入和显示的2个部分，
  * 但是在实际生成的时候， 因为在画面上显示输入的问题，所以实际上我是分开生成了2个类来处理。
+ * 这是因为这个类中的2个部分需要在不同的容器下工作
 */
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -104,6 +105,7 @@ package message
 			textinput.fontFamily = "Arial";
 			textinput.fontSize = 12;
 			textinput.lineBreak = "explicit";
+			textinput.color = 0xffffff;
 			
 			controller = new ContainerController(sprite, width, height);
 			textinput.flowComposer.addController(controller);
@@ -139,9 +141,9 @@ package message
 		}
 		public function clearInput():void
 		{
-			var pt:ParagraphElement = ParagraphElement(textinput.getChildAtIndex(0));
+			var pt:ParagraphElement = ParagraphElement(textinput.getChildAt(0));
 			// 默认，选中所有的文字 
-			textinput.interactionManager.setSelection();
+			textinput.interactionManager.selectAll();// .setSelection();
 			// 删除所有选中的文字
 			EditManager(textinput.interactionManager).deleteText();
 			textinput.flowComposer.updateAllControllers();
@@ -178,7 +180,7 @@ package message
 			output.content = new Array();
 			for(var i:int;i<num;i++)
 			{
-				var ef:FlowElement = p.getChildAtIndex(i);
+				var ef:FlowElement = p.getChildAt(i);
 				if(ef.id != null)
 				{
 					if(ef.id.substr(0,7) == "Emotion")

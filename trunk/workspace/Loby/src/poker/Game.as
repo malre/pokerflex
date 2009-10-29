@@ -1,11 +1,11 @@
 package poker
 {
-	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import mx.collections.ArrayCollection;
+	import mx.core.FlexGlobals;
 	
 	import poker.gamestate.StateUpdateWhileGame;
 	
@@ -185,12 +185,49 @@ package poker
 		// 准备界面的所有的按钮的初始化
 		public function readyStateInit():void
 		{
-			LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = false;
-			LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
-			LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
-			LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgPlayerLeftReady.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgPlayerUpReady.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgPlayerRightReady.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgPlayerDownReady.visible = false;
 		}
 	
+		/**
+		 * 播放声音
+		 * @param obj
+		 * 
+		 */
+		public function playSEByCardtype(cardtype:int):void
+		{
+			if(cardtype == 0)
+			{
+				ResourceManagerPoker.SoundYizhang.play();
+			}
+			else if(cardtype == 1)
+			{
+				ResourceManagerPoker.SoundDuizi.play();
+			}
+			else if(cardtype == 2)
+			{
+				ResourceManagerPoker.SoundSange.play();
+			}
+			else if(cardtype >= 3 && cardtype <= 7)
+			{
+				ResourceManagerPoker.SoundZhadan.play();
+			}
+			else if(cardtype >= 8 && cardtype <= 15)
+			{
+				ResourceManagerPoker.SoundShunzi.play();
+			}
+			else if(cardtype >= 16 && cardtype <= 35)
+			{
+				ResourceManagerPoker.SoundLiandui.play();
+			}
+			else if(cardtype == 36)
+			{
+				ResourceManagerPoker.SoundWangzha.play();
+			}
+		}	
+			
 		//
 		public function sortCards(obj:Object):void
 		{
@@ -212,6 +249,7 @@ package poker
 			PlayerCardsUp.length = 0;
 			PlayerCardsRight.length = 0;
 		}
+		
 		// 描画玩家手上的牌
 		public function drawPlayerCards(obj:Object):void
 		{
@@ -239,10 +277,10 @@ package poker
 		public function drawOtherCards(cards:Array, gamestate:int):void
 		{
 			// reset
-			LobyManager.Instance.gamePoker.imgDiscardDown.visible = false;
-			LobyManager.Instance.gamePoker.imgDiscardRight.visible = false;
-			LobyManager.Instance.gamePoker.imgDiscardUp.visible = false;
-			LobyManager.Instance.gamePoker.imgDiscardLeft.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = false;
+			FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = false;
 			
 			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
 			var pt:Point;
@@ -250,11 +288,12 @@ package poker
 			// 更新玩家self的牌
 			var i:int;
 			var id:int;
+			var SEid:int;
 			// 如果该回合是自己出牌，将先清除桌面上所有的牌
 			if(curPlayer == selfseat && gamestate == 0)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-				LobyManager.Instance.gamePoker.imgDiscardDown.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = false;
 			}
 			else
 			{
@@ -265,7 +304,9 @@ package poker
 				else if(cards[selfseat] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
-					LobyManager.Instance.gamePoker.imgDiscardDown.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = true;
+					// SE
+					ResourceManagerPoker.SoundPass.play();
 //					// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //					if(!bPassAnimatePlayedDown)
 //					{
@@ -310,6 +351,11 @@ package poker
 							GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
 						}
 						deskCards0 = deskCards0.concat(cards[selfseat]);
+						// 对打出的牌进行判断，然后发出音效
+						SEid = CardPattern.Instance.patternCheck(deskCards0.sort(Array.NUMERIC));
+						if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							SEid = 36;
+						playSEByCardtype(SEid);
 					}
 					else
 					{
@@ -327,7 +373,7 @@ package poker
 			if(curPlayer == id && gamestate == 0)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-				LobyManager.Instance.gamePoker.imgDiscardRight.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = false;
 			}
 			else
 			{
@@ -338,7 +384,9 @@ package poker
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
-					LobyManager.Instance.gamePoker.imgDiscardRight.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = true;
+					// SE
+					ResourceManagerPoker.SoundPass.play();
 //					// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //					if(!bPassAnimatePlayedRight)
 //					{
@@ -383,6 +431,11 @@ package poker
 							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardRight", pt, cardplayed1_BaseZOrder+i, true);
 						}
 						deskCards1 = deskCards1.concat(cards[id]);
+						// 对打出的牌进行判断，然后发出音效
+						SEid = CardPattern.Instance.patternCheck(deskCards1.sort(Array.NUMERIC));
+						if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							SEid = 36;
+						playSEByCardtype(SEid);
 					}
 				}
 			}
@@ -392,7 +445,7 @@ package poker
 			if(curPlayer == id && gamestate == 0)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
-				LobyManager.Instance.gamePoker.imgDiscardUp.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = false;
 			}
 			else
 			{
@@ -403,6 +456,9 @@ package poker
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+					FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = true;
+					// SE
+					ResourceManagerPoker.SoundPass.play();
 //					// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //					if(!bPassAnimatePlayedUp)
 //					{
@@ -446,6 +502,10 @@ package poker
 							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed2_BaseZOrder+i, true);
 						}
 						deskCards2 = deskCards2.concat(cards[id]);
+						SEid = CardPattern.Instance.patternCheck(deskCards2.sort(Array.NUMERIC));
+						if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							SEid = 36;
+						playSEByCardtype(SEid);
 					}
 				}
 			}
@@ -455,7 +515,7 @@ package poker
 			if(curPlayer == id && gamestate == 0)
 			{
 				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-				LobyManager.Instance.gamePoker.imgDiscardLeft.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = false;
 //				// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //				if(!bPassAnimatePlayedLeft)
 //				{
@@ -476,7 +536,9 @@ package poker
 				else if(cards[id] == "pass")
 				{
 					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
-					LobyManager.Instance.gamePoker.imgDiscardLeft.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = true;
+					// SE
+					ResourceManagerPoker.SoundPass.play();
 				}
 				else
 				{
@@ -510,6 +572,10 @@ package poker
 							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
 						}
 						deskCards3 = deskCards3.concat(cards[id]);
+						SEid = CardPattern.Instance.patternCheck(deskCards3.sort(Array.NUMERIC));
+						if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							SEid = 36;
+						playSEByCardtype(SEid);
 					}
 				}
 			}
@@ -631,87 +697,87 @@ package poker
 			// 玩家的姓名，显示在右上
 			if(obj.hasOwnProperty("players"))
 			{
-				LobyManager.Instance.gamePoker.textPlayerSelf.text = obj.players[getPlayerIndexByPos(obj, selfseat)].name;
-				LobyManager.Instance.gamePoker.Lable_playernameDown.text = LobyManager.Instance.gamePoker.textPlayerSelf.text;
+				FlexGlobals.topLevelApplication.gamePoker.textPlayerSelf.text = obj.players[getPlayerIndexByPos(obj, selfseat)].name;
+				FlexGlobals.topLevelApplication.gamePoker.Lable_playernameDown.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerSelf.text;
 					// 玩家的下面显示等级
-				LobyManager.Instance.gamePoker.Lable_playerLevelDown.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, selfseat)].score);
+				FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelDown.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, selfseat)].score);
 					// 玩家的右上部分积分，等级，金币
-				LobyManager.Instance.gamePoker.textPlayerSelf_score.text = obj.players[getPlayerIndexByPos(obj, selfseat)].score;
-				LobyManager.Instance.gamePoker.textPlayerSelf_level.text = LobyManager.Instance.gamePoker.Lable_playerLevelDown.text;
-				LobyManager.Instance.gamePoker.textPlayerSelf_gold.text = obj.players[getPlayerIndexByPos(obj, selfseat)].gold;
-				LobyManager.Instance.gamePoker.playerinfoDown.visible = true;
-				if(LobyManager.Instance.gamePoker.selfAvatar.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
-					LobyManager.Instance.gamePoker.selfAvatar.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
+				FlexGlobals.topLevelApplication.gamePoker.textPlayerSelf_score.text = obj.players[getPlayerIndexByPos(obj, selfseat)].score;
+				FlexGlobals.topLevelApplication.gamePoker.textPlayerSelf_level.text = FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelDown.text;
+				FlexGlobals.topLevelApplication.gamePoker.textPlayerSelf_gold.text = obj.players[getPlayerIndexByPos(obj, selfseat)].gold;
+				FlexGlobals.topLevelApplication.gamePoker.playerinfoDown.visible = true;
+				if(FlexGlobals.topLevelApplication.gamePoker.selfAvatar.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
+					FlexGlobals.topLevelApplication.gamePoker.selfAvatar.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
 				if(obj.players[getPlayerIndexByPos(obj,selfseat)].ready)
 				{
-					LobyManager.Instance.gamePoker.Img_playerAvatarDown.visible = true;
-					if(LobyManager.Instance.gamePoker.Img_playerAvatarDown.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
-						LobyManager.Instance.gamePoker.Img_playerAvatarDown.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.visible = true;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
 				}
 				else{
-					LobyManager.Instance.gamePoker.Img_playerAvatarDown.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.visible = false;
 				}
 
 				// partner
 				if(getPlayerIndexByPos(obj, (selfseat+2)%4) != -1)
 				{
-					LobyManager.Instance.gamePoker.textPlayerPartner.text = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].name;
-					LobyManager.Instance.gamePoker.Lable_playernameUp.text = LobyManager.Instance.gamePoker.textPlayerPartner.text;
+					FlexGlobals.topLevelApplication.gamePoker.textPlayerPartner.text = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].name;
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameUp.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerPartner.text;
 					// level
-					LobyManager.Instance.gamePoker.Lable_playerLevelUp.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].score);
-					LobyManager.Instance.gamePoker.playerinfoUp.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelUp.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].score);
+					FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = true;
 					
-					LobyManager.Instance.gamePoker.Img_playerAvatarUp.visible = true;
-					if(LobyManager.Instance.gamePoker.Img_playerAvatarUp.source != obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar)
-						LobyManager.Instance.gamePoker.Img_playerAvatarUp.source = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar;
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = true;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source != obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar;
 				}
 				else
 				{
-					LobyManager.Instance.gamePoker.textPlayerPartner.text = "";
-					LobyManager.Instance.gamePoker.Lable_playernameUp.text = "";
-					LobyManager.Instance.gamePoker.Label_leftcardsnumUp.text = "";
-					LobyManager.Instance.gamePoker.Img_playerAvatarUp.visible = false;
-					LobyManager.Instance.gamePoker.playerinfoUp.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.textPlayerPartner.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameUp.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumUp.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
 				}
 				if(getPlayerIndexByPos(obj,(selfseat+1)%4) != -1)
 				{
-					LobyManager.Instance.gamePoker.textPlayerEmy1.text = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].name;
-					LobyManager.Instance.gamePoker.Lable_playernameRight.text = LobyManager.Instance.gamePoker.textPlayerEmy1.text;
+					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy1.text = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].name;
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameRight.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy1.text;
 					// level
-					LobyManager.Instance.gamePoker.Lable_playerLevelRight.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].score);
-					LobyManager.Instance.gamePoker.playerinfoRight.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelRight.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].score);
+					FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = true;
 
-					LobyManager.Instance.gamePoker.Img_playerAvatarRight.visible = true;
-					if(LobyManager.Instance.gamePoker.Img_playerAvatarRight.source != obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar)
-						LobyManager.Instance.gamePoker.Img_playerAvatarRight.source = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar;
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = true;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source != obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar;
 				}
 				else
 				{
-					LobyManager.Instance.gamePoker.textPlayerEmy1.text = "";
-					LobyManager.Instance.gamePoker.Lable_playernameRight.text = "";
-					LobyManager.Instance.gamePoker.Label_leftcardsnumRight.text = "";
-					LobyManager.Instance.gamePoker.Img_playerAvatarRight.visible = false; 
-					LobyManager.Instance.gamePoker.playerinfoRight.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy1.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameRight.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumRight.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = false; 
+					FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
 				}
 				if(getPlayerIndexByPos(obj, (selfseat+3)%4) != -1)
 				{
-					LobyManager.Instance.gamePoker.textPlayerEmy2.text = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].name;
-					LobyManager.Instance.gamePoker.Lable_playernameLeft.text = LobyManager.Instance.gamePoker.textPlayerEmy2.text;
+					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy2.text = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].name;
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameLeft.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy2.text;
 					// level
-					LobyManager.Instance.gamePoker.Lable_playerLevelLeft.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].score);
-					LobyManager.Instance.gamePoker.playerinfoLeft.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelLeft.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].score);
+					FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = true;
 					
-					LobyManager.Instance.gamePoker.Img_playerAvatarLeft.visible = true;
-					if(LobyManager.Instance.gamePoker.Img_playerAvatarLeft.source != obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar)
-						LobyManager.Instance.gamePoker.Img_playerAvatarLeft.source = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar;
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = true;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source != obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar;
 				}
 				else
 				{
-					LobyManager.Instance.gamePoker.textPlayerEmy2.text = "";
-					LobyManager.Instance.gamePoker.Lable_playernameLeft.text = "";
-					LobyManager.Instance.gamePoker.Label_leftcardsnumLeft.text = "";
-					LobyManager.Instance.gamePoker.Img_playerAvatarLeft.visible = false;
-					LobyManager.Instance.gamePoker.playerinfoLeft.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy2.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameLeft.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumLeft.text = "";
+					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = false;
 				}
 			}
 		}
@@ -723,26 +789,26 @@ package poker
 				if(obj.play.hasOwnProperty("next"))
 				{
 					// 将显示的图打开 
-					LobyManager.Instance.gamePoker.label_thinking.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = true;
 					if(obj.play.next == (selfseat+1)%4)
 					{
-						LobyManager.Instance.gamePoker.label_thinking.x =485;
-						LobyManager.Instance.gamePoker.label_thinking.y =250;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.x =485;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.y =250;
 					}
 					else if(obj.play.next == (selfseat+2)%4)
 					{
-						LobyManager.Instance.gamePoker.label_thinking.x =250;
-						LobyManager.Instance.gamePoker.label_thinking.y =40;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.x =250;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.y =40;
 					}
 					else if(obj.play.next == (selfseat+3)%4)
 					{
-						LobyManager.Instance.gamePoker.label_thinking.x =30;
-						LobyManager.Instance.gamePoker.label_thinking.y =250;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.x =30;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.y =250;
 					}
 					else
 					{
 						// 将显示的图打开 
-						LobyManager.Instance.gamePoker.label_thinking.visible = false;
+						FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
 					}
 				}
 			}*/
@@ -752,36 +818,36 @@ package poker
 				if(obj.time != -1)
 				{
 					// 显示沙漏动画和倒计时时间文字
-					LobyManager.Instance.gamePoker.sandglass.visible = true;
-					LobyManager.Instance.gamePoker.label_leftTimeCounter.visible = true;
-					LobyManager.Instance.gamePoker.label_leftTimeCounter.text = obj.time.toString();
+					FlexGlobals.topLevelApplication.gamePoker.sandglass.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.text = obj.time.toString();
 					// 调整沙漏和倒计时的文字位置
 					if(obj.play.next == (selfseat+1)%4)
 					{
-						LobyManager.Instance.gamePoker.sandglass.x = 474;
-						LobyManager.Instance.gamePoker.sandglass.y = 243;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.x = 474;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.y = 243;
 					}
 					else if(obj.play.next == (selfseat+2)%4)
 					{
-						LobyManager.Instance.gamePoker.sandglass.x = 270;
-						LobyManager.Instance.gamePoker.sandglass.y = 132;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.x = 270;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.y = 132;
 					}
 					else if(obj.play.next == (selfseat+3)%4)
 					{
-						LobyManager.Instance.gamePoker.sandglass.x = 98;
-						LobyManager.Instance.gamePoker.sandglass.y = 239;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.x = 98;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.y = 239;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.sandglass.x = 272;
-						LobyManager.Instance.gamePoker.sandglass.y = 353;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.x = 272;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.y = 353;
 					}
-					LobyManager.Instance.gamePoker.label_leftTimeCounter.x = LobyManager.Instance.gamePoker.sandglass.x + LobyManager.Instance.gamePoker.sandglass.width;
-					LobyManager.Instance.gamePoker.label_leftTimeCounter.y = LobyManager.Instance.gamePoker.sandglass.y + 6;
+					FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.x = FlexGlobals.topLevelApplication.gamePoker.sandglass.x + FlexGlobals.topLevelApplication.gamePoker.sandglass.width;
+					FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.y = FlexGlobals.topLevelApplication.gamePoker.sandglass.y + 6;
 				}
 				else{
-					LobyManager.Instance.gamePoker.sandglass.visible = false;
-					LobyManager.Instance.gamePoker.label_leftTimeCounter.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.sandglass.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.visible = false;
 				}
 			}
 
@@ -796,15 +862,16 @@ package poker
 				{
 					if(obj.players[getPlayerIndexByPos(obj,selfseat)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = true;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerDownReady.visible = true;
+						FlexGlobals.topLevelApplication.gamePoker.btnReady.visible = false;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = false;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerDownReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerDownReady.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.imgPlayerDownReady.visible = false;
 				}
 
 				// partner
@@ -812,45 +879,45 @@ package poker
 				{
 					if(obj.players[getPlayerIndexByPos(obj,(selfseat+2)%4)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = true;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerUpReady.visible = true;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerUpReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerUpReady.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.imgPlayerUpReady.visible = false;
 				}
 				
 				if(obj.players.hasOwnProperty( getPlayerIndexByPos(obj,(selfseat+1)%4)))
 				{
 					if(obj.players[getPlayerIndexByPos(obj,(selfseat+1)%4)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = true;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerRightReady.visible = true;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerRightReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerRightReady.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.imgPlayerRightReady.visible = false;
 				}
 				
 				if(obj.players.hasOwnProperty( getPlayerIndexByPos(obj,(selfseat+3)%4) ))
 				{
 					if(obj.players[getPlayerIndexByPos(obj,(selfseat+3)%4)].ready)
 					{
-						LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = true;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerLeftReady.visible = true;
 					}
 					else
 					{
-						LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = false;
+						FlexGlobals.topLevelApplication.gamePoker.imgPlayerLeftReady.visible = false;
 					}
 				}
 				else{
-					LobyManager.Instance.gamePoker.imgPlayerLeftReady.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.imgPlayerLeftReady.visible = false;
 				}
 			}
 		}
@@ -858,14 +925,14 @@ package poker
 		public function updatePlayerCardsInfo(obj:Object):void
 		{
 			//显示自己的剩余牌数
-			LobyManager.Instance.gamePoker.Label_leftcardsnumDown.text = "("+obj.cards[selfseat].number+")";
-			LobyManager.Instance.gamePoker.Label_leftcardsnumDown.visible = true;
+			FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumDown.text = "("+obj.cards[selfseat].number+")";
+			FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumDown.visible = true;
 			
 			// partner
 			if(obj.cards.hasOwnProperty( ((selfseat+2)%4).toString() ))
 			{
-				LobyManager.Instance.gamePoker.Label_leftcardsnumUp.text = "("+obj.cards[(selfseat+2)%4].number+")";
-				LobyManager.Instance.gamePoker.Label_leftcardsnumUp.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumUp.text = "("+obj.cards[(selfseat+2)%4].number+")";
+				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumUp.visible = true;
 				if(obj.cards[(selfseat+2)%4].number == 0)
 				{
 					GameObjectManager.Instance.setVisibleByName("CardbackUp", false);
@@ -873,8 +940,8 @@ package poker
 			}
 			if(obj.cards.hasOwnProperty( ((selfseat+1)%4).toString() ))
 			{
-				LobyManager.Instance.gamePoker.Label_leftcardsnumRight.text = "("+obj.cards[(selfseat+1)%4].number+")";
-				LobyManager.Instance.gamePoker.Label_leftcardsnumRight.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumRight.text = "("+obj.cards[(selfseat+1)%4].number+")";
+				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumRight.visible = true;
 				if(obj.cards[(selfseat+1)%4].number == 0)
 				{
 					GameObjectManager.Instance.setVisibleByName("CardbackRight", false);
@@ -882,8 +949,8 @@ package poker
 			}
 			if(obj.cards.hasOwnProperty( ((selfseat+3)%4).toString() ))
 			{
-				LobyManager.Instance.gamePoker.Label_leftcardsnumLeft.text = "("+obj.cards[(selfseat+3)%4].number+")";
-				LobyManager.Instance.gamePoker.Label_leftcardsnumLeft.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumLeft.text = "("+obj.cards[(selfseat+3)%4].number+")";
+				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumLeft.visible = true;
 				if(obj.cards[(selfseat+3)%4].number == 0)
 				{
 					GameObjectManager.Instance.setVisibleByName("CardbackLeft", false);
@@ -894,31 +961,31 @@ package poker
 			if(obj.play.hasOwnProperty("next"))
 			{
 				// 将显示的图打开 
-				LobyManager.Instance.gamePoker.label_thinking.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = true;
 				if(obj.play.next == selfseat)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarDown.x;
-					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarDown.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.y;
 				}
 				else if(obj.play.next == (selfseat+1)%4)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarRight.x;
-					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarRight.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.y;
 				}
 				else if(obj.play.next == (selfseat+2)%4)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarUp.x;
-					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarUp.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.y;
 				}
 				else if(obj.play.next == (selfseat+3)%4)
 				{
-					LobyManager.Instance.gamePoker.label_thinking.x = LobyManager.Instance.gamePoker.Img_playerAvatarLeft.x;
-					LobyManager.Instance.gamePoker.label_thinking.y = LobyManager.Instance.gamePoker.Img_playerAvatarLeft.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.y;
 				}
 				else
 				{
 					// 将显示的图打开 
-					LobyManager.Instance.gamePoker.label_thinking.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
 				}
 			}
 		}
@@ -943,7 +1010,7 @@ package poker
 					// 这个立即更新，可能会因为前一次的更新没有完成而产生等待，并不是真正意义上的立即更新
 					updateImmediately();
 				}
-				LobyManager.Instance.gamePoker.label_leftTimeCounter.text = gamePlayerLeftTimeCounter.toString();
+				FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.text = gamePlayerLeftTimeCounter.toString();
 			}
 		}
 		public function initPlayerLeftStartTime():void
@@ -982,7 +1049,7 @@ package poker
 						requestFlag = false;
 						if(curPlayer != selfseat)
 						{
-							LobyManager.Instance.gamePoker.commandbar.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 						}
 					}
 					// 轮到自己出牌,并且按钮没有被按下
@@ -994,20 +1061,32 @@ package poker
 						{
 							// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
 							// 这个时候不能够放弃
-							LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = false;
+							FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
 						}
 						else
 						{
-							checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+							// 要求含有当前出牌情况的信息才能进行判断
+							if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
+							{
+								checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+							}
 						}
-						if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+						// 要求含有当前出牌情况的信息才能进行判断
+						if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
 						{
-							// make chupai enable
-							LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = true;
+							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+							{
+								// make chupai enable
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = true;
+							}
+							else
+							{
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
+							}
 						}
 						else
 						{
-							LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = false;
+							FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
 						}
 					    checkarr = null;
 					}
@@ -1088,7 +1167,13 @@ package poker
 				}
 			}
 		}
-		// 用来判断帧的大小，处理先后顺序
+		
+		/**
+		 * 用来判断帧的大小，处理先后顺序
+		 * @param str
+		 * @return 
+		 * 
+		 */		
 		public function frametimeJudge(str:String):Boolean
 		{
 			// 先比较是否和前一次的相同，相同，不更新

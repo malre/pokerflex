@@ -56,12 +56,10 @@
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前
 				Game.Instance.clearPlayerCards();
 				// 关闭几个和出牌有关的按钮的显示
-				LobyManager.Instance.gamePoker.initGUI();
-				LobyManager.Instance.gamePoker.btnReady.visible = true;
-				LobyManager.Instance.gamePoker.btnReady.enabled = true;
-				LobyManager.Instance.gamePoker.commandbar.visible = false;
-				// “等待其他玩家” 该信息不显示
-				LobyManager.Instance.gamePoker.labelWait.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.initGUI();
+				FlexGlobals.topLevelApplication.gamePoker.btnReady.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.btnReady.enabled = true;
+				FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 				handleClose(null);
 				//this.visible = false;
 			}

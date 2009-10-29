@@ -1,5 +1,6 @@
 package lobystate
 {
+	import mx.core.FlexGlobals;
 	
 
 	public class StateGetTableInfo extends NetRequestState
@@ -45,24 +46,23 @@ package lobystate
 			{
 				LobyNetManager.Instance.tabledata = obj;
 				LobyManager.Instance.getintoRoom(obj);
+					// 设置自动加入桌子的按钮可见
+				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = true;
+				FlexGlobals.topLevelApplication.BtnCreateTable.visible = true;
+
+				// 在大厅断线的恢复到大厅，在游戏断线的会在对房间玩家列表请求完成以后继续恢复
 				if(LobyManager.Instance.state == 3)
 				{
 					LobyManager.Instance.changeState(1);	// normal
-				}
-				if(LobyManager.Instance.state == 4)
-				{
-					// 继续进入游戏的请求
-					//LobyManager.Instance.gamePoker.startup(obj);
-					// 
-					//LobyManager.Instance.changeState(2);
-					//return true;
-					LobyManager.Instance.changeState(1);
 				}
 				// 请求玩家列表
 				LobyNetManager.Instance.send(LobyNetManager.getRoomPlayerlist);
 				return true;
 			}
 			else{
+				// 加入房间失败
+				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
+				FlexGlobals.topLevelApplication.BtnCreateTable.visible = false;
 				return false;
 			}
 		}

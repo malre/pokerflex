@@ -34,6 +34,18 @@ package lobystate
 				roomlist.removeAll();
 				for(var i:int=0;i<obj.players.length;i++)
 					roomlist.addItem(obj.players[i]);
+
+				// 继续对游戏的恢复
+				if(LobyManager.Instance.state == 4)
+				{
+					// 继续进入游戏的请求， 请求一次当时离开的房间的信息
+					LobyNetManager.Instance.send(LobyNetManager.getTablePlayerInfo);
+					//LobyManager.Instance.gamePoker.startup(obj);
+					// 
+					//LobyManager.Instance.changeState(2);
+					//return true;
+					//LobyManager.Instance.changeState(1);
+				}
 					
 				return true;
 			}

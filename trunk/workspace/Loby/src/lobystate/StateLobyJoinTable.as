@@ -2,8 +2,6 @@ package lobystate
 {
 	import flash.events.Event;
 	
-	import message.Messenger;
-	
 	import mx.core.FlexGlobals;
 	import mx.rpc.http.HTTPService;
 
@@ -42,7 +40,7 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				LobyManager.Instance.gamePoker.startup(obj);
+				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
 				// 
 				LobyManager.Instance.changeState(2);
 				return true;

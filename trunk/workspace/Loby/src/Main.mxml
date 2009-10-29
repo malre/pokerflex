@@ -3,10 +3,19 @@
         xmlns:fx="http://ns.adobe.com/mxml/2009" 
         xmlns:d="http://ns.adobe.com/fxg/2008/dt"
         xmlns:s="library://ns.adobe.com/flex/spark" 
-        width="780" height="560" backgroundColor="#ffffff" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:components="components.*"
-        creationComplete="createcomplete(event)" enterFrame="enterframe(event)" xmlns:mx="library://ns.adobe.com/flex/halo">
+        xmlns:th="http://ns.adobe.com/thermo/2009" 
+        xmlns:mx="library://ns.adobe.com/flex/halo" 
+        xmlns:message="message.*"
+        xmlns:components="components.*"
+        width="780" height="560" backgroundColor="#ffffff" 
+        creationComplete="createcomplete(event)" enterFrame="enterframe(event)" 
+        xmlns:poker="poker.*">
 	<fx:Script>
 		<![CDATA[
+			import mx.containers.TitleWindow;
+			import components.OptionWindow;
+			import components.CustomTextAreaSkin;
+			import soundcontrol.SoundManager;
 			import lobystate.StateGetPlayerInfo;
 			import mx.managers.PopUpManager;
 			import poker.CardViewer;
@@ -33,7 +42,6 @@
 				}
 			}
 
-
 			protected function Buttonvita_click():void
 			{
 				if(shopmenu.visible == false && playerinfo.visible == false)
@@ -49,7 +57,6 @@
 					}
 				}
 			}
-
 
 			protected function Buttonfriend_click():void
 			{
@@ -77,25 +84,44 @@
 				}
 			}
 
-
-
-//			protected function Button_click():void
-//			{
-//				customcomponent31.currentState='State3';
-//				customcomponent11.currentState='State1';
-//				customcomponent21.currentState='State2';
-//			}
 			protected function createcomplete(event:Event):void
 			{
+//				// 修改tooltip的式样
+//				StyleManager.getStyleDeclaration("ToolTip").setStyle("fontSize",18);   
+////				StyleManager.getStyleDeclaration("ToolTip").setStyle("backgroundColor","#33CC99");  
+				
 				// 大厅置成正常状态
 				LobyManager.Instance.state = 0;
 				// 发送更新大厅列表
 				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+				
+				// 开始播放背景音乐
+//				SoundManager.Instance().seturl(SoundManager.Instance().mp3url);
+//				SoundManager.Instance().play();
 			}
 			
 			protected function enterframe(event:Event):void
 			{
 				LobyManager.Instance.enterFrame();
+			}
+
+
+			protected function BtnAutojoinTable_clickHandler(event:MouseEvent):void
+			{
+				LobyNetManager.Instance.send(LobyNetManager.autoaddlobby);
+			}
+
+
+			protected function BtnCreateTable_clickHandler(event:MouseEvent):void
+			{
+//				var createwnd:OptionWindow = new OptionWindow();
+				var titlewnd:OptionWindow = OptionWindow(PopUpManager.createPopUp(this, OptionWindow, true)); 
+//				var titlewnd:TitleWindow = new TitleWindow();
+//				titlewnd.addElement(createwnd);
+//				PopUpManager.createPopUp(this, titlewnd, true)
+//				createwnd.currentState = "State2";
+				//titlewnd.modmodalTransparencyBlur;
+//				var popup:OptionWindow = OptionWindow(PopUpManager.createPopUp(this, OptionWindow, true));
 			}
 
 		]]>
@@ -110,7 +136,7 @@
 		</components:CustomComponent3>
 		<mx:Image x="36" y="40" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true"/>
 		<mx:Label x="82" y="31" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>
-		<s:TextArea x="289" y="96" id="introduceText" width="474" height="456" skinClass="components.CustomTextAreaSkin" editable="false" color="0xffffff">
+		<s:TextArea x="289" y="96" id="introduceText" width="474" height="456" editable="false" color="0xffffff" baseColor="#11241A">
 			<s:content>
 				{ruleIntroduce.ruleText}
 			</s:content>
@@ -122,6 +148,8 @@
 		<s:Button x="103" y="56" skinClass="components.Button_Item" d:userLabel="Button item" click="Buttonitem_click()"/>
 		<s:Button x="153" y="53" skinClass="components.Button_Vita" d:userLabel="Button vita" click="Buttonvita_click()"/>
 		<s:Button x="290" y="26" skinClass="components.Button_Shop" d:userLabel="Button shop" click="Buttonshop_click()"/>
+		<s:Button x="361" y="29" label="自动加入" skinClass="components.Button_AutoJoinTable" id="BtnAutojoinTable" click="BtnAutojoinTable_clickHandler(event)" visible="false"/>
+		<s:Button x="429" y="29" label="创建房间" skinClass="components.Button_CreateTable" id="BtnCreateTable" click="BtnCreateTable_clickHandler(event)" visible="false"/>
 	</fx:DesignLayer>
 	<fx:DesignLayer d:userLabel="game lest">
 		<components:GameLbby x="5" y="93" id="customcomponent21" d:userLabel="Game lbby">
@@ -135,6 +163,11 @@
 		</components:Shop>
 		<!--玩家信息-->
 		<components:PlayerInfo x="200" y="130" id="playerinfo"/>
+		<!--<components:OptionWindow x="200" y="130" id="createTable"/>-->
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.5.6" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="620" y="6" text="ver 1.6.4" width="64" textAlign="right" color="#FFFFFF"/>
+	<!--游戏本体-->
+	<poker:poker id="gamePoker" visible="false"/>
+	<!--公告显示的位置，处在画面的最上层-->
+	<message:announceWnd id="lobbyAnnounce" x="50" y="66" visible="false"/>
 </s:Application>

@@ -2,9 +2,15 @@ package message.httpController
 {
 	import flash.events.Event;
 	
+	import flashx.textLayout.elements.InlineGraphicElement;
+	import flashx.textLayout.elements.ParagraphElement;
+	import flashx.textLayout.elements.SpanElement;
+	import flashx.textLayout.elements.TextFlow;
+	
 	import json.JSON;
 	
 	import message.Messenger;
+	import message.ResEmotion;
 	
 	import mx.core.FlexGlobals;
 
@@ -41,12 +47,53 @@ package message.httpController
 			// 传送给viewer来显示
 			for(var i:int =0; i<obj.chat.length; i++)
 			{
-				LobyManager.Instance.gamePoker.showboxGame.addNewMsg(obj.chat[(obj.chat.length-1)-i]);
+				addNewMsg(obj.chat[(obj.chat.length-1)-i], FlexGlobals.topLevelApplication.gamePoker.gamechatbox.textFlow);
 			}
 		}
 		override public function fault(event:Event) : void
 		{
 			
+		}
+		
+		/**
+		 * 把得到的新的消息加入到显示 
+		 * @param str
+		 * 
+		 */		
+		protected function addNewMsg(obj:Object, tf:TextFlow):void
+		{
+			var pp:ParagraphElement = new ParagraphElement();
+			var data:Object = JSON.decode(obj.message);
+			var span:SpanElement;
+			span = new SpanElement();
+			span.text = "["+obj.name+"]:";
+			span.color = 0xffff66;
+			span.fontSize = 12;
+			pp.addChild(span);
+			for(var i:int=0; i<data.content.length; i++)
+			{
+				if(data.content[i].type == "text")
+				{
+					span = new SpanElement();
+					span.text = data.content[i].val;
+					pp.addChild(span);
+				}
+				else if(data.content[i].type == "img"){
+					var img:InlineGraphicElement = new InlineGraphicElement();
+					img.width = data.size;
+					img.height = data.size;
+					img.source = ResEmotion.EmotionRes[data.content[i].val];
+					pp.addChild(img);
+				}
+			}
+			
+			pp.fontSize = data.size;
+			if(data.color != null)
+				pp.color = data.color;
+			else
+				pp.color = 0xffffff;
+			tf.addChild(pp);
+			//			textcontent.flowComposer.updateAllControllers();
 		}
 	}
 }

@@ -3,9 +3,11 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.core.FlexGlobals;
+	
 	import poker.Game;
-	import poker.GameObjectManager;
 	import poker.NetManager;
+	import poker.poker;
 
 	public class StateDiscard extends NetRequestState
 	{
@@ -44,16 +46,17 @@ package poker.gamestate
 							if(obj.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								LobyManager.Instance.gamePoker.commandbar.visible = true;
-								LobyManager.Instance.gamePoker.commandbar.btnSendCards.enabled = false;
-								LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = true;
+								var gamePoker:poker = FlexGlobals.topLevelApplication.gamePoker;
+								gamePoker.commandbar.visible = true;
+								gamePoker.commandbar.btnSendCards.enabled = false;
+								gamePoker.commandbar.btnDiscard.enabled = true;
 								if(obj.play.last == obj.play.next)
 								{
-									LobyManager.Instance.gamePoker.commandbar.btnDiscard.enabled = false;
+									gamePoker.commandbar.btnDiscard.enabled = false;
 								}
 							}
 							else{
-								LobyManager.Instance.gamePoker.commandbar.visible = false;
+								gamePoker.commandbar.visible = false;
 							}
 							Game.Instance.lastPlayer = obj.play.last;
 							if(Game.Instance.curPlayer != obj.play.next)	// 出牌权交换

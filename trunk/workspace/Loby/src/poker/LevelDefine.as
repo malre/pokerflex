@@ -26,7 +26,9 @@ package poker
 //		21	蹑景	450000
 //		22	白兔	600000
 //		23	追风	1000000
-		public static var levelName:Array = new Array();
+		public static const levelName:Array = ["不限","蜗牛","小马驹","三等马","二等马","一等马","千里马",
+		"白鹤","紫骍","惊帆","爪黄飞电","乌云踏雪","照夜玉狮子","的卢","绝影","赤兔","乌骓","晨凫",
+		"铜爵","飞翩","追电","蹑景","白兔","追风"];
 		
 		public function LevelDefine()
 		{

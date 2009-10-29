@@ -11,8 +11,6 @@ package
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
-	
-	import poker.NetManager;
 
 	// 对服务器发出连接和请求，并作出回应
 	public class LobyNetManager
@@ -24,23 +22,27 @@ package
 		// 新的loby地址
 		// 我们将这个loby地址保存下来，这个被我们称为动态loby地址，它可能会有变化
 		include "ServerAddress.ini"
-		static public var URL_lobyAddress:String = ServerAddress+"/web/"+ServerPerfix+"/";
+		static public var URL_lobyAddress:String = ServerAddress + ServerPerfix+"/";
 		//static public var URL_lobysonAddress:String = "http://192.168.18.24/web/world/";
 		//static public var URL_lobysonAddress:String = "http://218.108.39.82:9000/web/world/";
 		static public var URL_lobysonAddress:String = URL_lobyAddress;
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
-		static public var URL_roomInfo:String = "lobby/info/list";
+		static public var URL_roomInfo:String = "lobby/info/list";	// 大厅的信息
 		static public var URL_addloby:String = "lobby/player/add";
+		static public var URL_autoAddlobby:String = "game/room/autoAdd";
 		static public var URL_leaveloby:String = "lobby/player/remove";
 		static public var URL_roomPlayerlist:String = "lobby/player/list";
 		static public var URL_playerInfo:String = "default/account/identity";
-		static public var URL_tableInfo:String = "game/list/list";
+		static public var URL_tableInfo:String = "game/list/list";	// 房间中桌子的信息
 		static public var URL_joinTable:String = "game/room/add";
 		static public var URL_leaveTable:String = "game/room/remove";
+		static public var URL_updateTableInfo:String = "game/room/update";	// 桌子上玩家的信息
+		static public var URL_createTable:String = "game/room/create";
 		//private var URL_
 		// 各种请求定义
 		static public var getlobyaddress:String = "request loby";
 		static public var addloby:String = "join to loby";
+		static public var autoaddlobby:String = "auto join";
 		static public var leaveloby:String = "leave loby";
 		static public var playerInfo:String = "request player info";
 		static public var roomInfo:String = "request room info";
@@ -48,6 +50,8 @@ package
 		static public var joinTable:String = "join table game";
 		static public var leaveTable:String = "leave table";
 		static public var getRoomPlayerlist:String = "get player list";
+		static public var getTablePlayerInfo:String = "get table player info";
+		static public var createTable:String = "create table";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -130,6 +134,10 @@ package
 				StateJoinLoby.Instance.setLobyid(FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@lid);
 				stateManager.changeState(StateJoinLoby.Instance);
 			}
+			else if(type == autoaddlobby)
+			{
+				stateManager.changeState(StateAutojoinTable.Instance);
+			}
 			else if(type == leaveloby)
 			{
 				stateManager.changeState(StateLeaveLoby.Instance);
@@ -178,6 +186,14 @@ package
 			else if(type == getRoomPlayerlist)
 			{
 				stateManager.changeState(StateGetRoomPlayerlist.Instance);
+			}
+			else if(type == getTablePlayerInfo)
+			{
+				stateManager.changeState(StateUpdateTableInfo.Instance);
+			}
+			else if(type == createTable)
+			{
+				stateManager.changeState(StateCreateTable.Instance);
 			}
 			stateManager.send();
 		}

@@ -7,13 +7,13 @@
 
 			protected function colorpicker1_changeHandler(event:ColorPickerEvent):void
 			{
-				LobyManager.Instance.gamePoker.inputboxGame.changeInputColor(event.color);
+				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.changeInputColor(event.color);
 			}
 
 
 			protected function numericstepper1_changeHandler(event:Event):void
 			{
-				LobyManager.Instance.gamePoker.inputboxGame.fontsize = event.currentTarget.value;
+				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.fontsize = event.currentTarget.value;
 			}
 
 		]]>
