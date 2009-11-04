@@ -111,7 +111,7 @@ package
 			return requestEnable;
 		}
 		// 向服务器发送请求
-		public function send(type:String, param1:String=null, param2:String=null):void
+		public function send(type:String, param1:String=null, param2:String=null, param3:String=null):void
 		{
 			// reset flag
 			request_lobyaddress = false;
@@ -176,7 +176,7 @@ package
 					p = 3;
 				}
 				stateManager.changeState(StateLobyJoinTable.Instance);
-				var rq:Object = {"roomid":tabledata[param1].rid.toString(), "pos":p, "getPlayers":"true"};
+				var rq:Object = {"roomid":tabledata[param1].rid.toString(), "pos":p, "pw":param3, "getPlayers":"true"};
 				StateLobyJoinTable.Instance.setRequest(rq);
 			}
 			else if(type == leaveTable)

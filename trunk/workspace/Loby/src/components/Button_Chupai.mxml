@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009"
+		creationComplete="btnskin_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			[Bindable]
+			private var btnName:String;
+
+			protected function btnskin_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnName = hostComponent.label;
+			}
+
+		]]>
+	</fx:Script>
 	<s:transitions>
 		<s:Transition fromState="up" toState="over" autoReverse="true">
 			<s:Parallel>
@@ -43,6 +57,7 @@
 	<s:BitmapImage source="@Embed('/assets/Button_cp_over.png')" resizeMode="scale" x="1" includeIn="over" id="bitmapimage2"/>
 	<s:BitmapImage source="@Embed('/assets/Button_cp_down.png')" resizeMode="scale" includeIn="down" x="0.95" id="bitmapimage4"/>
 	<s:BitmapImage source="@Embed('/assets/Button_cp_unus.png')" resizeMode="scale" includeIn="disabled" id="bitmapimage3" x="1" y="0.05"/>
+	<s:RichText text="{btnName}" color="#893808" fontSize="14" fontFamily="宋体" fontWeight="normal" fontStyle="normal" x="14" y="4"/>
 	<fx:Private>
 		<th:Guide x="1"/>
 		<th:Guide y="0"/>

@@ -53,6 +53,7 @@ package message.httpController
 				//FlexGlobals.topLevelApplication.customcomponent31.showboxLobby.addNewMsg(obj.chat[(obj.chat.length-1)-i]);
 				var ta:TextArea = TextArea(FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox);
 				addNewMsg(obj.chat[(obj.chat.length-1)-i], ta.textFlow);
+				ta.appendText("");
 			}
 		}
 		override public function fault(event:Event) : void
