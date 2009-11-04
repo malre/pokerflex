@@ -141,7 +141,6 @@ package message
 		}
 		public function clearInput():void
 		{
-			var pt:ParagraphElement = ParagraphElement(textinput.getChildAt(0));
 			// 默认，选中所有的文字 
 			textinput.interactionManager.selectAll();// .setSelection();
 			// 删除所有选中的文字
@@ -152,22 +151,28 @@ package message
 		{
 			// 使用了替换来删除过往的记录，不知道会不会有问题，有待观察
 			textcontent.replaceChildren(0, textcontent.numChildren);
-			// 默认，选中所有的文字 
-//			for(var i:int=0; i<textcontent.numChildren;i++)
-//			{
-//				textcontent.removeChild(textcontent.getChildAtIndex(i));
-//			}
-			// 删除所有选中的文字
-//			EditManager(textcontent.interactionManager).deleteText();
 			textcontent.flowComposer.updateAllControllers();
 		}
+		// 获得发送的普通数据
 		public function getInputMsg():Object
 		{
-			var obj:Object = encode();
+			var obj:Object = encode(0);
 				return obj;
 //			ChatNetManager.Instance.send(str, ChatNetManager.sendLobby);
 		}
-		private function encode():Object
+		// 获得喊叫的数据，过滤掉非文本信息
+		public function getInputShoutMsg():Object
+		{
+			var obj:Object = encode(1);
+			return obj;
+		}
+		/**
+		 * @param type
+		 * 	0->normal message, include graphics, 1->shout message, only text
+		 * @return 
+		 * 
+		 */		
+		private function encode(type:int):Object
 		{
 			var obj:Object;
 			var num:int = p.numChildren;
@@ -183,7 +188,7 @@ package message
 				var ef:FlowElement = p.getChildAt(i);
 				if(ef.id != null)
 				{
-					if(ef.id.substr(0,7) == "Emotion")
+					if(ef.id.substr(0,7) == "Emotion" && type != 1)
 					{
 						obj = new Object();
 						obj.type = "img";

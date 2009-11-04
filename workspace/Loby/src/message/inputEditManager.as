@@ -28,13 +28,34 @@ package message
 		{
 			if(event.keyCode == Keyboard.NUMPAD_ENTER || event.keyCode == Keyboard.ENTER)
 			{
+				var msg:Object;
 				if(inputtype == 0)
 				{
+					// 首先查看发送的消息是不是有实际内容
+					msg = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg();
+					if(msg.content.length <= 0){
+						return;
+					}
+					else if(msg.content.length <= 1)	{
+						if(msg.content[0].val == "")
+							return;
+					}
 					// 如果是回车，将会清空自己的输入栏，然后发送send消息
-					Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendLobby);
+					Messenger.Instance.send(msg, Messenger.sendLobby);
 					FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
+//					FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox.selectRange(int.MAX_VALUE,int.MAX_VALUE);
+//					FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox.scrollToRange(int.MAX_VALUE, int.MAX_VALUE);
 				}else if(inputtype == 1){
-					Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
+					// 首先查看发送的消息是不是有实际内容
+					msg = FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg();
+					if(msg.content.length <= 0){
+						return;
+					}
+					else if(msg.content.length <= 1)	{
+						if(msg.content[0].val == "")
+							return;
+					}
+					Messenger.Instance.send(msg, Messenger.sendRoom);
 					FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
 				}
 				return;
@@ -43,12 +64,30 @@ package message
 		}
 		public function sendButtonPressed():void
 		{
+			var msg:Object;
 			if(inputtype == 0)
 			{
+				// 首先查看发送的消息是不是有实际内容
+				msg = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg();
+				if(msg.content.length <= 0){
+					return;
+				}
+				else if(msg.content.length <= 1)	{
+					if(msg.content[0].val == "")
+						return;
+				}
 				// 如果是回车，将会清空自己的输入栏，然后发送send消息
 				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendLobby);
 				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
 			}else if(inputtype == 1){
+				msg = FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg();
+				if(msg.content.length <= 0){
+					return;
+				}
+				else if(msg.content.length <= 1)	{
+					if(msg.content[0].val == "")
+						return;
+				}
 				Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
 				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
 			}
@@ -56,13 +95,32 @@ package message
 		
 		public function shoutButtonPress():void
 		{
+			var msg:Object;
 			if(inputtype == 0)
 			{
-				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendShout);
+				// 首先查看发送的消息是不是有实际内容
+				msg = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputShoutMsg();
+				if(msg.content.length <= 0){
+					return;
+				}
+				else if(msg.content.length <= 1)	{
+					if(msg.content[0].val == "")
+						return;
+				}
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputShoutMsg(), Messenger.sendShout);
 				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
 			}
 			else if(inputtype == 1){
-				Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendShout);
+				// 首先查看发送的消息是不是有实际内容
+				msg = FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputShoutMsg();
+				if(msg.content.length <= 0){
+					return;
+				}
+				else if(msg.content.length <= 1)	{
+					if(msg.content[0].val == "")
+						return;
+				}
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputShoutMsg(), Messenger.sendShout);
 				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
 			}
 		}

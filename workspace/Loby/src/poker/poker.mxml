@@ -100,7 +100,7 @@
 
 	<mx:Label x="260" y="77" width="45" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#FFFFFF"/>
 	<!--玩家聊天部分的框体-->
-	<s:TextArea x="578" y="388" width="182" height="133" id="gamechatbox" creationComplete="gamechatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
+	<s:TextArea x="578" y="388" width="182" height="133" color="#FFFFFF" baseColor="#f6edae" id="gamechatbox" creationComplete="gamechatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
 	<message:chatSetting x="603" y="493" id="chatsetting" visible="false"/>
 	<message:chatEmotion x="520" y="380" id="chatemotion" visible="false" creationComplete="chatemotion_creationCompleteHandler(event)"/>
 	<!--玩家右上部分的信息-->
@@ -127,7 +127,6 @@
 			import flashx.textLayout.elements.TextFlow;
     		import mx.events.FlexEvent;
 			import message.inputEditManager;
-//    		import flashx.textLayout.events.CompositionCompletionEvent;
     		import message.ContentViewer;
     		import mx.core.UIComponent;
     		import mx.rpc.events.ResultEvent;

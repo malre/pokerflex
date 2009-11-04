@@ -14,6 +14,11 @@ package poker.gamestate
 		private static var instance:StateGetTableSetting = null;
 		private var _getSettingSuccess:Boolean = false;
 
+		public function set getSettingSuccess(val:Boolean):void
+		{
+			_getSettingSuccess = val;
+		}
+
 		public function get getSettingSuccess():Boolean
 		{
 			return _getSettingSuccess;
@@ -102,8 +107,8 @@ package poker.gamestate
 			}
 			op.checkboxAllowChat.enabled = false;
 			
-			if(FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState != "State2")
-				FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState = "State2";
+			if(FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState != "State3")
+				FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState = "State3";
 		}
 	}
 }

@@ -5,6 +5,7 @@ package
 	import json.JSON;
 	
 	import lobystate.StateGetPlayerInfo;
+	import lobystate.StateGetTableInfo;
 	
 	import message.Messenger;
 	
@@ -66,6 +67,9 @@ package
 		
 		// 双扣游戏的本体
 //		public var gamePoker:poker;
+		// 游戏主界面上的窗口的mutex，用来控制所有的窗口不能同时打开，或者部分的可以共存
+		// 本来是可以用popup来完成这个要求，但是考虑到玩家可以一边创建一边进行聊天，所以采用手动的控制
+		public var windowMutex:Boolean = false;
 		
 		//////////////////////////////////////////
 		//子flash， game部分的被载入flash的管理
@@ -204,8 +208,11 @@ package
 					// 这个地方是一个bug点，如果返回超过1个数据，会出错。
 					node.appendChild(xml);
 				}
+import lobystate.StateGetTableInfo;
+
 import mx.controls.Image;
 import mx.controls.ToolTip;
+import mx.core.FlexGlobals;
 
 import poker.LevelDefine;
 
@@ -385,9 +392,9 @@ import poker.LevelDefine;
 						if(obj[id].hasOwnProperty("upperlevellimit"))
 							img.toolTip += "游戏等级上限为：" + LevelDefine.levelName[obj[id].upperlevellimit]+"\n";
 						else
-							img.toolTip += "游戏无等级下限\n";
+							img.toolTip += "游戏无等级上限\n";
 						if(obj[id].hasOwnProperty("magnification"))
-							img.toolTip += "金币倍率为："+ LevelDefine.levelName[obj[id].magnification]+"\n";
+							img.toolTip += "金币倍率为："+ FlexGlobals.topLevelApplication.createTable.goldplusrate[obj[id].magnification]+"\n";
 						else
 							img.toolTip += "无金币倍率\n";
 						if(obj[id].hasOwnProperty("allowchat"))	{
@@ -536,8 +543,21 @@ import poker.LevelDefine;
 		// 当桌子上的座位被点击了以后，会发出加入游戏的请求。
 		private function tableBtnHandler(event:MouseEvent):void
 		{
-			// 向服务器发出加入一张桌子的请求
-			LobyNetManager.Instance.send(LobyNetManager.joinTable, event.target.id, event.target.name);
+			if(windowMutex)
+				return;
+			// 首先对该房间有没有密码进行判断，如果该房间有密码
+			if(StateGetTableInfo.Instance.lastSuccData[event.target.id].hasOwnProperty("password"))
+			{
+				// 显示密码输入框
+				FlexGlobals.topLevelApplication.pwInput.visible = true;
+				FlexGlobals.topLevelApplication.pwInput.clearInput();
+				windowMutex = true;
+				FlexGlobals.topLevelApplication.pwInput.saveJoinInfo(event.target.id, event.target.name);
+			}else{
+				//没有密码
+				// 向服务器发出加入一张桌子的请求
+				LobyNetManager.Instance.send(LobyNetManager.joinTable, event.target.id, event.target.name);
+			}
 		}
 		
 		public function closeGame():void

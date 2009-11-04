@@ -39,7 +39,10 @@ package poker.gamestate
     			// 回到游戏
     			LobyManager.Instance.changeState(1);
     			// 退出的时候同时清除房间的聊天信息
-    			FlexGlobals.topLevelApplication.gamePoker.showboxGame.clearContent();
+    			FlexGlobals.topLevelApplication.gamePoker.gamechatbox.selectAll();
+				FlexGlobals.topLevelApplication.gamePoker.gamechatbox.insertText("");
+				// 重置房间设置获得标志位，下一次进房间需要重新去访问
+				StateGetTableSetting.Instance.getSettingSuccess = false;
 				return true;
 			}
 			else{

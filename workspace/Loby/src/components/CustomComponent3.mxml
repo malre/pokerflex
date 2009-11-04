@@ -7,9 +7,6 @@
 	currentState="State2" 
 	creationComplete="group1_creationCompleteHandler(event)">
 	<fx:Style>
-		.datagridstyle{
-			backgroundAlpha: 0;
-		}
 		.datagridheader{
 			color: #000000;
 			fontsize: 12;
@@ -21,7 +18,7 @@
 	<s:Button includeIn="State3" x="254" y="436" skinClass="components.Button_GameTalk_say" click="lobbySendMsg(event)"/>
 	<mx:DataGrid includeIn="State3" x="13" y="27" width="257" editable="false" height="173" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
 		dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}" dragEnabled="false"
-		headerStyleName="datagridheader" styleName="datasytle">
+		headerStyleName="datagridheader" dragMoveEnabled="false" draggableColumns="false">
 		<mx:columns>
 			<mx:DataGridColumn headerText="昵称" dataField="name" color="#FFFFFF"/>
 			<mx:DataGridColumn headerText="金币数" dataField="money" color="#FFFFFF"/>
@@ -30,7 +27,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<!--<s:Group id="textshow" includeIn="State3" x="13" y="205" width="241" height="206">-->
-	<s:TextArea x="13" y="205" id="lobbychatbox" includeIn="State3" width="257" height="206" color="#FFFFFF" editable="false" creationComplete="lobbychatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
+	<s:TextArea x="13" y="205" id="lobbychatbox" includeIn="State3" width="257" height="206" color="#FFFFFF" baseColor="#f6edae" editable="false" creationComplete="lobbychatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
 	<!--</s:Group>-->	
 	<!--<mx:VScrollBar height="206" x="257" y="199" id="lobbyTextScroll" scroll="scrollListener(event)" includeIn="State3" visible="false"/>-->
 	<mx:ColorPicker includeIn="State3" x="118" y="413" selectedColor="#FFFFFF" change="colorpicker1_changeHandler(event)"/>
@@ -82,15 +79,13 @@
 			private var ui1:UIComponent = new UIComponent();
 			private var ui2:UIComponent = new UIComponent();
 			public var inputboxLobby:ContentViewer = new ContentViewer();
-//			public var showboxLobby:ContentViewer = new ContentViewer();
 			// emotion panel
 			public var emotion:chatEmotion = new chatEmotion();
-			public var markup:String = "what a big day";
 			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
-				//LobyNetManager.Instance.send(LobyNetManager.leaveTable);
-				
+				lobbychatbox.selectAll();
+				lobbychatbox.insertText("");
 			}
 			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
@@ -99,8 +94,6 @@
 				// 创建对话用皁E���E系统，并封E��E��绑定到主显示窗口�
 				Messenger.Instance;	// net part
 				ui1.addChild(inputboxLobby.createInputbox(14, 438, 231, 18, 0));	// view part   
-//				ui2.addChild(showboxLobby.createTextLine(1,0, 256, 207));
-//				showboxLobby.textcontent.addEventListener(CompositionCompletionEvent.COMPOSITION_COMPLETE, scrollCtrl);
 				addElement(emotion);
 				emotion.visible = false;
 				emotion.setType(0);
@@ -111,29 +104,8 @@
 				Messenger.Instance.stopGame();
 				Messenger.Instance.startLobby();
 				this.addElement(ui1);
-//				textshow.addElement(ui2);
 			}
 			
-//			protected function scrollCtrl(event:CompositionCompletionEvent):void
-//			{
-//				var textHeight:int = Math.ceil(showboxLobby.controller.getContentBounds().height);
-//				if (textHeight < showboxLobby.controller.compositionHeight) {
-//					lobbyTextScroll.enabled = false;
-//				} else {
-//					lobbyTextScroll.enabled = true;
-//					lobbyTextScroll.minScrollPosition = 0;
-//					lobbyTextScroll.maxScrollPosition = textHeight - showboxLobby.controller.compositionHeight;// maxScrollPosition
-//					lobbyTextScroll.scrollPosition = lobbyTextScroll.maxScrollPosition; 
-//				}
-//				showboxLobby.controller.verticalScrollPosition = showboxLobby.controller.getContentBounds().height;
-//			}
-//			protected function scrollListener(event:ScrollEvent):void
-//			{
-//				//showboxLobby.textcontent.removeEventListener(flashx.textLayout.events.ScrollEvent.SCROLL, scrollTextFlow);
-//				showboxLobby.controller.verticalScrollPosition = event.position;
-//				//showboxLobby.textcontent.addEventListener(flashx.textLayout.events.ScrollEvent.SCROLL, scrollTextFlow);
-//			}
-
 			protected function btnEmotion_clickHandler(event:MouseEvent):void
 			{
 				emotion.x = 10;
@@ -168,21 +140,6 @@
 
 			protected function lobbychatbox_creationCompleteHandler(event:FlexEvent):void
 			{
-				var textcontent:TextFlow = new TextFlow();
-//				textcontent = TextFlowUtil.importFromString("what a big day");
-				var pp:ParagraphElement = new ParagraphElement();
-				var span:SpanElement;
-				span = new SpanElement();
-				span.text = "[this a test]:";
-				span.color = 0xffff66;
-				span.fontSize = 12;
-				pp.addChild(span);
-					var img:InlineGraphicElement = new InlineGraphicElement();
-					img.width = 14;
-					img.height = 14;
-					img.source = ResEmotion.EmotionRes[2];
-					pp.addChild(img);
-				textcontent.addChild(pp);
 				lobbychatbox.textFlow = new TextFlow();
 			}
 

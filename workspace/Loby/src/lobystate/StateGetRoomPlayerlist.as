@@ -1,6 +1,8 @@
 package lobystate
 {
 	import mx.collections.ArrayCollection;
+	
+	import poker.LevelDefine;
 
 	public class StateGetRoomPlayerlist extends NetRequestState
 	{
@@ -32,8 +34,11 @@ package lobystate
 			if(super.receive(obj))
 			{
 				roomlist.removeAll();
-				for(var i:int=0;i<obj.players.length;i++)
+				for(var i:int=0;i<obj.players.length;i++){
+					var playerdata:Object = obj.players[i];
+					playerdata.level = LevelDefine.getLevelName(playerdata.score);
 					roomlist.addItem(obj.players[i]);
+				}
 
 				// 继续对游戏的恢复
 				if(LobyManager.Instance.state == 4)
