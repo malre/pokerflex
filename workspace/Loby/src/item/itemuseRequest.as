@@ -40,14 +40,14 @@ package item
 			lastSuccObj = obj;
 			if(obj.success)
 			{
-				FlexGlobals.topLevelApplication.shopmenu.showMsgBox("使用成功!");
+				FlexGlobals.topLevelApplication.shopmenu.showMsgBox(0, "使用成功!");
 				// 如果使用成功，我们需要对现有的道具情况进行更新
 				playerItemsRequester.Instance().setRequest(playerItemsRequester.Instance().offset);
 				playerItemsRequester.Instance().send();
 			}
 			else
 			{
-				FlexGlobals.topLevelApplication.shopmenu.showMsgBox("使用失败! \n错误代码:"+ obj.error.code+" "+obj.error.message);
+				FlexGlobals.topLevelApplication.shopmenu.showMsgBox(0, "使用失败! \n错误代码:"+ obj.error.code+" "+obj.error.message);
 			}
 		}
 

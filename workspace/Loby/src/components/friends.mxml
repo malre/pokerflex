@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" currentState="StateBase"
+		 creationComplete="friends_creationCompleteHandler(event)">
+	<s:states>
+		<s:State name="StateBase"/>
+		<s:State name="StateLoadingdata"/>
+		<s:State name="StateMain"/>
+	</s:states>
+
+	<s:transitions>
+		<s:Transition fromState="StateBase" toState="StateLoadingdata" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{backgroundBG}">
+					<s:Fade duration="200"/>
+				</s:Parallel>
+				<s:Parallel target="{friendlist}">
+					<s:Fade duration="20"/>
+				</s:Parallel>
+				<s:Parallel target="{btnClose}">
+					<s:Fade duration="20"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="StateLoadingdata" toState="StateMain" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{btnInvite}">
+					<s:Fade duration="200"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="StateBase" toState="StateLoadingdata" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{backgroundBG}">
+					<s:Fade duration="200"/>
+				</s:Parallel>
+				<s:Parallel target="{friendlist}">
+					<s:Fade duration="20"/>
+				</s:Parallel>
+				<s:Parallel target="{btnClose}">
+					<s:Fade duration="20"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="StateMain" toState="StateBase" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{backgroundBG}">
+					<s:Fade duration="200"/>
+				</s:Parallel>
+				<s:Parallel target="{friendlist}">
+					<s:Fade duration="20"/>
+				</s:Parallel>
+				<s:Parallel target="{btnClose}">
+					<s:Fade duration="20"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+
+	<fx:Script>
+		<![CDATA[
+			import lobystate.StateGetFriends;
+			
+			import mx.collections.IViewCursor;
+			import mx.collections.Sort;
+			import mx.collections.SortField;
+			import mx.events.FlexEvent;
+			
+			private var cursor:IViewCursor;
+			
+			protected function friends_creationCompleteHandler(event:FlexEvent):void
+			{
+				// 创建IViewCursor，利用好友类中的数组变量
+				var sort:Sort = new Sort();
+				sort.fields = [ new SortField("value", true) ] ;
+				StateGetFriends.Instance.friends.sort = sort;
+				StateGetFriends.Instance.friends.refresh();
+				cursor = StateGetFriends.Instance.friends.createCursor();
+			}
+			
+			protected function CloseButton(event:MouseEvent):void
+			{
+				currentState = "StateBase";
+				LobyManager.Instance.windowMutex = false;
+			}
+			
+			// 0:base, 1:loading, 2:main_no_button,  3:main_with_button
+			public function toState(state:int):void
+			{
+				if(state == 0)
+				{
+					currentState = "StateBase";
+					LobyManager.Instance.windowMutex = false;
+				}
+				else if(state == 1)
+					currentState = "StateLoadingdata";
+				else if(state == 2)	{
+					currentState = "StateMain";
+					btnInvite.visible = false;
+					nameinput.visible = false;
+					btnSearch.visible = false;
+				}
+				else if(state == 3) {
+					currentState = "StateMain";
+					btnInvite.visible = true;
+					nameinput.visible = true;
+					btnSearch.visible = true;
+				}
+			}
+			
+			public function searchRecord(event:Event):void
+			{
+				if(nameinput.text != "")
+				{
+					if(cursor.findFirst({value:nameinput.text})){
+						var index:int = StateGetFriends.Instance.friends.getItemIndex(cursor.current);
+						friendlist.scrollToIndex(index);
+						friendlist.selectedItem = cursor.current;
+					}
+				}
+			}
+
+		]]>
+	</fx:Script>	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:BitmapImage source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" id="backgroundBG" includeIn="StateLoadingdata,StateMain"/>
+	<s:BitmapImage source="@Embed('/assets/friendslist_title.png')" resizeMode="scale" x="11" y="3" includeIn="StateLoadingdata,StateMain"/>
+	<s:Button skinClass="components.OptionWindow_CloseButton" x="315" y="6" click="CloseButton(event)" id="btnClose" includeIn="StateLoadingdata,StateMain"/>
+	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateLoadingdata,StateMain"
+				 dataProvider="{StateGetFriends.Instance.friends}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="玩家名" dataField="value"/>
+			<mx:DataGridColumn headerText="pid" dataField="pid"/>
+			<mx:DataGridColumn headerText="key" dataField="key"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="276" label="邀请"/>
+	<s:Button includeIn="StateMain" x="265" y="276" label="查找" id="btnSearch" click="searchRecord(event)" />
+	<s:TextInput includeIn="StateMain" x="133" y="275" id="nameinput"/>
+</s:Group>
+
+

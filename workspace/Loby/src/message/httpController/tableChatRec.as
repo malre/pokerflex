@@ -12,6 +12,7 @@ package message.httpController
 	import message.Messenger;
 	import message.ResEmotion;
 	
+	import spark.components.TextArea;
 	import mx.core.FlexGlobals;
 
 	public class tableChatRec extends httpModelBase
@@ -39,15 +40,29 @@ package message.httpController
 		override public function result(event:Event) : void
 		{
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
-			if(obj.chat.length == 0)
+			if(obj.hasOwnProperty("success"))
 			{
-				return;
+				if(!obj.success)
+					return;
+			}
+			else{
+				if(obj.hasOwnProperty("chat"))
+				{
+					if(obj.chat.length == 0)
+					{
+						return;
+					}
+				}else
+					return;
+				
 			}
 			lastSuccObj = obj;
 			// 传送给viewer来显示
 			for(var i:int =0; i<obj.chat.length; i++)
 			{
-				addNewMsg(obj.chat[(obj.chat.length-1)-i], FlexGlobals.topLevelApplication.gamePoker.gamechatbox.textFlow);
+				var ta:TextArea = TextArea(FlexGlobals.topLevelApplication.gamePoker.gamechatbox);
+				addNewMsg(obj.chat[(obj.chat.length-1)-i], ta.textFlow);
+				ta.appendText("");
 			}
 		}
 		override public function fault(event:Event) : void
@@ -63,7 +78,8 @@ package message.httpController
 		protected function addNewMsg(obj:Object, tf:TextFlow):void
 		{
 			var pp:ParagraphElement = new ParagraphElement();
-			var data:Object = JSON.decode(obj.message);
+			var str:String = Messenger.Instance.delSlash(obj.message);
+			var data:Object = JSON.decode(str);
 			var span:SpanElement;
 			span = new SpanElement();
 			span.text = "["+obj.name+"]:";

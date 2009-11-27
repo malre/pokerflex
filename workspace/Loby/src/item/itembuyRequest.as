@@ -41,11 +41,11 @@ package item
 			lastSuccObj = obj;
 			if(obj.success)
 			{
-				FlexGlobals.topLevelApplication.shopmenu.showMsgBox("购买成功!");
+				FlexGlobals.topLevelApplication.shopmenu.showMsgBox(0,"购买成功!");
 			}
 			else
 			{
-				FlexGlobals.topLevelApplication.shopmenu.showMsgBox("购买失败! \n错误代码:"+ obj.error.code+" "+obj.error.message);
+				FlexGlobals.topLevelApplication.shopmenu.showMsgBox(0,"购买失败! \n错误代码:"+ obj.error.code+" "+obj.error.message);
 			}
 		}
 		

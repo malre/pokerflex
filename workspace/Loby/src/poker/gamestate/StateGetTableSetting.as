@@ -9,6 +9,8 @@ package poker.gamestate
 	
 	import poker.NetManager;
 	
+	import soundcontrol.SoundManager;
+	
 	public class StateGetTableSetting extends NetRequestState
 	{
 		private static var instance:StateGetTableSetting = null;
@@ -107,8 +109,14 @@ package poker.gamestate
 			}
 			op.checkboxAllowChat.enabled = false;
 			
+			// SE
+			// load from soundmanger
+			op.checkboxSEEnable.selected = SoundManager.Instance().SEEnable;
+			
 			if(FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState != "State3")
 				FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState = "State3";
+			// mutex
+			LobyManager.Instance.windowMutex = true;
 		}
 	}
 }

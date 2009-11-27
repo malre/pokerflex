@@ -3,19 +3,19 @@
 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:d="http://ns.adobe.com/fxg/2008/dt"
 	currentStateChange="msgbox_currentStateChangeHandler(event)"
-	currentState="State2" >
+	currentState="StateBase" >
 	<fx:Script>
 		<![CDATA[
 			import mx.core.FlexGlobals;
 			import mx.events.StateChangeEvent;
 			protected function closeButton_click():void
 			{
-				currentState='State2';
+				currentState='StateBase';
 			}
 
 			protected function msgbox_currentStateChangeHandler(event:StateChangeEvent):void
 			{
-				if(event.currentTarget.currentState == "State2")
+				if(event.currentTarget.currentState == "StateBase")
 				{
 					visible = false;
 					FlexGlobals.topLevelApplication.shopmenu.BtnItemNotBuy();
@@ -26,7 +26,7 @@
 
 	</fx:Script>
 	<s:transitions>
-		<s:Transition fromState="State2" toState="State1" autoReverse="true">
+		<s:Transition fromState="StateBase" toState="StateUse" autoReverse="true">
 			<s:Parallel>
 				<s:Parallel target="{bitmapimage6}">
 					<s:Fade duration="100" repeatCount="1"/>
@@ -39,7 +39,7 @@
 				</s:Parallel>
 			</s:Parallel>
 		</s:Transition>
-		<s:Transition fromState="State1" toState="State2" autoReverse="true">
+		<s:Transition fromState="StateUse" toState="StateBase" autoReverse="true">
 			<s:Parallel>
 				<s:Parallel target="{bitmapimage6}">
 					<s:Fade duration="150"/>
@@ -54,10 +54,11 @@
 		</s:Transition>
 	</s:transitions>
 	<s:states>
-		<s:State name="State1"/>
-		<s:State name="State2"/>
+		<s:State name="StateUse"/>
+		<s:State name="StateBase"/>
+		<s:State name="StateConfirm"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/shop_Bg_2.png')" resizeMode="scale" id="bitmapimage6" includeIn="State1"/>
-	<s:RichText includeIn="State1" y="53" color="0x4769C4" x="49" text="Text" fontSize="18" fontFamily="宋体" id="desc" width="205" height="78"/>
-	<s:Button includeIn="State1" x="98" y="172" skinClass="components.Button_ItemUse" id="button1" click="closeButton_click()"/>
+	<s:BitmapImage source="@Embed('/assets/shop_Bg_2.png')" resizeMode="scale" id="bitmapimage6" includeIn="StateConfirm,StateUse"/>
+	<s:RichText includeIn="StateConfirm,StateUse" y="53" color="0x4769C4" x="49" text="Text" fontSize="18" fontFamily="宋体" id="desc" width="205" height="78"/>
+	<s:Button includeIn="StateConfirm,StateUse" x="98" y="172" skinClass="components.Button_ItemUse" id="button1" click="closeButton_click()" skinClass.StateConfirm="components.Button_confirm"/>
 </s:Group>

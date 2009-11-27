@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" width="482" height="21" xmlns:components="components.*"
+		 creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import lobystate.StateGetTableInfo;
+			
+			import mx.events.FlexEvent;
+			
+			public var selectedIndex:int=0;
+			private var lastSelIndex:int = 0;
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				page1.btntext.text = "一号台";
+				page2.btntext.text = "二号台";
+				page3.btntext.text = "三号台";
+				page4.btntext.text = "四号台";
+				page5.btntext.text = "五号台";
+				page6.btntext.text = "六号台";
+				page7.btntext.text = "七号台";
+				page8.btntext.text = "八号台";
+				page1.beClicked();
+				selectedIndex = 0;
+				lastSelIndex = 0;
+			}
+
+			// 点击台面的标签以后，对该页面的内容进行请求，并清空之前的内容
+			protected function pagebtn_clickHandler(event:MouseEvent):void
+			{
+				// 当有其他窗口打开的时候，不能进行换页的操作
+				if(!LobyManager.Instance.windowMutex){
+					pagebtnClear();
+					event.currentTarget.beClicked();
+					var str:String = event.currentTarget.id;
+					var index:int = int(str.substr(4, 1));
+					lastSelIndex = selectedIndex;
+					selectedIndex = index -1;
+					// 请求该页面内的游戏桌信息
+					StateGetTableInfo.Instance.setPage(selectedIndex);
+					LobyNetManager.Instance.send(LobyNetManager.tableInfo);
+				}
+			}
+			
+			protected function pagebtnClear():void
+			{
+				page1.reset();
+				page2.reset();
+				page3.reset();
+				page4.reset();
+				page5.reset();
+				page6.reset();
+				page7.reset();
+				page8.reset();
+			}
+			
+			public function resotreLastTag():void
+			{
+				selectedIndex = lastSelIndex;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<components:Button_LobbyTag x="1" y="0" id="page1" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="61" y="0" id="page2" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="121" y="0" id="page3" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="181" y="0" id="page4" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="241" y="0" id="page5" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="301" y="0" id="page6" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="361" y="0" id="page7" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="421" y="0" id="page8" click="pagebtn_clickHandler(event)"/>
+</s:Group>

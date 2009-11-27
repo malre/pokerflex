@@ -16,6 +16,46 @@ package lobystate
 			return instance;
 		}
 		
+		public function isCreateTableEnable():Boolean
+		{
+			// is player in any room
+			var lid:int = StateGetPlayerInfo.Instance.lastSuccData.player.lid;
+			if(lid != 0)
+			{
+				var obj:Object = lastSuccData;
+				for(var i:int=0; i<obj.length;i++)
+				{
+					if(lid == obj[i].lid)
+					{
+						var rtn:Boolean = int(obj[i].allowcreate)==0?false:true;
+						return rtn;
+					}
+				}
+				return false;
+			}
+			else
+				return false;
+		}
+		
+		public function getCurLobbyGoldRate():int
+		{
+			var lid:int = StateGetPlayerInfo.Instance.lastSuccData.player.lid;
+			if(lid != 0)
+			{
+				var obj:Object = lastSuccData;
+				for(var i:int=0; i<obj.length;i++)
+				{
+					if(lid == obj[i].lid)
+					{
+						return int(obj[i].goldratelimit);
+					}
+				}
+				return 1;
+			}
+			else
+				return 1;
+		}
+		
 		// override function
 		override public function send(obj:StateManager):void
 		{

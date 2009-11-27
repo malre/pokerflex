@@ -9,6 +9,8 @@ package poker
 	
 	import poker.gamestate.StateUpdateWhileGame;
 	
+	import soundcontrol.SoundManager;
+	
 	public class Game
 	{
 		protected static var instance:Game = null;
@@ -126,6 +128,10 @@ package poker
 //		private var bPassAnimatePlayedLeft:Boolean = false;
 //		private var bPassAnimatePlayedDown:Boolean = false;
 //		private var bPassAnimatePlayedRight:Boolean = false;
+		// 记录游戏中玩家的数据，右边的datagrid显示用的数据集
+		[Bindable]
+		public var tablelist:ArrayCollection = new ArrayCollection();
+
 
 		public function Game()
 		{
@@ -191,43 +197,6 @@ package poker
 			FlexGlobals.topLevelApplication.gamePoker.imgPlayerDownReady.visible = false;
 		}
 	
-		/**
-		 * 播放声音
-		 * @param obj
-		 * 
-		 */
-		public function playSEByCardtype(cardtype:int):void
-		{
-			if(cardtype == 0)
-			{
-				ResourceManagerPoker.SoundYizhang.play();
-			}
-			else if(cardtype == 1)
-			{
-				ResourceManagerPoker.SoundDuizi.play();
-			}
-			else if(cardtype == 2)
-			{
-				ResourceManagerPoker.SoundSange.play();
-			}
-			else if(cardtype >= 3 && cardtype <= 7)
-			{
-				ResourceManagerPoker.SoundZhadan.play();
-			}
-			else if(cardtype >= 8 && cardtype <= 15)
-			{
-				ResourceManagerPoker.SoundShunzi.play();
-			}
-			else if(cardtype >= 16 && cardtype <= 35)
-			{
-				ResourceManagerPoker.SoundLiandui.play();
-			}
-			else if(cardtype == 36)
-			{
-				ResourceManagerPoker.SoundWangzha.play();
-			}
-		}	
-			
 		//
 		public function sortCards(obj:Object):void
 		{
@@ -355,7 +324,7 @@ package poker
 						SEid = CardPattern.Instance.patternCheck(deskCards0.sort(Array.NUMERIC));
 						if(SEid == 7 && deskCards0.length == 4)	// 王炸
 							SEid = 36;
-						playSEByCardtype(SEid);
+						SoundManager.Instance().playSEByCardtype(SEid);
 					}
 					else
 					{
@@ -435,7 +404,7 @@ package poker
 						SEid = CardPattern.Instance.patternCheck(deskCards1.sort(Array.NUMERIC));
 						if(SEid == 7 && deskCards0.length == 4)	// 王炸
 							SEid = 36;
-						playSEByCardtype(SEid);
+						SoundManager.Instance().playSEByCardtype(SEid);
 					}
 				}
 			}
@@ -505,7 +474,7 @@ package poker
 						SEid = CardPattern.Instance.patternCheck(deskCards2.sort(Array.NUMERIC));
 						if(SEid == 7 && deskCards0.length == 4)	// 王炸
 							SEid = 36;
-						playSEByCardtype(SEid);
+						SoundManager.Instance().playSEByCardtype(SEid);
 					}
 				}
 			}
@@ -575,7 +544,7 @@ package poker
 						SEid = CardPattern.Instance.patternCheck(deskCards3.sort(Array.NUMERIC));
 						if(SEid == 7 && deskCards0.length == 4)	// 王炸
 							SEid = 36;
-						playSEByCardtype(SEid);
+						SoundManager.Instance().playSEByCardtype(SEid);
 					}
 				}
 			}
@@ -692,6 +661,7 @@ package poker
 			return index; 
 		}
 		// 更新玩家的信息  和玩家的头像图片
+		// 同时对玩家数据进行更新（这个数据是用来在右边的数据列表上用的）
 		public function updatePlayerName(obj:Object):void
 		{
 			// 玩家的姓名，显示在右上
@@ -718,62 +688,84 @@ package poker
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.visible = false;
 				}
 
+				// 去掉所有的datagrid成员先
+				tablelist.removeAll();
 				// partner
 				if(getPlayerIndexByPos(obj, (selfseat+2)%4) != -1)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.textPlayerPartner.text = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].name;
-					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameUp.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerPartner.text;
+					var upPlayer:Object = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)];
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameUp.text = upPlayer.name;
 					// level
-					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelUp.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].score);
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelUp.text = LevelDefine.getLevelName(upPlayer.score);
 					FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = true;
 					
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = true;
-					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source != obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar)
-						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source = obj.players[getPlayerIndexByPos(obj, (selfseat+2)%4)].avatar;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source != upPlayer.avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source = upPlayer.avatar;
+					// 追加右侧数据集的数据填充
+					var upObj:Object = new Object();
+					upObj.score = upPlayer.score;
+					upObj.level =  LevelDefine.getLevelName(upPlayer.score);
+					upObj.name = upPlayer.name;
+					upObj.gold = upPlayer.money
+					tablelist.addItem(upObj);
 				}
 				else
 				{
-					FlexGlobals.topLevelApplication.gamePoker.textPlayerPartner.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameUp.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumUp.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = false;
 					FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
 				}
+				// right
 				if(getPlayerIndexByPos(obj,(selfseat+1)%4) != -1)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy1.text = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].name;
-					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameRight.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy1.text;
+					var rightPlayer:Object = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)];
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameRight.text = rightPlayer.name;
 					// level
-					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelRight.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].score);
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelRight.text = LevelDefine.getLevelName(rightPlayer.score);
 					FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = true;
 
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = true;
-					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source != obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar)
-						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source = obj.players[getPlayerIndexByPos(obj, (selfseat+1)%4)].avatar;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source != rightPlayer.avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source = rightPlayer.avatar;
+					// 追加右侧数据集的数据填充
+					var rightObj:Object = new Object();
+					rightObj.score = rightPlayer.score;
+					rightObj.level =  LevelDefine.getLevelName(rightPlayer.score);
+					rightObj.name = rightPlayer.name;
+					rightObj.gold = rightPlayer.money
+					tablelist.addItem(rightObj);
 				}
 				else
 				{
-					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy1.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameRight.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumRight.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = false; 
 					FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
 				}
+				// left
 				if(getPlayerIndexByPos(obj, (selfseat+3)%4) != -1)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy2.text = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].name;
-					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameLeft.text = FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy2.text;
+					var leftPlayer:Object = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)];
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameLeft.text = leftPlayer.name;
 					// level
-					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelLeft.text = LevelDefine.getLevelName(obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].score);
+					FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelLeft.text = LevelDefine.getLevelName(leftPlayer.score);
 					FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = true;
 					
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = true;
-					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source != obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar)
-						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source = obj.players[getPlayerIndexByPos(obj, (selfseat+3)%4)].avatar;
+					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source != leftPlayer.avatar)
+						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source = leftPlayer.avatar;
+					// 追加右侧数据集的数据填充
+					var leftObj:Object = new Object();
+					leftObj.score = leftPlayer.score;
+					leftObj.level =  LevelDefine.getLevelName(leftPlayer.score);
+					leftObj.name = leftPlayer.name;
+					leftObj.gold = leftPlayer.money
+					tablelist.addItem(rightObj);
 				}
 				else
 				{
-					FlexGlobals.topLevelApplication.gamePoker.textPlayerEmy2.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Lable_playernameLeft.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumLeft.text = "";
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = false;

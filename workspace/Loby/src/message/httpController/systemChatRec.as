@@ -39,6 +39,8 @@ package message.httpController
 		override public function result(event:Event) : void
 		{
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
+			if(!obj.hasOwnProperty("chat"))
+				return;
 			if(obj.chat.length == 0)
 			{
 				return;

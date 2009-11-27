@@ -40,20 +40,20 @@ package poker
 		//
 		private var netManager:NetManager=null;
 		// 发送数据的格式
-		public static var send_joinRoom:String = "join Room";
-		public static var send_leave:String = "leave Room";
-		public static var send_iamReady:String = "i am ready";
-		public static var send_cancelReady:String = "not ready";
-		public static var send_updateWhileWait:String = "update While Wait";
-		public static var send_updateWhileGame:String = "update While Game";
-		public static var send_updateWhileGameFirstframe:String = "for getting cards";
-		public static var send_requestinfo:String = "request player info";
-		public static var send_sendcardsWhileGame:String = "send cards";
-		public static var send_passWhileGame:String = "pass";
-		public static var send_getScore:String = "get score";
-		public static var send_itemGetPlayedCards:String = "item get played cards";
-		public static var send_getGameoverPlayerLeftCard:String = "get left cards";
-		public static var send_getTableSetting:String = "get table setting";
+		public static const send_joinRoom:String = "join Room";
+		public static const send_leave:String = "leave Room";
+		public static const send_iamReady:String = "i am ready";
+		public static const send_cancelReady:String = "not ready";
+		public static const send_updateWhileWait:String = "update While Wait";
+		public static const send_updateWhileGame:String = "update While Game";
+		public static const send_updateWhileGameFirstframe:String = "for getting cards";
+		public static const send_requestinfo:String = "request player info";
+		public static const send_sendcardsWhileGame:String = "send cards";
+		public static const send_passWhileGame:String = "pass";
+		public static const send_getScore:String = "get score";
+		public static const send_itemGetPlayedCards:String = "item get played cards";
+		public static const send_getGameoverPlayerLeftCard:String = "get left cards";
+		public static const send_getTableSetting:String = "get table setting";
 		private var	send_type:String = null;
 		// 记录了本次请求的内容, 请求的内容一般属于下面的几类
 		public var request_type_cards:Boolean = false;

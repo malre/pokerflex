@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" width="196" height="162">
+
+	<fx:Script>
+		<![CDATA[
+			import message.Messenger;
+
+			protected function buttonCancel_clickHandler(event:MouseEvent):void
+			{
+				this.visible = false;
+				LobyManager.Instance.windowMutex = false;
+			}
+
+			protected function buttonOK_clickHandler(event:MouseEvent):void
+			{
+				var exp:RegExp = /\n/g;
+				var str:String = shoutMsgbox.text.replace(exp, "");
+				if(str.length >0)
+				{
+					var obj:Object;
+					var output:Object = new Object(); 
+					output.size = 12;
+					output.color = 0xffffff;
+					output.content = new Array();
+					obj = new Object();
+					obj.type = "text";
+					obj.val = str;
+					output.content.push(obj);
+				}
+				else
+					return;
+
+				Messenger.Instance.send(output, Messenger.sendShout);
+				shoutMsgbox.text = "";
+				
+				buttonCancel_clickHandler(event);
+			}
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Rect width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="#42624b"/>
+		</s:fill>
+	</s:Rect>
+	<s:RichEditableText x="10" y="51" width="173" height="73" maxChars="60" id="shoutMsgbox" color="#FFFFFF" backgroundColor="#02120b">
+	</s:RichEditableText>
+	<s:Label x="10" y="10" text="请输入需要发送的喊话内容,回车的内容将会被忽略。" width="156" height="30" color="#FFFFFF"/>
+	<s:Button x="10" y="132" label="确认发送" color="#000000" click="buttonOK_clickHandler(event)"/>
+	<s:Button x="112" y="132" label="取消" color="#000000" click="buttonCancel_clickHandler(event)"/>
+</s:Group>

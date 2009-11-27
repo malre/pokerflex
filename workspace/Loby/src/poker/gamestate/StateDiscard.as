@@ -28,7 +28,7 @@ package poker.gamestate
 		override public function send(obj:StateManager):void
 		{
 			NetManager.sender.url = NetManager.sendURL_game;
-			NetManager.sender.request = {play:"pass", getPlay:"true", getCards:"true"};
+			NetManager.sender.request = {"play":"pass", "getPlay":"true", "getCards":"true"};
 			NetManager.sender.send();
 		}
 		override public function receive(obj:Object):Boolean
@@ -43,10 +43,10 @@ package poker.gamestate
 						if(obj.status == 0)
 						{
 							// 判断是否到了玩家的出牌回合
+							var gamePoker:poker = FlexGlobals.topLevelApplication.gamePoker;
 							if(obj.play.next == Game.Instance.selfseat)
 							{
 								// 显示所有的按钮
-								var gamePoker:poker = FlexGlobals.topLevelApplication.gamePoker;
 								gamePoker.commandbar.visible = true;
 								gamePoker.commandbar.btnSendCards.enabled = false;
 								gamePoker.commandbar.btnDiscard.enabled = true;

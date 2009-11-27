@@ -5,7 +5,7 @@
 	xmlns:mx="library://ns.adobe.com/flex/halo"
 	xmlns:components="components.*" 
 	currentState="State2" 
-	creationComplete="group1_creationCompleteHandler(event)">
+	creationComplete="group1_creationCompleteHandler(event)" xmlns:message="message.*">
 	<fx:Style>
 		.datagridheader{
 			color: #000000;
@@ -15,7 +15,7 @@
 	<s:BitmapImage source="@Embed('/assets/bg_5.png')" resizeMode="scale" includeIn="State3" id="bitmapimage1"/>
 	<s:Button includeIn="State3" x="13" skinClass="components.ButtonMsgEmotion" y="414" click="btnEmotion_clickHandler(event)"/>
 	<s:Button includeIn="State3" x="64" y="414" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)"/>
-	<s:Button includeIn="State3" x="254" y="436" skinClass="components.Button_GameTalk_say" click="lobbySendMsg(event)"/>
+	<s:Button includeIn="State3" x="254" y="436" skinClass="components.Button_GameTalk_say" click="lobbySendMsg(event)" toolTip="发送聊天对话"/>
 	<mx:DataGrid includeIn="State3" x="13" y="27" width="257" editable="false" height="173" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
 		dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}" dragEnabled="false"
 		headerStyleName="datagridheader" dragMoveEnabled="false" draggableColumns="false">
@@ -37,6 +37,8 @@
 	<mx:Label x="219" y="414" text="文字大小" color="#FFFFFF" includeIn="State3" width="54" textAlign="left"/>
 	<s:NumericStepper includeIn="State3" x="173" y="414" width="46" height="20" minimum="12" maximum="30" 
 		color="#000000" id="fontsizeStepper" change="fontsizeStepper_changeHandler(event)"/>
+	<message:chatEmotion id="emotion" includeIn="State3" x="14" y="293" visible="false">
+	</message:chatEmotion>
 	<!--<s:Button includeIn="State3" x="263" y="413" label="et" click="button1_clickHandler(event)" width="15" height="21"/>-->
 	<s:transitions>
 		<s:Transition fromState="State2" toState="State3" autoReverse="true">
@@ -55,8 +57,8 @@
 		</s:Transition>
 	</s:transitions>
 	<s:states>
-		<s:State name="State2" th:color="0x0081cc"/>
-		<s:State name="State3" enterState="state1_enterStateHandler(event)"/>
+		<s:State name="State2" th:color="0x0081cc" enterState="state2_enterStateHandler(event)"/>
+		<s:State name="State3" enterState="state3_enterStateHandler(event)"/>
 	</s:states>
 	<fx:Script>
 		<![CDATA[
@@ -65,6 +67,7 @@
 			import flashx.textLayout.elements.SpanElement;
 			import flashx.textLayout.elements.TextFlow;
 			
+			import item.playerItemsRequester;
 			import lobystate.StateGetRoomPlayerlist;
 			
 			import message.ContentViewer;
@@ -73,14 +76,13 @@
 			import message.chatEmotion;
 			import message.inputEditManager;
 			
+			import mx.core.FlexGlobals;
 			import mx.core.UIComponent;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
+			import mx.controls.Alert;
 			private var ui1:UIComponent = new UIComponent();
-			private var ui2:UIComponent = new UIComponent();
 			public var inputboxLobby:ContentViewer = new ContentViewer();
-			// emotion panel
-			public var emotion:chatEmotion = new chatEmotion();
 			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
@@ -93,23 +95,30 @@
 				// 当窗口创建完�E皁E���
 				// 创建对话用皁E���E系统，并封E��E��绑定到主显示窗口�
 				Messenger.Instance;	// net part
-				ui1.addChild(inputboxLobby.createInputbox(14, 438, 231, 18, 0));	// view part   
-				addElement(emotion);
-				emotion.visible = false;
-				emotion.setType(0);
+				ui1.addChild(inputboxLobby.createInputbox(14, 438, 231, 18, 0));	// view part  
+				this.addElement(ui1);
+				ui1.visible = false;
 			}
 
-			protected function state1_enterStateHandler(event:FlexEvent):void
+			protected function state3_enterStateHandler(event:FlexEvent):void
 			{
 				Messenger.Instance.stopGame();
 				Messenger.Instance.startLobby();
-				this.addElement(ui1);
+				emotion.setType(0);
+				ui1.visible = true;
+			}
+			
+			protected function state2_enterStateHandler(event:FlexEvent):void
+			{
+				if(emotion)
+				{
+					emotion.visible = false;
+				}
+				ui1.visible = false;
 			}
 			
 			protected function btnEmotion_clickHandler(event:MouseEvent):void
 			{
-				emotion.x = 10;
-				emotion.y = 280;
 				emotion.visible = !emotion.visible;
 			}
 			
@@ -134,7 +143,10 @@
 			// 发送喊话按钮
 			protected function shoutbtn_clickHandler(event:MouseEvent):void
 			{
-				inputEditManager(inputboxLobby.textinput.interactionManager).shoutButtonPress();
+				if(!LobyManager.Instance.windowMutex){
+					FlexGlobals.topLevelApplication.shoutmsgbox.visible = true;
+					LobyManager.Instance.windowMutex = true;
+				}
 			}
 
 
@@ -142,6 +154,7 @@
 			{
 				lobbychatbox.textFlow = new TextFlow();
 			}
+
 
 		]]>
 	</fx:Script>

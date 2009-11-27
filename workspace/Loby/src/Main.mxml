@@ -9,16 +9,15 @@
         xmlns:components="components.*"
         width="780" height="560" backgroundColor="#ffffff" 
         creationComplete="createcomplete(event)" enterFrame="enterframe(event)" 
-        xmlns:poker="poker.*">
+        xmlns:poker="poker.*"
+		preloader="GameLoadingbar">
 	<fx:Script>
 		<![CDATA[
 			import item.playerItemsRequester;
 			import item.shopRequester;
 			
+			import lobystate.StateGetFriends;
 			import lobystate.StateGetPlayerInfo;
-			import poker.CardViewer;
-			import components.OptionWindow;
-			import mx.managers.PopUpManager;
 			
 			import spark.utils.TextFlowUtil;
 			
@@ -60,8 +59,32 @@
 
 			protected function Buttonfriend_click():void
 			{
-//				customcomponent11.currentState='State4_friend';
-				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
+				if(!LobyManager.Instance.windowMutex){
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastFlag)
+					{
+						friendslist.visible = true;
+						if(StateGetFriends.Instance.friends != null)
+						{
+							if(StateGetFriends.Instance.friends.length != 0)
+							{
+								friendslist.toState(2);
+								LobyManager.Instance.windowMutex = true;
+							}
+							else{
+								friendslist.toState(1);
+								LobyManager.Instance.windowMutex = true;
+								StateGetFriends.Instance.settype(0);
+								LobyNetManager.Instance.send(LobyNetManager.getFriends);
+							}
+						}else{
+							friendslist.toState(1);
+							LobyManager.Instance.windowMutex = true;
+							StateGetFriends.Instance.settype(0);
+							LobyNetManager.Instance.send(LobyNetManager.getFriends);
+						}
+					}
+				}
 			}
 
 			protected function Buttonshop_click():void
@@ -115,6 +138,7 @@
 			{
 				if(!LobyManager.Instance.windowMutex){
 					createTable.visible = true;
+					createTable.setLobbyGoldrate();
 					createTable.currentState = "State2";
 					LobyManager.Instance.windowMutex = true;
 				}
@@ -141,17 +165,20 @@
 		<s:BitmapImage source="@Embed('/assets/BG_D_3.png')" resizeMode="scale" d:userLabel="BgP"/>
 		<components:CustomComponent3 x="497" y="94" id="customcomponent31" d:userLabel="player_information&amp;chat_window">
 		</components:CustomComponent3>
-		<mx:Image x="36" y="40" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true"/>
+		<mx:Image x="36" y="38" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true" width="53" height="52"/>
 		<mx:Label x="82" y="31" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>
-		<s:TextArea x="289" y="96" id="introduceText" width="474" height="456" editable="false" color="0xffffff" baseColor="#11241A" contentBackgroundAlpha="0"
+		<s:TextArea x="289" y="117" id="introduceText" width="474" height="435" editable="false" color="0xffffff" baseColor="#11241A" contentBackgroundAlpha="0"
 					textFlow="{TextFlowUtil.importFromString(ruleIntroduce.ruleText)}">
 		</s:TextArea>
 	</fx:DesignLayer>
-	<mx:Canvas x="17" y="95" width="487" height="458" id="gameRoomCanvas"/>
+	<mx:Canvas x="17" y="116" width="480" height="436" id="gameRoomCanvas" baseColor="#f6edae">
+	</mx:Canvas>
+	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="95" visible="false">
+	</components:lobbyroomTagbtn>
 	<fx:DesignLayer d:userLabel="button">
-		<s:Button x="201" y="54" skinClass="components.Button_friend" d:userLabel="Button friend" click="Buttonfriend_click()"/>
-		<s:Button x="103" y="56" skinClass="components.Button_Item" d:userLabel="Button item" click="Buttonitem_click()"/>
-		<s:Button x="153" y="53" skinClass="components.Button_Vita" d:userLabel="Button vita" click="Buttonvita_click()"/>
+		<s:Button x="201" y="54" skinClass="components.Button_friend" d:userLabel="Button friend" click="Buttonfriend_click()" toolTip="好友"/>
+		<s:Button x="103" y="56" skinClass="components.Button_Item" d:userLabel="Button item" click="Buttonitem_click()" toolTip="道具箱"/>
+		<s:Button x="153" y="53" skinClass="components.Button_Vita" d:userLabel="Button vita" click="Buttonvita_click()" toolTip="个人信息"/>
 		<s:Button x="290" y="26" skinClass="components.Button_Shop" d:userLabel="Button shop" click="Buttonshop_click()"/>
 		<s:Button x="361" y="29" label="自动加入" skinClass="components.Button_AutoJoinTable" id="BtnAutojoinTable" click="BtnAutojoinTable_clickHandler(event)" visible="false"/>
 		<s:Button x="429" y="29" label="创建房间" skinClass="components.Button_CreateTable" id="BtnCreateTable" click="BtnCreateTable_clickHandler(event)" visible="false"/>
@@ -171,9 +198,13 @@
 		<components:OptionWindow x="200" y="130" id="createTable" visible="false"/>
 		<components:passwordInput id="pwInput" x="188" y="230" visible="false"/>
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.6.9" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="620" y="6" text="ver 1.7.9.A" width="64" textAlign="right" color="#FFFFFF"/>
 	<!--游戏本体-->
 	<poker:poker id="gamePoker" visible="false"/>
+	<!--用来确认一些需要使用卡片的道具-->
+	<components:shoutMsgInputBox id="shoutmsgbox" x="250" y="200" visible="false"/>
+	<!--好友列表，大厅和游戏共用同一个-->
+	<components:friends id="friendslist" x="200" y="130" visible="false"/>
 	<!--公告显示的位置，处在画面的最上层-->
 	<message:announceWnd id="lobbyAnnounce" x="50" y="66" visible="false"/>
 </s:Application>

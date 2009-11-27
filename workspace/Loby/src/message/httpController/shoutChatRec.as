@@ -35,6 +35,8 @@ package message.httpController
 		override public function result(event:Event) : void
 		{
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
+			if(!obj.hasOwnProperty("chat"))
+				return;
 			if(obj.chat.length == 0)
 			{
 				return;
@@ -43,7 +45,8 @@ package message.httpController
 			// 传送给viewer来显示
 			for(var i:int =0; i<obj.chat.length; i++)
 			{
-				shoutmsg.push(obj.chat[i].message);
+				var str:String = Messenger.Instance.delSlash(obj.chat[i].message);
+				shoutmsg.push(str);
 			}
 		}
 		override public function fault(event:Event) : void
