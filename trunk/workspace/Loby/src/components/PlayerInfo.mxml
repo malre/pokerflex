@@ -38,7 +38,7 @@
 					}
 					//
 					playername.text = StateGetPlayerInfo.Instance.lastSuccData.player.name;
-					avatar.source = StateGetPlayerInfo.Instance.lastSuccData.player.avatar;
+					avatar.source = StateGetPlayerInfo.Instance.playerMiddleAvatar;
 					gold.text = StateGetPlayerInfo.Instance.lastSuccData.player.money+" 金币";
 				}
 			}
@@ -98,14 +98,14 @@
 	</s:states>
 	<s:BitmapImage source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" includeIn="StateMain" id="bitmapimage1"/>
 	<s:RichText y="200" color="#ffffff" x="113" fontSize="14" fontFamily="宋体" width="77" height="44" id="scoreText" includeIn="StateMain"/>
-	<s:BitmapImage source="@Embed('/assets/playerinfo_title.jpg')" resizeMode="scale" includeIn="StateMain" x="11" y="3"/>
-	<s:BitmapImage source="@Embed('/assets/playerinfo_text.jpg')" resizeMode="scale" includeIn="StateMain" x="31" y="171"/>
-	<s:BitmapImage source="@Embed('/assets/playerinfo_Gold.jpg')" resizeMode="scale" includeIn="StateMain" x="28.15" y="140.1"/>
-	<s:BitmapImage source="@Embed('/assets/playerinfo_nickname.jpg')" resizeMode="scale" includeIn="StateMain" x="135" y="47"/>
+	<s:BitmapImage source="@Embed('/assets/playerinfo_title.png')" resizeMode="scale" includeIn="StateMain" x="11" y="3"/>
+	<s:BitmapImage source="@Embed('/assets/playerinfo_text.png')" resizeMode="scale" includeIn="StateMain" x="31" y="171"/>
+	<s:BitmapImage source="@Embed('/assets/playerinfo_Gold.png')" resizeMode="scale" includeIn="StateMain" x="28.15" y="140.1"/>
+	<s:BitmapImage source="@Embed('/assets/playerinfo_nickname.png')" resizeMode="scale" includeIn="StateMain" x="135" y="47"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="317" y="6" id="button1" includeIn="StateMain" click="Button_click()"/>
 	<s:RichText y="200" color="#ffffff" x="38" fontSize="14" fontFamily="宋体" width="69" height="44" id="gamenameText" x.StateMain="43" y.StateMain="200" width.StateMain="65"/>
 	<s:RichText y="200" color="#ffffff" x="211" fontSize="14" fontFamily="宋体" width="109" height="44" id="levelText" includeIn="StateMain"/>
 	<s:RichText y="89" color="0x4769C4" x="149" fontSize="14" fontFamily="宋体" width="163" height="42" includeIn="StateMain" id="playername"/>
-	<mx:Image includeIn="StateMain" x="32" y="52" width="83" height="79" id="avatar" source=""/>
+	<mx:Image includeIn="StateMain" scaleContent="true" x="29" y="52" width="83" height="79" id="avatar" source=""/>
 	<mx:Label includeIn="StateMain" x="63" y="145" text="" width="93" fontFamily="宋体" fontSize="16" id="gold"/>
 </s:Group>

@@ -11,21 +11,22 @@
 	<fx:Script>
 		<![CDATA[
 			import lobystate.StateCreateTable;
+			import lobystate.StateUpdateRoomInfo;
 			
 			import mx.events.FlexEvent;
-			import mx.managers.PopUpManager;
 			
 			import poker.LevelDefine;
 			
 			// 金币的倍数的设定
 			[Bindable]
 			public var goldplusrate:Array = ["1","2","3","4","6","8","10"];
+			[Bindable]
+			private var curLobbygoldrate:Array;
 			
 			protected function closeButton_click():void
 			{
 				currentState='State1';
 				this.visible = false;
-				PopUpManager.removePopUp(this);
 				LobyManager.Instance.windowMutex = false;
 			}
 
@@ -35,7 +36,21 @@
 				y = (this.parent.height - 320)/2;
 				currentState='State2';
 			}
-
+			
+			public function setLobbyGoldrate():void
+			{
+				var rate:int = StateUpdateRoomInfo.Instance.getCurLobbyGoldRate();
+				var endindex:int = int.MAX_VALUE;
+				for(var i:int=0;i<goldplusrate.length;i++)
+				{
+					if(rate <= int(goldplusrate[i]))
+					{
+						endindex = i+1;
+						break;
+					}
+				}
+				curLobbygoldrate = goldplusrate.slice(0, endindex);
+			}
 
 			protected function checkboxPassword_clickHandler(event:MouseEvent):void
 			{
@@ -57,7 +72,7 @@
 			}
 
 
-			public function BtnCancel_clickHandler(event:MouseEvent):void
+			protected function BtnCancel_clickHandler(event:MouseEvent):void
 			{
 				closeButton_click();
 			}
@@ -65,19 +80,24 @@
 
 			protected function BtnConfirm_clickHandler(event:MouseEvent):void
 			{
-				if(validityCheck()){
-					labelErrormsg.visible = false;
-					// 发送http请求
-					// 等级的0代表，等级不限
-					StateCreateTable.Instance.setOption(inputboxPassword.text, checkboxPassword.selected, 
-														lowlevel.selectedIndex, highlevel.selectedIndex,
-														int(goldplusrate[goldplus.selectedIndex]),checkboxAllowGold.selected,
-														checkboxAllowChat.selected);
-					LobyNetManager.Instance.send(LobyNetManager.createTable);
+				if(currentState == "State2")
+				{
+					if(validityCheck()){
+						labelErrormsg.visible = false;
+						// 发送http请求
+						// 等级的0代表，等级不限
+						StateCreateTable.Instance.setOption(inputboxPassword.text, checkboxPassword.selected, 
+							lowlevel.selectedIndex, highlevel.selectedIndex,
+							int(goldplusrate[goldplus.selectedIndex]),checkboxAllowGold.selected,
+							checkboxAllowChat.selected);
+						LobyNetManager.Instance.send(LobyNetManager.createTable);
+						closeButton_click();
+					}else {
+						labelErrormsg.text = "等级范围输入有误，请重新输入！";
+						labelErrormsg.visible = true;
+					}
+				}else if(currentState == "State3")	{
 					closeButton_click();
-				}else {
-					labelErrormsg.text = "等级范围输入有误，请重新输入！";
-					labelErrormsg.visible = true;
 				}
 			}
 			
@@ -98,7 +118,11 @@
 				if(LobyManager.Instance.windowMutex)
 					visible = false;
 			}
-
+			
+			public function closeOption():void
+			{
+				closeButton_click();
+			}
 		]]>
 
 	</fx:Script>
@@ -156,9 +180,9 @@
 	<s:BitmapImage includeIn="State2,State3" source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" d:locked="true" id="bitmapimage1"/>
 	<s:Button includeIn="State2,State3" x="315" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
 	<s:BitmapImage source="@Embed('/assets/OptionWindow_title.png')" resizeMode="scale" includeIn="State2,State3" x="15" y="3" d:locked="true" id="bitmapimage2"/>
-	<s:Button includeIn="State2,State3" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2"/>
-	<s:Button x="62" y="257" skinClass="components.Button_confirm" includeIn="State2" id="BtnConfirm" click="BtnConfirm_clickHandler(event)"/>
-	<s:Button x="193" y="257" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2,State3" click="BtnCancel_clickHandler(event)" x.State3="131" y.State3="258"/>
+	<s:Button includeIn="State2,State3" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2" visible="false"/>
+	<s:Button x="62" y="257" skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x.State3="131" y.State3="258"/>
+	<s:Button x="193" y="257" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
 	<mx:ComboBox includeIn="State2,State3" x="121" y="101" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel"/>
 	<mx:ComboBox includeIn="State2,State3" x="228" y="102" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel"/>
 	<s:CheckBox includeIn="State2,State3" x="126" y="133" id="checkboxAllowGold" click="checkboxAllowGold_clickHandler(event)" selected="true"/>
@@ -172,7 +196,7 @@
 	<mx:Label includeIn="State2,State3" x="46" y="190" text="背景音乐" color="#FFFFFF" fontSize="16"/>
 	<mx:Label includeIn="State2,State3" x="204" y="160" text="音    效" color="#FFFFFF" fontSize="16"/>
 	<mx:Label includeIn="State2,State3" x="202" y="98" text="－" color="#FFFFFF" fontSize="20" fontWeight="normal"/>
-	<mx:ComboBox includeIn="State2,State3" x="250" y="130" dataProvider="{goldplusrate}" editable="false" width="50" id="goldplus"/>
+	<mx:ComboBox includeIn="State2,State3" x="250" y="130" dataProvider="{curLobbygoldrate}" editable="false" width="50" id="goldplus"/>
 	<s:CheckBox includeIn="State2,State3" x="126" y="163" id="checkboxAllowChat" selected="true"/>
 	<s:CheckBox includeIn="State2,State3" x="267" y="165" id="checkboxSEEnable" selected="true"/>
 	<mx:ComboBox includeIn="State2,State3" x="124" y="191" editable="true" enabled="false" id="inputboxSE"/>

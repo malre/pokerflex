@@ -43,6 +43,9 @@ package poker.gamestate
 				FlexGlobals.topLevelApplication.gamePoker.gamechatbox.insertText("");
 				// 重置房间设置获得标志位，下一次进房间需要重新去访问
 				StateGetTableSetting.Instance.getSettingSuccess = false;
+				// 关闭所有的窗口并置窗口互斥量为假
+				FlexGlobals.topLevelApplication.gamePoker.optionWindow.closeOption();
+				FlexGlobals.topLevelApplication.friendslist.toState(0);
 				return true;
 			}
 			else{

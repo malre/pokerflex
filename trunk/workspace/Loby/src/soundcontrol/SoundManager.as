@@ -4,6 +4,8 @@ package soundcontrol
 	import flash.net.URLRequest;
 	
 	import mx.core.SoundAsset;
+	
+	import poker.ResourceManagerPoker;
 
 	public class SoundManager
 	{
@@ -13,6 +15,9 @@ package soundcontrol
 		private var player:SoundAsset;
 		private var isPlaying:Boolean = false;
 		
+		// SE
+		private var _SEEnable:Boolean;
+		
 		//
 		private var url:URLRequest;
 		public var mp3url:String = "http://www.jl2sy.cn/xssq/yyyf/lmjq/gq/aizhimeng.mp3";
@@ -21,8 +26,19 @@ package soundcontrol
 		{
 			url = new URLRequest();
 			player = new SoundAsset();
+			SEEnable = true;
 		}
 		
+		public function get SEEnable():Boolean
+		{
+			return _SEEnable;
+		}
+
+		public function set SEEnable(value:Boolean):void
+		{
+			_SEEnable = value;
+		}
+
 		public static function Instance():SoundManager
 		{
 			if(instance == null)
@@ -51,5 +67,46 @@ package soundcontrol
 			//channel.stop();
 			player.close();
 		}
+		
+		/**
+		 * 播放声音
+		 * @param obj
+		 * 
+		 */
+		public function playSEByCardtype(cardtype:int):void
+		{
+			if(!_SEEnable)
+				return;
+			
+			if(cardtype == 0)
+			{
+				ResourceManagerPoker.SoundYizhang.play();
+			}
+			else if(cardtype == 1)
+			{
+				ResourceManagerPoker.SoundDuizi.play();
+			}
+			else if(cardtype == 2)
+			{
+				ResourceManagerPoker.SoundSange.play();
+			}
+			else if(cardtype >= 3 && cardtype <= 7)
+			{
+				ResourceManagerPoker.SoundZhadan.play();
+			}
+			else if(cardtype >= 8 && cardtype <= 15)
+			{
+				ResourceManagerPoker.SoundShunzi.play();
+			}
+			else if(cardtype >= 16 && cardtype <= 35)
+			{
+				ResourceManagerPoker.SoundLiandui.play();
+			}
+			else if(cardtype == 36)
+			{
+				ResourceManagerPoker.SoundWangzha.play();
+			}
+		}	
+		
 	}
 }

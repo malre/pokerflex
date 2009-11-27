@@ -8,6 +8,7 @@ package message
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.text.engine.TextBaseline;
 	
 	import flashx.textLayout.container.ContainerController;
 	import flashx.textLayout.edit.EditManager;
@@ -83,9 +84,10 @@ package message
 		public function createInputbox(x:Number, y:Number, width:Number, height:Number, type:int, text:String = ""):Sprite
 		{
 			textinput = new TextFlow();
+//			textinput.alignmentBaseline = flash.text.engine.TextBaseline.ASCENT;
 			var sprite:Sprite = new Sprite();
 			var g:Graphics = sprite.graphics;
-			g.beginFill(0xa0a0a0);
+			g.beginFill(0x02120b);
 			g.drawRect(0, 0, width, height);
 			g.endFill();
 			sprite.x = x;
@@ -102,7 +104,7 @@ package message
 			ie.settype(type);
 			textinput.interactionManager = ie;
 					
-			textinput.fontFamily = "Arial";
+			textinput.fontFamily = "宋体";
 			textinput.fontSize = 12;
 			textinput.lineBreak = "explicit";
 			textinput.color = 0xffffff;
@@ -129,9 +131,10 @@ package message
 		{
 			var num:int = textinput.numChildren;
 			var img:InlineGraphicElement = new InlineGraphicElement();
-			img.width = 12;
-			img.height = 12;
+			img.width = 12+4;
+			img.height = 12+4;
 			img.source = ResEmotion.EmotionRes[id];
+			img.alignmentBaseline = flash.text.engine.TextBaseline.IDEOGRAPHIC_BOTTOM;
 			img.id = "Emotion"+id;
 			p.addChild(img);
 //			var edit:EditManager = EditManager(textinput.interactionManager);
@@ -231,8 +234,8 @@ package message
 				}
 				else if(data.content[i].type == "img"){
 					var img:InlineGraphicElement = new InlineGraphicElement();
-					img.width = data.size;
-					img.height = data.size;
+					img.width = data.size+4;
+					img.height = data.size+4;
 					img.source = ResEmotion.EmotionRes[data.content[i].val];
 					pp.addChild(img);
 				}

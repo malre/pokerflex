@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-	 width="240" height="117"
+	 width="146" height="113"
 	 creationComplete="group1_creationCompleteHandler(event)">
 	<s:layout>
 		<s:BasicLayout/>
@@ -30,23 +30,6 @@
 				e10.source = ResEmotion.Emo010;
 				e11.source = ResEmotion.Emo011;
 				e12.source = ResEmotion.Emo012;
-				e13.source = ResEmotion.Emo013;
-				e14.source = ResEmotion.Emo014;
-				e15.source = ResEmotion.Emo015;
-				e16.source = ResEmotion.Emo016;
-				e17.source = ResEmotion.Emo017;
-				e18.source = ResEmotion.Emo018;
-				e19.source = ResEmotion.Emo019;
-				e20.source = ResEmotion.Emo020;
-				e21.source = ResEmotion.Emo021;
-				e22.source = ResEmotion.Emo022;
-				e23.source = ResEmotion.Emo023;
-				e24.source = ResEmotion.Emo024;
-				e25.source = ResEmotion.Emo025;
-				e26.source = ResEmotion.Emo026;
-				e27.source = ResEmotion.Emo027;
-				e28.source = ResEmotion.Emo028;
-				e29.source = ResEmotion.Emo029;
 			}
 
 
@@ -100,22 +83,5 @@
 	<mx:Image id="e10" width="24" height="24" click="img_clickHandler(event)"/>
 	<mx:Image id="e11" width="24" height="24" click="img_clickHandler(event)"/>
 	<mx:Image id="e12" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e13" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e14" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e15" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e16" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e17" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e18" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e19" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e20" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e21" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e22" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e23" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e24" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e25" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e26" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e27" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e28" width="24" height="24" click="img_clickHandler(event)"/>
-	<mx:Image id="e29" width="24" height="24" click="img_clickHandler(event)"/>
 	</s:Group>
 </s:Group>

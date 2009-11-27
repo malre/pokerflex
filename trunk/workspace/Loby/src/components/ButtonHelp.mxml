@@ -7,9 +7,9 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<s:BitmapImage source="@Embed('/assets/Button_Help_up.png')" resizeMode="scale" includeIn="disabled,up" x="0.85" y="0.95"/>
-	<s:BitmapImage source="@Embed('/assets/Button_Help_over.png')" resizeMode="scale" includeIn="over" x="1" y="1"/>
-	<s:BitmapImage source="@Embed('/assets/Button_Help_down.png')" resizeMode="scale" includeIn="down" x="1" y="1"/>
+	<s:BitmapImage source="@Embed('/assets/Button_GameFriend_up.png')" resizeMode="scale" includeIn="disabled,up" x="0.85" y="0.95"/>
+	<s:BitmapImage source="@Embed('/assets/Button_GameFriend_over.png')" resizeMode="scale" includeIn="over" x="1" y="1"/>
+	<s:BitmapImage source="@Embed('/assets/Button_GameFriend_down.png')" resizeMode="scale" includeIn="down" x="1" y="1"/>
 	<fx:Private>
 		<th:Guide x="4"/>
 		<th:Guide y="7"/>

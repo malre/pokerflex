@@ -89,15 +89,17 @@
 	</s:transitions>
 	<fx:Script>
 		<![CDATA[
-			import mx.controls.ToolTip;
-			import mx.events.ToolTipEvent;
+			import item.itembuyRequest;
 			import item.itemuseRequest;
 			import item.playerItemsRequester;
-			import item.itembuyRequest;
-			import mx.controls.Image;
-			import mx.events.StateChangeEvent;
-			import mx.events.FlexEvent;
 			import item.shopRequester;
+			
+			import mx.controls.Image;
+			import mx.controls.ToolTip;
+			import mx.events.FlexEvent;
+			import mx.events.StateChangeEvent;
+			import mx.events.ToolTipEvent;
+			include "../ServerAddress.ini"
 			
 			private var currentSelectedItemId:int = -1;
 			
@@ -151,9 +153,15 @@
 			{
 				for(var i:int=0;i<12;i++)
 				{
-					var img:Image = Image(item_icon_group.getChildByName("item"+i.toString()));
-					img.visible = false;
-					img.source = "";
+					if(item_icon_group == null)
+						return;
+					var obj:Object = item_icon_group.getChildByName("item"+i.toString());
+					if(obj != null)
+					{	
+						var img:Image = Image(obj);
+						img.visible = false;
+						img.source = "";
+					}
 				}
 			}
 			public function drawItem(obj:Object):void
@@ -161,7 +169,7 @@
 				for(var i:int= 0;i<(obj.items.length>12?12:obj.items.length);i++)
 				{
 					var img:Image = Image(item_icon_group.getChildByName("item"+i.toString()));
-					img.source = obj.items[i].image;
+					img.source = ServerAddress + ServerPerfix + webResourePerfix + obj.items[i].image;
 					img.toolTip = obj.items[i].name;
 					img.addEventListener(ToolTipEvent.TOOL_TIP_CREATE, tooltipcreate);
 					img.visible = true;
@@ -187,7 +195,7 @@
 					itemDescribe.text = itemobj.description;
 					itemPrice.text = itemobj.price+" 金币";
 					itemName.text = itemobj.name;
-					Imgbuyitem.source = itemobj.image;
+					Imgbuyitem.source = ServerAddress + ServerPerfix + webResourePerfix + itemobj.image;
 				}
 				else if(currentState == "StateItemMain")
 				{
@@ -198,7 +206,7 @@
 					itemDescribe.text = itemobj.description;
 					itemPrice.text = itemobj.price+" 金币";
 					itemName.text = itemobj.name;
-					Imgbuyitem.source = itemobj.image;
+					Imgbuyitem.source = ServerAddress + ServerPerfix + webResourePerfix + itemobj.image;
 					itemnumber.text =  "数量："+itemobj.number.toString();
 				}
 			}
@@ -208,6 +216,7 @@
 				if(event.currentTarget.currentState == "StateShopStart")
 				{
 					visible = false;
+					clearItem();
 				}
 			}
 
@@ -261,10 +270,13 @@
 			}
 			
 			// 控制消息窗口
-			public function showMsgBox(str:String):void
+			public function showMsgBox(type:int, str:String):void
 			{
 				msgbox.visible = true;
-				msgbox.currentState = "State1";
+				if(type == 0)
+					msgbox.currentState = "StateConfirm";
+				else
+					msgbox.currentState = "StateUse";
 				msgbox.desc.text = str;
 			}
 		]]>

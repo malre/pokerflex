@@ -27,6 +27,37 @@
 				currentState='State1';
 				FlexGlobals.topLevelApplication.gameTreeView.visible = true;
 			}
+			
+			// 当玩家进入一个房间，或者游戏恢复回到一个房间以后，显示玩家所在的房间信息
+			// 大厅名称-房间名称-房间名称(如果有更多的话，都用-连接)
+			public function setCurrentLobby(lid:int):void
+			{
+				if(lid == 0)
+				{
+					label_currentRoom.text = "";
+					return;
+				}
+				label_currentRoom.text = "";
+				var node:XMLList = LobyManager.Instance.TreeData..*.(@lid == lid);
+				label_currentRoom.text = node.@name;
+				var xmlnode:XML = node.parent();
+				for(;;)
+				{
+					if(xmlnode != null)
+					{
+						if(xmlnode.@lid != "-1")
+						{
+							var str:String = xmlnode.@name;
+							label_currentRoom.text = str + " - " + label_currentRoom.text;
+							xmlnode = xmlnode.parent();
+						}
+						else
+							break;
+					}
+					else
+						break;
+				}
+			}
 
 		]]>
 
@@ -61,6 +92,7 @@
 	<s:Button skinClass="components.Button_OpenCloes" label="Button" x="9.6" y="257" rotation="-180" id="button3" visible="false" click="Button_click_1()" includeIn="State1"/>
 	<s:Button includeIn="State1" skinClass="components.Button_OpenCloes" label="Button" x="271" y="179" id="button4" click="Button_click()"/>
 	<s:Button includeIn="State2" y="179" skinClass="components.Button_openWindow" id="button5" click="Button_click_1_1()"/>
+	<s:Label includeIn="State1" x="15" y="29" width="252" height="22" color="#F4A100" id="label_currentRoom" verticalAlign="middle"/>
 	<fx:Private>
 		<th:Guide y="180"/>
 	</fx:Private>

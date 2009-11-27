@@ -208,14 +208,6 @@ package
 					// 这个地方是一个bug点，如果返回超过1个数据，会出错。
 					node.appendChild(xml);
 				}
-import lobystate.StateGetTableInfo;
-
-import mx.controls.Image;
-import mx.controls.ToolTip;
-import mx.core.FlexGlobals;
-
-import poker.LevelDefine;
-
 			}
 		}
 		
@@ -249,7 +241,7 @@ import poker.LevelDefine;
 					}
 					else if(rlt == 2){
 						// 首先讯问是否要离开房间
-						Alert.show("加入房间会退出您原来所在的房间，确定吗？", "", Alert.YES|Alert.NO, null/*Application(FlexGlobals.topLevelApplication)*/, alertClickHandler);
+						Alert.show("加入一个新房间会退出您原来所在的房间，确定吗？", "", Alert.YES|Alert.NO, null/*Application(FlexGlobals.topLevelApplication)*/, alertClickHandler);
 					}
 				}
 /*				else if(obj.@label == "")
@@ -272,7 +264,7 @@ import poker.LevelDefine;
 		private function ifPlayerInRoom(selRoom:Object):int
 		{
 			//var xmllist:XMLList = treeData..*.(@lid == playerInfo.player.lid);
-			if(StateGetPlayerInfo.Instance.lastSuccData.player.lid == "null")
+			if(StateGetPlayerInfo.Instance.lastSuccData.player.lid == "null" || StateGetPlayerInfo.Instance.lastSuccData.player.lid == 0)
 			{
 				return 0;
 			}
@@ -331,11 +323,14 @@ import poker.LevelDefine;
 		// 当在房间里面的时候，描画房间里面的桌子
 		public function RoomTableDraw(obj:Object):Boolean
 		{
+			var canvas:Canvas = FlexGlobals.topLevelApplication.gameRoomCanvas;
 			// 如果这个数组没有成员，直接返回
 			if(obj.length <= 0)
+			{
+				canvas.removeAllChildren();
 				return false;
+			}
 			
-			var canvas:Canvas = FlexGlobals.topLevelApplication.gameRoomCanvas;
 			canvas.removeAllChildren();
 			var i:int,j:int;
 			// 本次更新得到的数据比上一次的要少，要删除部分显示的桌子
@@ -516,6 +511,7 @@ import poker.LevelDefine;
 			img.name = "avatar"+name;
 			lbl.name = "name"+name;
 			lbl.setStyle("color", 0xFFFFFF);
+			lbl.width = 44;
 			if(obj == null)
 			{
 				img.visible = false;
@@ -534,6 +530,22 @@ import poker.LevelDefine;
 				lbl.text = obj.name +"(o)";
 			else
 				lbl.text = obj.name +"(x)";
+
+			var describe:String = "";
+			for each(var scoreobj:Object in StateGetPlayerInfo.Instance.lastSuccData.player.score)
+			{
+				describe += scoreobj.name;
+				describe += " ";
+				describe += scoreobj.score;
+				describe += "分 ";
+				describe += LevelDefine.getLevelName(int(scoreobj.score));
+				describe += "\n";
+			}
+
+			describe += StateGetPlayerInfo.Instance.lastSuccData.player.money+" 金币";
+			lbl.toolTip = lbl.text + "\n" + describe;
+			
+
 			lbl.x = x;
 			lbl.y = y-14;
 			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(lbl);

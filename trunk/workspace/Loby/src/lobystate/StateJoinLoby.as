@@ -21,6 +21,7 @@ package lobystate
 		{
 			lobyid = id;
 		}
+		
 		override public function send(obj:StateManager):void
 		{
 			LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_addloby;
@@ -33,6 +34,8 @@ package lobystate
 			{
 				// 成功之后需要把player对象的lid进行赋值
 				StateGetPlayerInfo.Instance.lastSuccData.player.lid = lobyid;
+				// 设置左边的玩家所在房间位置的提示信息
+				FlexGlobals.topLevelApplication.customcomponent21.setCurrentLobby(lobyid);
 
 				LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 				

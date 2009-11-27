@@ -54,6 +54,8 @@ package message
 		public static const listenMsgRoom:int = 2;
 		public static const listenMsgPlayer:int = 4;
 		public static const listenMsgSystem:int = 8;
+		
+		public static const msgContainerMaxLength:int = 30;
 		private var listenType:int;
 		// instance 
 		private static var instance:Messenger = null;
@@ -142,6 +144,20 @@ package message
 			{
 				
 			}
+		}
+		
+		// 因为服务器 magic_quotes_gpc 参数设置的影响，得到的需要进行一次去除斜杠的处理
+		public function delSlash(str:String):String
+		{
+			// 首先，先去除一次引号前的斜杠，是2个
+			var pattern:RegExp = /\\"/g;
+			var src:String = new String(str);
+			var rlt:String = src.replace(pattern, "\"");
+			
+			var pattern2:RegExp = /\\\\/g;
+			src = rlt;
+			rlt = src.replace(pattern2, "\\");
+			return rlt;
 		}
 	}
 }

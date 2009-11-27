@@ -21,6 +21,8 @@ package item
 		private var rqOffset:int;
 		private var rqAmount:int;
 		private var rqPage:int;
+		// 0: normal, 1:for item enum
+		private var type:int;
 
 
 		public static function Instance():playerItemsRequester
@@ -37,6 +39,12 @@ package item
 			offset = rqOffset = 0;
 			amount = rqAmount = 12;
 			page = rqPage = 0;
+			type = 0;
+		}
+		
+		public function setType(val:int):void
+		{
+			type = val;
 		}
 		
 		override public function send(val:Object=null) : void
@@ -51,25 +59,34 @@ package item
 		{
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
 			lastSuccObj = obj;
-			FlexGlobals.topLevelApplication.shopmenu.clearItem();
-			// 传送给viewer来显示
-			FlexGlobals.topLevelApplication.shopmenu.drawItem(obj);
-			// 同步当前数据
-			offset = rqOffset;
-			amount = rqAmount;
-			page = rqPage;
-			
-			// 控制左右的按钮的有效
-			if(rqPage == 0)
-				FlexGlobals.topLevelApplication.shopmenu.pageleft.enabled = false;
-			else
-				FlexGlobals.topLevelApplication.shopmenu.pageleft.enabled = true;
-			if(obj.items.length > 12)
-				FlexGlobals.topLevelApplication.shopmenu.pageright.enabled = true;
-			else
-				FlexGlobals.topLevelApplication.shopmenu.pageright.enabled = false;
-			// 改变page的值
-			FlexGlobals.topLevelApplication.shopmenu.pagenumber.text = (page+1).toString();
+			if(type == 0)
+			{
+				FlexGlobals.topLevelApplication.shopmenu.clearItem();
+				// 传送给viewer来显示
+				FlexGlobals.topLevelApplication.shopmenu.drawItem(obj);
+				// 同步当前数据
+				offset = rqOffset;
+				amount = rqAmount;
+				page = rqPage;
+				
+				// 控制左右的按钮的有效
+				if(rqPage == 0)
+					FlexGlobals.topLevelApplication.shopmenu.pageleft.enabled = false;
+				else
+					FlexGlobals.topLevelApplication.shopmenu.pageleft.enabled = true;
+				if(obj.items.length > 12)
+					FlexGlobals.topLevelApplication.shopmenu.pageright.enabled = true;
+				else
+					FlexGlobals.topLevelApplication.shopmenu.pageright.enabled = false;
+				// 改变page的值
+				FlexGlobals.topLevelApplication.shopmenu.pagenumber.text = (page+1).toString();
+			}
+			else{
+				if(isItemExist("1010313")){
+					// 显示喊话窗口
+					
+				}
+			}
 		}
 		
 		override public function fault(event:Event) : void
@@ -88,6 +105,25 @@ package item
 			rqOffset = startIndex;
 			rqAmount = count;
 			rqPage = startIndex/12;
+		}
+		
+		protected function isItemExist(id:String):int
+		{
+			for each(var obj:Object in lastSuccObj)
+			{
+				if(obj.name == id){
+					return obj.number;
+				}
+			}
+//			for(var i:int= 0;i<(obj.items.length>12?12:obj.items.length);i++)
+//			{
+//				var img:Image = Image(item_icon_group.getChildByName("item"+i.toString()));
+//				img.source = ServerAddress + ServerPerfix + webResourePerfix + obj.items[i].image;
+//				img.toolTip = obj.items[i].name;
+//				img.addEventListener(ToolTipEvent.TOOL_TIP_CREATE, tooltipcreate);
+//				img.visible = true;
+//			}
+			return 0;
 		}
 	}
 }

@@ -8,6 +8,9 @@ package lobystate
 
 	public class StateGetPlayerInfo extends NetRequestState
 	{
+		// player avatar middle type
+		public var playerMiddleAvatar:String = "";
+		
 		private static var instance:StateGetPlayerInfo = null;
 		// construct
 		public function StateGetPlayerInfo()
@@ -34,6 +37,9 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
+				//http://uc.zj.chinamobile.com/avatar.php?uid=910&size=small&type=virtual
+				var reg:RegExp = /size=small/;
+				playerMiddleAvatar = lastSuccData.player.avatar.replace(reg, "size=middle");
 				// 设置玩家的信息
 				FlexGlobals.topLevelApplication.imgAvatar.source = obj.player.avatar;
 				FlexGlobals.topLevelApplication.imgAvatar.scaleX = 0.7;
@@ -51,6 +57,9 @@ package lobystate
 				// 对玩家信息进行分析，看玩家上次是否是意外离开，需不需要恢复
 				if(obj.player.lid != "null")
 				{
+					// 设置左边的玩家所在房间位置的提示信息
+					FlexGlobals.topLevelApplication.customcomponent21.setCurrentLobby(int(obj.player.lid));
+
 					LobyManager.Instance.changeState(3);	// resotre
 					if(obj.player.rid != "null")
 					{

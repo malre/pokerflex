@@ -21,9 +21,9 @@
 	</fx:Script>
 
 	<s:BitmapImage source="@Embed('/assets/ButtonBg.png')" resizeMode="scale" d:userLabel="ButtonBG" d:locked="true"/>
-	<s:Button id="btnSendCards" label="出牌" x="40" y="2" skinClass="components.Button_Chupai" click="sendCardsClicked(event)"/>
-	<s:Button id="btnDiscard" label="放弃" x="99" y="2" skinClass="components.Button_Chupai" click="discardClicked(event)"/>
-	<s:Button id="btnHint" label="提示" x="159" y="2" skinClass="components.Button_Chupai" enabled="false"/>
+	<s:Button id="btnSendCards" label="出牌" x="40" y="2" skinClass="components.Button_Chupai" click="sendCardsClicked(event)" toolTip="出牌"/>
+	<s:Button id="btnDiscard" label="放弃" x="99" y="2" skinClass="components.Button_Chupai" click="discardClicked(event)" toolTip="放弃出牌"/>
+	<s:Button id="btnHint" label="提示" x="159" y="2" skinClass="components.Button_Chupai" enabled="false" toolTip="提示出牌"/>
 	<fx:Private>
 	</fx:Private>
 </s:Group>

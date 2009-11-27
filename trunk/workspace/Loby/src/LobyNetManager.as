@@ -27,31 +27,33 @@ package
 		//static public var URL_lobysonAddress:String = "http://218.108.39.82:9000/web/world/";
 		static public var URL_lobysonAddress:String = URL_lobyAddress;
 		// 然后我们都通过这个地址来进行房间和桌子的信息请求
-		static public var URL_roomInfo:String = "lobby/info/list";	// 大厅的信息
-		static public var URL_addloby:String = "lobby/player/add";
-		static public var URL_autoAddlobby:String = "game/room/autoAdd";
-		static public var URL_leaveloby:String = "lobby/player/remove";
-		static public var URL_roomPlayerlist:String = "lobby/player/list";
-		static public var URL_playerInfo:String = "default/account/identity";
-		static public var URL_tableInfo:String = "game/list/list";	// 房间中桌子的信息
-		static public var URL_joinTable:String = "game/room/add";
-		static public var URL_leaveTable:String = "game/room/remove";
-		static public var URL_updateTableInfo:String = "game/room/update";	// 桌子上玩家的信息
-		static public var URL_createTable:String = "game/room/create";
+		static public const URL_roomInfo:String = "lobby/info/list";	// 大厅的信息
+		static public const URL_addloby:String = "lobby/player/add";
+		static public const URL_autoAddlobby:String = "game/room/autoAdd";
+		static public const URL_leaveloby:String = "lobby/player/remove";
+		static public const URL_roomPlayerlist:String = "lobby/player/list";
+		static public const URL_playerInfo:String = "default/account/identity";
+		static public const URL_tableInfo:String = "game/list/list";	// 房间中桌子的信息
+		static public const URL_joinTable:String = "game/room/add";
+		static public const URL_leaveTable:String = "game/room/remove";
+		static public const URL_updateTableInfo:String = "game/room/update";	// 桌子上玩家的信息
+		static public const URL_createTable:String = "game/room/create";
+		static public const URL_getFriends:String = "game/friend/list";
 		//private var URL_
 		// 各种请求定义
-		static public var getlobyaddress:String = "request loby";
-		static public var addloby:String = "join to loby";
-		static public var autoaddlobby:String = "auto join";
-		static public var leaveloby:String = "leave loby";
-		static public var playerInfo:String = "request player info";
-		static public var roomInfo:String = "request room info";
-		static public var tableInfo:String = "request table info";
-		static public var joinTable:String = "join table game";
-		static public var leaveTable:String = "leave table";
-		static public var getRoomPlayerlist:String = "get player list";
-		static public var getTablePlayerInfo:String = "get table player info";
-		static public var createTable:String = "create table";
+		static public const getlobyaddress:String = "request loby";
+		static public const addloby:String = "join to loby";
+		static public const autoaddlobby:String = "auto join";
+		static public const leaveloby:String = "leave loby";
+		static public const playerInfo:String = "request player info";
+		static public const roomInfo:String = "request room info";
+		static public const tableInfo:String = "request table info";
+		static public const joinTable:String = "join table game";
+		static public const leaveTable:String = "leave table";
+		static public const getRoomPlayerlist:String = "get player list";
+		static public const getTablePlayerInfo:String = "get table player info";
+		static public const createTable:String = "create table";
+		static public const getFriends:String = "get friends";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -194,6 +196,10 @@ package
 			else if(type == createTable)
 			{
 				stateManager.changeState(StateCreateTable.Instance);
+			}
+			else if(type == getFriends)
+			{
+				stateManager.changeState(StateGetFriends.Instance);
 			}
 			stateManager.send();
 		}

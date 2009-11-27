@@ -42,6 +42,8 @@ package message.httpController
 		override public function result(event:Event) : void
 		{
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
+			if(!obj.hasOwnProperty("chat"))
+				return;
 			if(obj.chat.length == 0)
 			{
 				return;
@@ -62,14 +64,19 @@ package message.httpController
 		}
 		
 		/**
-		 * 把得到的新的消息加入到显示 
+		 * 把得到的新的消息加入到显示
+		 * 当处理消息达到上限的时候，首先删除 前面的老的消息再添加新的消息。
 		 * @param str
 		 * 
 		 */		
 		protected function addNewMsg(obj:Object, tf:TextFlow):void
 		{
+			if(tf.numChildren >= Messenger.msgContainerMaxLength)
+				tf.removeChildAt(0);
+			//
 			var pp:ParagraphElement = new ParagraphElement();
-			var data:Object = JSON.decode(obj.message);
+			var str:String = Messenger.Instance.delSlash(obj.message);
+			var data:Object = JSON.decode(str);
 			var span:SpanElement;
 			span = new SpanElement();
 			span.text = "["+obj.name+"]:";
