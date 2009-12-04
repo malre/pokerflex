@@ -3,6 +3,7 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.core.FlexGlobals;
 	import mx.managers.PopUpManager;
 	
 	import poker.CardViewer;
@@ -33,9 +34,9 @@ package poker.gamestate
 		{
 			if(super.receive(obj))
 			{
-				//var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
-				//popup.setCards();
-				//popup.visible = false;
+				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(FlexGlobals.topLevelApplication.gamePoker, CardViewer, true));
+				popup.setCardsData(obj.history);
+				popup.visible = false;
 				return true;
 			}
 			else{

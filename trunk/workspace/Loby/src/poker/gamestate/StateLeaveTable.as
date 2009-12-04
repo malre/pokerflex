@@ -5,6 +5,7 @@ package poker.gamestate
 	
 	import mx.core.FlexGlobals;
 	
+	import poker.Game;
 	import poker.NetManager;
 	
 	public class StateLeaveTable extends NetRequestState
@@ -41,6 +42,8 @@ package poker.gamestate
     			// 退出的时候同时清除房间的聊天信息
     			FlexGlobals.topLevelApplication.gamePoker.gamechatbox.selectAll();
 				FlexGlobals.topLevelApplication.gamePoker.gamechatbox.insertText("");
+				// 退出时清空玩家数据表
+				Game.Instance.tablelist.removeAll();
 				// 重置房间设置获得标志位，下一次进房间需要重新去访问
 				StateGetTableSetting.Instance.getSettingSuccess = false;
 				// 关闭所有的窗口并置窗口互斥量为假

@@ -10,6 +10,8 @@ package lobystate
 		private static var instance:StateLobyJoinTable = null;
 		//
 		private var request:Object;
+		//
+		public var tablename:String = "";
 		
 		// construct
 		public function StateLobyJoinTable()
@@ -28,9 +30,17 @@ package lobystate
 		{
 			request = rq;
 		}
+		
+		public function setTablename(name:String):void
+		{
+			tablename = name;
+		}
 		// override function
 		override public function send(obj:StateManager):void
 		{
+			// 显示进行过程
+			LobyNetManager.Instance.showNetProcess("正在加入游戏桌……");
+
 			var hp:HTTPService = LobyNetManager.Instance.httpservice;
 			hp.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_joinTable;
 			hp.request = request;
@@ -40,31 +50,22 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
-				// 
-				LobyManager.Instance.changeState(2);
+				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
+				// 关闭显示视窗
+				LobyNetManager.Instance.closeNetProcess();
 				return true;
 			}
 			else{
+				// 关闭显示视窗
+				LobyNetManager.Instance.closeNetProcess();
 				return false;
 			}
 		}
-		private function initlisten(event:Event):void
-		{
 
-            // Initialize variables with information from
-            // the loaded application.
-            FlexGlobals.topLevelApplication.gameFlash.x = 0;
-            FlexGlobals.topLevelApplication.gameFlash.y = 0;
-            FlexGlobals.topLevelApplication.gameFlash.width = 780;
-            FlexGlobals.topLevelApplication.gameFlash.height = 560;
-			FlexGlobals.topLevelApplication.gameFlash.visible = true;
-			//
-			LobyManager.Instance.isGameLoaded = true;
-		}
 		override public function fault():void
 		{
-			
+			// 关闭显示视窗
+			LobyNetManager.Instance.closeNetProcess();
 		}
 	}
 }

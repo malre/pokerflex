@@ -5,5 +5,5 @@
 	width="540" height="22"
 	clipAndEnableScrolling="true">
 	<mx:SWFLoader source="@Embed('res/AnnouncementBG.swf')" scaleContent="false"/>
-	<mx:Label id="lobbyancText" fontFamily="黑体" fontSize="16"/>
+	<mx:Label id="lobbyancText"/>
 </s:Group>

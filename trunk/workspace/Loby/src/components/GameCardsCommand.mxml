@@ -4,11 +4,14 @@
 	<fx:Script>
 		<![CDATA[
 			import poker.Game;
+			import poker.gamestate.StateSendCards;
 			protected function sendCardsClicked(event:Event):void
 			{
 				btnSendCards.enabled = false;
 				// 发送出牌的消息，如果失败，将会自动重发，
 				Game.Instance.sendcards();
+				// 清空计数器
+				StateSendCards.Instance.clearCounter();
 			}
 
 			protected function discardClicked(event:Event):void

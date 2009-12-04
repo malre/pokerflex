@@ -49,8 +49,8 @@
 					{
 						if(StateGetPlayerInfo.Instance.lastSuccData.success)
 						{
-							playerinfo.visible = true;
-							playerinfo.currentState="StateMain";
+							StateGetPlayerInfo.Instance.setType(1);
+							LobyNetManager.Instance.send(LobyNetManager.playerInfo);
 							LobyManager.Instance.windowMutex = true;
 						}
 					}
@@ -198,7 +198,7 @@
 		<components:OptionWindow x="200" y="130" id="createTable" visible="false"/>
 		<components:passwordInput id="pwInput" x="188" y="230" visible="false"/>
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.7.9.A" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="620" y="6" text="ver 1.8.0.F" width="64" textAlign="right" color="#FFFFFF"/>
 	<!--游戏本体-->
 	<poker:poker id="gamePoker" visible="false"/>
 	<!--用来确认一些需要使用卡片的道具-->

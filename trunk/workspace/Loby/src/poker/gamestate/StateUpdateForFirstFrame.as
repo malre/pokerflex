@@ -53,15 +53,18 @@ package poker.gamestate
 					FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 				}
 				Game.Instance.lastPlayer = obj.play.last;
+				Game.Instance.curPlayerLast = Game.Instance.curPlayer;
 				Game.Instance.curPlayer = obj.play.next;
 				Game.Instance.gamePlayerLeftTimeDef = obj.time;
 				Game.Instance.initPlayerLeftStartTime();
 				// 更新其他玩家的名字和状态
 				Game.Instance.updatePlayerName(obj);
+				// 更新右侧其他玩家的数据表格
+				Game.Instance.playersDatagridFill(obj);
 				// 描画玩家手上的牌
 				Game.Instance.drawPlayerCards(obj);
 				// 描画玩家打出来的牌
-				Game.Instance.drawOtherCards(obj.play.history, obj.status);
+				Game.Instance.drawOtherCards(obj, obj.status);
 				// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
 				Game.Instance.updatePlayerCardsInfo(obj);
 				// 描画出牌剩余时间
@@ -74,6 +77,8 @@ package poker.gamestate
 				GameObjectManager.Instance.setVisibleByName("CardbackRight", true);
 				GameObjectManager.Instance.setVisibleByName("CardbackUp", true);
 				GameObjectManager.Instance.setVisibleByName("CardbackLeft", true);
+				// 使过往牌记录的查看按钮有效
+				FlexGlobals.topLevelApplication.gamePoker.btnCardView.visible = false;
 				return true;
 			}
 			else{

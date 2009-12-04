@@ -8,6 +8,9 @@ package poker.gamestate
 	import poker.Game;
 	import poker.GameObjectManager;
 	import poker.NetManager;
+	import poker.timeoutDealwithGUI;
+	
+	import soundcontrol.SoundManager;
 	
 	public class StateSendCards extends NetRequestState
 	{
@@ -37,6 +40,7 @@ package poker.gamestate
 					data += ",";
 			}
 			NetManager.sender.url = NetManager.sendURL_game;
+			NetManager.sender.requestTimeout = 3000;
 			NetManager.sender.request = {"play":data, "getPlay":"true", "getCards":"true"};
 			NetManager.sender.send();
 		}
@@ -71,11 +75,12 @@ package poker.gamestate
 							{
 								Game.Instance.initPlayerLeftStartTime();
 							}
+							Game.Instance.curPlayerLast = Game.Instance.curPlayer;
 							Game.Instance.curPlayer = obj.play.next;
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
-							Game.Instance.drawOtherCards(obj.play.history, obj.status);
+							Game.Instance.drawOtherCards(obj, obj.status);
 							// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
 							Game.Instance.updatePlayerCardsInfo(obj);
 							// 描画出牌剩余时间
@@ -85,16 +90,20 @@ package poker.gamestate
 						}
 						// 游戏意外结束， OR 游戏胜利
 						// 
-						else if(obj.status == 1)
+						else //if(obj.status == 1)
 						{
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
-							Game.Instance.drawOtherCards(obj.play.history, obj.status);
+							Game.Instance.drawOtherCards(obj, obj.status);
 							// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
 							Game.Instance.updatePlayerCardsInfo(obj);
 							NetManager.Instance.send(NetManager.send_getGameoverPlayerLeftCard);
+							// 清空计数器
+							StateGetLeftCards.Instance.clearCounter();
+							
 							Game.Instance.gameState = 5;	// 结束统计状态
+							SoundManager.Instance().playSE("win");
 						}
 					}
 				}
@@ -106,7 +115,12 @@ package poker.gamestate
 		}
 		override public function fault():void
 		{
-			NetManager.Instance.send(NetManager.send_sendcardsWhileGame);
+			if(++timeoutCounter > timeoutCounterMax)
+			{
+				timeoutDealwithGUI.Instance.deal(timeoutDealwithGUI.sendcardFail);
+			}else{
+				NetManager.Instance.send(NetManager.send_sendcardsWhileGame);
+			}
 		}
 	}
 }

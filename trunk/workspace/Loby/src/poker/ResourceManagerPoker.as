@@ -210,22 +210,22 @@ package poker
 		CardsRes.addItem(new GraphicsResource(new Card34()));
 		CardsRes.addItem(new GraphicsResource(new Card47()));
 
-		CardsRes.addItem(new GraphicsResource(new Card09()));
+		CardsRes.addItem(new GraphicsResource(new Card09()));		// 10
 		CardsRes.addItem(new GraphicsResource(new Card22()));
 		CardsRes.addItem(new GraphicsResource(new Card35()));
 		CardsRes.addItem(new GraphicsResource(new Card48()));
 
-		CardsRes.addItem(new GraphicsResource(new Card10()));
+		CardsRes.addItem(new GraphicsResource(new Card10()));		// J
 		CardsRes.addItem(new GraphicsResource(new Card23()));
 		CardsRes.addItem(new GraphicsResource(new Card36()));
 		CardsRes.addItem(new GraphicsResource(new Card49()));
 
-		CardsRes.addItem(new GraphicsResource(new Card11()));
+		CardsRes.addItem(new GraphicsResource(new Card11()));		// Q
 		CardsRes.addItem(new GraphicsResource(new Card24()));
 		CardsRes.addItem(new GraphicsResource(new Card37()));
 		CardsRes.addItem(new GraphicsResource(new Card50()));
 
-		CardsRes.addItem(new GraphicsResource(new Card12()));
+		CardsRes.addItem(new GraphicsResource(new Card12()));		// K
 		CardsRes.addItem(new GraphicsResource(new Card25()));
 		CardsRes.addItem(new GraphicsResource(new Card38()));
 		CardsRes.addItem(new GraphicsResource(new Card51()));
@@ -242,10 +242,6 @@ package poker
 		CardsRes.addItem(new GraphicsResource(new Card52()));
 		CardsRes.addItem(new GraphicsResource(new Card53()));
 
-
-		[Embed(source="../res/BG.jpg")]							// background
-		public static var BG00:Class;
-		public static var BG00Res:GraphicsResource = new GraphicsResource(new BG00());
 
 		[Embed(source="../res/cardback1.png")]
 		public static var cardback1:Class;

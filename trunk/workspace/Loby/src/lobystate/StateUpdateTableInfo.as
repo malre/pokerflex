@@ -57,7 +57,7 @@ package lobystate
 				}
 				// 游戏尚未开始
 				// 
-				else if(obj.status == 1)
+				else //if(obj.status == 1)
 				{
 					FlexGlobals.topLevelApplication.gamePoker.startup(obj);
 					// 

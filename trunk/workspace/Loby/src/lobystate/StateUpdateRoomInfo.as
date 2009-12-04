@@ -73,6 +73,7 @@ package lobystate
 					LobyManager.Instance.LobyTreeCtrl(obj);
 				}
 				// 继续请求玩家信息
+				StateGetPlayerInfo.Instance.setType(0);
 				LobyNetManager.Instance.send(LobyNetManager.playerInfo);
 				
 				return true;

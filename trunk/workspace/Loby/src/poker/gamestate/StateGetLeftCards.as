@@ -5,6 +5,7 @@ package poker.gamestate
 	
 	import poker.Game;
 	import poker.NetManager;
+	import poker.timeoutDealwithGUI;
 	
 	public class StateGetLeftCards extends NetRequestState
 	{
@@ -24,6 +25,7 @@ package poker.gamestate
 		override public function send(obj:StateManager):void
 		{
 			NetManager.sender.url = NetManager.sendURL_game;
+			NetManager.sender.requestTimeout = 3000;
 			NetManager.sender.request = {"getCards":"true"};
 			NetManager.sender.send();
 		}
@@ -35,11 +37,12 @@ package poker.gamestate
 				for(var i:int=0;i<4;i++)
 				{
 					if(obj.cards[i].number != 0){
-						// 描画还有问题，暂时屏蔽
 						Game.Instance.drawPlayerHandCards(obj,i);
 					}
 				}
 				NetManager.Instance.send(NetManager.send_getScore);
+				// 清空计数器
+				StateGetScore.Instance.clearCounter();
 				return true;
 			}
 			else{
@@ -49,7 +52,12 @@ package poker.gamestate
 		}
 		override public function fault():void
 		{
-			
+			if(++timeoutCounter > timeoutCounterMax)
+			{
+				timeoutDealwithGUI.Instance.deal(timeoutDealwithGUI.getPlayerLeftcards);
+			}else{
+				NetManager.Instance.send(NetManager.send_getGameoverPlayerLeftCard);
+			}
 		}
 	}
 }

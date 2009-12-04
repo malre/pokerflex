@@ -24,6 +24,9 @@ package lobystate
 		
 		override public function send(obj:StateManager):void
 		{
+			// 显示进行过程
+			LobyNetManager.Instance.showNetProcess("加入大厅中……");
+
 			LobyNetManager.Instance.httpservice.url = FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@address + LobyNetManager.URL_addloby;
 			LobyNetManager.Instance.httpservice.request = {"lid":lobyid}; 
 			LobyNetManager.Instance.httpservice.send();
@@ -39,18 +42,25 @@ package lobystate
 
 				LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 				
+				// 关闭显示视窗
+				LobyNetManager.Instance.closeNetProcess();
 				return true;
 			}
 			else{
 				// 加入房间失败
 				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
 				FlexGlobals.topLevelApplication.BtnCreateTable.visible = false;
+
+				// 关闭显示视窗
+				LobyNetManager.Instance.closeNetProcess();
 				return false;
 			}
 			
 		}
 		override public function fault():void
 		{
+			// 关闭显示视窗
+			LobyNetManager.Instance.closeNetProcess();
 			LobyErrorState.Instance.showErrMsg("加入房间失败");
 		}
 		
