@@ -55,6 +55,11 @@ package message
 		public static const listenMsgPlayer:int = 4;
 		public static const listenMsgSystem:int = 8;
 		
+		public static const gameSendmsgInterval:int = 10000; // 10 sec
+		public static const gameSendErrorText:String = "发言速度太快,请间隔10秒发言一次"
+		public static const lobbySendmsgInterval:int = 60000; // 10 sec
+		public static const lobbySendErrorText:String = "发言速度太快,请间隔一分钟发言一次";
+		
 		public static const msgContainerMaxLength:int = 30;
 		private var listenType:int;
 		// instance 

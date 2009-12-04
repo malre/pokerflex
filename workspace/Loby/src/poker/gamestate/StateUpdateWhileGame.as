@@ -8,6 +8,8 @@ package poker.gamestate
 	import poker.Game;
 	import poker.NetManager;
 	
+	import soundcontrol.SoundManager;
+	
 	public class StateUpdateWhileGame extends NetRequestState
 	{
 		private static var instance:StateUpdateWhileGame = null;
@@ -62,11 +64,12 @@ package poker.gamestate
 							{
 								Game.Instance.initPlayerLeftStartTime();
 							}
+							Game.Instance.curPlayerLast = Game.Instance.curPlayer;
 							Game.Instance.curPlayer = obj.play.next;
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
-							Game.Instance.drawOtherCards(obj.play.history, obj.status);
+							Game.Instance.drawOtherCards(obj, obj.status);
 							// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
 							Game.Instance.updatePlayerCardsInfo(obj);
 							// 描画出牌剩余时间
@@ -76,17 +79,23 @@ package poker.gamestate
 						}
 						// 游戏意外结束， OR 游戏胜利
 						// 
-						else if(obj.status == 1)
+						else //if(obj.status == 1)
 						{
+							// 关闭所有的出牌按钮
+							FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
-							Game.Instance.drawOtherCards(obj.play.history, obj.status);
+							Game.Instance.drawOtherCards(obj, obj.status);
 							// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
 							Game.Instance.updatePlayerCardsInfo(obj);
 							NetManager.Instance.send(NetManager.send_getGameoverPlayerLeftCard);
+							// 清空计数器
+							StateGetLeftCards.Instance.clearCounter();
+
 							Game.Instance.gameState = 5;	// 结束统计状态
-							
+							//
+							SoundManager.Instance().playSE("win");
 							//GameObjectManager.Instance.shutdown();
 							// 背景还是要保留
 							//GameObjectManager.Instance.setVisibleByName("BG", true);

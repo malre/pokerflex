@@ -9,14 +9,14 @@
 	<mx:Label x="300" y="200" text="飞黄" fontSize="16" color="#ffffff"/>-->
 	<fx:Script>
 		<![CDATA[
-			import mx.utils.object_proxy;
-			import mx.managers.PopUpManager;
-			import mx.events.CloseEvent;
 			import mx.controls.Image;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
 
 			private var tempAry:Array = new Array();			
 //			private var carddata:String = [{\"pos\":0,\"play\":\"10,8,7,6,2,0\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"25,25,23,22,18,17\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"16,15,9,4,3\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"1\"},{\"pos\":3,\"play\":\"29\"},{\"pos\":0,\"play\":\"34\"},{\"pos\":1,\"play\":\"45\"},{\"pos\":2,\"play\":\"48\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"5,5\"},{\"pos\":3,\"play\":\"13,13\"},{\"pos\":0,\"play\":\"50,49\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"31,28,27,24,20,20,19,17\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"12\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"38,37,37\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"23,22,21,21\"},{\"pos\":0,\"play\":\"43,42,42,41\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"47\"},{\"pos\":1,\"play\":\"49\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"53\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":2,\"play\":\"14\"},{\"pos\":3,\"play\":\"33\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"38\"},{\"pos\":3,\"play\":\"50\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"52\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"35\"},{\"pos\":3,\"play\":\"44\"},{\"pos\":1,\"play\":\"52\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"11,9,6,4,2,0\"},{\"pos\":2,\"play\":\"31,30,29,28\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"48\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"53\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"15,14,12\"}];
-			private var carddata:Object = [{"pos":0,"play":"10,8,7,6,2,0"},{"pos":1,"play":"pass"},{"pos":2,"play":"25,25,23,22,18,17"},{"pos":3,"play":"pass"},{"pos":0,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"16,15,9,4,3"},{"pos":3,"play":"pass"},{"pos":0,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"1"},{"pos":3,"play":"29"},{"pos":0,"play":"34"},{"pos":1,"play":"45"},{"pos":2,"play":"48"},{"pos":3,"play":"pass"},{"pos":0,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"5,5"},{"pos":3,"play":"13,13"},{"pos":0,"play":"50,49"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"31,28,27,24,20,20,19,17"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"12"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"38,37,37"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"23,22,21,21"},{"pos":0,"play":"43,42,42,41"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"47"},{"pos":1,"play":"49"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":0,"play":"53"},{"pos":1,"play":"pass"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":2,"play":"14"},{"pos":3,"play":"33"},{"pos":1,"play":"pass"},{"pos":2,"play":"38"},{"pos":3,"play":"50"},{"pos":1,"play":"pass"},{"pos":2,"play":"52"},{"pos":3,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"35"},{"pos":3,"play":"44"},{"pos":1,"play":"52"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":1,"play":"11,9,6,4,2,0"},{"pos":2,"play":"31,30,29,28"},{"pos":3,"play":"pass"},{"pos":1,"play":"pass"},{"pos":2,"play":"48"},{"pos":3,"play":"pass"},{"pos":1,"play":"53"},{"pos":2,"play":"pass"},{"pos":3,"play":"pass"},{"pos":1,"play":"15,14,12"}];
+			private var carddata:Object;
+			
 			private function createComplete():void
 			{
 				// 创建108个image对象，并按照一定的顺序排列在菜单上
@@ -42,7 +42,12 @@
 				PopUpManager.removePopUp(this);
 			}
 			
-			public function setCards(obj:Object):void
+			public function setCardsData(data:Object):void
+			{
+				carddata = data;
+			}
+			
+			private function setCards(obj:Object):void
 			{
 				var cn:Array = [0,0,0,0];
 				// 对history数组进行分组归类

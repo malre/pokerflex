@@ -16,7 +16,7 @@
 	<s:Button includeIn="State3" x="13" skinClass="components.ButtonMsgEmotion" y="414" click="btnEmotion_clickHandler(event)"/>
 	<s:Button includeIn="State3" x="64" y="414" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)"/>
 	<s:Button includeIn="State3" x="254" y="436" skinClass="components.Button_GameTalk_say" click="lobbySendMsg(event)" toolTip="发送聊天对话"/>
-	<mx:DataGrid includeIn="State3" x="13" y="27" width="257" editable="false" height="173" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
+	<mx:DataGrid id="lobbyplayerlist" includeIn="State3" x="13" y="27" width="257" editable="false" height="173" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
 		dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}" dragEnabled="false"
 		headerStyleName="datagridheader" dragMoveEnabled="false" draggableColumns="false">
 		<mx:columns>

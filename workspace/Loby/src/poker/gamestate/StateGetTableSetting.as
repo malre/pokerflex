@@ -67,54 +67,8 @@ package poker.gamestate
 		{
 			var op:OptionWindow = FlexGlobals.topLevelApplication.gamePoker.optionWindow;
 			op.visible = true;
+			op.inGameSetting(obj);
 			
-			// 对所有的选项进行设置
-			if(obj.hasOwnProperty("password")) {
-				op.checkboxPassword.selected = true;
-				op.inputboxPassword.text = "********";
-			}else{
-				op.checkboxPassword.selected = false;
-			}
-			op.checkboxPassword.enabled = false;
-			op.inputboxPassword.enabled = false;
-			
-			if(obj.hasOwnProperty("lowerlevellimit")) {
-				op.lowlevel.selectedIndex = obj.lowerlevellimit;
-			}else{
-				op.lowlevel.selectedIndex = 0;
-			}
-			op.lowlevel.enabled = false;
-			
-			if(obj.hasOwnProperty("upperlevellimit")) {
-				op.highlevel.selectedIndex = obj.upperlevellimit;
-			}else{
-				op.highlevel.selectedIndex = 0;
-			}
-			op.highlevel.enabled = false;
-			
-			if(obj.hasOwnProperty("magnification")) {
-				op.checkboxAllowGold.selected = true;
-				op.goldplus.selectedIndex = obj.magnification;
-			}else{
-				op.checkboxAllowGold.selected = false;
-				op.goldplus.selectedIndex = 0;
-			}
-			op.checkboxAllowGold.enabled = false;
-			op.goldplus.enabled = false;
-			
-			if(obj.hasOwnProperty("allowchat")) {
-				op.checkboxAllowChat.selected = obj.allowchat;
-			}else{
-				op.checkboxAllowChat.selected = false;
-			}
-			op.checkboxAllowChat.enabled = false;
-			
-			// SE
-			// load from soundmanger
-			op.checkboxSEEnable.selected = SoundManager.Instance().SEEnable;
-			
-			if(FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState != "State3")
-				FlexGlobals.topLevelApplication.gamePoker.optionWindow.currentState = "State3";
 			// mutex
 			LobyManager.Instance.windowMutex = true;
 		}

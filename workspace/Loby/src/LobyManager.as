@@ -50,7 +50,6 @@ package
 		private var freshTime:int = 10;		
 		private var freshCount:int = 0;
 		private var lastFrameTime:Date = new Date();
-		public var refreshflag:Boolean = false;
 		// 公告显示部分的参数
 		private const looptimesdefine:int = 2;
 		private var looptimes:int = looptimesdefine;
@@ -111,16 +110,18 @@ package
 					var seconds:Number = (thisFrame.getTime() - lastFrameTime.getTime())/1000.0;
 					if(seconds > freshTime)
 					{
-						if(LobyNetManager.Instance.RequestEnable)
+//						if(LobyNetManager.Instance.RequestEnable)
 						{
 							if(LobyErrorState.Instance.errorId > 0 && LobyErrorState.Instance.errorId <= 100)
 								break;
 								 
-							refreshflag = true;
 							// 当能请求的情况下，进行请求
 							if(StateGetPlayerInfo.Instance.lastSuccData.player.lid != "null")
 							{
-								LobyNetManager.Instance.send(LobyNetManager.tableInfo);
+								// 当有前台窗口在显示的时候，不进行请求
+//								if(!LobyManager.Instance.windowMutex){
+									LobyNetManager.Instance.update(LobyNetManager.updateRoomtable);
+//								}
 							}
 //							else{
 //								LobyNetManager.Instance.send(LobyNetManager.roomInfo);
@@ -319,6 +320,10 @@ package
 				FlexGlobals.topLevelApplication.introduceText.visible = false;
 			}
 		}
+		public function refreshRoom(obj:Object):void
+		{
+			RoomTableDraw(obj);
+		}
 
 		// 当在房间里面的时候，描画房间里面的桌子
 		public function RoomTableDraw(obj:Object):Boolean
@@ -370,6 +375,9 @@ package
 						}
 							
 						var id:int = i*roomTableColumnMax +j;
+						// 如果是非可显示游戏桌，不显示
+						if(obj[id].gid == -1)
+							continue;
 						var roomid:int = obj[id].rid;
 						// 桌子的图
 						var img:Image = new Image();
@@ -401,27 +409,24 @@ package
 						else
 							img.toolTip += "该游戏桌禁止聊天\n"
 						canvas.addChild(img);
-/*						var tablename:Label = new Label();
-						tablename.x = img.x +3;
-						tablename.y = img.y;
-						tablename.
-						tablename.text = obj[id].name;
-						canvas.addChild(tablename);*/
 						
 						// 桌子上的桌号
 						var label:Label = new Label();
-						if((id+1) >= 10)
-						{
-							label.x = img.x+1-30;
-						}
-						else
-						{
-							label.x = img.x +12-30;
-						}
-						label.y = img.y - 25 ;
-						label.text = (id+1).toString();
+//						if((id+1) >= 10)
+//						{
+//							label.x = img.x+1-30;
+//						}
+//						else
+//						{
+//							label.x = img.x +12-30;
+//						}
+						label.x = img.x -36;
+						label.y = img.y - 30 ;
+						// 为了保证换行以后的文字能够都显示出来
+						label.width = 50;
+						label.height = 45;
+						label.text = String(obj[id].name).replace("台", "台\n");;//(id+1).toString();
 						label.setStyle("fontSize", 14);
-						//label.setStyle("fontWeight", "bold");
 						label.setStyle("color","#ffcc33"); 
 						label.name = "tag"+id.toString();
 						canvas.addChild(label);
@@ -613,7 +618,7 @@ package
 					isAnnouncePlaying = true;
 					// 解释得到的消息文字
 					data = JSON.decode(curAnnounce);
-					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.setStyle("color", "#efefef");
+//					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.setStyle("color", "#efefef");
 					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.text = data.content[0].val;
 					FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.x = FlexGlobals.topLevelApplication.lobbyAnnounce.width;
 				}
@@ -626,14 +631,12 @@ package
 						isAnnouncePlaying = true;
 						// 解释得到的消息文字
 						data = JSON.decode(curAnnounce);
-						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.setStyle("color", "#308060");
+//						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.setStyle("color", "#308060");
 						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.text = data.content[0].val;
 						FlexGlobals.topLevelApplication.lobbyAnnounce.lobbyancText.x = FlexGlobals.topLevelApplication.lobbyAnnounce.width;
 					}
 				}
 			}
-			
-			
 		}
 	}
 }

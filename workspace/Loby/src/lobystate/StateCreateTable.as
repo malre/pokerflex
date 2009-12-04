@@ -1,6 +1,6 @@
 package lobystate
 {
-	import mx.core.FlexGlobals;
+	
 
 	public class StateCreateTable extends NetRequestState
 	{
@@ -39,6 +39,9 @@ package lobystate
 		
 		override public function send(obj:StateManager):void
 		{
+			// 显示进行过程
+			LobyNetManager.Instance.showNetProcess("正在创建游戏桌……");
+
 			var req:Object = new Object();
 			if(passwordEnable)
 				req.pw = password;
@@ -50,7 +53,7 @@ package lobystate
 				req.mag = goldrate;
 			req.ac = chatEnable;
 			req.lid = StateGetPlayerInfo.Instance.lastSuccData.player.lid;
-			req.gid = StateGetPlayerInfo.Instance.lastSuccData.player.gid;
+			req.gid = StateGetTableInfo.Instance.gameRoomGid;
 			req.getPlayers = true;
 			
 			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_createTable;
@@ -61,19 +64,27 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
-				// 
-				LobyManager.Instance.changeState(2);
+				StateLobyJoinTable.Instance.setTablename(obj.room.name);
+				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
+
+				// 关闭显示视窗
+				LobyNetManager.Instance.closeNetProcess();
 				return true;
 			}
 			else{
 				LobyErrorState.Instance.showErrMsg("创建房间失败！");
+
+				// 关闭显示视窗
+				LobyNetManager.Instance.closeNetProcess();
 				return false;
 			}
 			
 		}
 		override public function fault():void
 		{
+			// 关闭显示视窗
+			LobyNetManager.Instance.closeNetProcess();
+
 			LobyErrorState.Instance.showErrMsg("超时，创建房间失败！");
 		}
 	}

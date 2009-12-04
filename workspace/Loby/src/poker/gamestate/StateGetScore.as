@@ -6,6 +6,7 @@ package poker.gamestate
 	import mx.core.FlexGlobals;
 	
 	import poker.NetManager;
+	import poker.timeoutDealwithGUI;
 	
 	public class StateGetScore extends NetRequestState
 	{
@@ -25,6 +26,7 @@ package poker.gamestate
 		override public function send(obj:StateManager):void
 		{
 			NetManager.sender.url = NetManager.sendURL_game;
+			NetManager.sender.requestTimeout = 3000;
 			NetManager.sender.request = {"getScore":"true"};
 			NetManager.sender.send();
 		}
@@ -42,7 +44,12 @@ package poker.gamestate
 		}
 		override public function fault():void
 		{
-			NetManager.Instance.send(NetManager.send_getScore);
+			if(++timeoutCounter > timeoutCounterMax)
+			{
+				timeoutDealwithGUI.Instance.deal(timeoutDealwithGUI.getPlayerScore);
+			}else{
+				NetManager.Instance.send(NetManager.send_getScore);
+			}
 		}
 	}
 }

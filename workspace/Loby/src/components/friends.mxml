@@ -67,13 +67,16 @@
 			import mx.collections.SortField;
 			import mx.events.FlexEvent;
 			
+			import poker.NetManager;
+			import poker.gamestate.StateInviteFriend;
+			
 			private var cursor:IViewCursor;
 			
 			protected function friends_creationCompleteHandler(event:FlexEvent):void
 			{
 				// 创建IViewCursor，利用好友类中的数组变量
 				var sort:Sort = new Sort();
-				sort.fields = [ new SortField("value", true) ] ;
+				sort.fields = [ new SortField("name", true) ] ;
 				StateGetFriends.Instance.friends.sort = sort;
 				StateGetFriends.Instance.friends.refresh();
 				cursor = StateGetFriends.Instance.friends.createCursor();
@@ -113,12 +116,43 @@
 			{
 				if(nameinput.text != "")
 				{
-					if(cursor.findFirst({value:nameinput.text})){
+					if(cursor.findFirst({name:nameinput.text})){
 						var index:int = StateGetFriends.Instance.friends.getItemIndex(cursor.current);
 						friendlist.scrollToIndex(index);
 						friendlist.selectedItem = cursor.current;
 					}
 				}
+			}
+
+
+			protected function btnInvite_clickHandler(event:MouseEvent):void
+			{
+				// 首先确认是否有好友被选中
+				if(friendlist.selectedIndex == -1){
+					showMsg("请先选择一个好友。");
+				}
+				else{
+					StateInviteFriend.Instance.setInvitePid(friendlist.selectedItem.pid);
+					NetManager.Instance.send(NetManager.send_inviteFriend);
+					btnInvite.enabled = false;
+				}
+			}
+
+
+			protected function msgconfirm_clickHandler(event:MouseEvent):void
+			{
+				btnInvite.enabled = true;
+				btnSearch.enabled = true;
+				msgbox.visible = false;
+				label_msg.text = "";
+			}
+			
+			public function showMsg(str:String):void
+			{
+				btnInvite.enabled = false;
+				btnSearch.enabled = false;
+				msgbox.visible = true;
+				label_msg.text = str;
 			}
 
 		]]>
@@ -132,14 +166,18 @@
 	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateLoadingdata,StateMain"
 				 dataProvider="{StateGetFriends.Instance.friends}">
 		<mx:columns>
-			<mx:DataGridColumn headerText="玩家名" dataField="value"/>
+			<mx:DataGridColumn headerText="玩家名" dataField="name"/>
+			<mx:DataGridColumn headerText="uid" dataField="uid"/>
 			<mx:DataGridColumn headerText="pid" dataField="pid"/>
-			<mx:DataGridColumn headerText="key" dataField="key"/>
 		</mx:columns>
 	</mx:DataGrid>
-	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="276" label="邀请"/>
+	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="276" label="邀请" click="btnInvite_clickHandler(event)"/>
 	<s:Button includeIn="StateMain" x="265" y="276" label="查找" id="btnSearch" click="searchRecord(event)" />
 	<s:TextInput includeIn="StateMain" x="133" y="275" id="nameinput"/>
+	<s:Panel includeIn="StateMain" x="101" y="98" width="164" height="107" id="msgbox" title="提示" visible="false">
+		<s:Button x="41" y="49" id="btnconfirm" label="确定" click="msgconfirm_clickHandler(event)"/>
+		<s:Label x="10" y="10" id="label_msg" width="132" height="32"/>
+	</s:Panel>
 </s:Group>
 
 

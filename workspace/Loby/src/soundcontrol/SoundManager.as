@@ -108,5 +108,21 @@ package soundcontrol
 			}
 		}	
 		
+		// 播放 开场，结束，放弃等音效
+		public function playSE(name:String):void
+		{
+			if(!_SEEnable)
+				return;
+
+			if(name == "pass"){
+				ResourceManagerPoker.SoundPass.play();
+			}
+			else if(name == "start"){
+				ResourceManagerPoker.SoundStart.play();
+			}
+			else if(name == "win"){
+				ResourceManagerPoker.SoundWin.play();
+			}
+		}
 	}
 }

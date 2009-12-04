@@ -112,6 +112,8 @@ package poker
 				{
 					if(data[0] == data[1])
 						return 1;		// 33 模式
+					else
+						return -1;
 				}
 				else if(data.length == 4)
 				{
@@ -153,7 +155,7 @@ package poker
 				if(!flag)
 				{
 					// 2 和 司令不能出现在顺子或者连对中
-					if(pattern.indexOf(tmp) >= 8 && arr[arr.length-1] >= 46/*方块2*/)
+					if(pattern.indexOf(tmp) >= 8 && arr[arr.length-1] >= 48/*方块2*/)
 					{
 						return -1;
 					}

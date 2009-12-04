@@ -4,12 +4,18 @@ package lobystate
 	{
 		public var lastFlag:Boolean;
 		public var lastSuccData:Object = new Object();
+		protected var timeoutCounter:int = 0;
+		protected var timeoutCounterMax:int = 3;
 		// construct
 		public function NetRequestState()
 		{
 			lastFlag = false;
 		}
 		
+		public function clearCounter():void
+		{
+			timeoutCounter = 0;
+		}
 		// handler
 		public function send(obj:StateManager):void
 		{

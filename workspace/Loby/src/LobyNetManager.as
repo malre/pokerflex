@@ -1,5 +1,7 @@
 package
 {
+	import components.processMsgbox;
+	
 	import flash.events.Event;
 	
 	import json.JSON;
@@ -8,6 +10,7 @@ package
 	
 	import mx.core.FlexGlobals;
 	import mx.managers.CursorManager;
+	import mx.managers.PopUpManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
@@ -31,7 +34,7 @@ package
 		static public const URL_addloby:String = "lobby/player/add";
 		static public const URL_autoAddlobby:String = "game/room/autoAdd";
 		static public const URL_leaveloby:String = "lobby/player/remove";
-		static public const URL_roomPlayerlist:String = "lobby/player/list";
+		static public const URL_roomPlayerlist:String = "lobby/player/onlinelist";//"lobby/player/list";
 		static public const URL_playerInfo:String = "default/account/identity";
 		static public const URL_tableInfo:String = "game/list/list";	// 房间中桌子的信息
 		static public const URL_joinTable:String = "game/room/add";
@@ -39,7 +42,8 @@ package
 		static public const URL_updateTableInfo:String = "game/room/update";	// 桌子上玩家的信息
 		static public const URL_createTable:String = "game/room/create";
 		static public const URL_getFriends:String = "game/friend/list";
-		//private var URL_
+		static public const URL_getTableSetting:String = "game/room/viewSetting";
+		static public const URL_getInviteList:String = "game/list/invitation";
 		// 各种请求定义
 		static public const getlobyaddress:String = "request loby";
 		static public const addloby:String = "join to loby";
@@ -54,12 +58,21 @@ package
 		static public const getTablePlayerInfo:String = "get table player info";
 		static public const createTable:String = "create table";
 		static public const getFriends:String = "get friends";
+		static public const getTableSetting:String = "get table setting";
+		static public const updateRoomtable:String = "up r t";
+		static public const updateRoomplayerlist:String = "up r pl";
+		static public const updateInvitelist:String = "up i l";
 		
 		//
 		static private var instance:LobyNetManager = null;
-		static private var httpser:HTTPService = new HTTPService();
+		static private var httpser:HTTPService;
+		static private var lobbyinfoUpdater:HTTPService;
 		
 		private var stateManager:StateManager = new StateManager();
+		private var lobbyUpdaterstateManager:StateManager = new StateManager();
+		
+		private var processBox:processMsgbox = null;
+		private var isProcessboxShowing:Boolean = false;
 		// 这里本来打算加入flex自己带的http用的一个数据格式化工具，但是使用失败了。具体的使用看各处的json format注释
 		// 经过考虑实际上是可行的，具体如下
 		// 使用这个类就可以了com.adobe.serializers.json.JSONDecoder;
@@ -68,6 +81,7 @@ package
 		
 		// 本次请求连接开始以后，不能够再进行请求
 		private var requestEnable:Boolean = true;
+		private var updateRequestenable:Boolean = true;
 		private var request_lobyaddress:Boolean = false;
 		private var request_playerinfo:Boolean = false;
 		private var request_roominfo:Boolean = false;
@@ -75,22 +89,26 @@ package
 		private var request_jointable:Boolean = false;
 		
 		private var result:Object = new Object();
+		private var resultUpdate:Object = new Object();
 		private var lastRlt:Object = new Object();
 			// store for table data
 		public var tabledata:Object = new Object();
 		
 		public function LobyNetManager()
 		{
+			httpser = new HTTPService();
 			httpser.method = "POST";
 			httpser.requestTimeout = 5;
 			httpser.showBusyCursor = false;
 			httpser.addEventListener(ResultEvent.RESULT, httpResult);
 			httpser.addEventListener(FaultEvent.FAULT, httpFault);
 			
-			// json format
-			//httpser.serializationFilter = serializer0;
-			//httpser.resultFormat = "json";
-			
+			lobbyinfoUpdater = new HTTPService();
+			lobbyinfoUpdater.method = "POST";
+			lobbyinfoUpdater.requestTimeout = 5;
+			lobbyinfoUpdater.showBusyCursor = false;
+			lobbyinfoUpdater.addEventListener(ResultEvent.RESULT, lobbyupdateResult);
+			lobbyinfoUpdater.addEventListener(FaultEvent.FAULT, lobbyupdateFault);
 		}
 		
 		static public function get Instance():LobyNetManager
@@ -102,6 +120,10 @@ package
 		public function get httpservice():HTTPService
 		{
 			return httpser;
+		}
+		public function get lobbyUpdater():HTTPService
+		{
+			return lobbyinfoUpdater;
 		}
 		
 		public function set RequestEnable(val:Boolean):void
@@ -180,6 +202,7 @@ package
 				stateManager.changeState(StateLobyJoinTable.Instance);
 				var rq:Object = {"roomid":tabledata[param1].rid.toString(), "pos":p, "pw":param3, "getPlayers":"true"};
 				StateLobyJoinTable.Instance.setRequest(rq);
+				StateLobyJoinTable.Instance.setTablename(tabledata[param1].name);
 			}
 			else if(type == leaveTable)
 			{
@@ -201,7 +224,33 @@ package
 			{
 				stateManager.changeState(StateGetFriends.Instance);
 			}
+			else if(type == getTableSetting)
+			{
+				stateManager.changeState(StateGetTableSettingFromLobby.Instance);
+			}
 			stateManager.send();
+		}
+		// 向服务器发送请求
+		public function update(type:String):void
+		{
+			if(!updateRequestenable)
+				return;
+			else
+				updateRequestenable = false;
+
+			if(type == updateRoomtable)
+			{
+				lobbyUpdaterstateManager.changeState(StateUpdateRoomTable.Instance);
+			}
+			else if(type == updateRoomplayerlist)
+			{
+				lobbyUpdaterstateManager.changeState(StateUpdateRoomPlayerlist.Instance);
+			}
+			else if(type == updateInvitelist)
+			{
+				lobbyUpdaterstateManager.changeState(StateUpdateInvite.Instance);
+			}
+			lobbyUpdaterstateManager.send();
 		}
 		public function resend():void
 		{
@@ -236,41 +285,56 @@ package
 			stateManager.fault();
 		}
 		
-		// 对得到的房间数据进行分析，并进行设置
-		private function roomdataParse(obj:Object):void
+		public function lobbyupdateResult(event:Event):void
 		{
-			var flag:Boolean = true;
-			var index:int = 0;
-			while(flag)
-			{
-				// 是否有这个索引号的房间
-				if(result.hasOwnProperty(index.toString()))
-				{
-					
-					index++;
-				}
-				else
-				{
-					index = 0;
-					flag = false;
-				}
-			}				
-/*					var xmllist:XMLList = FlexGlobals.topLevelApplication.treeData.node.(@label == "双扣");
-					if(xmllist.length() > 0)
-					{
-						for(var i:int=0;i<10;i++)
-						{
-							var newnode:XML = <node/>;
-							newnode.@label = "房间"+(i+1).toString();
-							newnode.@id = i;
-							xmllist.appendChild(newnode);
-						}
-					}*/			
+			// 恢复请求许可
+			updateRequestenable = true;
+			
+			try{
+				resultUpdate = JSON.decode(lobbyinfoUpdater.lastResult.toString());
+			}catch(error:ArgumentError){
+				trace("json decode error");
+			}
+			
+			lobbyUpdaterstateManager.receive(resultUpdate);
+		}
+		public function lobbyupdateFault(event:Event):void
+		{
+			// 恢复请求许可
+			updateRequestenable = true;
+			lobbyUpdaterstateManager.fault();
 		}
 		
-		private function tabledataParse(obj:Object):void
+		
+		/**
+		 * 该部分是显示一个网络进行的状况，明确显示目前进行到什么步骤，以及何处出现了错误
+		 * @return 该次操作是否成功
+		 * 
+		 */		
+		public function showNetProcess(text:String):Boolean
 		{
+			// 创建置顶窗口一旦失败，游戏会出现大量异常表现，暂时先隐去
+//			if(isProcessboxShowing){
+//				if(processBox){
+//					processBox.processMsg.text = text;
+//					return true;
+//				}
+//				return false;
+//			}
+//			processBox = processMsgbox(PopUpManager.createPopUp(FlexGlobals.topLevelApplication.shopmenu, processMsgbox, false));
+//			processBox.processMsg.text = text;
+
+			isProcessboxShowing = true;
+			return true;
+		}
+		public function closeNetProcess():Boolean
+		{
+			if(isProcessboxShowing){
+				PopUpManager.removePopUp(processBox);
+				isProcessboxShowing = false;
+			}
 			
+			return true;
 		}
 	}
 }

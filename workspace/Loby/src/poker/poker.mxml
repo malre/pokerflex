@@ -2,10 +2,11 @@
 <mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:s="library://ns.adobe.com/flex/spark" 
 	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:components="components.*" xmlns:message="message.*"
 	width="780" height="560"
 	creationComplete="creationComplete()" 
 	enterFrame="enterFrame(event)"
-	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)" xmlns:components="components.*" xmlns:message="message.*">
+	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
 
 	<!--<mx:Image x="0" y="0" source="@Embed('../res/BG_G_01.jpg')"/>-->
 <!--	<mx:Button x="327" y="385" label="出牌" width="65" height="22" id="btnSendCards" icon="@Embed(source='../res/chupai.png')" click="sendCardsClicked(event)"/>
@@ -22,6 +23,7 @@
 			fontsize: 12;
 		}
 	</fx:Style>
+	<mx:SWFLoader id="BGswf" source="@Embed('../assets/gameBG.swf')" visible="true"/>
 	<components:GameCardsCommand id="commandbar" x="295" y="350">
 	</components:GameCardsCommand>
 	<!--玩家头像-->
@@ -36,14 +38,16 @@
 	<mx:Image x="309" y="515" id="imgPlayerDownReady" source="@Embed('../res/ready.png')"/>
 	<mx:Image x="281" y="472" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
 	<!--聊天上的按钮和选项设置等等-->
-	<s:Button x="284" y="455" skinClass="components.ButtonReady" id="btnReady" click="gameReadyClicked(event)" toolTip="准备游戏"/>
-	<s:Button x="680" y="528" skinClass="components.Button_GameTalk" click="gameSendMsg_clickHandler(event)" toolTip="发送聊天对话"/>
-	<s:Button x="702" y="525" skinClass="components.ButtonMsgEmotion" click="chatEmotion_clickHandler(event)" toolTip="表情"/>
-	<s:Button x="722" y="525" skinClass="components.ButtonMsgOption" click="chatOptionBtn_clickHandler(event)" toolTip="聊天设置"/>
-	<s:Button x="742" y="525" skinClass="components.ButtonMsgToAll" click="shoutgame_clickHandler(event)" toolTip="小喇叭"/>
+	<s:Button x="285" y="455" skinClass="components.ButtonReady" id="btnReady" click="gameReadyClicked(event)" toolTip="准备游戏"/>
+	<s:Button x="680" y="528" skinClass="components.Button_GameTalk" id="btnTalk" click="gameSendMsg_clickHandler(event)" toolTip="发送聊天对话"/>
+	<s:Button x="702" y="525" skinClass="components.ButtonMsgEmotion" id="btnEmotion" click="chatEmotion_clickHandler(event)" toolTip="表情"/>
+	<s:Button x="722" y="525" skinClass="components.ButtonMsgOption" id="btnChatSetting" click="chatOptionBtn_clickHandler(event)" toolTip="聊天设置"/>
+	<s:Button x="742" y="525" skinClass="components.ButtonMsgToAll" id="btnShout" click="shoutgame_clickHandler(event)" toolTip="小喇叭"/>
 	<s:Button x="682" y="312" skinClass="components.ButtonSetup" id="btnSetting" click="btnSetting_clickHandler(event)" toolTip="游戏设置"/>
-	<s:Button x="644" y="312" skinClass="components.ButtonHelp" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
-	<s:Button x="720" y="313" skinClass="components.ButtonExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅"/>
+	<s:Button x="644" y="312" skinClass="components.ButtonHelp" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
+	<s:Button x="720" y="313" skinClass="components.ButtonExit" id="btnExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅"/>
+	<!--桌面上的房间位置和桌号显示-->
+	<s:Label x="15" y="15" width="101" height="25" fontSize="16" fontWeight="normal" id="label_tableName" color="#ffcc33"/>
 
 	<!--左边的玩家的属性-->
 	<s:Group id="playerinfoLeft" x="3" y="309" height="69" width="138">
@@ -85,7 +89,7 @@
 	<mx:Label x="60" y="43" height="18" color="#FFFFFF" id="Label_leftcardsnumDown"/>
 	</s:Group>
 
-	<mx:Button x="10" y="524" label="显示出过的牌" id="btnCardView" click="requestCardHistory()" enabled="true" visible="false"/>
+	<s:Button x="0" y="524" id="btnCardView" click="requestCardHistory()" skinClass="components.Button_calcCards" enabled="true" visible="true"/>
 	<mx:Label x="705" y="60" id="textPlayerSelf" width="56" height="24" color="#FFFFFF"/>
 	<!--倒计时的沙漏和数字-->
 	<mx:Image x="95" y="231" id="sandglass" source="@Embed('../res/sandglass.swf')" width="16" height="28"/>
@@ -102,17 +106,17 @@
 	<message:chatEmotion x="581" y="406" id="chatemotion" visible="false" creationComplete="chatemotion_creationCompleteHandler(event)"/>
 	<!--玩家右上部分的信息-->
 	<mx:Image x="651" y="41" width="51" height="46" id="selfAvatar"/>
-	<mx:Label x="721" y="94" color="#FFFFFF" id="textPlayerSelf_score" height="18"/>
-	<mx:Label x="721" y="109" color="#FFFFFF" id="textPlayerSelf_level" height="18"/>
-	<mx:Label x="721" y="124" color="#FFFFFF" id="textPlayerSelf_gold" height="18"/>
+	<mx:Label x="699" y="91" color="#FFFFFF" id="textPlayerSelf_score" height="18"/>
+	<mx:Label x="699" y="106" color="#FFFFFF" id="textPlayerSelf_level" height="18"/>
+	<mx:Label x="699" y="121" color="#FFFFFF" id="textPlayerSelf_gold" height="18"/>
 	<!--设置窗口-->
 	<components:OptionWindow x="254" y="145" id="optionWindow" currentState="State1" visible="false"/>
-	<mx:DataGrid x="646" y="176" width="110" height="100" editable="false" horizontalScrollPolicy="on" baseColor="#f6edae" contentBackgroundAlpha="0" backgroundAlpha="0"
-		headerStyleName="pokerdatagridheader" dataProvider="{Game.Instance.tablelist}">
+	<mx:DataGrid id="gameplayerlist" x="646" y="176" width="110" height="100" editable="false" horizontalScrollPolicy="on" baseColor="#f6edae" contentBackgroundAlpha="0" backgroundAlpha="0"
+		headerStyleName="pokerdatagridheader" dataProvider="{Game.Instance.tablelist}" showHeaders="false">
 		<mx:columns>
 			<mx:DataGridColumn headerText="用户" dataField="name" color="#FFFFFF"/>
-			<mx:DataGridColumn headerText="金币" width="80" dataField="col2" color="#FFFFFF"/>
-			<mx:DataGridColumn headerText="级别" width="100" dataField="level" color="#FFFFFF"/>
+			<mx:DataGridColumn headerText="金币" dataField="money" width="80" color="#FFFFFF"/>
+			<mx:DataGridColumn headerText="级别" dataField="level" width="100" color="#FFFFFF"/>
 			<mx:DataGridColumn headerText="积分" dataField="score" color="#FFFFFF"/><!--backgroundColor="#0B4046" -->
 		</mx:columns>
 	</mx:DataGrid>
@@ -120,18 +124,22 @@
     <fx:Script>
     	<![CDATA[
 			import flashx.textLayout.elements.TextFlow;
-    		import mx.events.FlexEvent;
-			import message.inputEditManager;
-    		import message.ContentViewer;
-			import mx.core.FlexGlobals;
-    		import mx.core.UIComponent;
-    		import mx.rpc.events.ResultEvent;
-    		import mx.rpc.events.FaultEvent;
-    		import mx.managers.PopUpManager;
-    		import mx.controls.Alert;
+			
 			import lobystate.StateGetFriends;
+			import lobystate.StateGetTableSettingFromLobby;
+			import lobystate.StateLobyJoinTable;
+			
+			import mx.core.FlexGlobals;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import flash.display.MovieClip;
+			
+			import message.ContentViewer;
+			import message.inputEditManager;
 			import poker.gamestate.StateGetTableSetting;
-    		protected var createOver:Boolean = false;
+
+			protected var createOver:Boolean = false;
 			protected var inGame:Boolean = false;
 			private var ui1:UIComponent = new UIComponent();
 			public var inputboxGame:ContentViewer = new ContentViewer();
@@ -195,15 +203,36 @@
 				ui1.addChild(inputboxGame.createInputbox(579, 527, 100, 15, 1));	// view part   
 			}
 			
+			
 			public function startup(obj:Object):void
 			{
-				initGUI();
-				this.visible = true;
-				this.addElement(ui1);
 				// 把得到的返回数据复制给本游戏的处理返回的result对象
 				NetManager.Instance.json1 = obj;
 				NetManager.Instance.requestSuccess = true;
 				Game.Instance.getSelfseat(obj);
+
+				this.visible = true;
+				initGUI();
+				Game.Instance.gameState = 1;
+				BGswf.alpha = 0;
+				MovieClip(BGswf.content).gotoAndStop(0);
+			}
+			
+			public function _startup():void
+			{
+				this.visible = true;
+				this.addElement(ui1);
+				//
+				btnTalk.visible = true;
+				btnEmotion.visible = true;
+				btnChatSetting.visible = true;
+				btnShout.visible = true;
+				btnSetting.visible = true;
+				btnExit.visible = true;
+				btnFriends.visible = true;
+				//
+				gameplayerlist.visible = true;
+
 				//
 				Label_leftcardsnumRight.visible = false;
 				Label_leftcardsnumUp.visible = false;
@@ -225,6 +254,8 @@
 				commandbar.visible = false;
 				// 初始化玩家的准备用按钮
 				Game.Instance.readyStateInit();
+				// 描画桌子编号
+				label_tableName.text = StateLobyJoinTable.Instance.tablename;
 			}
 			public function endup():void
 			{
@@ -252,7 +283,6 @@
 				Game.Instance.readyStateInit();
 				GameObjectManager.Instance.shutdown();
 				// 背景还是要保留
-				GameObjectManager.Instance.setVisibleByName("BG", true);
 				Game.Instance.clearPlayerCards();
 				initGUI();
 			}
@@ -299,6 +329,16 @@
 				Lable_playerLevelUp.text = "";
 				Lable_playerLevelLeft.text = "";
 				Lable_playerLevelRight.text = "";
+				//
+				btnTalk.visible = false;
+				btnEmotion.visible = false;
+				btnChatSetting.visible = false;
+				btnShout.visible = false;
+				btnSetting.visible = false;
+				btnExit.visible = false;
+				btnFriends.visible = false;
+				//
+				gameplayerlist.visible = false;
 			}
 			
 			public function enterFrame(event:Event):void
@@ -376,12 +416,12 @@
     		protected function btnSetting_clickHandler(event:MouseEvent):void
     		{
 				if(!LobyManager.Instance.windowMutex){
-					if(StateGetTableSetting.Instance.getSettingSuccess)
+					if(StateGetTableSettingFromLobby.Instance.lastFlag)
 					{
 						StateGetTableSetting.Instance.setData(StateGetTableSetting.Instance.lastSuccData);
+					}else{
+						
 					}
-					else
-						NetManager.Instance.send(NetManager.send_getTableSetting);
 				}
     		}
     		

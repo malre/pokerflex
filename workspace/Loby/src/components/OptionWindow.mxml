@@ -17,6 +17,8 @@
 			
 			import poker.LevelDefine;
 			
+			import soundcontrol.SoundManager;
+			
 			// 金币的倍数的设定
 			[Bindable]
 			public var goldplusrate:Array = ["1","2","3","4","6","8","10"];
@@ -92,11 +94,15 @@
 							checkboxAllowChat.selected);
 						LobyNetManager.Instance.send(LobyNetManager.createTable);
 						closeButton_click();
+						// set SE
+						SoundManager.Instance().SEEnable = checkboxSEEnable.selected;
 					}else {
 						labelErrormsg.text = "等级范围输入有误，请重新输入！";
 						labelErrormsg.visible = true;
 					}
 				}else if(currentState == "State3")	{
+					// set SE
+					SoundManager.Instance().SEEnable = checkboxSEEnable.selected;
 					closeButton_click();
 				}
 			}
@@ -123,6 +129,70 @@
 			{
 				closeButton_click();
 			}
+
+			protected function state2_enterStateHandler(event:FlexEvent):void
+			{
+				checkboxSEEnable.selected = SoundManager.Instance().SEEnable;
+				labelErrormsg.visible = false;
+			}
+
+
+			protected function state3_enterStateHandler(event:FlexEvent):void
+			{
+				labelErrormsg.visible = false;
+			}
+			
+			public function inGameSetting(obj:Object):void
+			{
+				// 对所有的选项进行设置
+				if(obj.hasOwnProperty("password")) {
+					checkboxPassword.selected = true;
+					inputboxPassword.text = "********";
+				}else{
+					checkboxPassword.selected = false;
+				}
+				checkboxPassword.enabled = false;
+				inputboxPassword.enabled = false;
+				
+				if(obj.hasOwnProperty("lowerlevellimit")) {
+					lowlevel.selectedIndex = obj.lowerlevellimit;
+				}else{
+					lowlevel.selectedIndex = 0;
+				}
+				lowlevel.enabled = false;
+				
+				if(obj.hasOwnProperty("upperlevellimit")) {
+					highlevel.selectedIndex = obj.upperlevellimit;
+				}else{
+					highlevel.selectedIndex = 0;
+				}
+				highlevel.enabled = false;
+				
+				if(obj.hasOwnProperty("magnification")) {
+					checkboxAllowGold.selected = true;
+					goldplus.selectedIndex = obj.magnification;
+				}else{
+					checkboxAllowGold.selected = false;
+					goldplus.selectedIndex = 0;
+				}
+				checkboxAllowGold.enabled = false;
+				goldplus.enabled = false;
+				
+				if(obj.hasOwnProperty("allowchat")) {
+					checkboxAllowChat.selected = obj.allowchat;
+				}else{
+					checkboxAllowChat.selected = false;
+				}
+				checkboxAllowChat.enabled = false;
+				
+				// SE
+				// load from soundmanger
+				checkboxSEEnable.selected = SoundManager.Instance().SEEnable;
+				
+				if(currentState != "State3")
+					currentState = "State3";
+			}
+
 		]]>
 
 	</fx:Script>
@@ -174,8 +244,8 @@
 	</s:transitions>
 	<s:states>
 		<s:State name="State1"/>
-		<s:State name="State2"/>
-		<s:State name="State3"/>
+		<s:State name="State2" enterState="state2_enterStateHandler(event)"/>
+		<s:State name="State3" enterState="state3_enterStateHandler(event)"/>
 	</s:states>
 	<s:BitmapImage includeIn="State2,State3" source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" d:locked="true" id="bitmapimage1"/>
 	<s:Button includeIn="State2,State3" x="315" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>

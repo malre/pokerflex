@@ -45,17 +45,15 @@ package message.httpController
 				if(!obj.success)
 					return;
 			}
-			else{
-				if(obj.hasOwnProperty("chat"))
+			if(obj.hasOwnProperty("chat"))
+			{
+				if(obj.chat.length == 0)
 				{
-					if(obj.chat.length == 0)
-					{
-						return;
-					}
-				}else
 					return;
+				}
+			}else
+				return;
 				
-			}
 			lastSuccObj = obj;
 			// 传送给viewer来显示
 			for(var i:int =0; i<obj.chat.length; i++)
@@ -77,6 +75,9 @@ package message.httpController
 		 */		
 		protected function addNewMsg(obj:Object, tf:TextFlow):void
 		{
+			if(tf.numChildren >= Messenger.msgContainerMaxLength)
+				tf.removeChildAt(0);
+
 			var pp:ParagraphElement = new ParagraphElement();
 			var str:String = Messenger.Instance.delSlash(obj.message);
 			var data:Object = JSON.decode(str);

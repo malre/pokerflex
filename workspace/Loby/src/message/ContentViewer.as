@@ -142,6 +142,16 @@ package message
 			textinput.flowComposer.updateAllControllers();
 //			textinput.flowComposer.setFocus(1);
 		}
+		public static function insertEmotion(id:int, tf:TextFlow):void
+		{
+			var img:InlineGraphicElement = new InlineGraphicElement();
+			img.width = 12+4;
+			img.height = 12+4;
+			img.source = ResEmotion.EmotionRes[id];
+//			img.alignmentBaseline = flash.text.engine.TextBaseline.IDEOGRAPHIC_BOTTOM;
+			img.id = "Emotion"+id;
+			tf.addChild(img);
+		}
 		public function clearInput():void
 		{
 			// 默认，选中所有的文字 
