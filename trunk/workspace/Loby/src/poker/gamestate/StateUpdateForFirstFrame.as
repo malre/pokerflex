@@ -1,5 +1,7 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
@@ -78,14 +80,14 @@ package poker.gamestate
 				GameObjectManager.Instance.setVisibleByName("CardbackUp", true);
 				GameObjectManager.Instance.setVisibleByName("CardbackLeft", true);
 				// 使过往牌记录的查看按钮有效
-				FlexGlobals.topLevelApplication.gamePoker.btnCardView.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.btnCardView.visible = true;
 				return true;
 			}
 			else{
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			// 如果此次发送超时， 同样的内容将会被重发
 			NetManager.Instance.send(NetManager.send_updateWhileGameFirstframe);

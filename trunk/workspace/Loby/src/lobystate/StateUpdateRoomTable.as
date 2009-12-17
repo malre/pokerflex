@@ -1,7 +1,8 @@
 package lobystate
 {
+	import flash.events.Event;
+	
 	import mx.core.FlexGlobals;
-	import lobystate.StateGetPlayerInfo;
 	
 	public class StateUpdateRoomTable extends NetRequestState
 	{
@@ -44,14 +45,11 @@ package lobystate
 				//
 				LobyNetManager.Instance.tabledata = obj;
 				LobyManager.Instance.refreshRoom(obj);
-				// 设置自动加入桌子的按钮可见
-				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = true;
-				FlexGlobals.topLevelApplication.lobbyroomtag.visible = true;
 				// 创建房间需要判断
 				if(StateUpdateRoomInfo.Instance.isCreateTableEnable())
-					FlexGlobals.topLevelApplication.BtnCreateTable.visible = true;
+					FlexGlobals.topLevelApplication.functionpanel.BtnCreateTable.enabled = true;
 				else
-					FlexGlobals.topLevelApplication.BtnCreateTable.visible = false;
+					FlexGlobals.topLevelApplication.functionpanel.BtnCreateTable.enabled = false;
 				
 				// 在大厅断线的恢复到大厅，在游戏断线的会在对房间玩家列表请求完成以后继续恢复
 				if(LobyManager.Instance.state == 3)
@@ -76,15 +74,15 @@ package lobystate
 			}
 			else{
 				// 加入房间失败
-				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
-				FlexGlobals.topLevelApplication.BtnCreateTable.visible = false;
+//				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
+				FlexGlobals.topLevelApplication.functionpanel.BtnCreateTable.enabled = false;
 				
 				// 关闭进行过程
 				LobyNetManager.Instance.closeNetProcess();
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			// 关闭进行过程
 //			LobyNetManager.Instance.closeNetProcess();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:components="components.*">
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:components="components.*" xmlns:mx="library://ns.adobe.com/flex/halo">
 
 	<fx:Script>
 		<![CDATA[
@@ -20,13 +20,19 @@
 				Game.Instance.pass();
 			}
 			
+
+			protected function btnHint_clickHandler(event:MouseEvent):void
+			{
+				Game.Instance.hint();
+			}
+
 		]]>
 	</fx:Script>
 
-	<s:BitmapImage source="@Embed('/assets/ButtonBg.png')" resizeMode="scale" d:userLabel="ButtonBG" d:locked="true"/>
+	<mx:Image source="@Embed('/assets/ButtonBg.swf')"/>
 	<s:Button id="btnSendCards" label="出牌" x="40" y="2" skinClass="components.Button_Chupai" click="sendCardsClicked(event)" toolTip="出牌"/>
 	<s:Button id="btnDiscard" label="放弃" x="99" y="2" skinClass="components.Button_Chupai" click="discardClicked(event)" toolTip="放弃出牌"/>
-	<s:Button id="btnHint" label="提示" x="159" y="2" skinClass="components.Button_Chupai" enabled="false" toolTip="提示出牌"/>
+	<s:Button id="btnHint" label="提示" x="159" y="2" skinClass="components.Button_Chupai" click="btnHint_clickHandler(event)" toolTip="提示出牌"/>
 	<fx:Private>
 	</fx:Private>
 </s:Group>

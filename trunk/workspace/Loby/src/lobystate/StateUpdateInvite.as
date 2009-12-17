@@ -1,6 +1,9 @@
 package lobystate
 {
+	import flash.events.Event;
+	
 	import mx.collections.ArrayCollection;
+	import mx.core.FlexGlobals;
 
 	public class StateUpdateInvite extends NetRequestState
 	{
@@ -19,6 +22,15 @@ package lobystate
 				instance = new StateUpdateInvite();
 			return instance;
 		}
+		
+		public function getRefuselist():Array
+		{
+			var arr:Array = new Array();
+			for(var i:int=0;i<invitation.length;i++){
+				arr.push(invitation[i].pid);
+			}
+			return arr;
+		}
 
 		// override function
 		override public function send(obj:StateManager):void
@@ -31,11 +43,19 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				var data:Object;
+				var data:Array = new Array();
+				var joinData:Object;
 				for(var i:int=0; i<obj.length; i++){
-					data = new Object();
-					data.text = obj[i].name+"邀请你去"+obj[i].lname+obj[i].rname+"参加游戏";
-					invitation.addItem(data);
+					joinData = obj[i];
+					joinData.text = obj[i].name+"邀请你去"+obj[i].lname+obj[i].rname+"参加游戏";
+					data.push( joinData );
+					
+				}
+				invitation.source = data;
+				
+				//
+				if(data.length != 0){
+					FlexGlobals.topLevelApplication.invitation.visible = true;
 				}
 				return true;
 			}
@@ -43,7 +63,7 @@ package lobystate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 		}
 	}

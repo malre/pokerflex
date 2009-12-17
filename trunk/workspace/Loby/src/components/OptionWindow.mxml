@@ -247,7 +247,7 @@
 		<s:State name="State2" enterState="state2_enterStateHandler(event)"/>
 		<s:State name="State3" enterState="state3_enterStateHandler(event)"/>
 	</s:states>
-	<s:BitmapImage includeIn="State2,State3" source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" d:locked="true" id="bitmapimage1"/>
+	<mx:Image includeIn="State2,State3" source="@Embed('/assets/Bg_shop.swf')" id="bitmapimage1"/>
 	<s:Button includeIn="State2,State3" x="315" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
 	<s:BitmapImage source="@Embed('/assets/OptionWindow_title.png')" resizeMode="scale" includeIn="State2,State3" x="15" y="3" d:locked="true" id="bitmapimage2"/>
 	<s:Button includeIn="State2,State3" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2" visible="false"/>

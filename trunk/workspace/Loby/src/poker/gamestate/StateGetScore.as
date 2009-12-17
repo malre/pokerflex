@@ -1,5 +1,7 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
@@ -42,7 +44,7 @@ package poker.gamestate
 			}
 			
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			if(++timeoutCounter > timeoutCounterMax)
 			{

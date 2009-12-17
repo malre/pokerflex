@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	
@@ -36,8 +38,9 @@ package lobystate
 			{
 				// 获得得分序列中，本大厅游戏的正确位置
 				var gid:int = StateGetTableInfo.Instance.gameRoomGid;
-				for each(var player:Object in roomlist)
+				for(var m:int=0;m<roomlist.length;m++)
 				{
+					var player:Object = roomlist[m];
 					var flag:Boolean = false;
 					for(var i:int=0;i<obj.players.length;i++){
 						if(player.name == obj.players[i].name){
@@ -59,7 +62,8 @@ package lobystate
 					{
 						
 					}else {
-						roomlist.removeItemAt(roomlist.getItemIndex(player));
+						roomlist.removeItemAt(m);
+						m--;
 					}
 				}
 				for each(var leftplayer:Object in obj.players)
@@ -80,7 +84,7 @@ package lobystate
 					}
 				}
 				// 更新大厅的玩家数据列表
-				FlexGlobals.topLevelApplication.customcomponent31.lobbyplayerlist.invalidateList();
+				FlexGlobals.topLevelApplication.functionpanel.lobbyplayerlist.invalidateList();
 				// 继续对游戏的恢复
 				if(LobyManager.Instance.state == 4)
 				{
@@ -94,7 +98,7 @@ package lobystate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			
 		}

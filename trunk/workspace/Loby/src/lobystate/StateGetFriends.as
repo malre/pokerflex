@@ -40,21 +40,21 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				FlexGlobals.topLevelApplication.friendslist.toState(2+type);;
+				FlexGlobals.topLevelApplication.friendslist.toState(2+type);
 				friends.source = obj.friends as Array;
 				// 关闭显示视窗
 				LobyNetManager.Instance.closeNetProcess();
 				return true;
 			}
 			else{
-				LobyErrorState.Instance.showErrMsg("获得好友列表失败，请关闭后再次尝试。您可能还没有好友。");
+//				LobyErrorState.Instance.showErrMsg("获得好友列表失败，请关闭后再次尝试。您可能还没有好友。");
 				// 关闭显示视窗
 				LobyNetManager.Instance.closeNetProcess();
 				return false;
 			}
 			
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			LobyErrorState.Instance.showErrMsg("失败，超时。");
 			// 关闭显示视窗

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Script>
+		<![CDATA[
+			import lobystate.StateGetPlayerInfo;
+			import lobystate.StateRefuseInvitation;
+			import lobystate.StateUpdateInvite;
+			
+			import mx.controls.DataGrid;
+			
+			private var destLobbyid:int = -1;
+			private var destTableid:int = -1;
+			private var acceptInvite:Object = new Object();;
+
+			public function getDestLobbyId():int
+			{
+				return destLobbyid;
+			}
+			public function getDestTableId():int
+			{
+				return destTableid;
+			}
+			public function getAcceptInviteObj():Object
+			{
+				return acceptInvite;
+			}
+			protected function btnconfirm_clickHandler(event:MouseEvent):void
+			{
+				if(invitationlist.selectedIndex == -1){
+					showmsg("请先选择一个要接受的邀请");
+				}
+				else{
+					this.visible = false;
+					acceptInvite = invitationlist.selectedItem;
+					// 玩家点击了接受按钮，需要进行一个本地的加入的过程，在这过程中一旦出现错误，邀请就无效了
+					destLobbyid = invitationlist.selectedItem.lid;
+					destTableid = invitationlist.selectedItem.rid;
+					// 首先判断是否是同一个大厅
+					if(StateGetPlayerInfo.Instance.lastSuccData.player.lid == destLobbyid){
+						// 请求进入指定的房间,密码会一起被发送
+						// 存在一个无法确定自己的请求的座位的问题
+						LobyNetManager.Instance.send(LobyNetManager.joinTable, destTableid.toString());
+					}
+					else{
+						// 会切换大厅
+						LobyNetManager.Instance.send(LobyNetManager.leaveloby);
+						LobyManager.Instance.changeState(5);
+					}
+				}
+			}
+
+
+			protected function btnRefuseall_clickHandler(event:MouseEvent):void
+			{
+				btnRefuseall.enabled = false;
+				btnconfirm.enabled = false;
+				StateRefuseInvitation.Instance.setRefuselist(StateUpdateInvite.Instance.getRefuselist());
+				LobyNetManager.Instance.send(LobyNetManager.refuseInvite);
+			}
+			
+			public function close():void
+			{
+				this.visible = false;
+				btnRefuseall.enabled = true;
+				btnconfirm.enabled = true;
+			}
+			public function showmsg(str:String):void
+			{
+				btnRefuseall.enabled = false;
+				btnconfirm.enabled = false;
+				msgbox.visible = true;
+				msgtext.text = str;
+			}
+
+			protected function msgconfirm_clickHandler(event:MouseEvent):void
+			{
+				msgbox.visible = false;
+				btnRefuseall.enabled = true;
+				btnconfirm.enabled = true;
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG"/>
+	<mx:DataGrid id="invitationlist" x="31" y="42" width="302" height="216" editable="false" dragEnabled="false" dragMoveEnabled="false"
+				 dataProvider="{StateUpdateInvite.Instance.invitation}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="全部邀请列表,点选进行接受" dataField="text"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<s:Button id="btnconfirm" x="71" y="266" label="接受" click="btnconfirm_clickHandler(event)"/>
+	<s:Button id="btnRefuseall" x="208" y="266" label="全部拒绝" click="btnRefuseall_clickHandler(event)"/>
+	<s:Panel id="msgbox" x="102" y="89" width="157" height="114" title="提示" visible="false">
+		<s:Button x="43" y="56" label="确定" click="msgconfirm_clickHandler(event)"/>
+		<s:Label id="msgtext" x="10" y="10" text="拒绝失败，请重新尝试" width="137" height="38" />
+	</s:Panel>
+</s:Group>

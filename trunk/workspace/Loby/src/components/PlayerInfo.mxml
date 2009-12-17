@@ -5,10 +5,13 @@
 	currentState="StateStart" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
-			import poker.LevelDefine;
+			import lobystate.StateGetItemeffect;
 			import lobystate.StateGetPlayerInfo;
+			import item.miscDefines;
+			
 			import mx.events.StateChangeEvent;
-			import LobyManager;
+			
+			import poker.LevelDefine;
 			protected function Button_click():void
 			{
 				currentState='StateStart';
@@ -40,6 +43,25 @@
 					playername.text = StateGetPlayerInfo.Instance.lastSuccData.player.name;
 					avatar.source = StateGetPlayerInfo.Instance.playerMiddleAvatar;
 					gold.text = StateGetPlayerInfo.Instance.lastSuccData.player.money+" 金币";
+					
+					// 对玩家的道具的持续时间部分进行描画,x=38,y=250
+					var idx:int = 0;
+					for each(var it:Object in StateGetItemeffect.Instance.lastSuccData.effects)
+					{
+						//
+						var img:Image = new Image();
+						img.source = LobyNetManager.URL_lobysonAddress + "/resources/image/item/" + it.iid + ".png";
+						img.x = 38 + idx*20;
+						img.y = 250;
+						img.height = 20;
+						img.width = 20;
+						var date:Date = new Date();
+						var time:Number = Number(it.starttime)*1000+Number(it.effecttime)*1000;
+						date.setTime(time);
+						img.toolTip = miscDefines.getItemName(it.iid)+"\n"+ "有效期至:"+date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate();
+						this.addElement(img);
+						idx++;
+					}
 				}
 			}
 
@@ -96,7 +118,7 @@
 		<s:State name="StateMain"/>
 		<s:State name="StateStart"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" includeIn="StateMain" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateMain" id="bitmapimage1"/>
 	<s:RichText y="200" color="#ffffff" x="113" fontSize="14" fontFamily="宋体" width="77" height="44" id="scoreText" includeIn="StateMain"/>
 	<s:BitmapImage source="@Embed('/assets/playerinfo_title.png')" resizeMode="scale" includeIn="StateMain" x="11" y="3"/>
 	<s:BitmapImage source="@Embed('/assets/playerinfo_text.png')" resizeMode="scale" includeIn="StateMain" x="31" y="171"/>

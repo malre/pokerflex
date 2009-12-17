@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+	
 	import message.Messenger;
 	
 	import mx.core.FlexGlobals;
@@ -52,10 +54,10 @@ package lobystate
 					var reg:RegExp = /size=small/;
 					playerMiddleAvatar = lastSuccData.player.avatar.replace(reg, "size=middle");
 					// 设置玩家的信息
-					FlexGlobals.topLevelApplication.imgAvatar.source = obj.player.avatar;
-					FlexGlobals.topLevelApplication.imgAvatar.scaleX = 0.7;
-					FlexGlobals.topLevelApplication.imgAvatar.scaleY = 0.7;
-					FlexGlobals.topLevelApplication.textPlayname.text = obj.player.name;
+//					FlexGlobals.topLevelApplication.imgAvatar.source = obj.player.avatar;
+//					FlexGlobals.topLevelApplication.imgAvatar.scaleX = 0.7;
+//					FlexGlobals.topLevelApplication.imgAvatar.scaleY = 0.7;
+//					FlexGlobals.topLevelApplication.textPlayname.text = obj.player.name;
 					//
 					LobyManager.Instance.state = 1;	// goto normal
 					//
@@ -63,13 +65,12 @@ package lobystate
 					// 给恢复用的备用变量赋值
 					LobyManager.Instance.playerInfo = obj;
 					// 因为开始系统消息的获得只要一次，所以放在这里执行
-					Messenger.Instance.startSystem();
 					Messenger.Instance.startShout();
 					// 对玩家信息进行分析，看玩家上次是否是意外离开，需不需要恢复
 					if(obj.player.lid != "null")
 					{
 						// 设置左边的玩家所在房间位置的提示信息
-						FlexGlobals.topLevelApplication.customcomponent21.setCurrentLobby(int(obj.player.lid));
+						FlexGlobals.topLevelApplication.lobbypanel.setCurrentLobby(int(obj.player.lid));
 	
 						LobyManager.Instance.changeState(3);	// resotre
 						if(obj.player.rid != "null")
@@ -81,8 +82,8 @@ package lobystate
 					}
 				}
 				else if(type == 1){
-					FlexGlobals.topLevelApplication.playerinfo.visible = true;
-					FlexGlobals.topLevelApplication.playerinfo.currentState="StateMain";
+					// 从界面上点击请求玩家信息
+					LobyNetManager.Instance.send(LobyNetManager.getitemeffect);
 				}
 
 				// 关闭显示视窗
@@ -98,7 +99,7 @@ package lobystate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			LobyManager.Instance.windowMutex = false;
 			// 关闭显示视窗

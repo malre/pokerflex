@@ -12,34 +12,35 @@
 			fontsize: 12;
 		}
 	</fx:Style>
-	<s:BitmapImage source="@Embed('/assets/bg_5.png')" resizeMode="scale" includeIn="State3" id="bitmapimage1"/>
-	<s:Button includeIn="State3" x="13" skinClass="components.ButtonMsgEmotion" y="414" click="btnEmotion_clickHandler(event)"/>
-	<s:Button includeIn="State3" x="64" y="414" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)"/>
-	<s:Button includeIn="State3" x="254" y="436" skinClass="components.Button_GameTalk_say" click="lobbySendMsg(event)" toolTip="发送聊天对话"/>
-	<mx:DataGrid id="lobbyplayerlist" includeIn="State3" x="13" y="27" width="257" editable="false" height="173" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
+	<mx:Image source="@Embed('/assets/bg_5.swf')" includeIn="State3" id="bitmapimage1"/>
+	<s:Button includeIn="State3" x="184" skinClass="components.ButtonMsgEmotion" y="492" click="btnEmotion_clickHandler(event)" toolTip="表情"/>
+	<s:Button includeIn="State3" x="208" y="492" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)" toolTip="喊话"/>
+	<s:Button includeIn="State3" x="232" y="492" skinClass="components.ButtonMsgOption" click="option_clickHandler(event)" toolTip="聊天设置"/>
+	<mx:DataGrid id="lobbyplayerlist" includeIn="State3" x="13" y="41" width="243" editable="false" height="167" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
 		dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}" dragEnabled="false"
-		headerStyleName="datagridheader" dragMoveEnabled="false" draggableColumns="false">
+		headerStyleName="datagridheader" dragMoveEnabled="false" draggableColumns="false" horizontalGridLines="false" verticalGridLines="false">
 		<mx:columns>
-			<mx:DataGridColumn headerText="昵称" dataField="name" color="#FFFFFF"/>
-			<mx:DataGridColumn headerText="金币数" dataField="money" color="#FFFFFF"/>
-			<mx:DataGridColumn headerText="级别" dataField="level" color="#FFFFFF"/>
-			<mx:DataGridColumn headerText="积分" dataField="score" color="#FFFFFF"/>
+			<mx:DataGridColumn headerText="昵称" dataField="name"/>
+			<mx:DataGridColumn headerText="金币数" dataField="money"/>
+			<mx:DataGridColumn headerText="级别" dataField="level"/>
+			<mx:DataGridColumn headerText="积分" dataField="score"/>
 		</mx:columns>
 	</mx:DataGrid>
-	<!--<s:Group id="textshow" includeIn="State3" x="13" y="205" width="241" height="206">-->
-	<s:TextArea x="13" y="205" id="lobbychatbox" includeIn="State3" width="257" height="206" color="#FFFFFF" baseColor="#f6edae" editable="false" creationComplete="lobbychatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
+	
+	<s:Button skinClass="components.Button_Item" click="Buttonitem_click()" toolTip="道具箱" x="80" y="221" includeIn="State3"/>
+	<s:Button x="43" y="221" skinClass="components.Button_Vita" click="Buttonvita_click()" toolTip="个人信息" includeIn="State3"/>
+	<s:Button skinClass="components.ButtonHelp" click="Buttonfriend_click()" toolTip="好友" x="115" y="220" includeIn="State3"/>
+	<s:Button x="153" y="221" skinClass="components.Button_Shop" click="Buttonshop_click()" includeIn="State3" toolTip="商店"/>
+	<s:Button label="自动加入" skinClass="components.Button_AutoJoinTable" id="BtnAutojoinTable" click="BtnAutojoinTable_clickHandler(event)" x="189" y="220" includeIn="State3" toolTip="自动加入房间"/>
+	<s:Button x="226" y="221" label="创建房间" skinClass="components.Button_CreateTable" id="BtnCreateTable" click="BtnCreateTable_clickHandler(event)" enabled="false" includeIn="State3" toolTip="创建房间"/>
+	
+	<s:TextArea x="13" y="263" id="lobbychatbox" includeIn="State3" width="243" height="222" color="#FFFFFF" baseColor="#f6edae" editable="false" creationComplete="lobbychatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
+	<s:TextArea x="12" y="494" id="lobbyinputbox" includeIn="State3" width="140" height="17" color="#FFFFFF" baseColor="#f6edae" editable="true" keyDown="lobbyinputbox_keyDownHandler(event)" paste="lobbyinputbox_pasteHandler(event)" contentBackgroundAlpha="0" maxChars="60" focusEnabled="false"/>	
+	<s:Button includeIn="State3" x="151" y="493" skinClass="components.Button_GameTalk" click="lobbySendMsg(event)" toolTip="发送聊天对话"/>
 	<!--</s:Group>-->	
-	<!--<mx:VScrollBar height="206" x="257" y="199" id="lobbyTextScroll" scroll="scrollListener(event)" includeIn="State3" visible="false"/>-->
-	<mx:ColorPicker includeIn="State3" x="118" y="413" selectedColor="#FFFFFF" change="colorpicker1_changeHandler(event)"/>
-	<mx:Label includeIn="State3" x="33" y="414" text="表情" color="#FFFFFF"/>
-	<mx:Label includeIn="State3" x="86" y="414" text="喊话" color="#FFFFFF"/>
-	<mx:Label x="144" y="414" text="颜色" color="#FFFFFF" includeIn="State3"/>
-	<mx:Label x="219" y="414" text="文字大小" color="#FFFFFF" includeIn="State3" width="54" textAlign="left"/>
-	<s:NumericStepper includeIn="State3" x="173" y="414" width="46" height="20" minimum="12" maximum="30" 
-		color="#000000" id="fontsizeStepper" change="fontsizeStepper_changeHandler(event)"/>
-	<message:chatEmotion id="emotion" includeIn="State3" x="14" y="293" visible="false">
+	<message:chatSetting x="99" y="456" id="lobbychatsetting" visible="false" includeIn="State3"/>
+	<message:chatEmotion id="lobbyEmotion" includeIn="State3" x="109" y="338" visible="false">
 	</message:chatEmotion>
-	<!--<s:Button includeIn="State3" x="263" y="413" label="et" click="button1_clickHandler(event)" width="15" height="21"/>-->
 	<s:transitions>
 		<s:Transition fromState="State2" toState="State3" autoReverse="true">
 			<s:Parallel>
@@ -62,32 +63,104 @@
 	</s:states>
 	<fx:Script>
 		<![CDATA[
-			import flashx.textLayout.elements.InlineGraphicElement;
-			import flashx.textLayout.elements.ParagraphElement;
-			import flashx.textLayout.elements.SpanElement;
-			import flashx.textLayout.elements.TextFlow;
-			
 			import item.playerItemsRequester;
+			import item.shopRequester;
+			
+			import lobystate.StateGetFriends;
+			import lobystate.StateGetPlayerInfo;
 			import lobystate.StateGetRoomPlayerlist;
 			
-			import message.ContentViewer;
-			import message.Messenger;
-			import message.ResEmotion;
-			import message.chatEmotion;
-			import message.inputEditManager;
+			import message.*;
 			
 			import mx.core.FlexGlobals;
-			import mx.core.UIComponent;
 			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
-			import mx.controls.Alert;
-			private var ui1:UIComponent = new UIComponent();
-			public var inputboxLobby:ContentViewer = new ContentViewer();
-			
-			protected function button1_clickHandler(event:MouseEvent):void
+
+			protected function Buttonitem_click():void
 			{
-				lobbychatbox.selectAll();
-				lobbychatbox.insertText("");
+				if(!LobyManager.Instance.windowMutex){
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
+					{
+						if(StateGetPlayerInfo.Instance.lastSuccData.success)
+						{
+							FlexGlobals.topLevelApplication.shopmenu.visible = true;
+							FlexGlobals.topLevelApplication.shopmenu.currentState="StateItemMain";
+							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+							playerItemsRequester.Instance().setRequest(0, 13);
+							playerItemsRequester.Instance().send();
+							//
+							LobyManager.Instance.windowMutex = true;
+						}
+					}
+				}
+			}
+			
+			protected function Buttonvita_click():void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastFlag)
+					{
+						StateGetPlayerInfo.Instance.setType(1);
+						LobyNetManager.Instance.send(LobyNetManager.playerInfo);
+						LobyManager.Instance.windowMutex = true;
+					}
+				}
+			}
+			
+			protected function Buttonfriend_click():void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastFlag)
+					{
+						FlexGlobals.topLevelApplication.friendslist.visible = true;
+						FlexGlobals.topLevelApplication.friendslist.toState(1);
+						LobyManager.Instance.windowMutex = true;
+						StateGetFriends.Instance.settype(0);
+						LobyNetManager.Instance.send(LobyNetManager.getFriends);
+					}
+				}
+			}
+			
+			protected function Buttonshop_click():void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastFlag)
+					{
+						FlexGlobals.topLevelApplication.shopmenu.visible = true;
+						FlexGlobals.topLevelApplication.shopmenu.currentState="StateShopMain";
+						// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+						shopRequester.Instance().setRequest(0, 13);
+						shopRequester.Instance().send();
+						LobyManager.Instance.windowMutex = true;
+					}
+				}
+			}
+			
+			protected function BtnAutojoinTable_clickHandler(event:MouseEvent):void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					LobyNetManager.Instance.send(LobyNetManager.autoaddlobby);
+				}
+			}
+			
+			protected function BtnCreateTable_clickHandler(event:MouseEvent):void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					FlexGlobals.topLevelApplication.createTable.visible = true;
+					FlexGlobals.topLevelApplication.createTable.setLobbyGoldrate();
+					FlexGlobals.topLevelApplication.createTable.currentState = "State2";
+					LobyManager.Instance.windowMutex = true;
+				}
+			}
+			
+			
+			protected function option_clickHandler(event:MouseEvent):void
+			{
+				lobbychatsetting.visible = !lobbychatsetting.visible;
 			}
 			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
@@ -95,49 +168,35 @@
 				// 当窗口创建完�E皁E���
 				// 创建对话用皁E���E系统，并封E��E��绑定到主显示窗口�
 				Messenger.Instance;	// net part
-				ui1.addChild(inputboxLobby.createInputbox(14, 438, 231, 18, 0));	// view part  
-				this.addElement(ui1);
-				ui1.visible = false;
 			}
 
 			protected function state3_enterStateHandler(event:FlexEvent):void
 			{
 				Messenger.Instance.stopGame();
 				Messenger.Instance.startLobby();
-				emotion.setType(0);
-				ui1.visible = true;
+//				emotion.setType(0);
+//				ui1.visible = true;
 			}
 			
 			protected function state2_enterStateHandler(event:FlexEvent):void
 			{
-				if(emotion)
+				if(lobbyEmotion)
 				{
-					emotion.visible = false;
+					lobbyEmotion.visible = false;
 				}
-				ui1.visible = false;
+//				ui1.visible = false;
 			}
 			
 			protected function btnEmotion_clickHandler(event:MouseEvent):void
 			{
-				emotion.visible = !emotion.visible;
+				lobbyEmotion.visible = !lobbyEmotion.visible;
 			}
 			
 
 			protected function lobbySendMsg(event:MouseEvent):void
 			{
-				inputEditManager(inputboxLobby.textinput.interactionManager).sendButtonPressed();
-			}
-
-
-			protected function colorpicker1_changeHandler(event:ColorPickerEvent):void
-			{
-				inputboxLobby.changeInputColor(event.color);
-			}
-
-
-			protected function fontsizeStepper_changeHandler(event:Event):void
-			{
-				inputboxLobby.fontsize = fontsizeStepper.value;
+//				inputEditManager(inputboxLobby.textinput.interactionManager).sendButtonPressed(lobbyinputbox.textFlow);
+				Messenger.Instance.sendButtonPressed(lobbyinputbox);
 			}
 
 			// 发送喊话按钮
@@ -148,14 +207,34 @@
 					LobyManager.Instance.windowMutex = true;
 				}
 			}
-
+			
 
 			protected function lobbychatbox_creationCompleteHandler(event:FlexEvent):void
 			{
-				lobbychatbox.textFlow = new TextFlow();
+//				lobbychatbox.textFlow = new TextFlow();
+			}
+			protected function lobbyinputbox_creationCompleteHandler(event:FlexEvent):void
+			{
+//				lobbyinputbox.textFlow = new te
 			}
 
 
+			protected function lobbyinputbox_keyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.keyCode == Keyboard.NUMPAD_ENTER || event.keyCode == Keyboard.ENTER)
+				{
+					Messenger.Instance.sendButtonPressed(lobbyinputbox);
+					return;
+				}
+				super.keyDownHandler(event);
+			}
+
+
+			protected function lobbyinputbox_pasteHandler(event:Event):void
+			{
+				lobbyinputbox.textFlow.fontSize = 12;
+			}
+			
 		]]>
 	</fx:Script>
 </s:Group>

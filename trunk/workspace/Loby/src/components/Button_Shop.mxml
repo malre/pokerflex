@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009">
-	<s:BitmapImage source="@Embed('/assets/Button_shop_up.png')" resizeMode="scale" includeIn="disabled" x="1.1" y="3.15"/>
-	<s:BitmapImage includeIn="over" x="1" source="@Embed('/assets/Button_shop_over.png')" resizeMode="scale"/>
-	<s:BitmapImage includeIn="up" x="0.85" y="3.45" source="@Embed('/assets/Button_shop_up.png')" resizeMode="scale"/>
-	<s:BitmapImage x="0.85" y="3.45" source="@Embed('/assets/Button_shop_up.png')" resizeMode="scale" includeIn="down"/>
-	<s:transitions>
-		<s:Transition fromState="up" toState="over" autoReverse="true">
-		</s:Transition>
-		<s:Transition fromState="over" toState="up" autoReverse="true">
-		</s:Transition>
-	</s:transitions>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
 	<s:states>
 		<s:State name="up"/>
 		<s:State name="over"/>
 		<s:State name="down"/>
 		<s:State name="disabled"/>
 	</s:states>
-	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<fx:Private>
-		<th:Guide x="10"/>
-		<th:Guide y="2"/>
-	</fx:Private>
+	<mx:Image source="@Embed('/assets/Button_shop_up.swf')" includeIn="disabled,up"/>
+	<mx:Image source="@Embed('/assets/Button_shop_over.swf')" includeIn="over"/>
+	<mx:Image source="@Embed('/assets/Button_shop_down.swf')" includeIn="down"/>
 </s:Skin>

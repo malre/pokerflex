@@ -25,6 +25,8 @@ package message.httpController
 		
 		override public function send(val:Object=null) : void
 		{
+			if(requestMutex)
+				return;
 			httpservice.url = Messenger.Instance.chatReceiveLobby;
 			if(lastSuccObj.hasOwnProperty("chat"))
 			{
@@ -38,9 +40,11 @@ package message.httpController
 			else
 				httpservice.request = {"time":0};
 			httpservice.send();
+			requestMutex = true;
 		}
 		override public function result(event:Event) : void
 		{
+			requestMutex = false;
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
 			if(obj.hasOwnProperty("success"))
 			{
@@ -57,15 +61,15 @@ package message.httpController
 			// 传送给viewer来显示
 			for(var i:int =0; i<obj.chat.length; i++)
 			{
-				//FlexGlobals.topLevelApplication.customcomponent31.showboxLobby.addNewMsg(obj.chat[(obj.chat.length-1)-i]);
-				var ta:TextArea = TextArea(FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox);
+				//FlexGlobals.topLevelApplication.functionpanel.showboxLobby.addNewMsg(obj.chat[(obj.chat.length-1)-i]);
+				var ta:TextArea = TextArea(FlexGlobals.topLevelApplication.functionpanel.lobbychatbox);
 				addNewMsg(obj.chat[(obj.chat.length-1)-i], ta.textFlow);
 				ta.appendText("");
 			}
 		}
 		override public function fault(event:Event) : void
 		{
-			
+			requestMutex = false;
 		}
 		
 		/**

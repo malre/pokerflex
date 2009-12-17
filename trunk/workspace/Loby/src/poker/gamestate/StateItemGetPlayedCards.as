@@ -1,5 +1,7 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
@@ -34,9 +36,10 @@ package poker.gamestate
 		{
 			if(super.receive(obj))
 			{
-				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(FlexGlobals.topLevelApplication.gamePoker, CardViewer, true));
-				popup.setCardsData(obj.history);
-				popup.visible = false;
+				PopUpManager.createPopUp(FlexGlobals.topLevelApplication.gameRoomCanvas, CardViewer, true);
+//				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(null, CardViewer, true)).setCardsData(obj.history);
+//				popup.setCardsData(obj.history);
+//				popup.visible = false;
 				return true;
 			}
 			else{
@@ -44,7 +47,7 @@ package poker.gamestate
 			}
 			
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 		}
 	}

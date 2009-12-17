@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- http://yecon.blog.hexun.com/35115697_d.html -->
+<TextFlow xmlns="http://ns.adobe.com/textLayout/2008" whiteSpaceCollapse="preserve" fontSize="16" paragraphSpaceAfter="15" paddingTop="4" paddingLeft="4">
+    <linkNormalFormat color="#0000ff" textDecoration="underline" />
+    <linkHoverFormat color="#ff0000" textDecoration="underline" />
+    <linkActiveFormat color="#ff00ff" textDecoration="underline" />
+    <format id="code" backgroundColor="#000000" backgroundAlpha="0.1" fontFamily="_typewriter" />
+    <p fontWeight="bold">The following excerpt is from <a href="http://blog.flexexamples.com/" target="_self">Flex Examples</a>:</p>
+    <p>The following example shows how you can import a TextFlow object from an XML object in Flex 4 by using the static <span format="code">TextFlowUtil.importFromXML()</span> method.</p>
+    <p>For more information, see <a href="http://blog.flexexamples.com/2009/06/25/importing-a-text-flow-from-an-xml-object-in-flex-4/">"Importing a text flow from an XML object in Flex 4"</a>.</p>
+</TextFlow>

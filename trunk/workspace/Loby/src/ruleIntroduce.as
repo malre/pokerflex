@@ -5,9 +5,9 @@ package
 		public function ruleIntroduce()
 		{
 		}
-		public static const ruleText:String = "<p><span size='16' color='#ffff00'>【双扣简介】</span></p>" + 
+		public static const ruleText:String = "<p fontWeight='bold'><span fontSize='16' color='#663300'>【双扣简介】</span></p>" + 
 				"<p>双扣游戏主要流行于江浙一带，游戏规则类似\"跑得快\"。游戏打两副牌，对家两人为一队。一队的两人要相互配合尽快将手中的牌先出完。</p>" + 
-				"<p size='16' color='#ffff00'>【游戏规则】</p>\n" + 
+				"<p fontSize='16' color='#663300'>【游戏规则】</p>\n" + 
 				"<p>1． 基本规则</p>" + 
 				"<p>玩家人数：4人</p>" + 
 				"<p>组队：对家的两人为一队</p>" + 
@@ -33,7 +33,7 @@ package
 				"<p>天王炸弹最大。</p>" + 
 				"<p>5． 接风</p>" + 
 				"<p>	当某玩家出完手上的牌后，如果其他玩家都放弃。则下一轮的任意出牌权是他的对家。</p>" + 
-				"<p size='16' color='#ffff00'>【积分计算】</p>" + 
+				"<p fontSize='16' color='#663300'>【积分计算】</p>" + 
 				"<p>名次的决定：</p>" + 
 				"<p>按照出完牌的顺序决定名次，当双扣的情况按照出牌顺序排定第三名和第四名。</p>" + 
 				"<p>当一队的两个玩家都先将牌出完，而另外一方的两家都没有出完，则为双扣。</p>" + 

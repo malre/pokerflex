@@ -10,6 +10,10 @@ package message
 	 */
 	import flash.events.TimerEvent;
 	
+	import flashx.textLayout.elements.FlowElement;
+	import flashx.textLayout.elements.FlowLeafElement;
+	import flashx.textLayout.elements.ParagraphElement;
+	
 	import message.httpController.lobbyChatRec;
 	import message.httpController.lobbyChatSend;
 	import message.httpController.shoutChatRec;
@@ -17,6 +21,8 @@ package message
 	import message.httpController.systemChatRec;
 	import message.httpController.tableChatRec;
 	import message.httpController.tableChatSend;
+	
+	import spark.components.TextArea;
 
 	public class Messenger
 	{
@@ -36,9 +42,9 @@ package message
 		public var chatReceivePlayer:String = messengerReceive + "/player";
 		public var chatReceiveSystem:String = messengerReceive + "/system";
 		public var chatReceiveShout:String = messengerReceive + "/yell";
-		
-		private var addressSet:Array = [chatSendLobby, chatSendRoom, chatSendPlayer,
-			chatReceiveLobby, chatReceiveRoom, chatReceivePlayer, chatReceiveSystem];
+		// 加入这个是用来合成聊天的信息，减少通信频率
+		// 原来的shout接收类，被改造成这个合成类
+		public var chatRecShoutSystemPlayer:String = messengerReceive + "/combine";
 		
 		public static const sendLobby:int = 0;
 		public static const sendRoom:int = 1;
@@ -69,7 +75,7 @@ package message
 		public var lobbyRec:lobbyChatRec;
 		public var tableSend:tableChatSend;
 		public var tableRec:tableChatRec;
-		public var systemRec:systemChatRec;
+//		public var systemRec:systemChatRec;
 		public var shoutSend:shoutChatSend;
 		public var shoutRec:shoutChatRec;
 
@@ -91,8 +97,6 @@ package message
 			tableSend.setmethod("POST");
 			tableRec = new tableChatRec();
 			tableRec.setmethod("POST");
-			systemRec = new systemChatRec();
-			systemRec.setmethod("POST");
 			
 			shoutSend = new shoutChatSend();
 			shoutSend.setmethod("POST");
@@ -115,10 +119,6 @@ package message
 		public function stopGame():void
 		{
 			tableRec.stopTimer();
-		}
-		public function startSystem():void
-		{
-			systemRec.startTimer(5000);
 		}
 		public function startShout():void
 		{
@@ -164,5 +164,92 @@ package message
 			rlt = src.replace(pattern2, "\\");
 			return rlt;
 		}
+		
+		public function sendButtonPressed(ta:TextArea):void
+		{
+			var msg:Object;
+			// 首先查看发送的消息是不是有实际内容
+			msg = getInputMsg(ta);
+			if(msg == null){
+				clearInput(ta);
+				return;
+			}
+			if(msg.content.length <= 0){
+				clearInput(ta);
+				return;
+			}
+			else if(msg.content.length <= 1)	{
+				if(msg.content[0].val == ""){
+					clearInput(ta);
+					return;
+				}
+			}
+			if(ta.id == "lobbyinputbox"){
+				Messenger.Instance.send(msg, Messenger.sendLobby);
+			}
+			else if(ta.id == "gameinputbox"){
+				Messenger.Instance.send(msg, Messenger.sendRoom);
+			}
+			// 如果是回车，将会清空自己的输入栏，然后发送send消息
+			clearInput(ta);
+		}
+		
+		public function getInputMsg(ta:TextArea):Object
+		{
+			var obj:Object = encode(ta, 0);
+			return obj;
+			//			ChatNetManager.Instance.send(str, ChatNetManager.sendLobby);
+		}
+		
+		private function encode(ta:TextArea, type:int):Object
+		{
+			var obj:Object;
+			if(ta.textFlow.numChildren <= 0)
+				return null;
+			var mp:ParagraphElement = ParagraphElement(ta.textFlow.getChildAt(0));
+			var num:int = mp.numChildren;
+			var output:Object = new Object(); 
+			if(ta.id == "lobbyinputbox"){
+				output.size = ContentViewer.Instance.lobbyFontsize;
+			}
+			else if(ta.id == "gameinputbox"){
+				output.size = ContentViewer.Instance.gameFontsize;
+			}
+			if(ta.textFlow.color == null)
+				output.color = 0xffffff;
+			else
+				output.color = ta.textFlow.color;
+			output.content = new Array();
+			for(var i:int;i<num;i++)
+			{
+				var ef:FlowElement = mp.getChildAt(i);
+				if(ef.id != null)
+				{
+					if(ef.id.substr(0,7) == "Emotion" && type != 1)
+					{
+						obj = new Object();
+						obj.type = "img";
+						obj.val = ef.id.substr(7);
+						output.content.push(obj);
+					}
+				}
+				else
+				{
+					obj = new Object();
+					obj.type = "text";
+					obj.val = FlowLeafElement(ef).text;
+					output.content.push(obj);
+				}
+			}
+			return output;
+		}
+		
+		public function clearInput(ta:TextArea):void
+		{
+			// 默认，选中所有的文字 
+			ta.selectAll();
+			// 删除所有选中的文字
+			ta.insertText("");
+		}		
 	}
 }

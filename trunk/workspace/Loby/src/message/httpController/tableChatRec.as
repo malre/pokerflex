@@ -1,6 +1,7 @@
 package message.httpController
 {
 	import flash.events.Event;
+	import flash.xml.XMLDocument;
 	
 	import flashx.textLayout.elements.InlineGraphicElement;
 	import flashx.textLayout.elements.ParagraphElement;
@@ -12,8 +13,9 @@ package message.httpController
 	import message.Messenger;
 	import message.ResEmotion;
 	
-	import spark.components.TextArea;
 	import mx.core.FlexGlobals;
+	
+	import spark.components.TextArea;
 
 	public class tableChatRec extends httpModelBase
 	{
@@ -23,6 +25,8 @@ package message.httpController
 		}
 		override public function send(val:Object=null) : void
 		{
+			if(requestMutex)
+				return;
 			httpservice.url = Messenger.Instance.chatReceiveRoom;
 			if(lastSuccObj.hasOwnProperty("chat"))
 			{
@@ -36,9 +40,11 @@ package message.httpController
 			else
 				httpservice.request = {"time":0};
 			httpservice.send();
+			requestMutex = true;
 		}
 		override public function result(event:Event) : void
 		{
+			requestMutex = false;
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
 			if(obj.hasOwnProperty("success"))
 			{
@@ -65,7 +71,7 @@ package message.httpController
 		}
 		override public function fault(event:Event) : void
 		{
-			
+			requestMutex = false;
 		}
 		
 		/**

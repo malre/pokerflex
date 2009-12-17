@@ -6,6 +6,7 @@ package poker.gamestate
 	import poker.Game;
 	import poker.NetManager;
 	import poker.timeoutDealwithGUI;
+	import flash.events.Event;
 	
 	public class StateGetLeftCards extends NetRequestState
 	{
@@ -50,7 +51,7 @@ package poker.gamestate
 			}
 			
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			if(++timeoutCounter > timeoutCounterMax)
 			{

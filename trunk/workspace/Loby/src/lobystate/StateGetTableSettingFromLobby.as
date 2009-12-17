@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+	
 	import mx.core.FlexGlobals;
 	import mx.rpc.http.HTTPService;
 
@@ -48,7 +50,7 @@ package lobystate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			// 关闭显示视窗
 			LobyNetManager.Instance.closeNetProcess();

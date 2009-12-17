@@ -65,20 +65,11 @@
 	<s:transitions>
 		<s:Transition fromState="State1" toState="State2" autoReverse="true">
 			<s:Parallel>
-				<s:Parallel target="{button5}">
-					<s:Fade duration="0"/>
-				</s:Parallel>
 			</s:Parallel>
 		</s:Transition>
 		<s:Transition fromState="State2" toState="State1" autoReverse="true">
 			<s:Parallel>
 				<s:Parallel target="{bitmapimage1}">
-					<s:Fade duration="0"/>
-				</s:Parallel>
-				<s:Parallel target="{button4}">
-					<s:Fade duration="0"/>
-				</s:Parallel>
-				<s:Parallel target="{button5}">
 					<s:Fade duration="0"/>
 				</s:Parallel>
 			</s:Parallel>
@@ -88,12 +79,10 @@
 		<s:State name="State1"/>
 		<s:State name="State2"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/bg_4.png')" resizeMode="scale" includeIn="State1" x="1" id="bitmapimage1"/>
-	<s:Button skinClass="components.Button_OpenCloes" label="Button" x="9.6" y="257" rotation="-180" id="button3" visible="false" click="Button_click_1()" includeIn="State1"/>
-	<s:Button includeIn="State1" skinClass="components.Button_OpenCloes" label="Button" x="271" y="179" id="button4" click="Button_click()"/>
-	<s:Button includeIn="State2" y="179" skinClass="components.Button_openWindow" id="button5" click="Button_click_1_1()"/>
-	<s:Label includeIn="State1" x="15" y="29" width="252" height="22" color="#F4A100" id="label_currentRoom" verticalAlign="middle"/>
-	<fx:Private>
-		<th:Guide y="180"/>
-	</fx:Private>
+	<mx:Image source="@Embed('/assets/bg_4.swf')" includeIn="State1" x="1" id="bitmapimage1"/>
+	<!--<s:Button skinClass="components.Button_OpenCloes" label="Button" x="9.6" y="257" rotation="-180" id="button3" visible="false" click="Button_click_1()" includeIn="State1"/>-->
+	<!--<s:Button includeIn="State1" skinClass="components.Button_OpenCloes" label="Button" x="271" y="179" id="button4" click="Button_click()"/>-->
+	<!--<s:Button includeIn="State2" y="179" skinClass="components.Button_openWindow" id="button5" click="Button_click_1_1()"/>-->
+	<s:Label includeIn="State1" x="15" y="43" width="240" height="22" id="label_currentRoom" verticalAlign="middle"/>
+	<!--color="#F4A100"--> 
 </s:Group>

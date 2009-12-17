@@ -7,11 +7,7 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<mx:Image source="@Embed('/assets/Button_Autojointable_up.swf')" includeIn="up" x="0.2" y="0.95"/>
-	<mx:Image source="@Embed('/assets/Button_Autojointable_over.swf')" includeIn="over" x="0.1" y="1"/>
-	<mx:Image source="@Embed('/assets/Button_Autojointable_down.swf')" includeIn="down" y="1"/>
-	<fx:Private>
-		<th:Guide x="0"/>
-		<th:Guide y="43"/>
-	</fx:Private>
+	<mx:Image source="@Embed('/assets/Button_Autojointable_up.swf')" includeIn="up,disabled"/>
+	<mx:Image source="@Embed('/assets/Button_Autojointable_over.swf')" includeIn="over"/>
+	<mx:Image source="@Embed('/assets/Button_Autojointable_down.swf')" includeIn="down"/>
 </s:Skin>

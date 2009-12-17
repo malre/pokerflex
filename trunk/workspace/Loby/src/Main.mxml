@@ -13,98 +13,9 @@
 		preloader="GameLoadingbar">
 	<fx:Script>
 		<![CDATA[
-			import item.playerItemsRequester;
-			import item.shopRequester;
-			
-			import lobystate.StateGetFriends;
-			import lobystate.StateGetPlayerInfo;
-			
 			import spark.utils.TextFlowUtil;
+			import flash.display.StageDisplayState;
 			
-			protected function Buttonitem_click():void
-			{
-				if(!LobyManager.Instance.windowMutex){
-					// 等用户未登录的情况下，这些选项都无效
-					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
-					{
-						if(StateGetPlayerInfo.Instance.lastSuccData.success)
-						{
-							shopmenu.visible = true;
-							shopmenu.currentState="StateItemMain";
-							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
-							playerItemsRequester.Instance().setRequest(0, 13);
-							playerItemsRequester.Instance().send();
-							//
-							LobyManager.Instance.windowMutex = true;
-						}
-					}
-				}
-			}
-
-			protected function Buttonvita_click():void
-			{
-				if(!LobyManager.Instance.windowMutex){
-					// 等用户未登录的情况下，这些选项都无效
-					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
-					{
-						if(StateGetPlayerInfo.Instance.lastSuccData.success)
-						{
-							StateGetPlayerInfo.Instance.setType(1);
-							LobyNetManager.Instance.send(LobyNetManager.playerInfo);
-							LobyManager.Instance.windowMutex = true;
-						}
-					}
-				}
-			}
-
-			protected function Buttonfriend_click():void
-			{
-				if(!LobyManager.Instance.windowMutex){
-					// 等用户未登录的情况下，这些选项都无效
-					if(StateGetPlayerInfo.Instance.lastFlag)
-					{
-						friendslist.visible = true;
-						if(StateGetFriends.Instance.friends != null)
-						{
-							if(StateGetFriends.Instance.friends.length != 0)
-							{
-								friendslist.toState(2);
-								LobyManager.Instance.windowMutex = true;
-							}
-							else{
-								friendslist.toState(1);
-								LobyManager.Instance.windowMutex = true;
-								StateGetFriends.Instance.settype(0);
-								LobyNetManager.Instance.send(LobyNetManager.getFriends);
-							}
-						}else{
-							friendslist.toState(1);
-							LobyManager.Instance.windowMutex = true;
-							StateGetFriends.Instance.settype(0);
-							LobyNetManager.Instance.send(LobyNetManager.getFriends);
-						}
-					}
-				}
-			}
-
-			protected function Buttonshop_click():void
-			{
-				if(!LobyManager.Instance.windowMutex){
-					// 等用户未登录的情况下，这些选项都无效
-					if(StateGetPlayerInfo.Instance.lastSuccData.hasOwnProperty("success"))
-					{
-						if(StateGetPlayerInfo.Instance.lastSuccData.success)
-						{
-							shopmenu.visible = true;
-							shopmenu.currentState="StateShopMain";
-							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
-							shopRequester.Instance().setRequest(0, 13);
-							shopRequester.Instance().send();
-							LobyManager.Instance.windowMutex = true;
-						}
-					}
-				}
-			}
 
 			protected function createcomplete(event:Event):void
 			{
@@ -127,27 +38,41 @@
 				LobyManager.Instance.enterFrame();
 			}
 
-			protected function BtnAutojoinTable_clickHandler(event:MouseEvent):void
+
+			public function tolobby_clickHandler(event:MouseEvent):void
 			{
-				if(!LobyManager.Instance.windowMutex){
-					LobyNetManager.Instance.send(LobyNetManager.autoaddlobby);
-				}
+				currentState = "lobby";
+				gameRoomCanvas.visible = false;
+				functionpanel.currentState = "State2";
+				btn2lobby.visible = false;
+				lobbyroomtag.visible = false;
+				
+				btn2room.visible = true;
+				introduceText.visible = true;
+				lobbypanel.currentState='State1';
+				gameTreeView.visible = true;
 			}
 
-			protected function BtnCreateTable_clickHandler(event:MouseEvent):void
+
+			public function toroom_clickHandler(event:MouseEvent):void
 			{
-				if(!LobyManager.Instance.windowMutex){
-					createTable.visible = true;
-					createTable.setLobbyGoldrate();
-					createTable.currentState = "State2";
-					LobyManager.Instance.windowMutex = true;
-				}
+				currentState = "room";
+				gameRoomCanvas.visible = true;
+				functionpanel.currentState = "State3";
+				btn2lobby.visible = true;
+				lobbyroomtag.visible = true;
+				
+				btn2room.visible = false;
+				introduceText.visible = false;
+				lobbypanel.currentState= 'State2';
+				gameTreeView.visible = false;
 			}
 
 		]]>
 	</fx:Script>
 	<s:states>
-		<s:State name="Page1" th:color="0xcc0000"/>
+		<s:State name="lobby"/>
+		<s:State name="room"/>
 	</s:states>
 	<fx:Style>
 		@namespace d "http://ns.adobe.com/fxg/2008/dt";
@@ -161,32 +86,29 @@
 			fontSize: 14;
 		}
 	</fx:Style>
+	<fx:Declarations>
+		<!--<fx:String id="mk" source="Introduce.xml"/>-->
+	</fx:Declarations>
 	<fx:DesignLayer d:userLabel="bgp">
-		<s:BitmapImage source="@Embed('/assets/BG_D_3.png')" resizeMode="scale" d:userLabel="BgP"/>
-		<components:CustomComponent3 x="497" y="94" id="customcomponent31" d:userLabel="player_information&amp;chat_window">
-		</components:CustomComponent3>
-		<mx:Image x="36" y="38" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true" width="53" height="52"/>
-		<mx:Label x="82" y="31" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>
-		<s:TextArea x="289" y="117" id="introduceText" width="474" height="435" editable="false" color="0xffffff" baseColor="#11241A" contentBackgroundAlpha="0"
+		<s:BitmapImage source="@Embed('/assets/Bg_DT.jpg')" resizeMode="scale" d:userLabel="BgP"/>
+		<mx:Image source="@Embed('assets/lobbyPanel.swf')"/>
+		<s:Button skinClass="components.Button_toLobbyface" id="btn2lobby" x="515" y="4" visible="false" click="tolobby_clickHandler(event)"/>
+		<s:Button skinClass="components.Button_toRoom" id="btn2room" x="515" y="4" visible="false" click="toroom_clickHandler(event)"/>
+		<mx:Image x="357" y="35" source="@Embed('assets/text_gamelobby.swf')" includeIn="lobby"/>
+		<mx:Image x="377" y="34" source="@Embed('assets/text_gamelist.swf')" includeIn="room"/>
+		<components:CustomComponent3 x="500" y="35" id="functionpanel"/>
+		<!--<mx:Image  x="160" y="20" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true" width="53" height="52"/>-->
+		<!--<mx:Label  x="211" y="37" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>-->
+		<s:TextArea x="289" y="66" id="introduceText" width="474" height="476" editable="false" baseColor="#f6edae" contentBackgroundAlpha="0.5"
 					textFlow="{TextFlowUtil.importFromString(ruleIntroduce.ruleText)}">
 		</s:TextArea>
 	</fx:DesignLayer>
-	<mx:Canvas x="17" y="116" width="480" height="436" id="gameRoomCanvas" baseColor="#f6edae">
-	</mx:Canvas>
-	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="95" visible="false">
-	</components:lobbyroomTagbtn>
-	<fx:DesignLayer d:userLabel="button">
-		<s:Button x="201" y="54" skinClass="components.Button_friend" d:userLabel="Button friend" click="Buttonfriend_click()" toolTip="好友"/>
-		<s:Button x="103" y="56" skinClass="components.Button_Item" d:userLabel="Button item" click="Buttonitem_click()" toolTip="道具箱"/>
-		<s:Button x="153" y="53" skinClass="components.Button_Vita" d:userLabel="Button vita" click="Buttonvita_click()" toolTip="个人信息"/>
-		<s:Button x="290" y="26" skinClass="components.Button_Shop" d:userLabel="Button shop" click="Buttonshop_click()"/>
-		<s:Button x="361" y="29" label="自动加入" skinClass="components.Button_AutoJoinTable" id="BtnAutojoinTable" click="BtnAutojoinTable_clickHandler(event)" visible="false"/>
-		<s:Button x="429" y="29" label="创建房间" skinClass="components.Button_CreateTable" id="BtnCreateTable" click="BtnCreateTable_clickHandler(event)" visible="false"/>
-	</fx:DesignLayer>
+	<mx:Canvas x="17" y="89" width="480" height="463" id="gameRoomCanvas" baseColor="#f6edae" height.lobby="461"/>
+	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="68" visible="false"/>
 	<fx:DesignLayer d:userLabel="game lest">
-		<components:GameLbby x="5" y="93" id="customcomponent21" d:userLabel="Game lbby">
-		<mx:Tree x="13" y="53" width="256" height="400" id="gameTreeView" doubleClickEnabled="true" itemDoubleClick="{LobyManager.Instance.LobyTreeItemClick(event)}" folderOpenIcon="@Embed(source='../res/treeroomiconOpen.png')" folderClosedIcon="@Embed(source='../res/treeroomiconClose.png')" defaultLeafIcon="@Embed(source='../res/treeroomiconNode.png')"
-			alternatingItemColors="[#11241A, #11241A]" color="#ffffff"/>
+		<components:GameLbby x="10" y="65" id="lobbypanel">
+		<mx:Tree x="14" y="66" width="241" height="405" id="gameTreeView" labelField="@name" dataProvider="{LobyManager.Instance.TreeData}" doubleClickEnabled="true" itemDoubleClick="{LobyManager.Instance.LobyTreeItemClick(event)}" folderOpenIcon="@Embed(source='../res/treeroomiconOpen.png')" folderClosedIcon="@Embed(source='../res/treeroomiconClose.png')" defaultLeafIcon="@Embed(source='../res/treeroomiconNode.png')" backgroundAlpha="0" contentBackgroundAlpha="0"
+			alternatingItemColors="[#11241A, #11241A]" baseColor="#f6edae" color="#000000" selectionColor="#F3AC02"/>
 		</components:GameLbby>
 	</fx:DesignLayer>
 	<fx:DesignLayer d:userLabel="massage" th:visible.Page2="false">
@@ -196,9 +118,10 @@
 		<!--玩家信息-->
 		<components:PlayerInfo x="200" y="130" id="playerinfo"/>
 		<components:OptionWindow x="200" y="130" id="createTable" visible="false"/>
+		<components:Invitation x="200" y="130" id="invitation" visible="false"/>
 		<components:passwordInput id="pwInput" x="188" y="230" visible="false"/>
 	</fx:DesignLayer>
-	<mx:Label x="620" y="6" text="ver 1.8.0.F" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="690" y="6" text="ver 1.8.2.F" width="64" textAlign="right" color="#FFFFFF"/>
 	<!--游戏本体-->
 	<poker:poker id="gamePoker" visible="false"/>
 	<!--用来确认一些需要使用卡片的道具-->
@@ -206,5 +129,5 @@
 	<!--好友列表，大厅和游戏共用同一个-->
 	<components:friends id="friendslist" x="200" y="130" visible="false"/>
 	<!--公告显示的位置，处在画面的最上层-->
-	<message:announceWnd id="lobbyAnnounce" x="50" y="66" visible="false"/>
+	<message:announceWnd id="lobbyAnnounce" x="50" y="36" visible="false"/>
 </s:Application>

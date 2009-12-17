@@ -2,7 +2,6 @@ package lobystate
 {
 	import flash.events.Event;
 	
-	import mx.core.FlexGlobals;
 	import mx.rpc.http.HTTPService;
 
 	public class StateLobyJoinTable extends NetRequestState
@@ -62,8 +61,9 @@ package lobystate
 			}
 		}
 
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
+			LobyErrorState.Instance.showErrMsg("加入房间失败,意外失败");
 			// 关闭显示视窗
 			LobyNetManager.Instance.closeNetProcess();
 		}

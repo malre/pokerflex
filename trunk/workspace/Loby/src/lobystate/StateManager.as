@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+
 	public class StateManager
 	{
 //		private static var instance:StateManager = null;
@@ -32,10 +34,10 @@ package lobystate
 			if(state != null)
 				state.receive(obj);
 		} 
-		public function fault():void
+		public function fault(event:Event):void
 		{
 			if(state != null)
-				state.fault();
+				state.fault(event);
 		}
 	}
 }

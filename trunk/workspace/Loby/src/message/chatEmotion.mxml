@@ -7,9 +7,7 @@
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
-			import mx.core.UIComponent;
 			import mx.core.FlexGlobals;
-			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 
 			/* 0 lobby, 1 game */
@@ -36,18 +34,15 @@
 			protected function img_clickHandler(event:MouseEvent):void
 			{
 				// 当是在游戏中状态时
-				var cv:ContentViewer;
 				var str:String = event.currentTarget.id;
+				var id:int = int(str.substr(1, 2));
 				
-				if(nType == 0)
-				{
-					cv = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby;
+				if(this.id == "lobbyEmotion"){
+					ContentViewer.Instance.insertEmotion(FlexGlobals.topLevelApplication.functionpanel.lobbyinputbox.textFlow, id);
 				}
-				else if(nType == 1)
-				{
-					cv = FlexGlobals.topLevelApplication.gamePoker.inputboxGame;
+				else if(this.id == "gameEmotion"){
+					ContentViewer.Instance.insertEmotion(FlexGlobals.topLevelApplication.gamePoker.gameinputbox.textFlow, id);
 				}
-				cv.insertEmotion(int(str.substr(1, 2)));
 				this.visible = false;
 			}
 			

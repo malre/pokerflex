@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" width="196" height="162">
+		 xmlns:mx="library://ns.adobe.com/flex/halo" width="196" height="178">
 
 	<fx:Script>
 		<![CDATA[
@@ -49,9 +49,10 @@
 			<s:SolidColor color="#42624b"/>
 		</s:fill>
 	</s:Rect>
-	<s:RichEditableText x="10" y="51" width="173" height="73" maxChars="60" id="shoutMsgbox" color="#FFFFFF" backgroundColor="#02120b">
+	<s:RichEditableText x="10" y="68" width="173" height="73" maxChars="60" id="shoutMsgbox" color="#FFFFFF" backgroundColor="#02120b">
 	</s:RichEditableText>
-	<s:Label x="10" y="10" text="请输入需要发送的喊话内容,回车将会被忽略。" width="156" height="30" color="#FFFFFF"/>
-	<s:Button x="10" y="132" label="确认发送" color="#000000" click="buttonOK_clickHandler(event)"/>
-	<s:Button x="112" y="132" label="取消" color="#000000" click="buttonCancel_clickHandler(event)"/>
+	<s:Label x="10" y="6" text="请输入需要发送的喊话内容,回车将会被忽略。" width="173" height="30" color="#FFFFFF"/>
+	<s:Button x="10" y="149" label="确认发送" color="#000000" click="buttonOK_clickHandler(event)"/>
+	<s:Button x="112" y="149" label="取消" color="#000000" click="buttonCancel_clickHandler(event)"/>
+	<s:Label x="10" y="39" text="喊话将会消耗一张喊话卡！" width="173" height="21" color="#FFFFFF"/>
 </s:Group>

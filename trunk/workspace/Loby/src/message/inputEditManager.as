@@ -4,6 +4,7 @@ package message
 	import flash.ui.Keyboard;
 	
 	import flashx.textLayout.edit.EditManager;
+	import flashx.textLayout.elements.TextFlow;
 	import flashx.undo.IUndoManager;
 	
 	import mx.core.FlexGlobals;
@@ -24,74 +25,6 @@ package message
 		{
 			inputtype = type;
 		}
-		override public function keyDownHandler(event:KeyboardEvent):void
-		{
-			if(event.keyCode == Keyboard.NUMPAD_ENTER || event.keyCode == Keyboard.ENTER)
-			{
-				var msg:Object;
-				if(inputtype == 0)
-				{
-					// 首先查看发送的消息是不是有实际内容
-					msg = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg();
-					if(msg.content.length <= 0){
-						return;
-					}
-					else if(msg.content.length <= 1)	{
-						if(msg.content[0].val == "")
-							return;
-					}
-					// 如果是回车，将会清空自己的输入栏，然后发送send消息
-					Messenger.Instance.send(msg, Messenger.sendLobby);
-					FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
-//					FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox.selectRange(int.MAX_VALUE,int.MAX_VALUE);
-//					FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox.scrollToRange(int.MAX_VALUE, int.MAX_VALUE);
-				}else if(inputtype == 1){
-					// 首先查看发送的消息是不是有实际内容
-					msg = FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg();
-					if(msg.content.length <= 0){
-						return;
-					}
-					else if(msg.content.length <= 1)	{
-						if(msg.content[0].val == "")
-							return;
-					}
-					Messenger.Instance.send(msg, Messenger.sendRoom);
-					FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
-				}
-				return;
-			}
-			super.keyDownHandler(event);
-		}
-		public function sendButtonPressed():void
-		{
-			var msg:Object;
-			if(inputtype == 0)
-			{
-				// 首先查看发送的消息是不是有实际内容
-				msg = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg();
-				if(msg.content.length <= 0){
-					return;
-				}
-				else if(msg.content.length <= 1)	{
-					if(msg.content[0].val == "")
-						return;
-				}
-				// 如果是回车，将会清空自己的输入栏，然后发送send消息
-				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputMsg(), Messenger.sendLobby);
-				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
-			}else if(inputtype == 1){
-				msg = FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg();
-				if(msg.content.length <= 0){
-					return;
-				}
-				else if(msg.content.length <= 1)	{
-					if(msg.content[0].val == "")
-						return;
-				}
-				Messenger.Instance.send(FlexGlobals.topLevelApplication.gamePoker.inputboxGame.getInputMsg(), Messenger.sendRoom);
-				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.clearInput();
-			}
-		}
 		
 		public function shoutButtonPress():void
 		{
@@ -99,7 +32,7 @@ package message
 			if(inputtype == 0)
 			{
 				// 首先查看发送的消息是不是有实际内容
-				msg = FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputShoutMsg();
+				msg = FlexGlobals.topLevelApplication.functionpanel.inputboxLobby.getInputShoutMsg();
 				if(msg.content.length <= 0){
 					return;
 				}
@@ -107,8 +40,8 @@ package message
 					if(msg.content[0].val == "")
 						return;
 				}
-				Messenger.Instance.send(FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.getInputShoutMsg(), Messenger.sendShout);
-				FlexGlobals.topLevelApplication.customcomponent31.inputboxLobby.clearInput();
+				Messenger.Instance.send(FlexGlobals.topLevelApplication.functionpanel.inputboxLobby.getInputShoutMsg(), Messenger.sendShout);
+				FlexGlobals.topLevelApplication.functionpanel.inputboxLobby.clearInput();
 			}
 			else if(inputtype == 1){
 				// 首先查看发送的消息是不是有实际内容

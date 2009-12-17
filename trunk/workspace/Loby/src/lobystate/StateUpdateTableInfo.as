@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+	
 	import mx.core.FlexGlobals;
 
 	/**
@@ -70,7 +72,7 @@ package lobystate
 			}
 		}
 
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 //			NetManager.Instance.update(NetManager.send_updateWhileGame);
 		}

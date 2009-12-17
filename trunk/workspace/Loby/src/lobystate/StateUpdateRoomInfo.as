@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+
 	public class StateUpdateRoomInfo extends NetRequestState
 	{
 		private static var instance:StateUpdateRoomInfo = null;
@@ -105,7 +107,7 @@ package lobystate
 			}
 			return true;
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			
 		}

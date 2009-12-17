@@ -85,11 +85,14 @@ package poker
 			updater.method = "GET";
 			//updater.requestTimeout = 3;
 			updater.showBusyCursor = false;
+			updater.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
 			updater.addEventListener(ResultEvent.RESULT, updateResultProcess);
 			updater.addEventListener(FaultEvent.FAULT, updateFailProcess);
 			
 			sender.method = "POST";
+			sender.requestTimeout = 2;
 			sender.showBusyCursor = true;
+			sender.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
 			sender.addEventListener(ResultEvent.RESULT, sendResultProcess);
 			sender.addEventListener(FaultEvent.FAULT, sendFailProcess);
 		}
@@ -218,7 +221,7 @@ package poker
 		public function updateFailProcess(event:Event):void
 		{
 			updaterequestEnable = true;
-			updaterStateManager.fault();
+			updaterStateManager.fault(event);
 		}
 		private function sendResultProcess(event:Event):void
 		{
@@ -234,7 +237,7 @@ package poker
 		private function sendFailProcess(event:Event):void
 		{
 			sendrequestEnable = true;
-			senderStateManager.fault();
+			senderStateManager.fault(event);
 		}
 	}
 }

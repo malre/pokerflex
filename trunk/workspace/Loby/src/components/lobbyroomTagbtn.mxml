@@ -30,8 +30,8 @@
 			// 点击台面的标签以后，对该页面的内容进行请求，并清空之前的内容
 			protected function pagebtn_clickHandler(event:MouseEvent):void
 			{
-				// 当有其他窗口打开的时候，不能进行换页的操作
-				if(!LobyManager.Instance.windowMutex){
+				// 当有其他窗口打开的时候，不能进行换页的操作,当上一次请求还未结束的时候也不能进行操作
+				if(!LobyManager.Instance.windowMutex && LobyNetManager.Instance.RequestEnable){
 					pagebtnClear();
 					event.currentTarget.beClicked();
 					var str:String = event.currentTarget.id;
@@ -73,4 +73,39 @@
 	<components:Button_LobbyTag x="301" y="0" id="page6" click="pagebtn_clickHandler(event)"/>
 	<components:Button_LobbyTag x="361" y="0" id="page7" click="pagebtn_clickHandler(event)"/>
 	<components:Button_LobbyTag x="421" y="0" id="page8" click="pagebtn_clickHandler(event)"/>
+	<s:Rect width="4" height="18" x="59" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="4" height="18" x="119" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="4" height="18" x="179" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="4" height="18" x="239" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="4" height="18" x="299" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="4" height="18" x="359" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect width="4" height="18" x="419" y="2">
+		<s:fill>
+			<s:SolidColor color="#ffffff" alpha="0.8"/>
+		</s:fill>
+	</s:Rect>
 </s:Group>

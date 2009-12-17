@@ -1,7 +1,6 @@
 package lobystate
 {
-	
-
+	import flash.events.Event;
 	public class StateCreateTable extends NetRequestState
 	{
 		private static var instance:StateCreateTable = null;
@@ -80,7 +79,7 @@ package lobystate
 			}
 			
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			// 关闭显示视窗
 			LobyNetManager.Instance.closeNetProcess();
