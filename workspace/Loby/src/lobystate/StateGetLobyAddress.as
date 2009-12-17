@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+
 	public class StateGetLobyAddress extends NetRequestState
 	{
 		private static var instance:StateGetLobyAddress = null;
@@ -21,7 +23,6 @@ package lobystate
 		{
 			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_playerInfo;
 			LobyNetManager.Instance.httpservice.send();
-			//request_playerinfo = true;
 		}
 		override public function receive(obj:Object):Boolean
 		{
@@ -40,7 +41,7 @@ package lobystate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			
 		}

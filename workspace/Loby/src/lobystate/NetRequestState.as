@@ -1,5 +1,7 @@
 package lobystate
 {
+	import flash.events.Event;
+
 	public class NetRequestState
 	{
 		public var lastFlag:Boolean;
@@ -39,7 +41,7 @@ package lobystate
 			return true;
 		}
 		
-		public function fault():void
+		public function fault(event:Event):void
 		{
 			
 		}

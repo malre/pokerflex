@@ -1,5 +1,7 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
@@ -7,7 +9,6 @@ package poker.gamestate
 	
 	import poker.Game;
 	import poker.NetManager;
-	import poker.ResourceManagerPoker;
 	
 	import soundcontrol.SoundManager;
 
@@ -64,7 +65,7 @@ package poker.gamestate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			// 如果此次发送超时， 同样的内容将会被重发
 			NetManager.Instance.send(NetManager.send_updateWhileWait);

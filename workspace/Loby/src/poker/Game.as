@@ -7,9 +7,6 @@ package poker
 	
 	import json.*;
 	
-	import lobystate.StateGetPlayerInfo;
-	import lobystate.StateGetTableInfo;
-	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	
@@ -23,26 +20,26 @@ package poker
 		// 总牌数
 		public static const cardsAmount:int = 54;
 		// 玩家的牌的中心基准点
-		public static const cardStandardX:int = 288;
+		public static const cardStandardX:int = 258;
 		public static const cardStandardY:int = 390;
-		public static const playedCardStdX:int = 288;
+		public static const playedCardStdX:int = 258;
 		public static const playedCardStdY:int = 308;
 		// 其他玩家的牌堆的显示位置
 		// 左边玩家的位置，
-		private static const leftCardback_x:int = 97;
-		private static const leftCardback_y:int = 160;
-		private static const playedleftCardStdX:int = 150;
-		private static const playedleftCardStdY:int = 208;
+		private static const leftCardback_x:int = 15;
+		private static const leftCardback_y:int = 332;
+		private static const playedleftCardStdX:int = 120;
+		private static const playedleftCardStdY:int = 236;
 		// 上面玩家的位置，
-		private static const upCardback_x:int = 219;
-		private static const upCardback_y:int = 88;
+		private static const upCardback_x:int = 338;
+		private static const upCardback_y:int = 19;
 		private static const playedupCardStdX:int = 262;
-		private static const playedupCardStdY:int = 161;
+		private static const playedupCardStdY:int = 108;
 		// 右边玩家的位置
 		private static const rightCardback_x:int = 474;
-		private static const rightCardback_y:int = 164;
-		private static const playedrightCardStdX:int = 415;
-		private static const playedrightCardStdY:int = 220;
+		private static const rightCardback_y:int = 332;
+		private static const playedrightCardStdX:int = 385;
+		private static const playedrightCardStdY:int = 210;
 		// 牌堆类型1的宽高
 		private static const cardback1_w:int = 56;//61;
 		private static const cardback1_h:int = 76;//95;
@@ -61,11 +58,12 @@ package poker
 		public static const cardsIntervalX:int = 12;
 		public static const cardsIntervalY:int = 16;
 		// BG
+		private var BGImg:GameObject = null;
 		// 记录玩家的牌的数组
 		// 关于玩家的牌的顺序的定义如下：
 		// 按照花色的顺序从 方块-》梅花-》红桃-》黑桃 数字从3开始，然后是4
 		// 举例如： 33334444555566667777。。。KKKKAAAA2222
-		private var PlayerCards:Array = new Array();
+		public var PlayerCards:Array = new Array();
 		private var PlayerCardsLeft:Array = new Array();
 		private var PlayerCardsUp:Array = new Array();
 		private var PlayerCardsRight:Array = new Array();
@@ -85,21 +83,16 @@ package poker
 		private var deskCards1:Array = new Array();
 		private var deskCards2:Array = new Array();
 		private var deskCards3:Array = new Array();
-		// 用来保存从服务器得到的出牌记录，供看牌器使用
-		private var cardview0:Array = new Array();
-		private var cardview1:Array = new Array();
-		private var cardview2:Array = new Array();
-		private var cardview3:Array = new Array();
 		
 		//////////////////////////////////////////////////////////////////////////////
 		// card height ZOrder
-		private var cardback_BaseZOrder:int	 = 100;
-		private var BG_BaseZOrder:int = 0;
-		private var cardplayed0_BaseZOrder:int	 = 200;
-		private var cardplayed1_BaseZOrder:int	 = 220;
-		private var cardplayed2_BaseZOrder:int	 = 240;
-		private var cardplayed3_BaseZOrder:int	 = 260;
-		private var card_BaseZOrder:int = 500;
+		private const cardback_BaseZOrder:int	 = 100;
+		private const BG_BaseZOrder:int = 0;
+		private const cardplayed0_BaseZOrder:int	 = 200;
+		private const cardplayed1_BaseZOrder:int	 = 220;
+		private const cardplayed2_BaseZOrder:int	 = 240;
+		private const cardplayed3_BaseZOrder:int	 = 260;
+		private const card_BaseZOrder:int = 500;
 
 		
 		// 游戏中的各个阶段的状态定义
@@ -107,9 +100,8 @@ package poker
 		// 2, 游戏过程 3 发送举手消息以前 4 发送举手消息以后
 		// 5 游戏结果发布画面
 		public var gameState:int	= 0;
-		// 0 没有状态，等待   1 发送了参加房间的消息以后，成功，  2 发送了参加房间的消息以后，失败 
-		// 3 发送了准备完整的消息以后，成功， 4 发送了准备完成的消息以后，失败
-		public var menuState:int	= 0;
+			// 用来标识玩家是否使用了托管
+		public var isCpuAI:Boolean = false;
 		// 计时器
 		private var lastFrameTime:Date = new Date();
 		private static var requestInterval:Number = 3;
@@ -121,11 +113,6 @@ package poker
 		private var recordTimeStrLast:String;
 		private var recordTimeStrCur:String;
 		
-		// 按键对应的判断变量,用来控制按键不会被多次按下
-		public var btnState:int = 0;
-		// 记录游戏的轮次
-		public var gameCurRound:int	= 0;
-		public var gameLastRound:int = 0;
 		// 游戏中玩家的倒计时时间值
 		public var gamePlayerLeftTimeDef:int = 30;
 		private var gamePlayerLeftTimeCounter:int = -1;
@@ -137,9 +124,14 @@ package poker
 //		private var bPassAnimatePlayedLeft:Boolean = false;
 //		private var bPassAnimatePlayedDown:Boolean = false;
 //		private var bPassAnimatePlayedRight:Boolean = false;
+		
+		// 用来记录游戏中提示用的数据
+		private var lastCard:Array = new Array();
+		private var hintCards:Array = new Array();
+		private var hintTimes:int = 0;
 		// 记录游戏中玩家的数据，右边的datagrid显示用的数据集
-		[Bindable]
-		public var tablelist:ArrayCollection = new ArrayCollection();
+//		[Bindable]
+//		public var tablelist:ArrayCollection = new ArrayCollection();
 
 
 		public function Game()
@@ -160,6 +152,10 @@ package poker
 		{
 			GameObjectManager.Instance.startup();
 			//创建所有的图像对象，并放到集合中去
+			BGImg = new GameObject();
+			BGImg.startupGameObject(GraphicsResource(ResourceManagerPoker.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
+			BGImg.setVisible(true);
+			BGImg.setName("BG");
 			// 104 cards
 			var i:int,j:int;
 			for(i=0;i<2;i++)
@@ -182,7 +178,7 @@ package poker
 			cardbackleft.setName("CardbackLeft");
 			// 上面的玩家
 			var cardbackup:GameObject = new GameObject();
-			cardbackup.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack2Res), new Point(upCardback_x,upCardback_y), 
+			cardbackup.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(upCardback_x,upCardback_y), 
 					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
 			cardbackup.setName("CardbackUp");
 			// 右边的玩家
@@ -799,35 +795,6 @@ package poker
 		}
 		public function updateCurPlayerIcon(obj:Object):void
 		{
-			// 当前出牌玩家，显示在主画面上
-/*			if(obj.hasOwnProperty("play"))
-			{
-				if(obj.play.hasOwnProperty("next"))
-				{
-					// 将显示的图打开 
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = true;
-					if(obj.play.next == (selfseat+1)%4)
-					{
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.x =485;
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.y =250;
-					}
-					else if(obj.play.next == (selfseat+2)%4)
-					{
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.x =250;
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.y =40;
-					}
-					else if(obj.play.next == (selfseat+3)%4)
-					{
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.x =30;
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.y =250;
-					}
-					else
-					{
-						// 将显示的图打开 
-						FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
-					}
-				}
-			}*/
 			// 更新玩家出牌的剩余时间
 			if(obj.hasOwnProperty("time"))
 			{
@@ -840,8 +807,8 @@ package poker
 					// 调整沙漏和倒计时的文字位置
 					if(obj.play.next == (selfseat+1)%4)
 					{
-						FlexGlobals.topLevelApplication.gamePoker.sandglass.x = 474;
-						FlexGlobals.topLevelApplication.gamePoker.sandglass.y = 243;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.x = 370;
+						FlexGlobals.topLevelApplication.gamePoker.sandglass.y = 213;
 					}
 					else if(obj.play.next == (selfseat+2)%4)
 					{
@@ -1058,17 +1025,17 @@ package poker
 				break;
 				case 1:	
 					// 进行游戏开始的动画演示
-					FlexGlobals.topLevelApplication.gamePoker.BGswf.alpha += 0.1;
-					if(FlexGlobals.topLevelApplication.gamePoker.BGswf.alpha >= 1) {
-						FlexGlobals.topLevelApplication.gamePoker.BGswf.alpha = 1;
+					FlexGlobals.topLevelApplication.gamePoker.alpha += 0.1;
+					if(FlexGlobals.topLevelApplication.gamePoker.alpha >= 1) {
+						FlexGlobals.topLevelApplication.gamePoker.alpha = 1;
 						// 开始播放flash本身的动画
-						MovieClip(FlexGlobals.topLevelApplication.gamePoker.BGswf.content).play();
-						gameState = 10;
+//						gameState = 10;
+						FlexGlobals.topLevelApplication.gamePoker._startup();
 					}
 				break;
 				case 10:
 					var mc:MovieClip = MovieClip(FlexGlobals.topLevelApplication.gamePoker.BGswf.content);
-					if(mc.currentFrame == mc.totalFrames){
+					if(mc.currentFrame == 60/*mc.totalFrames*/){
 						FlexGlobals.topLevelApplication.gamePoker._startup();
 					}
 					break;
@@ -1091,34 +1058,35 @@ package poker
 						{
 							// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
 							// 这个时候不能够放弃
-							FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
+							if(FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled != false)
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
 						}
-						else
-						{
-							// 要求含有当前出牌情况的信息才能进行判断
-							if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
-							{
-								checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
-							}
-						}
-						// 要求含有当前出牌情况的信息才能进行判断
-						if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
-						{
-							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
-							{
-								// make chupai enable
-								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = true;
-							}
-							else
-							{
-								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
-							}
-						}
-						else
-						{
-							FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
-						}
-					    checkarr = null;
+//						else
+//						{
+//							// 要求含有当前出牌情况的信息才能进行判断
+//							if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
+//							{
+//								checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+//							}
+//						}
+//						// 要求含有当前出牌情况的信息才能进行判断
+//						if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
+//						{
+//							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+//							{
+//								// make chupai enable
+//								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = true;
+//							}
+//							else
+//							{
+//								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
+//							}
+//						}
+//						else
+//						{
+//							FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
+//						}
+//					    checkarr = null;
 					}
 					updatePlayerLeftTime();
 				    GameObjectManager.Instance.enterFrame();
@@ -1162,22 +1130,6 @@ package poker
 			}
 		}
 		
-		////////////////////////////////////////////////////////////////////////////////
-		// 描画特殊应用 
-		// 算牌器
-		// 数据从服务器得到，本地不进行计算, 所有的数据进行分析处理
-		////////////////////////////////////////////////////////////////////////////////
-		public function ViewCards():void
-		{
-			// 首先验证数据的有效性
-			//if(NetManager.Instance.json1.history
-			{
-				
-			}
-			//for(
-			//cardview0.
-		}
-		
 		public function sendcards():void
 		{
 			NetManager.Instance.send(NetManager.send_sendcardsWhileGame);
@@ -1187,16 +1139,90 @@ package poker
 			NetManager.Instance.send(NetManager.send_passWhileGame);
 			SoundManager.Instance().playSE("pass");
 		}
+		public function hint():void
+		{
+			if(curPlayer == selfseat)
+			{
+				// 检测该次的出牌是否符合要求，能否出牌。
+				var checkarr:Array = new Array();
+				if(curPlayer == lastPlayer)
+				{
+				}
+				else
+				{
+					// 要求含有当前出牌情况的信息才能进行判断
+					if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
+					{
+						checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+					}
+				}
+				// 判断这次的要压的牌和最近的一次是不是一样
+				var flag:Boolean = false;
+				if(checkarr.length == lastCard.length && checkarr.length != 0) 
+				{
+					if( int(checkarr[0]/4) == int(lastCard[0]/4) && int(checkarr[checkarr.length-1]/4) == int(lastCard[lastCard.length-1]/4) )
+					{
+						flag = true;
+					}
+					
+				}
+				if(flag)
+				{
+					hintTimes++;
+					if(hintCards.length > hintTimes){
+						GameObjectManager.Instance.deselectAllCards();
+						GameObjectManager.Instance.selectCards(hintCards[hintTimes]);
+					}
+					else{
+						hintTimes = 0;
+						GameObjectManager.Instance.deselectAllCards();
+						GameObjectManager.Instance.selectCards(hintCards[hintTimes]);
+					}
+				}else if(!flag && checkarr.length!=0){
+					lastCard = checkarr.concat();
+					hintCards = GameObjectManager.Instance.showHintCards(checkarr);
+					if(hintCards.length > 0){
+						hintTimes = 0;
+						GameObjectManager.Instance.selectCards(hintCards[hintTimes]);
+					}
+				}
+			}
+		}
 
 		public function click(event:MouseEvent):void
 		{
 			if(gameState == 2)
 			{
-				//if(curPlayer == selfseat)
+				GameObjectManager.Instance.click(event);
+				FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = isSendBtnEnable();
+			}
+		}
+		public function isSendBtnEnable():Boolean
+		{
+			if(curPlayer == selfseat)
+			{
+				if(curPlayer != lastPlayer)
 				{
-					GameObjectManager.Instance.click(event);
+					// 要求含有当前出牌情况的信息才能进行判断
+					if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
+					{
+						// 检测该次的出牌是否符合要求，能否出牌。
+						var checkarr:Array = new Array();
+						checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+						// 要求含有当前出牌情况的信息才能进行判断
+						if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+						checkarr = null;
+					}
 				}
 			}
+			return false;
 		}
 		
 		/**
@@ -1245,51 +1271,65 @@ package poker
 		 */		
 		public function playersDatagridFill(obj:Object):void
 		{
-			// 获得得分序列中，本大厅游戏的正确位置
-			var gid:int = StateGetTableInfo.Instance.gameRoomGid;
-			var scoredata:Object;
-			for each(var player:Object in tablelist)
+			// 直接对游戏中画面进行数据更新
+			// partner
+			var id:int = getPlayerIndexByPos(obj,(selfseat+2)%4);
+			if(obj.players.hasOwnProperty( id.toString() ))
 			{
-				var flag:Boolean = false;
-				for(var i:int=0;i<obj.players.length;i++){
-					if(player.name == obj.players[i].name){
-						flag = true;
-						player.money = obj.players[i].money;
-//						scoredata = JSON.decode(obj.players[i].score);
-//						if(scoredata.hasOwnProperty(gid.toString())){
-//							player.score = scoredata.1;
-//						}
-						player.score = obj.players[i].score;
-							
-						player.level = LevelDefine.getLevelName(player.score);
-						// destory this player
-						obj.players[i].name = "";
-						break;
-					}
-				}
-				if(flag)
-				{
-					
-				}else {
-					tablelist.removeItemAt(tablelist.getItemIndex(player));
-				}
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.text = obj.players[id].name;
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.text = obj.players[id].score;
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.text = LevelDefine.getLevelName(obj.players[id].score);
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.text = obj.players[id].money;
 			}
-			for each(var leftplayer:Object in obj.players)
+			else{
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.text = "";
+			}
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.text;
+			
+			id = getPlayerIndexByPos(obj,(selfseat+1)%4);
+			if(obj.players.hasOwnProperty( id.toString() ))
 			{
-				if(leftplayer.name != "" && leftplayer.name != StateGetPlayerInfo.Instance.lastSuccData.player.name)
-				{
-					var playerdata:Object = new Object();
-					playerdata.name = leftplayer.name;
-//					scoredata = JSON.decode(leftplayer.score);
-//					if(scoredata.hasOwnProperty(gid.toString())){
-//						playerdata.score = scoredata.gid;
-//					}
-					playerdata.score = leftplayer.score;
-					playerdata.money = leftplayer.money;
-					playerdata.level = LevelDefine.getLevelName(playerdata.score);
-					tablelist.addItem(playerdata);
-				}
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.text = obj.players[id].name;
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.text = obj.players[id].score;
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.text = LevelDefine.getLevelName(obj.players[id].score);
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.text = obj.players[id].money;
 			}
+			else{
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.text = "";
+			}
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.text;
+			
+			id = getPlayerIndexByPos(obj,(selfseat+3)%4);
+			if(obj.players.hasOwnProperty( id.toString() ))
+			{
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.text = obj.players[id].name;
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.text = obj.players[id].score;
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.text = LevelDefine.getLevelName(obj.players[id].score);
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.text = obj.players[id].money;
+			}
+			else{
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.text = "";
+				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.text = "";
+			}
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.text;
+			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.text;
+		
 		}
 	}
 }

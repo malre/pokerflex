@@ -2,14 +2,14 @@ package poker.gamestate
 {
 	import components.OptionWindow;
 	
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
 	import mx.core.FlexGlobals;
 	
 	import poker.NetManager;
-	
-	import soundcontrol.SoundManager;
 	
 	public class StateGetTableSetting extends NetRequestState
 	{
@@ -58,7 +58,7 @@ package poker.gamestate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 		}
 		

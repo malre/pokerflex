@@ -175,12 +175,12 @@ package poker
 //		[Embed(source="../res/54.png")]							// back of card
 //		public static var Card54:Class;
 
-		CardsRes.addItem(new GraphicsResource(new Card02()));		//3
-		CardsRes.addItem(new GraphicsResource(new Card15()));
-		CardsRes.addItem(new GraphicsResource(new Card28()));
-		CardsRes.addItem(new GraphicsResource(new Card41()));
+		CardsRes.addItem(new GraphicsResource(new Card02()));		//3	方块 	0
+		CardsRes.addItem(new GraphicsResource(new Card15()));		//	草花		1
+		CardsRes.addItem(new GraphicsResource(new Card28()));		//	 红桃	2
+		CardsRes.addItem(new GraphicsResource(new Card41()));		//  黑桃		3
 
-		CardsRes.addItem(new GraphicsResource(new Card03()));
+		CardsRes.addItem(new GraphicsResource(new Card03()));		//4
 		CardsRes.addItem(new GraphicsResource(new Card16()));
 		CardsRes.addItem(new GraphicsResource(new Card29()));
 		CardsRes.addItem(new GraphicsResource(new Card42()));
@@ -242,14 +242,13 @@ package poker
 		CardsRes.addItem(new GraphicsResource(new Card52()));
 		CardsRes.addItem(new GraphicsResource(new Card53()));
 
+		[Embed(source="../res/BG.png")]							// background
+		public static var BG00:Class;
+		public static var BG00Res:GraphicsResource = new GraphicsResource(new BG00());
 
 		[Embed(source="../res/cardback1.png")]
 		public static var cardback1:Class;
 		public static var CardBack1Res:GraphicsResource = new GraphicsResource(new cardback1());
-
-		[Embed(source="../res/cardback2.png")]
-		public static var cardback2:Class;
-		public static var CardBack2Res:GraphicsResource = new GraphicsResource(new cardback2());
 
 		[Embed(source="../res/sound/start.mp3")]
 		public static var sound01:Class;

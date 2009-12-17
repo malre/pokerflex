@@ -1,11 +1,14 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
 	import mx.core.FlexGlobals;
 	
 	import poker.Game;
+	import poker.GameObjectManager;
 	import poker.NetManager;
 	
 	import soundcontrol.SoundManager;
@@ -44,21 +47,6 @@ package poker.gamestate
 						// 正常游戏中
 						if(obj.status == 0)
 						{
-							// 判断是否到了玩家的出牌回合
-							if(obj.play.next == Game.Instance.selfseat)
-							{
-								// 显示所有的按钮
-								FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = true;
-								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
-								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = true;
-								if(obj.play.last == obj.play.next)
-								{
-									FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
-								}
-							}
-							else{
-								FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
-							}
 							Game.Instance.lastPlayer = obj.play.last;
 							if(Game.Instance.curPlayer != obj.play.next)	// 出牌权交换
 							{
@@ -76,6 +64,43 @@ package poker.gamestate
 							Game.Instance.updateCurPlayerIcon(obj);
 							// 对时间进行修正
 							Game.Instance.modifyPlayerLefttime(obj);
+							// 判断是否到了玩家的出牌回合
+							if(obj.play.next == Game.Instance.selfseat)
+							{
+								// 首先判断是不是在CPU的托管状态
+								if(Game.Instance.isCpuAI)
+								{
+									if(obj.play.next == obj.play.last)
+									{
+										if(Game.Instance.PlayerCards.length != 0)
+										{
+											var cards:Array = new Array();
+											cards.push(Game.Instance.PlayerCards[Game.Instance.PlayerCards.length-1])
+											GameObjectManager.Instance.selectCards(cards);
+											Game.Instance.sendcards();
+										}
+									}
+									else{
+										var selcards:Array = GameObjectManager.Instance.showHintCards(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+										if(selcards.length > 0)
+											GameObjectManager.Instance.selectCards(selcards[0]);
+									}
+								}
+								else
+								{
+									// 显示所有的按钮
+									FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = true;
+									if(obj.play.last == obj.play.next)
+										FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
+									else
+										FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = true;
+									
+									FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = Game.Instance.isSendBtnEnable();
+								}
+							}
+							else{
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
+							}
 						}
 						// 游戏意外结束， OR 游戏胜利
 						// 
@@ -83,6 +108,7 @@ package poker.gamestate
 						{
 							// 关闭所有的出牌按钮
 							FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.sandglass.visible = false;
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
@@ -96,11 +122,14 @@ package poker.gamestate
 							Game.Instance.gameState = 5;	// 结束统计状态
 							//
 							SoundManager.Instance().playSE("win");
-							//GameObjectManager.Instance.shutdown();
-							// 背景还是要保留
-							//GameObjectManager.Instance.setVisibleByName("BG", true);
-							//Game.Instance.gameState = 5;
-							//LobyManager.Instance.gamePoker.showPopupDlg();
+							// 消去其他三家玩家头像和信息显示
+							FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
 						}
 					}
 				}
@@ -110,7 +139,7 @@ package poker.gamestate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			NetManager.Instance.update(NetManager.send_updateWhileGame);
 		}

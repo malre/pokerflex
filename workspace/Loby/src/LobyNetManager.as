@@ -34,16 +34,18 @@ package
 		static public const URL_addloby:String = "lobby/player/add";
 		static public const URL_autoAddlobby:String = "game/room/autoAdd";
 		static public const URL_leaveloby:String = "lobby/player/remove";
-		static public const URL_roomPlayerlist:String = "lobby/player/onlinelist";//"lobby/player/list";
+		static public const URL_roomPlayerlist:String = "lobby/player/list";
 		static public const URL_playerInfo:String = "default/account/identity";
 		static public const URL_tableInfo:String = "game/list/list";	// 房间中桌子的信息
 		static public const URL_joinTable:String = "game/room/add";
 		static public const URL_leaveTable:String = "game/room/remove";
 		static public const URL_updateTableInfo:String = "game/room/update";	// 桌子上玩家的信息
 		static public const URL_createTable:String = "game/room/create";
-		static public const URL_getFriends:String = "game/friend/list";
+		static public const URL_getFriends:String = "game/friend/onlinelist";
 		static public const URL_getTableSetting:String = "game/room/viewSetting";
 		static public const URL_getInviteList:String = "game/list/invitation";
+		static public const URL_refuseInvite:String = "lobby/player/decline";
+		static public const URL_getItemEffect:String = "item/player/effectlist";
 		// 各种请求定义
 		static public const getlobyaddress:String = "request loby";
 		static public const addloby:String = "join to loby";
@@ -62,6 +64,8 @@ package
 		static public const updateRoomtable:String = "up r t";
 		static public const updateRoomplayerlist:String = "up r pl";
 		static public const updateInvitelist:String = "up i l";
+		static public const refuseInvite:String = "refuse i";
+		static public const getitemeffect:String = "g i e";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -82,11 +86,6 @@ package
 		// 本次请求连接开始以后，不能够再进行请求
 		private var requestEnable:Boolean = true;
 		private var updateRequestenable:Boolean = true;
-		private var request_lobyaddress:Boolean = false;
-		private var request_playerinfo:Boolean = false;
-		private var request_roominfo:Boolean = false;
-		private var request_tableinfo:Boolean = false;
-		private var request_jointable:Boolean = false;
 		
 		private var result:Object = new Object();
 		private var resultUpdate:Object = new Object();
@@ -98,14 +97,16 @@ package
 		{
 			httpser = new HTTPService();
 			httpser.method = "POST";
-			httpser.requestTimeout = 5;
+			httpser.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+			httpser.requestTimeout = 2;
 			httpser.showBusyCursor = false;
 			httpser.addEventListener(ResultEvent.RESULT, httpResult);
 			httpser.addEventListener(FaultEvent.FAULT, httpFault);
 			
 			lobbyinfoUpdater = new HTTPService();
 			lobbyinfoUpdater.method = "POST";
-			lobbyinfoUpdater.requestTimeout = 5;
+			httpser.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+			lobbyinfoUpdater.requestTimeout = 2;
 			lobbyinfoUpdater.showBusyCursor = false;
 			lobbyinfoUpdater.addEventListener(ResultEvent.RESULT, lobbyupdateResult);
 			lobbyinfoUpdater.addEventListener(FaultEvent.FAULT, lobbyupdateFault);
@@ -137,12 +138,6 @@ package
 		// 向服务器发送请求
 		public function send(type:String, param1:String=null, param2:String=null, param3:String=null):void
 		{
-			// reset flag
-			request_lobyaddress = false;
-			request_playerinfo = false;
-			request_roominfo = false;
-			request_tableinfo = false;
-			request_jointable = false;
 			// 请求保护，如果上次的请求还没有返回，不能开始下一次请求。
 			if(!requestEnable)
 				return;
@@ -155,7 +150,6 @@ package
 			}
 			else if(type == addloby)
 			{
-				StateJoinLoby.Instance.setLobyid(FlexGlobals.topLevelApplication.gameTreeView.selectedItem.@lid);
 				stateManager.changeState(StateJoinLoby.Instance);
 			}
 			else if(type == autoaddlobby)
@@ -199,10 +193,25 @@ package
 				{
 					p = 3;
 				}
+				else if(param2 == null){
+					p = -1;
+				}
 				stateManager.changeState(StateLobyJoinTable.Instance);
-				var rq:Object = {"roomid":tabledata[param1].rid.toString(), "pos":p, "pw":param3, "getPlayers":"true"};
+				var rq:Object;
+				if(p == -1){
+					if(FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().hasOwnProperty("password")){
+						rq = {"roomid":param1, "pw":FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().password, "getPlayers":"true"};
+					}
+					else{
+						rq = {"roomid":param1, "getPlayers":"true"};
+					}
+					StateLobyJoinTable.Instance.setTablename(FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().rname);
+				}
+				else{
+					rq = {"roomid":tabledata[param1].rid.toString(), "pos":p, "pw":param3, "getPlayers":"true"};
+					StateLobyJoinTable.Instance.setTablename(tabledata[param1].name);
+				}
 				StateLobyJoinTable.Instance.setRequest(rq);
-				StateLobyJoinTable.Instance.setTablename(tabledata[param1].name);
 			}
 			else if(type == leaveTable)
 			{
@@ -227,6 +236,14 @@ package
 			else if(type == getTableSetting)
 			{
 				stateManager.changeState(StateGetTableSettingFromLobby.Instance);
+			}
+			else if(type == refuseInvite)
+			{
+				stateManager.changeState(StateRefuseInvitation.Instance);
+			}
+			else if(type == getitemeffect)
+			{
+				stateManager.changeState(StateGetItemeffect.Instance);
 			}
 			stateManager.send();
 		}
@@ -282,7 +299,7 @@ package
 			// 恢复请求许可
 			requestEnable = true;
 			CursorManager.removeBusyCursor();
-			stateManager.fault();
+			stateManager.fault(event);
 		}
 		
 		public function lobbyupdateResult(event:Event):void
@@ -302,7 +319,7 @@ package
 		{
 			// 恢复请求许可
 			updateRequestenable = true;
-			lobbyUpdaterstateManager.fault();
+			lobbyUpdaterstateManager.fault(event);
 		}
 		
 		

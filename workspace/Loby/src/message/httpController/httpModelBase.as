@@ -18,13 +18,17 @@ package message.httpController
 		protected var httpservice:HTTPService;
 		protected var timer:Timer;
 		public var lastSuccObj:Object;
+		protected var requestMutex:Boolean;
 		
 		public function httpModelBase()
 		{
 			httpservice = new HTTPService();
+			httpservice.resultFormat = HTTPService.RESULT_FORMAT_TEXT; 
 			httpservice.addEventListener(ResultEvent.RESULT, result);
 			httpservice.addEventListener(FaultEvent.FAULT, fault);
 			lastSuccObj = new Object();
+			
+			requestMutex = false;
 		}
 		/**
 		 * 发送http请求 

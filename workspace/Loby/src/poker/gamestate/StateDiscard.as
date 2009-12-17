@@ -4,6 +4,7 @@ package poker.gamestate
 	import lobystate.StateManager;
 	
 	import mx.core.FlexGlobals;
+	import flash.events.Event;
 	
 	import poker.Game;
 	import poker.NetManager;
@@ -95,7 +96,7 @@ package poker.gamestate
 			}
 		
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			NetManager.Instance.send(NetManager.send_passWhileGame);
 		}

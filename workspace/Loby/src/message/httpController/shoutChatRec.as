@@ -9,44 +9,72 @@ package message.httpController
 	public class shoutChatRec extends httpModelBase
 	{
 		private var shoutmsg:Array;
+		private var systemmsg:Array;
 
 		public function shoutChatRec()
 		{
 			super();
 			shoutmsg = new Array();
+			systemmsg = new Array();
 		}
 
 		override public function send(val:Object=null) : void
 		{
-			httpservice.url = Messenger.Instance.chatReceiveShout;
-			if(lastSuccObj.hasOwnProperty("chat"))
+			httpservice.url = Messenger.Instance.chatRecShoutSystemPlayer;
+			var rq:Object = new Object();
+			if(lastSuccObj.hasOwnProperty("system"))
 			{
-				if(lastSuccObj.chat.length != 0)
+				if(lastSuccObj.system.length != 0)
 				{
-					httpservice.request = {"time":lastSuccObj.chat[0].time};
+					rq.systemtime = lastSuccObj.system[0].time;
 				}
 				else
-					httpservice.request = {"time":0};
+					rq.systemtime = 0;
 			}
 			else
-				httpservice.request = {"time":0};
+				rq.systemtime = 0;
+			if(lastSuccObj.hasOwnProperty("yell"))
+			{
+				if(lastSuccObj.yell.length != 0)
+				{
+					rq.yelltime = lastSuccObj.yell[0].time;
+				}
+				else
+					rq.yelltime = 0;
+			}
+			else
+				rq.yelltime = 0;
+			httpservice.request = rq;
 			httpservice.send();
 		}
 		override public function result(event:Event) : void
 		{
 			var obj:Object = JSON.decode(httpservice.lastResult.toString());
-			if(!obj.hasOwnProperty("chat"))
-				return;
-			if(obj.chat.length == 0)
+			var str:String;
+			var i:int;
+			if(obj.hasOwnProperty("system"))
 			{
-				return;
+				if(obj.system.length != 0)
+				{
+					for(i =0; i<obj.system.length; i++)
+					{
+						str = Messenger.Instance.delSlash(obj.system[obj.system.length-1-i].message);
+						systemmsg.push(str);
+					}
+					lastSuccObj = obj;
+				}
 			}
-			lastSuccObj = obj;
-			// 传送给viewer来显示
-			for(var i:int =0; i<obj.chat.length; i++)
+			if(obj.hasOwnProperty("yell"))
 			{
-				var str:String = Messenger.Instance.delSlash(obj.chat[i].message);
-				shoutmsg.push(str);
+				if(obj.yell.length != 0)
+				{
+					for(i =0; i<obj.yell.length; i++)
+					{
+						str = Messenger.Instance.delSlash(obj.yell[obj.yell.length-1-i].message);
+						shoutmsg.push(str);
+					}
+					lastSuccObj = obj;
+				}
 			}
 		}
 		override public function fault(event:Event) : void
@@ -57,6 +85,10 @@ package message.httpController
 		public function getShoutmsg():String
 		{
 			return shoutmsg.shift();
+		}
+		public function getSystemmsg():String
+		{
+			return systemmsg.shift();
 		}
 	}
 }

@@ -15,7 +15,7 @@ package message.httpController
 
 	public class lobbyChatSend extends httpModelBase
 	{
-		private var time:int = 0;
+		private var time:Number = 0;
 		public function lobbyChatSend()
 		{
 			super();
@@ -24,7 +24,7 @@ package message.httpController
 		override public function send(val:Object=null) : void
 		{
 			var curTime:Date = new Date();
-			var delta:int = curTime.getTime() - time;
+			var delta:Number = curTime.getTime() - time;
 			if( delta >= Messenger.lobbySendmsgInterval)
 			{
 				var str:String = JSON.encode(val);
@@ -50,7 +50,7 @@ package message.httpController
 		
 		protected function addErrMsg(str:String) : void
 		{
-			var ta:TextArea = TextArea(FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox);
+			var ta:TextArea = TextArea(FlexGlobals.topLevelApplication.functionpanel.lobbychatbox);
 
 			//
 			var pp:ParagraphElement = new ParagraphElement();

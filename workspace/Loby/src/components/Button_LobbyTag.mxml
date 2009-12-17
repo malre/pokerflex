@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009"
-		 width="60" height="21">
+		 width="60" height="21" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
 			public function beClicked():void
@@ -8,6 +8,7 @@
 				if(currentState == "StateUp")
 					return;
 				currentState = "StateUp";
+				btntext.setStyle("color", "#f5e707");
 			}
 			
 			public function reset():void
@@ -15,6 +16,7 @@
 				if(currentState == "StateDown")
 					return;
 				currentState = "StateDown";
+				btntext.setStyle("color", "#4d2902");
 			}
 		]]>
 
@@ -23,21 +25,10 @@
 		<s:State name="StateDown"/>
 		<s:State name="StateUp"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/Button_LobbyTag_down.png')" includeIn="StateUp" id="bitmapimage2"/>
-	<s:BitmapImage includeIn="StateDown" x="0.25" y="-0.3" source="@Embed('/assets/Button_LobbyTag_up.png')" id="bitmapimage3"/>
-	<s:RichText id="btntext" color="#cccccc" fontFamily="ＭＳ 明朝" fontSize="14" tabStops="S0 S50" x="10" y="3"/>
-	<s:transitions>
-		<s:Transition fromState="StateDown" toState="StateUp" autoReverse="true">
-			<s:Parallel>
-				<s:Parallel target="{bitmapimage2}">
-					<s:Fade duration="0"/>
-				</s:Parallel>
-				<s:Parallel target="{bitmapimage3}">
-					<s:Fade duration="0"/>
-				</s:Parallel>
-			</s:Parallel>
-		</s:Transition>
-	</s:transitions>
-	<fx:Private>
-	</fx:Private>
+	<s:Rect x="0" y="0" width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="#664402" alpha="0.5"/>
+		</s:fill>
+	</s:Rect>
+	<s:Label id="btntext" color="#4d2902" fontSize="14" x="10" y="3"/>
 </s:Group>

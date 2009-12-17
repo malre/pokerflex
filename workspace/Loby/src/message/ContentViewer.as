@@ -8,7 +8,6 @@ package message
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.text.engine.TextBaseline;
 	
 	import flashx.textLayout.container.ContainerController;
 	import flashx.textLayout.edit.EditManager;
@@ -21,6 +20,8 @@ package message
 	import flashx.textLayout.elements.TextFlow;
 	
 	import json.JSON;
+	
+	import spark.components.TextArea;
 
 	public class ContentViewer extends Sprite
 	{
@@ -38,7 +39,8 @@ package message
 		private const fontsizeMin:int = 12;
 		private const fontsizeDef:int = 12;
 		private const fontsizeMax:int = 26;
-		public var fontsize:int = fontsizeDef;
+		public var lobbyFontsize:int = fontsizeDef;
+		public var gameFontsize:int = fontsizeDef;
 		// 玩家选择的字的颜色
 		public var fontcolor:int = 0xffffff;
 
@@ -53,34 +55,7 @@ package message
 		{
 			super();
 		}
-		public function createTextLine(x:int, y:int, width:int, height:int):Sprite
-		{
-			textcontent = new TextFlow();
-			textcontent.interactionManager = new SelectionManager();
-			
-			var sprite:Sprite = new Sprite();
-			sprite.x=x;
-			sprite.y=y;		
-			addChild(sprite);
-			textcontent.fontFamily = "Arial";
-			textcontent.fontSize = 12;
-			textcontent.color = 0xffffff;
-			//textcontent.lineBreak = "explicit";
-			
-			controller = new ContainerController(sprite, width, height);
-			textcontent.flowComposer.addController(controller);
-			textcontent.flowComposer.updateAllControllers();
-			
-			// event sent when graphic is done loading
-			//textFlow.addEventListener(StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGED,graphicStatusChangeEvent);
-			return this;
-		}
-		public function graphicStatusChangeEvent(evt:Event):void
-		{
-//			textFlow.flowComposer.updateAllControllers();
-//			img.width = 12;
-//			img.height = 12;
-		}
+
 		public function createInputbox(x:Number, y:Number, width:Number, height:Number, type:int, text:String = ""):Sprite
 		{
 			textinput = new TextFlow();
@@ -115,10 +90,9 @@ package message
 			
 			return this;
 		}
-		public function changeInputColor(color:int):void
+		public function changeInputColor(ta:TextArea, color:int):void
 		{
-			textinput.color = color;
-			textinput.flowComposer.updateAllControllers();
+			ta.textFlow.color = color;
 		}
 		/**
 		 * 向当前的话语的最后，加入指定id的表情符号
@@ -127,30 +101,23 @@ package message
 		 * @Notes
 		 * 	每次的改动之后都需要进行一次update更新调用
 		 */
-		public function insertEmotion(id:int):void
-		{
-			var num:int = textinput.numChildren;
-			var img:InlineGraphicElement = new InlineGraphicElement();
-			img.width = 12+4;
-			img.height = 12+4;
-			img.source = ResEmotion.EmotionRes[id];
-			img.alignmentBaseline = flash.text.engine.TextBaseline.IDEOGRAPHIC_BOTTOM;
-			img.id = "Emotion"+id;
-			p.addChild(img);
-//			var edit:EditManager = EditManager(textinput.interactionManager);
-//			edit.insertInlineGraphic(img, img.width, img.height);
-			textinput.flowComposer.updateAllControllers();
-//			textinput.flowComposer.setFocus(1);
-		}
-		public static function insertEmotion(id:int, tf:TextFlow):void
+		public function insertEmotion(tf:TextFlow, id:int):void
 		{
 			var img:InlineGraphicElement = new InlineGraphicElement();
 			img.width = 12+4;
 			img.height = 12+4;
 			img.source = ResEmotion.EmotionRes[id];
-//			img.alignmentBaseline = flash.text.engine.TextBaseline.IDEOGRAPHIC_BOTTOM;
+			//						img.alignmentBaseline = flash.text.engine.TextBaseline.IDEOGRAPHIC_BOTTOM;
 			img.id = "Emotion"+id;
-			tf.addChild(img);
+			var num:int = tf.numChildren;
+			if(num > 0)
+				ParagraphElement(tf.getChildAt(0)).addChild(img);
+			else{
+				var mp:ParagraphElement = new ParagraphElement();
+				mp.addChild(img);
+				tf.addChild(mp);
+			}
+		
 		}
 		public function clearInput():void
 		{
@@ -166,59 +133,7 @@ package message
 			textcontent.replaceChildren(0, textcontent.numChildren);
 			textcontent.flowComposer.updateAllControllers();
 		}
-		// 获得发送的普通数据
-		public function getInputMsg():Object
-		{
-			var obj:Object = encode(0);
-				return obj;
-//			ChatNetManager.Instance.send(str, ChatNetManager.sendLobby);
-		}
-		// 获得喊叫的数据，过滤掉非文本信息
-		public function getInputShoutMsg():Object
-		{
-			var obj:Object = encode(1);
-			return obj;
-		}
-		/**
-		 * @param type
-		 * 	0->normal message, include graphics, 1->shout message, only text
-		 * @return 
-		 * 
-		 */		
-		private function encode(type:int):Object
-		{
-			var obj:Object;
-			var num:int = p.numChildren;
-			var output:Object = new Object(); 
-			output.size = fontsize;
-			if(textinput.color == null)
-				output.color = 0xffffff;
-			else
-				output.color = textinput.color;
-			output.content = new Array();
-			for(var i:int;i<num;i++)
-			{
-				var ef:FlowElement = p.getChildAt(i);
-				if(ef.id != null)
-				{
-					if(ef.id.substr(0,7) == "Emotion" && type != 1)
-					{
-						obj = new Object();
-						obj.type = "img";
-						obj.val = ef.id.substr(7);
-						output.content.push(obj);
-					}
-				}
-				else
-				{
-					obj = new Object();
-					obj.type = "text";
-					obj.val = FlowLeafElement(ef).text;
-					output.content.push(obj);
-				}
-			}
-			return output;
-		}
+
 		/**
 		 * 把得到的新的消息加入到显示 
 		 * @param str

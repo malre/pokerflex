@@ -1,5 +1,7 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
@@ -52,7 +54,7 @@ package poker.gamestate
 			}
 			
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			//重发准备完成消息
 			NetManager.Instance.send(NetManager.send_iamReady);

@@ -1,5 +1,6 @@
 package lobystate
 {
+	import flash.events.Event;
 	import mx.core.FlexGlobals;
 
 	public class StateLeaveLoby extends NetRequestState
@@ -33,25 +34,28 @@ package lobystate
 			{
 				StateGetPlayerInfo.Instance.lastSuccData.player.lid = 0;
 				// 设置部分功能按钮不可见
-				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
-				FlexGlobals.topLevelApplication.lobbyroomtag.visible = false;
-				FlexGlobals.topLevelApplication.BtnCreateTable.visible = false;
+				FlexGlobals.topLevelApplication.functionpanel.BtnCreateTable.enabled = false;
 				//
-				// 不显示右边的信息和聊天面板
-				FlexGlobals.topLevelApplication.customcomponent31.currentState='State2';
-				// 打开说明文字
-				FlexGlobals.topLevelApplication.introduceText.visible = true;
-				// 除去游戏桌的描画
-				FlexGlobals.topLevelApplication.gameRoomCanvas.removeAllChildren();
 				// 消去右侧玩家列表数据
 				StateGetRoomPlayerlist.Instance.roomlist.removeAll();
 				// 消去右边的聊天数据
-				FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox.selectAll();
-				FlexGlobals.topLevelApplication.customcomponent31.lobbychatbox.insertText("");
+				FlexGlobals.topLevelApplication.functionpanel.lobbychatbox.selectAll();
+				FlexGlobals.topLevelApplication.functionpanel.lobbychatbox.insertText("");
 				
 				// 使当前所有的房间成为空（不在任何房间中）
-				FlexGlobals.topLevelApplication.customcomponent21.setCurrentLobby(0);
+				FlexGlobals.topLevelApplication.lobbypanel.setCurrentLobby(0);
+				FlexGlobals.topLevelApplication.tolobby_clickHandler(null);
 				
+				if(LobyManager.Instance.state == 1){
+					
+				}
+				else if(LobyManager.Instance.state == 5){
+					StateJoinLoby.Instance.setLobyid(FlexGlobals.topLevelApplication.invitation.getDestLobbyId());
+					var lid:int = FlexGlobals.topLevelApplication.invitation.getDestLobbyId();
+					var node:XMLList = LobyManager.Instance.TreeData..*.(@lid == lid);
+					StateJoinLoby.Instance.setLobyAddress(node.@address);
+				}
+
 				LobyNetManager.Instance.send(LobyNetManager.addloby);
 
 				// 关闭显示视窗
@@ -64,7 +68,7 @@ package lobystate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			// 关闭显示视窗
 			LobyNetManager.Instance.closeNetProcess();

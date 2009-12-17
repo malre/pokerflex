@@ -12,9 +12,11 @@
 			import mx.controls.Image;
 			import mx.events.CloseEvent;
 			import mx.managers.PopUpManager;
+			
+			import poker.gamestate.StateItemGetPlayedCards;
+			import poker.gamestate.StateUpdateForFirstFrame;
 
 			private var tempAry:Array = new Array();			
-//			private var carddata:String = [{\"pos\":0,\"play\":\"10,8,7,6,2,0\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"25,25,23,22,18,17\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"16,15,9,4,3\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"1\"},{\"pos\":3,\"play\":\"29\"},{\"pos\":0,\"play\":\"34\"},{\"pos\":1,\"play\":\"45\"},{\"pos\":2,\"play\":\"48\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"5,5\"},{\"pos\":3,\"play\":\"13,13\"},{\"pos\":0,\"play\":\"50,49\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"31,28,27,24,20,20,19,17\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"12\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"38,37,37\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"23,22,21,21\"},{\"pos\":0,\"play\":\"43,42,42,41\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"47\"},{\"pos\":1,\"play\":\"49\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":0,\"play\":\"53\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":2,\"play\":\"14\"},{\"pos\":3,\"play\":\"33\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"38\"},{\"pos\":3,\"play\":\"50\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"52\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"35\"},{\"pos\":3,\"play\":\"44\"},{\"pos\":1,\"play\":\"52\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"11,9,6,4,2,0\"},{\"pos\":2,\"play\":\"31,30,29,28\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"pass\"},{\"pos\":2,\"play\":\"48\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"53\"},{\"pos\":2,\"play\":\"pass\"},{\"pos\":3,\"play\":\"pass\"},{\"pos\":1,\"play\":\"15,14,12\"}];
 			private var carddata:Object;
 			
 			private function createComplete():void
@@ -34,7 +36,27 @@
 						this.addChild(img);
 					}
 				}
-				setCards(carddata);
+				setCards(StateItemGetPlayedCards.Instance.lastSuccData.history);
+				//
+				if(StateUpdateForFirstFrame.Instance.lastFlag)
+				{
+					var playobj:Object = StateUpdateForFirstFrame.Instance.lastSuccData;
+					for(var k:int=0;k<4;k++)
+					{
+						if(playobj.players[k].pos == 0){
+							playername0.text = playobj.players[k].name;
+						}
+						else if(playobj.players[k].pos == 1){
+							playername1.text = playobj.players[k].name;
+						}
+						else if(playobj.players[k].pos == 2){
+							playername2.text = playobj.players[k].name;
+						}
+						else if(playobj.players[k].pos == 3){
+							playername3.text = playobj.players[k].name;
+						}
+					}
+				}
 			}
 
 			private function handleClose(evt:CloseEvent):void
@@ -104,160 +126,160 @@
 			{
 				switch(id){
 					case 0:
-						return ResourceManagerPoker.Card00;
-					break;
-					case 1:
-						return ResourceManagerPoker.Card01;
-					break;
-					case 2:
 						return ResourceManagerPoker.Card02;
 					break;
-					case 3:
-						return ResourceManagerPoker.Card03;
-					break;
-					case 4:
-						return ResourceManagerPoker.Card04;
-					break;
-					case 5:
-						return ResourceManagerPoker.Card05;
-					break;
-					case 6:
-						return ResourceManagerPoker.Card06;
-					break;
-					case 7:
-						return ResourceManagerPoker.Card07;
-					break;
-					case 8:
-						return ResourceManagerPoker.Card08;
-					break;
-					case 9:
-						return ResourceManagerPoker.Card09;
-					break;
-					case 10:
-						return ResourceManagerPoker.Card10;
-					break;
-					case 11:
-						return ResourceManagerPoker.Card11;
-					break;
-					case 12:
-						return ResourceManagerPoker.Card12;
-					break;
-					case 13:
-						return ResourceManagerPoker.Card13;
-					break;
-					case 14:
-						return ResourceManagerPoker.Card14;
-					break;
-					case 15:
+					case 1:
 						return ResourceManagerPoker.Card15;
 					break;
-					case 16:
-						return ResourceManagerPoker.Card16;
-					break;
-					case 17:
-						return ResourceManagerPoker.Card17;
-					break;
-					case 18:
-						return ResourceManagerPoker.Card18;
-					break;
-					case 19:
-						return ResourceManagerPoker.Card19;
-					break;
-					case 20:
-						return ResourceManagerPoker.Card20;
-					break;
-					case 21:
-						return ResourceManagerPoker.Card21;
-					break;
-					case 22:
-						return ResourceManagerPoker.Card22;
-					break;
-					case 23:
-						return ResourceManagerPoker.Card23;
-					break;
-					case 24:
-						return ResourceManagerPoker.Card24;
-					break;
-					case 25:
-						return ResourceManagerPoker.Card25;
-					break;
-					case 26:
-						return ResourceManagerPoker.Card26;
-					break;
-					case 27:
-						return ResourceManagerPoker.Card27;
-					break;
-					case 28:
+					case 2:
 						return ResourceManagerPoker.Card28;
 					break;
-					case 29:
-						return ResourceManagerPoker.Card29;
-					break;
-					case 30:
-						return ResourceManagerPoker.Card30;
-					break;
-					case 31:
-						return ResourceManagerPoker.Card31;
-					break;
-					case 32:
-						return ResourceManagerPoker.Card32;
-					break;
-					case 33:
-						return ResourceManagerPoker.Card33;
-					break;
-					case 34:
-						return ResourceManagerPoker.Card34;
-					break;
-					case 35:
-						return ResourceManagerPoker.Card35;
-					break;
-					case 36:
-						return ResourceManagerPoker.Card36;
-					break;
-					case 37:
-						return ResourceManagerPoker.Card37;
-					break;
-					case 38:
-						return ResourceManagerPoker.Card38;
-					break;
-					case 39:
-						return ResourceManagerPoker.Card39;
-					break;
-					case 40:
-						return ResourceManagerPoker.Card40;
-					break;
-					case 41:
+					case 3:
 						return ResourceManagerPoker.Card41;
 					break;
-					case 42:
+					case 4:
+						return ResourceManagerPoker.Card03;
+					break;
+					case 5:
+						return ResourceManagerPoker.Card16;
+					break;
+					case 6:
+						return ResourceManagerPoker.Card29;
+					break;
+					case 7:
 						return ResourceManagerPoker.Card42;
 					break;
-					case 43:
+					case 8:
+						return ResourceManagerPoker.Card04;
+					break;
+					case 9:
+						return ResourceManagerPoker.Card17;
+					break;
+					case 10:
+						return ResourceManagerPoker.Card30;
+					break;
+					case 11:
 						return ResourceManagerPoker.Card43;
 					break;
-					case 44:
+					case 12:
+						return ResourceManagerPoker.Card05;
+					break;
+					case 13:
+						return ResourceManagerPoker.Card18;
+					break;
+					case 14:
+						return ResourceManagerPoker.Card31;
+					break;
+					case 15:
 						return ResourceManagerPoker.Card44;
 					break;
-					case 45:
+					case 16:
+						return ResourceManagerPoker.Card06;
+					break;
+					case 17:
+						return ResourceManagerPoker.Card19;
+					break;
+					case 18:
+						return ResourceManagerPoker.Card32;
+					break;
+					case 19:
 						return ResourceManagerPoker.Card45;
 					break;
-					case 46:
+					case 20:
+						return ResourceManagerPoker.Card07;
+					break;
+					case 21:
+						return ResourceManagerPoker.Card20;
+					break;
+					case 22:
+						return ResourceManagerPoker.Card33;
+					break;
+					case 23:
 						return ResourceManagerPoker.Card46;
 					break;
-					case 47:
+					case 24:
+						return ResourceManagerPoker.Card08;
+					break;
+					case 25:
+						return ResourceManagerPoker.Card21;
+					break;
+					case 26:
+						return ResourceManagerPoker.Card34;
+					break;
+					case 27:
 						return ResourceManagerPoker.Card47;
 					break;
-					case 48:
+					case 28:
+						return ResourceManagerPoker.Card09;
+					break;
+					case 29:
+						return ResourceManagerPoker.Card22;
+					break;
+					case 30:
+						return ResourceManagerPoker.Card35;
+					break;
+					case 31:
 						return ResourceManagerPoker.Card48;
 					break;
-					case 49:
+					case 32:
+						return ResourceManagerPoker.Card10;
+					break;
+					case 33:
+						return ResourceManagerPoker.Card23;
+					break;
+					case 34:
+						return ResourceManagerPoker.Card36;
+					break;
+					case 35:
 						return ResourceManagerPoker.Card49;
 					break;
-					case 50:
+					case 36:
+						return ResourceManagerPoker.Card11;
+					break;
+					case 37:
+						return ResourceManagerPoker.Card24;
+					break;
+					case 38:
+						return ResourceManagerPoker.Card37;
+					break;
+					case 39:
 						return ResourceManagerPoker.Card50;
 					break;
-					case 51:
+					case 40:
+						return ResourceManagerPoker.Card12;
+					break;
+					case 41:
+						return ResourceManagerPoker.Card25;
+					break;
+					case 42:
+						return ResourceManagerPoker.Card38;
+					break;
+					case 43:
 						return ResourceManagerPoker.Card51;
+					break;
+					case 44:
+						return ResourceManagerPoker.Card00;
+					break;
+					case 45:
+						return ResourceManagerPoker.Card13;
+					break;
+					case 46:
+						return ResourceManagerPoker.Card26;
+					break;
+					case 47:
+						return ResourceManagerPoker.Card39;
+					break;
+					case 48:
+						return ResourceManagerPoker.Card01;
+					break;
+					case 49:
+						return ResourceManagerPoker.Card14;
+					break;
+					case 50:
+						return ResourceManagerPoker.Card27;
+					break;
+					case 51:
+						return ResourceManagerPoker.Card40;
 					break;
 					case 52:
 						return ResourceManagerPoker.Card52;
@@ -271,4 +293,8 @@
 			
 		]]>
 	</fx:Script>
+	<s:Label id="playername0" x="5" y="0" color="#000000"/>
+	<s:Label id="playername1" x="5" y="90" color="#000000"/>
+	<s:Label id="playername2" x="5" y="180" color="#000000"/>
+	<s:Label id="playername3" x="5" y="270" color="#000000"/>
 </mx:TitleWindow>

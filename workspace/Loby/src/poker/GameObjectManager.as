@@ -269,6 +269,231 @@ package poker
 			
 			return cards;
 		}
+		/**
+		 * 对玩家的出牌进行一个提示
+		 * @param arr
+		 * 
+		 */		
+		public function showHintCards(arr:Array):Array
+		{
+			var selfcards:Array = new Array();
+			var result:Array = new Array();
+			selfcards = deselectAllCards().reverse();
+
+			var pattern:int = CardPattern.Instance.patternCheck(arr.sort(Array.NUMERIC));
+			// 前一个人出的不是炸弹
+			if(pattern <3 || pattern >7)
+			{
+				// 对炸弹在后面单独处理， 这里处理所有的非炸弹的情况
+				result = selectSameTypeCards(selfcards, arr);
+			}
+			result = result.concat(selectBomb(selfcards, arr, pattern));
+			
+			return result;
+		}
+		private function selectSameTypeCards(self:Array, arr:Array):Array
+		{
+			var minCard:int = arr[0];
+			var hintcards:Array = new Array();
+			var single:Array = new Array();
+			var type:int = CardPattern.Instance.patternCheck(arr);
+			var index:int = 0;
+			var subidx:int = 0;
+			for(;index<=self.length;index++)
+			{
+				if(arr[0] >= 52)
+				{
+					if(arr[0] == 52){
+						var ti:int;
+						if(arr.length == 1){
+							ti = findSpecCardAfterItself(self, 0, 53);
+							if(ti != -1){
+								single.push(self[ti]);
+							}						}
+						else if(arr.length == 2){
+							ti = findSpecCardAfterItself(self, 0, 53);
+							if(ti != -1){
+								single.push(self[ti]);
+								ti = findSpecCardAfterItself(self, ti, 53);
+								if(ti != -1){
+									single.push(self[ti]);
+								}
+							}
+						}
+					}
+					if(single.length != 0)
+						hintcards.push(single.concat());
+					return hintcards;
+				}
+				else
+				{
+					if( int(self[index]/4) > int(minCard/4))
+					{
+						if( index >= 1){
+							if(int(self[index]/4) == int(self[index-1]/4))
+								continue;
+						} 
+							
+						
+						single.push(self[index]);
+						var cardvalue:int = self[index];
+						var flag:Boolean = true;
+						subidx = index;
+						for(var i:int= 1;i<arr.length;i++){
+							// 找和之前一样大的一张牌
+							var rltid:int;
+							if( int(arr[i]/4) == int(arr[i-1]/4)){
+								rltid = findSpecCardAfterItself(self, subidx, cardvalue);
+								if(rltid == -1){
+									flag = false;
+									break;;
+								}
+								else{
+									subidx = rltid;
+									single.push(self[rltid]);
+								}
+							}
+							else{
+								rltid = findSpecCardAfterItself(self, index, cardvalue+4);
+								// 顺子，或者连对中，不可以出现2和司令
+								if(rltid == -1 || self[rltid] >= 48/*方块2*/){
+									flag = false;
+									break;
+								}
+								else{
+									subidx = rltid;
+									single.push(self[rltid]);
+									cardvalue += 4;
+								}
+							}
+						}
+						if(flag){
+							// 成功得到需要的出牌数据
+							hintcards.push(single.concat());
+						}
+						single.length = 0;
+					}//if( int(self[index]/4) > int(minCard/4))
+				}//if(arr[0] >= 52)
+			}
+			return hintcards;
+		}
+		/**
+		 * 
+		 * @param self		自己的牌的数据
+		 * @param index		开始查找的序列号
+		 * @param delta		要查找的牌的id值
+		 * @return 
+		 * 
+		 */		
+		private function findSpecCardAfterItself(self:Array, index:int, destid:int):int
+		{
+			var idx:int = -1;
+			for(var i:int=index+1;i<self.length;i++)
+			{
+				if(int(self[i]/4) == int(destid/4))
+				{
+					// 司令的情况
+					if(destid >= 52){
+						if(self[i] == destid){
+							idx = i;
+							break;
+						}
+					}
+					else{
+						idx = i;
+						break;
+					}
+				}else if(int(self[i]/4) > int(destid/4)){
+					break;
+				}
+			}
+			return idx;
+		}
+		public function deselectAllCards():Array
+		{
+			var tmpcards:Array = new Array();
+			for each(var go:GameObject in baseObjects)
+			{
+				if(go.getName() == "Card" && go.visible)
+				{
+					tmpcards.push(go.getId());
+					if(go.selected)
+					{
+						go.position.y += 15;
+						go.selected = false;
+					}
+				}
+			}
+			return tmpcards;
+		}
+		public function selectCards(arr:Array):void
+		{
+			for each(var id:int in arr)
+			{
+				for(var i:int=0;i<baseObjects.length;i++)
+				{
+					var go:GameObject = GameObject(baseObjects.getItemAt(baseObjects.length-1-i));
+					if(go.getName() == "Card" && go.visible)
+					{
+						if(go.getId() == id && !go.selected){
+							go.position.y -= 15;
+							go.selected = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		private function selectBomb(self:Array, arr:Array, pattern:int):Array
+		{
+			var result:Array = new Array();
+			var bombs:Array = new Array();
+			var single:Array = new Array();
+			var index:int = 0;
+			var count:int;
+			count = 1;
+			index = 0;
+			single.push(self[index]);
+			for(index=1;index<=self.length;index++)
+			{
+				if(int(self[index]/4) == int(self[index-1]/4)){
+					single.push(self[index]);
+					count ++;
+				}
+				else{
+					if(count >= 4){
+						bombs.push(single.concat());
+					}
+					single.length = 0;
+					count = 1;
+					single.push(self[index]);
+				}
+			}
+			// 考虑天皇炸
+			if(self[length-1-3] == 52){
+				single.length = 0;
+				single.push(52);
+				single.push(52);
+				single.push(53);
+				single.push(53);
+				bombs.push(single.concat());
+			}
+			if(pattern <3 || pattern >7)
+			{
+				return bombs;
+			}
+			else{
+				for(var k:int=0;k<bombs.length;k++)
+				{
+					if(CardPattern.Instance.patternCompare(bombs[k], arr))
+					{
+						result.push(bombs[k]);
+					}
+				}
+			}
+			
+			return result;
+		}
 		
 		// 将指定位置的打出的牌清空
 		public function removePlayedCards(name:String):void
@@ -322,7 +547,7 @@ package poker
 			{
 				if(go.setSpecIdVisible(id, zOrder, visible))
 				{
-					go.position = pt.clone();
+					go.position = pt;//.clone();
 					go.setName(name);
 					return;
 				}

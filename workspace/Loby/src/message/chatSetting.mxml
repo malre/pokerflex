@@ -2,18 +2,24 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo" width="157" height="28">
 	<fx:Script>
 		<![CDATA[
-			import mx.events.ColorPickerEvent;
 			import mx.core.FlexGlobals;
+			import mx.events.ColorPickerEvent;
 
 			protected function colorpicker1_changeHandler(event:ColorPickerEvent):void
 			{
-				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.changeInputColor(event.color);
+				if(id == "lobbychatsetting")
+					ContentViewer.Instance.changeInputColor(FlexGlobals.topLevelApplication.functionpanel.lobbyinputbox, event.color);
+				else if(id == "chatsetting")
+					ContentViewer.Instance.changeInputColor(FlexGlobals.topLevelApplication.gamePoker.gameinputbox, event.color);
 			}
 
 
 			protected function numericstepper1_changeHandler(event:Event):void
 			{
-				FlexGlobals.topLevelApplication.gamePoker.inputboxGame.fontsize = event.currentTarget.value;
+				if(id == "lobbychatsetting")
+					ContentViewer.Instance.lobbyFontsize = event.currentTarget.value;
+				else if(id == "chatsetting")
+					ContentViewer.Instance.gameFontsize = event.currentTarget.value;
 			}
 
 		]]>

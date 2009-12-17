@@ -157,7 +157,7 @@
 						return;
 					var obj:Object = item_icon_group.getChildByName("item"+i.toString());
 					if(obj != null)
-					{	
+					{
 						var img:Image = Image(obj);
 						img.visible = false;
 						img.source = "";
@@ -169,7 +169,7 @@
 				for(var i:int= 0;i<(obj.items.length>12?12:obj.items.length);i++)
 				{
 					var img:Image = Image(item_icon_group.getChildByName("item"+i.toString()));
-					img.source = ServerAddress + ServerPerfix + webResourePerfix + obj.items[i].image;
+					img.source = ServerAddress + ServerPerfix + webResourePerfix +obj.items[i].iid + ".png";//+ obj.items[i].image;
 					img.toolTip = obj.items[i].name;
 					img.addEventListener(ToolTipEvent.TOOL_TIP_CREATE, tooltipcreate);
 					img.visible = true;
@@ -289,7 +289,7 @@
 		<s:State name="StateItemMain"/>
 		<s:State name="StateItemSub"/>
 	</s:states>
-	<s:BitmapImage source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1"/>
 	<s:BitmapImage source="@Embed('/assets/shop_text.png')" resizeMode="scale" x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub"/>
 	<s:BitmapImage source="@Embed('/assets/item_text.png')" resizeMode="scale" x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="315" y="6" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()"/>

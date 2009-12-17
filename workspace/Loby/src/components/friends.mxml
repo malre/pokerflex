@@ -160,15 +160,15 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:BitmapImage source="@Embed('/assets/Bg_shop.png')" resizeMode="scale" id="backgroundBG" includeIn="StateLoadingdata,StateMain"/>
+	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG" includeIn="StateLoadingdata,StateMain"/>
 	<s:BitmapImage source="@Embed('/assets/friendslist_title.png')" resizeMode="scale" x="11" y="3" includeIn="StateLoadingdata,StateMain"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" x="315" y="6" click="CloseButton(event)" id="btnClose" includeIn="StateLoadingdata,StateMain"/>
 	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateLoadingdata,StateMain"
 				 dataProvider="{StateGetFriends.Instance.friends}">
 		<mx:columns>
 			<mx:DataGridColumn headerText="玩家名" dataField="name"/>
-			<mx:DataGridColumn headerText="uid" dataField="uid"/>
-			<mx:DataGridColumn headerText="pid" dataField="pid"/>
+<!--			<mx:DataGridColumn headerText="uid" dataField="uid"/>
+			<mx:DataGridColumn headerText="pid" dataField="pid"/>-->
 		</mx:columns>
 	</mx:DataGrid>
 	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="276" label="邀请" click="btnInvite_clickHandler(event)"/>

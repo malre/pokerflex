@@ -15,7 +15,7 @@ package message.httpController
 
 	public class tableChatSend extends httpModelBase
 	{
-		private var time:int = 0;
+		private var time:Number = 0;
 		public function tableChatSend()
 		{
 			super();
@@ -23,7 +23,7 @@ package message.httpController
 		override public function send(val:Object=null) : void
 		{
 			var curTime:Date = new Date();
-			var delta:int = curTime.getTime() - time;
+			var delta:Number = curTime.getTime() - time;
 			if( delta >= Messenger.gameSendmsgInterval)
 			{
 				var str:String = JSON.encode(val);

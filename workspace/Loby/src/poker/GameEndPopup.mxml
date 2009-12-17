@@ -49,6 +49,8 @@
 			private function gameContinue(event:CloseEvent):void
 			{
 				GameObjectManager.Instance.shutdown();
+				// 背景还是要保留
+				GameObjectManager.Instance.setVisibleByName("BG", true);
 
 				//this.visible = false;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前

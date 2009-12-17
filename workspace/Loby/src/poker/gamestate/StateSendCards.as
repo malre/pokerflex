@@ -1,5 +1,7 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
@@ -40,7 +42,7 @@ package poker.gamestate
 					data += ",";
 			}
 			NetManager.sender.url = NetManager.sendURL_game;
-			NetManager.sender.requestTimeout = 3000;
+			NetManager.sender.requestTimeout = 3;
 			NetManager.sender.request = {"play":data, "getPlay":"true", "getCards":"true"};
 			NetManager.sender.send();
 		}
@@ -92,6 +94,9 @@ package poker.gamestate
 						// 
 						else //if(obj.status == 1)
 						{
+							// 关闭所有的出牌按钮
+							FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.sandglass.visible = false;
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
@@ -104,6 +109,14 @@ package poker.gamestate
 							
 							Game.Instance.gameState = 5;	// 结束统计状态
 							SoundManager.Instance().playSE("win");
+							// 消去其他三家玩家头像和信息显示
+							FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
 						}
 					}
 				}
@@ -113,7 +126,7 @@ package poker.gamestate
 				return false;
 			}
 		}
-		override public function fault():void
+		override public function fault(event:Event):void
 		{
 			if(++timeoutCounter > timeoutCounterMax)
 			{
