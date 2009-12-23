@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<s:states>
 		<s:State name="up"/>
 		<s:State name="over"/>
@@ -7,5 +7,7 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<s:BitmapImage source="@Embed('/assets/OptionWindow_CloseButton.png')" resizeMode="scale" id="bitmapimage2" x="-2" y="-1"/>
+	<mx:Image source="@Embed('/assets/Button_WindowClose_up.swf')" includeIn="up, disabled"/>
+	<mx:Image source="@Embed('/assets/Button_WindowClose_down.swf')" includeIn="down"/>
+	<mx:Image source="@Embed('/assets/Button_WindowClose_over.swf')" includeIn="over"/>
 </s:Skin>

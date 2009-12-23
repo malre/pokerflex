@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-	 width="300" height="250"
 	 creationComplete="createComplete()"
 	 borderColor="#001975" alpha="1.0" color="#021A1F" backgroundColor="#619CEC" layout="absolute" 
 	 modalTransparency="0" modalTransparencyBlur="0"
-	 showCloseButton="true" close="gameContinue(event)">
+	 close="gameContinue(event)" headerHeight="0">
 
-	<mx:Image x="90" y="0" source="@Embed('../res/tongji.png')" autoLoad="true" scaleContent="false"/>
-	<mx:Label x="22" y="54" text="玩家一" fontSize="14" fontWeight="bold" id="popupPlayer0"/>
-	<mx:Label x="22" y="85" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
-	<mx:Label x="22" y="116" text="玩家三" fontSize="14" fontWeight="bold" id="popupPlayer2"/>
-	<mx:Label x="22" y="147" text="玩家四" fontSize="14" fontWeight="bold" id="popupPlayer3"/>
-	<mx:Label x="108" y="31" text="获得积分" width="66" height="22" fontWeight="bold" fontSize="14"/>
-	<mx:Label x="191" y="31" text="获得金币" fontWeight="bold" fontSize="14"/>
-	<mx:Label y="54" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer0Score" textAlign="right" right="142" width="26"/>
-	<mx:Label y="85" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer1Score" textAlign="right" right="142"/>
-	<mx:Label y="116" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer2Score" textAlign="right" right="142"/>
-	<mx:Label y="147" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer3Score" textAlign="right" right="142"/>
-	<mx:Label y="54" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Gold" width="75" right="43"/>
-	<mx:Label y="85" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Gold" width="75" right="43"/>
-	<mx:Label y="116" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Gold" width="75" right="43"/>
-	<mx:Label y="147" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Gold" width="75" right="43"/>
+	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="image1"/>
+	<mx:Image source="@Embed('/assets/gameEndScoreShow.swf')" id="image2"/>
+	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" id="button1" click="gameContinue(event)"/>
+	<s:Button x="128" y="226" skinClass="components.Button_confirm" click="gameContinue(event)"/>
+	<mx:Label x="20" y="76" text="玩家一" fontSize="14" fontWeight="bold" id="popupPlayer0"/>
+	<mx:Label x="20" y="107" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
+	<mx:Label x="20" y="138" text="玩家三" fontSize="14" fontWeight="bold" id="popupPlayer2"/>
+	<mx:Label x="20" y="169" text="玩家四" fontSize="14" fontWeight="bold" id="popupPlayer3"/>
+	<mx:Label x="121" y="41" text="获得积分" width="66" height="22" fontWeight="bold" fontSize="14"/>
+	<mx:Label x="252" y="41" text="获得金币" fontWeight="bold" fontSize="14"/>
+	<mx:Label y="77" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer0Score" textAlign="right" right="196" width="26"/>
+	<mx:Label y="108" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer1Score" textAlign="right" right="196"/>
+	<mx:Label y="139" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer2Score" textAlign="right" right="196"/>
+	<mx:Label y="170" text="-10" fontWeight="bold" fontSize="14" id="popupPlayer3Score" textAlign="right" right="196"/>
+	<mx:Label y="77" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer0Gold" width="75" right="56"/>
+	<mx:Label y="108" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer1Gold" width="75" right="56"/>
+	<mx:Label y="139" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer2Gold" width="75" right="56"/>
+	<mx:Label y="170" text="0" textAlign="right" fontWeight="bold" fontSize="14" id="popupPlayer3Gold" width="75" right="56"/>
 	
 	<fx:Script>
 		<![CDATA[
+			import components.Button_confirm;
+			
 			import mx.core.FlexGlobals;
 			import mx.events.CloseEvent;
 			import mx.managers.PopUpManager;
 			[Bindable]
 			public var message:String;
 			
-			private function handleClose(evt:CloseEvent):void
+			private function handleClose(evt:Event):void
 			{
 				PopUpManager.removePopUp(this);
 			}
 			private function createComplete():void
 			{
-				x = (this.parent.width - width)/2;
-				y = (this.parent.height - height)/2;
+				x = (530 - width)/2;
+				y = (550 - height)/2;
 //				var bf:BlurFilter = new BlurFilter(0,0,0);
 //				var myfilter:Array = new Array();
 //				myfilter.push(bf);
@@ -46,7 +50,7 @@
 				this.visible = true;
 			}
 			
-			private function gameContinue(event:CloseEvent):void
+			private function gameContinue(event:Event):void
 			{
 				GameObjectManager.Instance.shutdown();
 				// 背景还是要保留
@@ -75,10 +79,10 @@
 				popupPlayer2Score.text = data.score[1].score;
 				popupPlayer3Score.text = data.score[3].score;
 				// gold
-				popupPlayer0Gold.text = "";
-				popupPlayer1Gold.text = "";
-				popupPlayer2Gold.text = "";
-				popupPlayer3Gold.text = "";
+				popupPlayer0Gold.text = data.score[0].money;
+				popupPlayer1Gold.text = data.score[2].money;
+				popupPlayer2Gold.text = data.score[1].money;
+				popupPlayer3Gold.text = data.score[3].money;
 			}
 		]]>
 	</fx:Script>

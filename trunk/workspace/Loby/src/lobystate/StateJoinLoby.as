@@ -48,6 +48,8 @@ package lobystate
 				FlexGlobals.topLevelApplication.lobbypanel.setCurrentLobby(lobyid);
 				FlexGlobals.topLevelApplication.currentState = "room";
 				FlexGlobals.topLevelApplication.toroom_clickHandler(null);
+				// 切换大厅使回到游戏按钮无效
+				FlexGlobals.topLevelApplication.btn2LastTable.enabled = false;
 
 				LobyNetManager.Instance.send(LobyNetManager.tableInfo);
 				
@@ -58,7 +60,7 @@ package lobystate
 			else{
 				// 加入房间失败
 //				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = false;
-				FlexGlobals.topLevelApplication.functionpanel.BtnCreateTable.enabled = false;
+//				FlexGlobals.topLevelApplication.functionpanel.BtnCreateTable.enabled = false;
 
 				// 关闭显示视窗
 				LobyNetManager.Instance.closeNetProcess();

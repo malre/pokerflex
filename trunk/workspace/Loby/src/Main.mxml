@@ -13,9 +13,16 @@
 		preloader="GameLoadingbar">
 	<fx:Script>
 		<![CDATA[
-			import spark.utils.TextFlowUtil;
-			import flash.display.StageDisplayState;
+			import lobystate.StateGetPlayerInfo;
 			
+			import mx.controls.Image;
+			import mx.events.FlexEvent;
+			
+			import spark.components.Group;
+			import spark.utils.TextFlowUtil;
+			
+			// 玩家最近一次所在游戏桌编号
+			public var tableId:int;
 
 			protected function createcomplete(event:Event):void
 			{
@@ -42,12 +49,12 @@
 			public function tolobby_clickHandler(event:MouseEvent):void
 			{
 				currentState = "lobby";
-				gameRoomCanvas.visible = false;
+				roomScroller.visible = false;
 				functionpanel.currentState = "State2";
-				btn2lobby.visible = false;
+//				btn2lobby.visible = false;
 				lobbyroomtag.visible = false;
 				
-				btn2room.visible = true;
+//				btn2room.visible = true;
 				introduceText.visible = true;
 				lobbypanel.currentState='State1';
 				gameTreeView.visible = true;
@@ -57,15 +64,101 @@
 			public function toroom_clickHandler(event:MouseEvent):void
 			{
 				currentState = "room";
-				gameRoomCanvas.visible = true;
+				roomScroller.visible = true;
 				functionpanel.currentState = "State3";
-				btn2lobby.visible = true;
+//				btn2lobby.visible = true;
 				lobbyroomtag.visible = true;
 				
-				btn2room.visible = false;
+//				btn2room.visible = false;
 				introduceText.visible = false;
 				lobbypanel.currentState= 'State2';
 				gameTreeView.visible = false;
+			}
+
+			// 构建大厅中初始的15张桌子
+			// 如果桌子的数量发生变化，在这里进行维护和修改，所有的桌子采用group的方式
+			protected function gameRoomCanvas_creationCompleteHandler(event:FlexEvent):void
+			{
+				const tableStartX:int = 45;
+				const tableStartY:int = 55;
+				const intervalX:int = 100;
+				const intervalY:int = 80;
+				const roomTableMax:int = 15;
+				const roomTableRowMax:int = 7;
+				const roomTableColumnMax:int = 3;
+				const tableAvatarSize:int = 29;
+
+				for(var i:int =0; i<roomTableRowMax; i++)
+				{
+					for(var j:int =0; j<roomTableColumnMax; j++)
+					{
+						// 如果超出了界限，直接返回
+						if(i*roomTableColumnMax+j >= roomTableMax)
+							return;
+						
+						var id:int = i*roomTableColumnMax +j;
+
+						// 所有的桌子的元素都将会被加到这个ui中去，加入顺序是
+						// 0: 0号位椅子
+						// 1: 桌子
+						// 2: 1号位椅子
+						// 3: 2号位椅子
+						// 4: 3号位椅子
+						// 5: 左上桌子的名字
+						// 6: 0号位玩家头像，名字
+						// 7: 1号位玩家头像，名字
+						// 8: 2号位玩家头像，名字
+						// 9: 3号位玩家头像，名字
+						var group:Group = new Group();
+						group.id = "grouptable_"+(0+1).toString();
+						group.x = tableStartX + (intervalX+51)*j;
+						group.y = tableStartY + (intervalY+52)*i;
+						group.visible = false;
+						gameRoomCanvas.addElement(group);
+					
+						// 桌子的图
+						var img:Image = new Image();
+						img.x = 0;
+						img.y = 0;
+						img.id = "grouptable_"+(id+1).toString();
+						img.load(ResourceManager.imgTable);
+						{
+							// 为了达到一个重叠的效果，把上面的椅子在桌子之前描画
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "up"+id.toString(), img.x+12, img.y-28, 0), 0);
+						}
+						group.addElementAt(img, 1);
+					
+						// 创建按钮
+						group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+16, 1), 2);
+						group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "down"+id.toString(), img.x+12, img.y+40, 2), 3);
+						group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "right"+id.toString(), img.x+52+15, img.y+16, 3), 4);
+
+						// 桌子上的桌号
+						var tableName:Label = new Label();
+						tableName.x = img.x -38;
+						tableName.y = img.y - 44 ;
+						// 为了保证换行以后的文字能够都显示出来
+						tableName.width = 50;
+						tableName.height = 45;
+						tableName.text = (id+1).toString();//String(obj[id].name).replace("台", "台\n");;//(id+1).toString();
+						//						label.setStyle("fontSize", 14);
+						//						label.setStyle("color","#ffcc33"); 
+						group.addElementAt(tableName, 5);
+						// 创建桌子上的头像图和文字信息
+						// 0: 头像
+						// 1: 文字信息
+						group.addElementAt(LobyManager.Instance.createAvatarAndName("up"+id.toString(), img.x+17, img.y-40), 6);
+						group.addElementAt(LobyManager.Instance.createAvatarAndName("left"+id.toString(), img.x-33, img.y+6), 7);
+						group.addElementAt(LobyManager.Instance.createAvatarAndName("down"+id.toString(), img.x+17, img.y+30), 8);
+						group.addElementAt(LobyManager.Instance.createAvatarAndName("right"+id.toString(), img.x+51+21, img.y+6), 9);
+					}			
+				}
+			}
+
+
+			protected function btn2LastTable_clickHandler(event:MouseEvent):void
+			{
+				LobyNetManager.Instance.send(LobyNetManager.joinTable, StateGetPlayerInfo.Instance.lastSuccData.player.rid, "toLast");
 			}
 
 		]]>
@@ -92,8 +185,9 @@
 	<fx:DesignLayer d:userLabel="bgp">
 		<s:BitmapImage source="@Embed('/assets/Bg_DT.jpg')" resizeMode="scale" d:userLabel="BgP"/>
 		<mx:Image source="@Embed('assets/lobbyPanel.swf')"/>
-		<s:Button skinClass="components.Button_toLobbyface" id="btn2lobby" x="515" y="4" visible="false" click="tolobby_clickHandler(event)"/>
-		<s:Button skinClass="components.Button_toRoom" id="btn2room" x="515" y="4" visible="false" click="toroom_clickHandler(event)"/>
+		<s:Button skinClass="components.Button_toLobbyface" id="btn2lobby" x="492" y="4" click="tolobby_clickHandler(event)" includeIn="room"/>
+		<s:Button includeIn="room" x="651" y="4" id="btn2LastTable" skinClass="components.Button_toLastTable" enabled="false" click="btn2LastTable_clickHandler(event)"/>
+		<s:Button skinClass="components.Button_toRoom" id="btn2room" x="492" y="4" enabled="false" click="toroom_clickHandler(event)" includeIn="lobby"/>
 		<mx:Image x="357" y="35" source="@Embed('assets/text_gamelobby.swf')" includeIn="lobby"/>
 		<mx:Image x="377" y="34" source="@Embed('assets/text_gamelist.swf')" includeIn="room"/>
 		<components:CustomComponent3 x="500" y="35" id="functionpanel"/>
@@ -103,7 +197,10 @@
 					textFlow="{TextFlowUtil.importFromString(ruleIntroduce.ruleText)}">
 		</s:TextArea>
 	</fx:DesignLayer>
-	<mx:Canvas x="17" y="89" width="480" height="463" id="gameRoomCanvas" baseColor="#f6edae" height.lobby="461"/>
+	<s:Scroller x="17" y="89" width="480" height="461" baseColor="#f6edae" id="roomScroller" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<s:Group x="17" y="89" width="480" height="461" id="gameRoomCanvas" creationComplete="gameRoomCanvas_creationCompleteHandler(event)"/>
+	</s:Scroller>
+	<!--<mx:Canvas x="17" y="89" width="480" height="461" id="gameRoomCanvas" baseColor="#f6edae" creationComplete="gameRoomCanvas_creationCompleteHandler(event)"/>-->
 	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="68" visible="false"/>
 	<fx:DesignLayer d:userLabel="game lest">
 		<components:GameLbby x="10" y="65" id="lobbypanel">
@@ -121,7 +218,7 @@
 		<components:Invitation x="200" y="130" id="invitation" visible="false"/>
 		<components:passwordInput id="pwInput" x="188" y="230" visible="false"/>
 	</fx:DesignLayer>
-	<mx:Label x="690" y="6" text="ver 1.8.2.F" width="64" textAlign="right" color="#FFFFFF"/>
+	<mx:Label x="140" y="26" text="ver 1.8.3.E" width="64" textAlign="right" color="#333333"/>
 	<!--游戏本体-->
 	<poker:poker id="gamePoker" visible="false"/>
 	<!--用来确认一些需要使用卡片的道具-->

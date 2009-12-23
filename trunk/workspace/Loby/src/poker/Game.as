@@ -64,6 +64,8 @@ package poker
 		// 按照花色的顺序从 方块-》梅花-》红桃-》黑桃 数字从3开始，然后是4
 		// 举例如： 33334444555566667777。。。KKKKAAAA2222
 		public var PlayerCards:Array = new Array();
+		public var PlayerCardsObject:Array = new Array();
+		public var PlayerLastPlayedCards:Array = new Array();
 		private var PlayerCardsLeft:Array = new Array();
 		private var PlayerCardsUp:Array = new Array();
 		private var PlayerCardsRight:Array = new Array();
@@ -152,10 +154,6 @@ package poker
 		{
 			GameObjectManager.Instance.startup();
 			//创建所有的图像对象，并放到集合中去
-			BGImg = new GameObject();
-			BGImg.startupGameObject(GraphicsResource(ResourceManagerPoker.BG00Res), new Point(0,0), new Rectangle(0,0, 780, 560),BG_BaseZOrder);
-			BGImg.setVisible(true);
-			BGImg.setName("BG");
 			// 104 cards
 			var i:int,j:int;
 			for(i=0;i<2;i++)
@@ -168,7 +166,7 @@ package poker
 					var pt:Point = new Point();
 					var rt:Rectangle = new Rectangle(0, 0, cardsHeight, cardsWidth);
 					// 传入的是左上的位置坐标
-					go.startupGameObject(GraphicsResource(ResourceManagerPoker.CardsRes.getItemAt(j)), pt, rt,0);
+//					go.startupGameObject(GraphicsResource(ResourceManagerPoker.CardsRes.getItemAt(j)), pt, rt,0);
 				}
 			}
 			// 左边的玩家
@@ -199,17 +197,18 @@ package poker
 		}
 	
 		//
-		public function sortCards(obj:Object):void
+		public function sortCards(obj:Object):Array
 		{
 			var j:int;
-
+			var arr:Array = new Array();
 			for(j=0;j<obj.cards[selfseat].number;j++)
 			{
-				PlayerCards.push(obj.cards[selfseat].card[j]);
+				arr.push(obj.cards[selfseat].card[j]);
 			}
 			// do sort
-			PlayerCards.sort(Array.NUMERIC);
-			PlayerCards.reverse();
+			arr.sort(Array.NUMERIC);
+			arr.reverse();
+			return arr;
 		}
 		
 		public function clearPlayerCards():void
@@ -223,21 +222,53 @@ package poker
 		// 描画玩家手上的牌
 		public function drawPlayerCards(obj:Object):void
 		{
-			var i:int;
+			var i:int,j:int;
 			// 是否需要显示
 			if(obj.cards[selfseat].number != PlayerCards.length)
 			{
-				//清空原来的牌的记录
-				GameObjectManager.Instance.setVisibleByName("Card", false);
-				PlayerCards.length = 0;
-				// 对得到的牌进行排序并显示
-				sortCards(obj);
-				var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
-				for(i=0; i<PlayerCards.length; i++)
+				var rt:Rectangle;
+				var arr:Array = sortCards(obj);
+				if(PlayerCards.length == 0)	// first time
 				{
-					var pt:Point = new Point(cardStandardX-(PlayerCards.length*cardsIntervalX/2)+i*cardsIntervalX,cardStandardY);
-					// 传入的是左上的位置坐标
-					GameObjectManager.Instance.setSpecCardVisible(PlayerCards[i], "Card", pt, card_BaseZOrder+i, true);
+//					PlayerCards.push(arr);
+					PlayerCards = arr;
+					rt = new Rectangle(0,0,cardsWidth,cardsHeight);
+					for(i=0; i<PlayerCards.length; i++)
+					{
+						var pt:Point = new Point(cardStandardX-(PlayerCards.length*cardsIntervalX/2)+i*cardsIntervalX,cardStandardY);
+						// 传入的是左上的位置坐标
+						//					GameObjectManager.Instance.setSpecCardVisible(PlayerCards[i], "Card", pt, card_BaseZOrder+i, true);
+						
+						PlayerCardsObject.push(GameObjectManager.Instance.addCardtoScreen(PlayerCards[i], "Card", pt));
+						
+					}
+				}
+				else
+				{
+					// 删除被打出的牌
+					var temp1:Array = new Array();
+					var temp2:Array = new Array();
+//					var delcards:Array = new Array();
+					for(i=0; i<PlayerCardsObject.length; i++){
+						if( !Card(PlayerCardsObject[i]).isSelectedtoPost){
+							temp1.push(PlayerCards[i]);
+							temp2.push(PlayerCardsObject[i]);
+						}
+						else
+						{
+//							delcards.push(PlayerCardsObject[i]);
+							GameObjectManager.Instance.removeSingleCardfromScreen(PlayerCardsObject[i], "Card");
+						}
+					}
+					PlayerCards = temp1;
+					PlayerCardsObject = temp2;
+					
+
+					// 修改剩下的牌的位置
+					for(i=0; i<PlayerCards.length; i++)
+					{
+						Card(PlayerCardsObject[i]).x = cardStandardX-(PlayerCards.length*cardsIntervalX/2)+i*cardsIntervalX;
+					}
 				}
 			}
 			
@@ -263,18 +294,21 @@ package poker
 			// 如果该回合是自己出牌，将先清除桌面上所有的牌
 			if(curPlayer == selfseat && gamestate == 0)
 			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+//				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = false;
 			}
 			else
 			{
 				if(cards[selfseat] == "null")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 				}
 				else if(cards[selfseat] == "pass")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = true;
 					// SE 这个步骤，如果是最后一步是不会到的，所以把pass，放到按钮上去
 					//if(curPlayerLast == selfseat)
@@ -315,12 +349,14 @@ package poker
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards0.length = 0;
-						GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+//						GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+						GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 						// 重新描画
 						for(i=0;i<cards[selfseat].length;i++)
 						{
 							pt = new Point(playedCardStdX-(cards[selfseat].length*cardsIntervalX/2)+i*cardsIntervalX,playedCardStdY);
-							GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
+//							GameObjectManager.Instance.setSpecCardVisible(cards[selfseat][i], "PlayedCardSelf", pt, cardplayed0_BaseZOrder+i, true);
+							GameObjectManager.Instance.addCardtoScreen(cards[selfseat][i], "PlayedCardSelf", pt);
 						}
 						deskCards0 = deskCards0.concat(cards[selfseat]);
 						// 判断该次出牌是不是最近的一次出牌
@@ -338,7 +374,8 @@ package poker
 						// 如果该回合是自己出牌，将先清除桌面上所有的牌
 						if(curPlayer == selfseat)
 						{
-							GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+//							GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
+							GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 						}
 					}
 				}
@@ -348,14 +385,16 @@ package poker
 			// 如果该回合是出牌轮，将先清除桌面上所有的牌
 			if(curPlayer == id && gamestate == 0)
 			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+//				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = false;
 			}
 			else
 			{
 				if(cards[id] == "null")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 					// 当4个玩家的出牌都是null，并且玩家有值的情况下，需要喊pass,自己不用判断
 					if(obj.cards[0].number==27&&obj.cards[1].number==27
 						&&obj.cards[2].number==27&&obj.cards[3].number==27){
@@ -367,7 +406,8 @@ package poker
 				}
 				else if(cards[id] == "pass")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = true;
 					// SE
 					if(curPlayerLast == id)
@@ -407,13 +447,15 @@ package poker
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards1.length = 0;
-						GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+//						GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
+						GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 						// 重新描画
 						for(i=0;i<cards[id].length;i++)
 						{
 							
 							pt = new Point(playedrightCardStdX, playedrightCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardRight", pt, cardplayed1_BaseZOrder+i, true);
+//							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardRight", pt, cardplayed1_BaseZOrder+i, true);
+							GameObjectManager.Instance.addCardtoScreen(cards[id][i], "PlayedCardRight", pt);
 						}
 						deskCards1 = deskCards1.concat(cards[id]);
 						if(lastPlayer == id)
@@ -432,14 +474,16 @@ package poker
 			// 如果该回合是出牌轮，将先清除桌面上所有的牌
 			if(curPlayer == id && gamestate == 0)
 			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+//				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = false;
 			}
 			else
 			{
 				if(cards[id] == "null")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 					// 当4个玩家的出牌都是null，并且玩家有值的情况下，需要喊pass,自己不用判断
 					if(obj.cards[0].number==27&&obj.cards[1].number==27
 						&&obj.cards[2].number==27&&obj.cards[3].number==27){
@@ -451,7 +495,8 @@ package poker
 				}
 				else if(cards[id] == "pass")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = true;
 					// SE
 					if(curPlayerLast == id)
@@ -491,12 +536,14 @@ package poker
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards2.length = 0;
-						GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+//						GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
+						GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 						// 重新描画
 						for(i=0;i<cards[id].length;i++)
 						{
 							pt = new Point(playedupCardStdX-(cards[id].length*cardsIntervalX/2)+i*cardsIntervalX,playedupCardStdY);
-							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed2_BaseZOrder+i, true);
+//							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardUp", pt, cardplayed2_BaseZOrder+i, true);
+							GameObjectManager.Instance.addCardtoScreen(cards[id][i], "PlayedCardUp", pt);
 						}
 						deskCards2 = deskCards2.concat(cards[id]);
 						if(lastPlayer == id)
@@ -514,7 +561,8 @@ package poker
 			// 如果该回合是出牌轮，将先清除桌面上所有的牌
 			if(curPlayer == id && gamestate == 0)
 			{
-				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+//				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = false;
 //				// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //				if(!bPassAnimatePlayedLeft)
@@ -531,7 +579,8 @@ package poker
 //					bPassAnimatePlayedLeft = false;
 				if(cards[id] == "null")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 					// 当4个玩家的出牌都是null，并且玩家有值的情况下，需要喊pass,自己不用判断
 					if(obj.cards[0].number==27&&obj.cards[1].number==27
 						&&obj.cards[2].number==27&&obj.cards[3].number==27){
@@ -543,7 +592,8 @@ package poker
 				}
 				else if(cards[id] == "pass")
 				{
-					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+//					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+					GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = true;
 					// SE
 					if(curPlayerLast == id)
@@ -572,13 +622,15 @@ package poker
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards3.length = 0;
-						GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+//						GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
+						GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 						// 重新描画
 						for(i=0;i<cards[id].length;i++)
 						{
 	
 							pt = new Point(playedleftCardStdX, playedleftCardStdY-(cards[id].length*cardsIntervalY/2)+i*cardsIntervalY);
-							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
+//							GameObjectManager.Instance.setSpecCardVisible(cards[id][i], "PlayedCardLeft", pt, cardplayed3_BaseZOrder+i, true);
+							GameObjectManager.Instance.addCardtoScreen(cards[id][i], "PlayedCardLeft", pt);
 						}
 						deskCards3 = deskCards3.concat(cards[id]);
 						if(lastPlayer == id)
@@ -686,7 +738,22 @@ package poker
 			}
 			rt = null;
 		}
-		
+		// 控制显示所有的卡牌背面
+		public function showCardback(flag:Boolean):void
+		{
+			if(flag)
+			{
+				GameObjectManager.Instance.addOtherstoScreen(ResourceManagerPoker.cardback1, "CardbackLeft", new Point(leftCardback_x,leftCardback_y));
+				GameObjectManager.Instance.addOtherstoScreen(ResourceManagerPoker.cardback1, "CardbackUp", new Point(upCardback_x,upCardback_y));
+				GameObjectManager.Instance.addOtherstoScreen(ResourceManagerPoker.cardback1, "CardbackRight", new Point(rightCardback_x,rightCardback_y));
+			}
+			else
+			{
+				GameObjectManager.Instance.removeOthersfromScreen("CardbackUp");
+				GameObjectManager.Instance.removeOthersfromScreen("CardbackLeft");
+				GameObjectManager.Instance.removeOthersfromScreen("CardbackRight");
+			}
+		}
 		// function for find player pos
 		private function getPlayerIndexByPos(obj:Object, pos:int):int
 		{
@@ -723,12 +790,12 @@ package poker
 					FlexGlobals.topLevelApplication.gamePoker.selfAvatar.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
 				if(obj.players[getPlayerIndexByPos(obj,selfseat)].ready)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.visible = true;
+					FlexGlobals.topLevelApplication.gamePoker.avatarDownGroup.visible = true;
 					if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.source != obj.players[getPlayerIndexByPos(obj, selfseat)].avatar)
 						FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.source = obj.players[getPlayerIndexByPos(obj, selfseat)].avatar;
 				}
 				else{
-					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.visible = false;
+					FlexGlobals.topLevelApplication.gamePoker.avatarDownGroup.visible = false;
 				}
 			}
 
@@ -741,7 +808,7 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelUp.text = LevelDefine.getLevelName(upPlayer.score);
 				FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = true;
 				
-				FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.avatarUpGroup.visible = true;
 				if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source != upPlayer.avatar)
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.source = upPlayer.avatar;
 			}
@@ -749,7 +816,7 @@ package poker
 			{
 				FlexGlobals.topLevelApplication.gamePoker.Lable_playernameUp.text = "";
 				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumUp.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.avatarUpGroup.visible = false;
 				FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
 			}
 			// right
@@ -761,7 +828,7 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelRight.text = LevelDefine.getLevelName(rightPlayer.score);
 				FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = true;
 				
-				FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.avatarRightGroup.visible = true;
 				if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source != rightPlayer.avatar)
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.source = rightPlayer.avatar;
 			}
@@ -769,7 +836,7 @@ package poker
 			{
 				FlexGlobals.topLevelApplication.gamePoker.Lable_playernameRight.text = "";
 				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumRight.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = false; 
+				FlexGlobals.topLevelApplication.gamePoker.avatarRightGroup.visible = false; 
 				FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
 			}
 			// left
@@ -781,7 +848,7 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.Lable_playerLevelLeft.text = LevelDefine.getLevelName(leftPlayer.score);
 				FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = true;
 				
-				FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.avatarLeftGroup.visible = true;
 				if(FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source != leftPlayer.avatar)
 					FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.source = leftPlayer.avatar;
 			}
@@ -789,7 +856,7 @@ package poker
 			{
 				FlexGlobals.topLevelApplication.gamePoker.Lable_playernameLeft.text = "";
 				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumLeft.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = false;
+				FlexGlobals.topLevelApplication.gamePoker.avatarLeftGroup.visible = false;
 				FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = false;
 			}		
 		}
@@ -947,23 +1014,23 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = true;
 				if(obj.play.next == selfseat)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.x;
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarDown.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.avatarDownGroup.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.avatarDownGroup.y;
 				}
 				else if(obj.play.next == (selfseat+1)%4)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.x;
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.avatarRightGroup.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.avatarRightGroup.y;
 				}
 				else if(obj.play.next == (selfseat+2)%4)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.x;
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.avatarUpGroup.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.avatarUpGroup.y;
 				}
 				else if(obj.play.next == (selfseat+3)%4)
 				{
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.x;
-					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.y;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.x = FlexGlobals.topLevelApplication.gamePoker.avatarLeftGroup.x;
+					FlexGlobals.topLevelApplication.gamePoker.label_thinking.y = FlexGlobals.topLevelApplication.gamePoker.avatarLeftGroup.y;
 				}
 				else
 				{
@@ -1053,7 +1120,6 @@ package poker
 					if(curPlayer == selfseat)
 					{
 						// 检测该次的出牌是否符合要求，能否出牌。
-						var checkarr:Array = new Array();
 						if(curPlayer == lastPlayer)
 						{
 							// 这意味着玩家自己出的牌最大，他可以没有限制的继续出
@@ -1061,32 +1127,6 @@ package poker
 							if(FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled != false)
 								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
 						}
-//						else
-//						{
-//							// 要求含有当前出牌情况的信息才能进行判断
-//							if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
-//							{
-//								checkarr = checkarr.concat(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
-//							}
-//						}
-//						// 要求含有当前出牌情况的信息才能进行判断
-//						if(StateUpdateWhileGame.Instance.lastSuccData.hasOwnProperty("play"))
-//						{
-//							if(GameObjectManager.Instance.checkCardtobePlayed(checkarr.sort(Array.NUMERIC)))
-//							{
-//								// make chupai enable
-//								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = true;
-//							}
-//							else
-//							{
-//								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
-//							}
-//						}
-//						else
-//						{
-//							FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
-//						}
-//					    checkarr = null;
 					}
 					updatePlayerLeftTime();
 				    GameObjectManager.Instance.enterFrame();
@@ -1220,6 +1260,12 @@ package poker
 						}
 						checkarr = null;
 					}
+				}
+				else{
+					if(GameObjectManager.Instance.checkCardtobePlayed(new Array()))
+						return true;
+					else
+						return false;
 				}
 			}
 			return false;

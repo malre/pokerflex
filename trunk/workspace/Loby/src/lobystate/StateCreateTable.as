@@ -63,7 +63,7 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				StateLobyJoinTable.Instance.setTablename(obj.room.name);
+//				StateLobyJoinTable.Instance.setTablename(obj.room.name);
 				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
 
 				// 关闭显示视窗

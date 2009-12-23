@@ -71,7 +71,7 @@ package poker
 		
 		override public function copyToBackBuffer(db:BitmapData):void
 		{
-			db.copyPixels(graphics.bitmap, graphics.bitmap.rect, position, graphics.bitmapAlpha, new Point(0, 0), true);
+			db.copyPixels(graphics.bitmap, graphics.bitmap.rect, position);//, graphics.bitmapAlpha, new Point(0, 0), true);
 		}				
 	}
 }

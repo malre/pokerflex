@@ -195,7 +195,7 @@
 					itemDescribe.text = itemobj.description;
 					itemPrice.text = itemobj.price+" 金币";
 					itemName.text = itemobj.name;
-					Imgbuyitem.source = ServerAddress + ServerPerfix + webResourePerfix + itemobj.image;
+					Imgbuyitem.source = event.currentTarget.source;// ServerAddress + ServerPerfix + webResourePerfix + itemobj.image;
 				}
 				else if(currentState == "StateItemMain")
 				{
@@ -206,7 +206,7 @@
 					itemDescribe.text = itemobj.description;
 					itemPrice.text = itemobj.price+" 金币";
 					itemName.text = itemobj.name;
-					Imgbuyitem.source = ServerAddress + ServerPerfix + webResourePerfix + itemobj.image;
+					Imgbuyitem.source = event.currentTarget.source;//ServerAddress + ServerPerfix + webResourePerfix + itemobj.image;
 					itemnumber.text =  "数量："+itemobj.number.toString();
 				}
 			}
@@ -292,37 +292,37 @@
 	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1"/>
 	<s:BitmapImage source="@Embed('/assets/shop_text.png')" resizeMode="scale" x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub"/>
 	<s:BitmapImage source="@Embed('/assets/item_text.png')" resizeMode="scale" x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub"/>
-	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="315" y="6" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()"/>
+	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()"/>
 	<!--道具的图片-->
-	<s:Group includeIn="StateItemMain,StateShopMain" x="30" y="47" width="300" height="229" id="item_icon_group">
-		<mx:Image id="item0" name="item0" x="5" y="10" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item1" name="item1" x="77" y="10" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item2" name="item2" x="149" y="10" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item3" name="item3" x="221" y="10" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item4" name="item4" x="5" y="82" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item5" name="item5" x="77" y="82" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item6" name="item6" x="149" y="82" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item7" name="item7" x="221" y="82" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item8" name="item8" x="5" y="154" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item9" name="item9" x="77" y="154" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item10" name="item10" x="149" y="154" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
-		<mx:Image id="item11" name="item11" x="221" y="154" buttonMode="true" useHandCursor="true" click="itemClicked(event)"/>
+	<s:Group includeIn="StateItemMain,StateShopMain" id="item_icon_group" width="312" height="190" x="23" y="40">
+		<mx:Image id="item0" name="item0" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="5" y="7"/>
+		<mx:Image id="item1" name="item1" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="80" y="7"/>
+		<mx:Image id="item2" name="item2" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="155" y="7"/>
+		<mx:Image id="item3" name="item3" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="230" y="7"/>
+		<mx:Image id="item4" name="item4" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="5" y="68"/>
+		<mx:Image id="item5" name="item5" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="80" y="68"/>
+		<mx:Image id="item6" name="item6" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="155" y="68"/>
+		<mx:Image id="item7" name="item7" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="230" y="68"/>
+		<mx:Image id="item8" name="item8" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="5" y="132"/>
+		<mx:Image id="item9" name="item9" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="80" y="132"/>
+		<mx:Image id="item10" name="item10" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="155" y="132"/>
+		<mx:Image id="item11" name="item11" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="230" y="132"/>
 	</s:Group>
-	<s:Button includeIn="StateItemMain,StateShopMain" id="pageleft" x="130" y="281" skinClass="components.Button_Page" click="pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="上一页" enabled="false"/>
-	<s:Button includeIn="StateItemMain,StateShopMain" id="pageright" x="223" y="300" skinClass="components.Button_Page" rotation="180" click="pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="下一页"/>
-	<mx:Label includeIn="StateItemMain,StateShopMain" id="pagenumber" x="161" y="278" text="1" width="32" fontSize="16" textAlign="center" fontWeight="bold" color="#000000"/>
+	<s:Button includeIn="StateItemMain,StateShopMain" id="pageleft" skinClass="components.Button_Page" click="pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="上一页" enabled="false" x="130" y="241"/>
+	<s:Button includeIn="StateItemMain,StateShopMain" id="pageright" skinClass="components.Button_Page" rotation="180" click="pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="下一页" x="223" y="260"/>
+	<mx:Label includeIn="StateItemMain,StateShopMain" id="pagenumber" text="1" width="32" fontSize="16" textAlign="center" fontWeight="bold" color="#000000" x="161" y="238"/>
 
-	<s:BitmapImage source="@Embed('/assets/shop_Bg_2.png')" resizeMode="scale" includeIn="StateItemSub,StateShopSub" id="bitmapimage6" x="29" y="49"/>
-	<mx:Image includeIn="StateItemSub,StateShopSub" id="Imgbuyitem" x="50" y="70"/>
-	<s:Button includeIn="StateShopSub" x="62" y="239" skinClass="components.Button_ShopBuy" id="button8" click="BtnItemBuy()" x.StateItemSub="122" y.StateItemSub="239"/>
-	<s:Button includeIn="StateShopSub,StateItemSub" x="190" y="239" skinClass="components.Button_ShopNoBuy" id="button9" click="BtnItemNotBuy()"/>
-	<s:Button includeIn="StateItemSub" x="62" y="239" skinClass="components.Button_ItemUse" id="button10" click="ItemUseClick()"/>
-	<s:RichText includeIn="StateItemSub,StateShopSub" y="66" color="#c4ab47" x="150" text="说明" fontSize="18" fontFamily="宋体" id="itemDescribe" width="159" height="92"/>
-	<s:RichText includeIn="StateItemSub,StateShopSub" y="169" color="#000000" x="150" text="价格，使用限制" fontSize="18" fontFamily="宋体" id="itemPrice" width="157" height="60"/>
-	<s:RichText includeIn="StateItemSub,StateShopSub" y="138" color="#000000" x="41" text="道具名" fontSize="18" fontFamily="宋体" id="itemName" width="93" height="51"/>
-	<mx:Label includeIn="StateShopSub" x="76" y="197" text="1" fontWeight="bold" fontSize="16" id="itembuyNumber" textAlign="center" color="#000000"/>
-	<s:Button includeIn="StateShopSub" id="itemnumleft" x="43" y="200" skinClass="components.Button_Page" click="itemnumleft_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
-	<s:Button includeIn="StateShopSub" id="itemnumright" x="130" y="218" skinClass="components.Button_Page" rotation="180" click="itemnumright_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
+	<s:BitmapImage source="@Embed('/assets/shop_Bg_2.png')" resizeMode="scale" includeIn="StateItemSub,StateShopSub" id="bitmapimage6" x="33" y="37"/>
+	<mx:Image includeIn="StateItemSub,StateShopSub" id="Imgbuyitem" x="50" y="60"/>
+	<s:Button includeIn="StateShopSub" x="66" y="227" skinClass="components.Button_ShopBuy" id="button8" click="BtnItemBuy()"/>
+	<s:Button includeIn="StateShopSub,StateItemSub" skinClass="components.Button_ShopNoBuy" id="button9" click="BtnItemNotBuy()" x="194" y="227"/>
+	<s:Button includeIn="StateItemSub" x="62" y="227" skinClass="components.Button_ItemUse" id="button10" click="ItemUseClick()"/>
+	<s:RichText includeIn="StateItemSub,StateShopSub" color="#c4ab47" text="说明" fontSize="18" fontFamily="宋体" id="itemDescribe" width="159" height="92" x="154" y="54"/>
+	<s:RichText includeIn="StateItemSub,StateShopSub" color="#000000" text="价格，使用限制" fontSize="18" fontFamily="宋体" id="itemPrice" width="157" height="60" x="154" y="157"/>
+	<s:RichText includeIn="StateItemSub,StateShopSub" color="#000000" text="道具名" fontSize="18" fontFamily="宋体" id="itemName" width="93" height="51" x="45" y="126"/>
+	<mx:Label includeIn="StateShopSub" x="80" y="185" text="1" fontWeight="bold" fontSize="16" id="itembuyNumber" textAlign="center" color="#000000"/>
+	<s:Button includeIn="StateShopSub" id="itemnumleft" x="47" y="188" skinClass="components.Button_Page" click="itemnumleft_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
+	<s:Button includeIn="StateShopSub" id="itemnumright" x="134" y="206" skinClass="components.Button_Page" rotation="180" click="itemnumright_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
 	<mx:Label includeIn="StateItemSub" x="39" y="193" width="94" fontFamily="宋体" fontSize="18" id="itemnumber" textAlign="center" color="#000000"/>
 	<components:MSGbox id="msgbox" x="44" y="58" visible="false"/>
 	<fx:Private>
