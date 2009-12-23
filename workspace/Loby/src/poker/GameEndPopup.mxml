@@ -52,9 +52,13 @@
 			
 			private function gameContinue(event:Event):void
 			{
-				GameObjectManager.Instance.shutdown();
-				// 背景还是要保留
-				GameObjectManager.Instance.setVisibleByName("BG", true);
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
+				GameObjectManager.Instance.removeCardfromScreen("HandCardUp");
+				GameObjectManager.Instance.removeCardfromScreen("HandCardLeft");
+				GameObjectManager.Instance.removeCardfromScreen("HandCardRight");
 
 				//this.visible = false;
 				Game.Instance.gameState = 3;	// 3 发送举手消息以前

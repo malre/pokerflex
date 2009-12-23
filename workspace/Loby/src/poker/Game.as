@@ -169,21 +169,21 @@ package poker
 //					go.startupGameObject(GraphicsResource(ResourceManagerPoker.CardsRes.getItemAt(j)), pt, rt,0);
 				}
 			}
-			// 左边的玩家
-			var cardbackleft:GameObject = new GameObject();
-			cardbackleft.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
-					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
-			cardbackleft.setName("CardbackLeft");
-			// 上面的玩家
-			var cardbackup:GameObject = new GameObject();
-			cardbackup.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(upCardback_x,upCardback_y), 
-					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
-			cardbackup.setName("CardbackUp");
-			// 右边的玩家
-			var cardbackright:GameObject = new GameObject();
-			cardbackright.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
-					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
-			cardbackright.setName("CardbackRight");
+//			// 左边的玩家
+//			var cardbackleft:GameObject = new GameObject();
+//			cardbackleft.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(leftCardback_x,leftCardback_y), 
+//					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder);
+//			cardbackleft.setName("CardbackLeft");
+//			// 上面的玩家
+//			var cardbackup:GameObject = new GameObject();
+//			cardbackup.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(upCardback_x,upCardback_y), 
+//					new Rectangle(0,0,cardback2_w, cardback2_h),cardback_BaseZOrder+1);
+//			cardbackup.setName("CardbackUp");
+//			// 右边的玩家
+//			var cardbackright:GameObject = new GameObject();
+//			cardbackright.startupGameObject(GraphicsResource(ResourceManagerPoker.CardBack1Res), new Point(rightCardback_x,rightCardback_y), 
+//					new Rectangle(0,0,cardback1_w, cardback1_h),cardback_BaseZOrder+2);
+//			cardbackright.setName("CardbackRight");
 		}
 		
 		// 各种按钮和图的初始化
@@ -660,12 +660,12 @@ package poker
 			var pt:Point;
 			if(pos == (selfseat+1)%4)	// 右手边
 			{
-				GameObjectManager.Instance.setVisibleByName("CardbackRight", false);
+				GameObjectManager.Instance.removeOthersfromScreen("CardbackRight");
 				// 是否需要显示
 				if(obj.cards[pos].number != PlayerCardsRight.length)
 				{
 					//清空原来的牌的记录
-					GameObjectManager.Instance.setVisibleByName("HandCardRight", false);
+//					GameObjectManager.Instance.setVisibleByName("HandCardRight", false);
 					PlayerCardsRight.length = 0;
 					// 对得到的牌进行排序并显示
 					for(j=0;j<obj.cards[pos].number;j++)
@@ -679,8 +679,9 @@ package poker
 					{
 						pt = new Point(rightCardback_x,playedrightCardStdY-(PlayerCardsRight.length*cardsIntervalY/2)+k*cardsIntervalY);
 						// 传入的是左上的位置坐标
-						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsRight[k], "HandCardRight", pt, cardback_BaseZOrder+k, true);
-						pt = null;
+//						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsRight[k], "HandCardRight", pt, cardback_BaseZOrder+k, true);
+//						pt = null;
+						GameObjectManager.Instance.addCardtoScreen(PlayerCardsRight[i], "HandCardRight", pt);
 					}
 				}
 			}
@@ -689,9 +690,9 @@ package poker
 				// 是否需要显示
 				if(obj.cards[pos].number != PlayerCardsUp.length)
 				{
-					GameObjectManager.Instance.setVisibleByName("CardbackUp", false);
+					GameObjectManager.Instance.removeOthersfromScreen("CardbackUp");
 					//清空原来的牌的记录
-					GameObjectManager.Instance.setVisibleByName("HandCardUp", false);
+//					GameObjectManager.Instance.setVisibleByName("HandCardUp", false);
 					PlayerCardsUp.length = 0;
 					// 对得到的牌进行排序并显示
 					for(j=0;j<obj.cards[pos].number;j++)
@@ -705,8 +706,9 @@ package poker
 					{
 						pt = new Point(playedupCardStdX-(PlayerCardsUp.length*cardsIntervalX/2)+k*cardsIntervalX,upCardback_y);
 						// 传入的是左上的位置坐标
-						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsUp[k], "HandCardUp", pt, cardback_BaseZOrder+k, true);
-						pt = null;
+//						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsUp[k], "HandCardUp", pt, cardback_BaseZOrder+k, true);
+//						pt = null;
+						GameObjectManager.Instance.addCardtoScreen(PlayerCardsUp[i], "HandCardUp", pt);
 					}
 				}
 			}
@@ -715,9 +717,9 @@ package poker
 				// 是否需要显示
 				if(obj.cards[pos].number != PlayerCardsLeft.length)
 				{
-					GameObjectManager.Instance.setVisibleByName("CardbackLeft", false);
+					GameObjectManager.Instance.removeOthersfromScreen("CardbackLeft");
 					//清空原来的牌的记录
-					GameObjectManager.Instance.setVisibleByName("HandCardLeft", false);
+//					GameObjectManager.Instance.setVisibleByName("HandCardLeft", false);
 					PlayerCardsLeft.length = 0;
 					// 对得到的牌进行排序并显示
 					for(j=0;j<obj.cards[pos].number;j++)
@@ -731,8 +733,9 @@ package poker
 					{
 						pt = new Point(leftCardback_x,playedleftCardStdY-(PlayerCardsLeft.length*cardsIntervalY/2)+k*cardsIntervalY);
 						// 传入的是左上的位置坐标
-						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsLeft[k], "HandCardLeft", pt, cardback_BaseZOrder+k, true);
-						pt = null;
+//						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsLeft[k], "HandCardLeft", pt, cardback_BaseZOrder+k, true);
+//						pt = null;
+						GameObjectManager.Instance.addCardtoScreen(PlayerCardsLeft[i], "HandCardLeft", pt);
 					}
 				}
 			}
@@ -985,7 +988,8 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumUp.visible = true;
 				if(obj.cards[(selfseat+2)%4].number == 0)
 				{
-					GameObjectManager.Instance.setVisibleByName("CardbackUp", false);
+//					GameObjectManager.Instance.setVisibleByName("CardbackUp", false);
+					GameObjectManager.Instance.removeOthersfromScreen("CardbackLeft");
 				}
 			}
 			if(obj.cards.hasOwnProperty( ((selfseat+1)%4).toString() ))
@@ -994,7 +998,8 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumRight.visible = true;
 				if(obj.cards[(selfseat+1)%4].number == 0)
 				{
-					GameObjectManager.Instance.setVisibleByName("CardbackRight", false);
+//					GameObjectManager.Instance.setVisibleByName("CardbackRight", false);
+					GameObjectManager.Instance.removeOthersfromScreen("CardbackRight");
 				}
 			}
 			if(obj.cards.hasOwnProperty( ((selfseat+3)%4).toString() ))
@@ -1003,7 +1008,8 @@ package poker
 				FlexGlobals.topLevelApplication.gamePoker.Label_leftcardsnumLeft.visible = true;
 				if(obj.cards[(selfseat+3)%4].number == 0)
 				{
-					GameObjectManager.Instance.setVisibleByName("CardbackLeft", false);
+//					GameObjectManager.Instance.setVisibleByName("CardbackLeft", false);
+					GameObjectManager.Instance.removeOthersfromScreen("CardbackLeft");
 				}
 			}
 			

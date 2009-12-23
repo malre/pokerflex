@@ -316,7 +316,13 @@
 				commandbar.visible = false;
 				// 初始化玩家的准备用按钮
 				Game.Instance.readyStateInit();
-				GameObjectManager.Instance.shutdown();
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
+				GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
+				GameObjectManager.Instance.removeCardfromScreen("HandCardUp");
+				GameObjectManager.Instance.removeCardfromScreen("HandCardLeft");
+				GameObjectManager.Instance.removeCardfromScreen("HandCardRight");
 				// 背景还是要保留
 				GameObjectManager.Instance.setVisibleByName("BG", true);
 				Game.Instance.clearPlayerCards();
