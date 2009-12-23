@@ -588,6 +588,15 @@ package poker
 			else if(name == "PlayedCardRight")	{
 				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerRight as Group;
 			}
+			else if(name == "HandCardUp")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerUp as Group;
+			}
+			else if(name == "HandCardLeft")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerLeft as Group;
+			}
+			else if(name == "HandCardRight")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerRight as Group;
+			}
 			
 			return gp.addElement(card) as Card;
 		}
@@ -639,11 +648,16 @@ package poker
 			else if(name == "PlayedCardRight")	{
 				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerRight as Group;
 			}
-//			for(var i:int=0;i<gp.numElements;i++)
-//			{
-//				var image:Image = gp.getElementAt(i) as Image;
-//				image.removeEventListener(MouseEvent.CLICK, cardClick);
-//			}
+			else if(name == "HandCardUp")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerUp as Group;
+			}
+			else if(name == "HandCardLeft")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerLeft as Group;
+			}
+			else if(name == "HandCardRight")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerRight as Group;
+			}
+
 			gp.removeAllElements();
 		}
 		public function removeSingleCardfromScreen(card:Card, name:String):void
