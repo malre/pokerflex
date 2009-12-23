@@ -144,6 +144,8 @@
 			
 			public function inGameSetting(obj:Object):void
 			{
+				if(currentState != "State3")
+					currentState = "State3";
 				// 对所有的选项进行设置
 				if(obj.hasOwnProperty("password")) {
 					checkboxPassword.selected = true;
@@ -170,7 +172,13 @@
 				
 				if(obj.hasOwnProperty("magnification")) {
 					checkboxAllowGold.selected = true;
-					goldplus.selectedIndex = obj.magnification;
+					for(var m:int=0;m<goldplusrate.length;m++)
+					{
+						if(goldplusrate[m] == obj.magnification){
+							goldplus.selectedIndex = m;
+							break;
+						}
+					}
 				}else{
 					checkboxAllowGold.selected = false;
 					goldplus.selectedIndex = 0;
@@ -189,8 +197,6 @@
 				// load from soundmanger
 				checkboxSEEnable.selected = SoundManager.Instance().SEEnable;
 				
-				if(currentState != "State3")
-					currentState = "State3";
 			}
 
 		]]>
@@ -205,10 +211,10 @@
 				<s:Parallel target="{button2}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
-				<s:Parallel target="{bitmapimage1}">
+				<s:Parallel target="{image1}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
-				<s:Parallel target="{bitmapimage2}">
+				<s:Parallel target="{image2}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
 				<s:Parallel target="{BtnConfirm}">
@@ -227,10 +233,10 @@
 				<s:Parallel target="{button2}">
 					<s:Fade duration="50"/>
 				</s:Parallel>
-				<s:Parallel target="{bitmapimage1}">
+				<s:Parallel target="{image1}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
-				<s:Parallel target="{bitmapimage2}">
+				<s:Parallel target="{image2}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
 				<s:Parallel target="{BtnConfirm}">
@@ -247,28 +253,21 @@
 		<s:State name="State2" enterState="state2_enterStateHandler(event)"/>
 		<s:State name="State3" enterState="state3_enterStateHandler(event)"/>
 	</s:states>
-	<mx:Image includeIn="State2,State3" source="@Embed('/assets/Bg_shop.swf')" id="bitmapimage1"/>
-	<s:Button includeIn="State2,State3" x="315" y="6" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
-	<s:BitmapImage source="@Embed('/assets/OptionWindow_title.png')" resizeMode="scale" includeIn="State2,State3" x="15" y="3" d:locked="true" id="bitmapimage2"/>
+	<mx:Image includeIn="State2,State3" source="@Embed('/assets/Bg_shop.swf')" id="image1"/>
+	<mx:Image includeIn="State2,State3" source="@Embed('/assets/optionWindow_text.swf')" id="image2"/>
+	<s:Button includeIn="State2,State3" x="330" y="11" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
 	<s:Button includeIn="State2,State3" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2" visible="false"/>
-	<s:Button x="62" y="257" skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x.State3="131" y.State3="258"/>
-	<s:Button x="193" y="257" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
-	<mx:ComboBox includeIn="State2,State3" x="121" y="101" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel"/>
-	<mx:ComboBox includeIn="State2,State3" x="228" y="102" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel"/>
-	<s:CheckBox includeIn="State2,State3" x="126" y="133" id="checkboxAllowGold" click="checkboxAllowGold_clickHandler(event)" selected="true"/>
-	<mx:Label includeIn="State2,State3" x="46" y="70" text="设置密码" fontSize="16" color="#FFFFFF"/>
-	<s:CheckBox includeIn="State2,State3" x="125" y="74" selected="false" id="checkboxPassword" click="checkboxPassword_clickHandler(event)"/>
-	<s:TextInput includeIn="State2,State3" x="157" y="70" width="126" displayAsPassword="true" maxChars="8" enabled="false" id="inputboxPassword"/>
-	<mx:Label includeIn="State2,State3" x="46" y="100" text="等级范围" fontSize="16" color="#FFFFFF"/>
-	<mx:Label includeIn="State2,State3" x="46" y="130" text="使用金币" color="#FFFFFF" fontSize="16"/>
-	<mx:Label includeIn="State2,State3" x="46" y="160" text="允许聊天" color="#FFFFFF" fontSize="16"/>
-	<mx:Label includeIn="State2,State3" x="156" y="129" text="金币倍数" color="#FFFFFF" fontSize="16"/>
-	<mx:Label includeIn="State2,State3" x="46" y="190" text="背景音乐" color="#FFFFFF" fontSize="16"/>
-	<mx:Label includeIn="State2,State3" x="204" y="160" text="音    效" color="#FFFFFF" fontSize="16"/>
-	<mx:Label includeIn="State2,State3" x="202" y="98" text="－" color="#FFFFFF" fontSize="20" fontWeight="normal"/>
-	<mx:ComboBox includeIn="State2,State3" x="250" y="130" dataProvider="{curLobbygoldrate}" editable="false" width="50" id="goldplus"/>
-	<s:CheckBox includeIn="State2,State3" x="126" y="163" id="checkboxAllowChat" selected="true"/>
-	<s:CheckBox includeIn="State2,State3" x="267" y="165" id="checkboxSEEnable" selected="true"/>
-	<mx:ComboBox includeIn="State2,State3" x="124" y="191" editable="true" enabled="false" id="inputboxSE"/>
-	<mx:Label includeIn="State2,State3" x="52" y="229" text="等级范围输入有误，请重新输入！" color="#FF0012" fontSize="14" fontWeight="bold" id="labelErrormsg" visible="false"/>
+	<s:Button skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x="62" y="237" x.State3="131" y.State3="237"/>
+	<s:Button x="193" y="237" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
+	<mx:ComboBox includeIn="State2,State3" x="145" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel"/>
+	<mx:ComboBox includeIn="State2,State3" x="252" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel"/>
+	<s:CheckBox includeIn="State2,State3" x="146" y="115" id="checkboxAllowGold" click="checkboxAllowGold_clickHandler(event)" selected="true"/>
+	<s:CheckBox includeIn="State2,State3" x="146" y="54" selected="false" id="checkboxPassword" click="checkboxPassword_clickHandler(event)"/>
+	<s:TextInput includeIn="State2,State3" x="178" y="50" width="126" displayAsPassword="true" maxChars="8" enabled="false" id="inputboxPassword"/>
+	<mx:Label includeIn="State2,State3" x="226" y="79" text="－" color="#FFFFFF" fontSize="20" fontWeight="normal"/>
+	<mx:ComboBox includeIn="State2,State3" x="285" y="113" dataProvider.State2="{curLobbygoldrate}" dataProvider.State3="{goldplusrate}" editable="false" width="50" id="goldplus"/>
+	<s:CheckBox includeIn="State2,State3" x="146" y="147" id="checkboxAllowChat" selected="true"/>
+	<s:CheckBox includeIn="State2,State3" x="146" y="178" id="checkboxSEEnable" selected="true"/>
+	<mx:ComboBox includeIn="State2,State3" x="144" y="206" editable="true" enabled="false" id="inputboxSE"/>
+	<mx:Label includeIn="State2,State3" x="178" y="147" text="等级范围输入有误，请重新输入！" color="#FF0012" fontSize="14" fontWeight="bold" id="labelErrormsg" visible="false" width="139" height="51"/>
 </s:Group>

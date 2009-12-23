@@ -8,6 +8,8 @@ package poker
 	import mx.collections.*;
 	import mx.core.*;
 	
+	import spark.components.Group;
+	
 	public class GameObjectManager
 	{
 		// double buffer
@@ -199,18 +201,8 @@ package poker
 		// 检测所有的卡片，确定该次是否满足出牌条件
 		public function checkCardtobePlayed(arr:Array):Boolean
 		{
-			var array:Array = new Array();
-			for each(var go:GameObject in baseObjects)
-			{
-				if(go.getName() == "Card")
-				{
-					// 检测出牌条件
-					if(go.selected && go.getVisible())
-					{
-						array.push(go.getId());
-					}
-				}
-			}
+			var array:Array;// = new Array();
+			array = getSelectedCards();
 			if(array.length == 0)	//没有点击任何牌
 				return false;
 				
@@ -256,17 +248,24 @@ package poker
 		public function getSelectedCards():Array
 		{
 			var cards:Array = new Array();
-			for each(var go:GameObject in baseObjects)
+			for each(var card:Card in Game.Instance.PlayerCardsObject)
 			{
-				if(go.getName() == "Card")
-				{
-					if(go.selected && go.getVisible())
-					{
-						cards.push(go.getId());
-					}
+				if(card.selected){
+					cards.push(card.cardid);
 				}
 			}
-			
+			return cards;
+		}
+		public function getSelectedCardsandMark():Array
+		{
+			var cards:Array = new Array();
+			for each(var card:Card in Game.Instance.PlayerCardsObject)
+			{
+				if(card.selected){
+					cards.push(card.cardid);
+					card.isSelectedtoPost = true;
+				}
+			}
 			return cards;
 		}
 		/**
@@ -552,6 +551,120 @@ package poker
 					return;
 				}
 			}
+		}
+		
+		/**
+		 * 用来在游戏的主界面的 出牌容器中添加要出的牌
+		 * @param id
+		 *      要添加的牌的点数
+		 * 注意：这个添加牌的过程是不排序的，要保证被排进来的牌是有序的才可以。
+		 *      对总的牌局上来说，经过删除和重新添加以后的牌序会相当的不统一，
+		 *      所以会出现不同的重叠情况，尽量保证牌之间不会出现重叠为好。
+		 */		
+		public function addCardtoScreen(id:int, name:String, pt:Point):Card
+		{
+			var card:Card = new Card();
+			card.source = ResourceManagerPoker.gameCardsRes[id];
+			card.x = pt.x;
+			card.y = pt.y;
+			card.cardid = id;
+			card.name = name;
+//			card.addEventListener(MouseEvent.CLICK, cardClick);
+			// 加入
+			var gp:Group;
+			if(name == "Card")
+			{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerDown as Group;
+			}
+			else if(name == "PlayedCardSelf"){
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerDown as Group;
+			}
+			else if(name == "PlayedCardUp")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerUp as Group;
+			}
+			else if(name == "PlayedCardLeft")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerLeft as Group;
+			}
+			else if(name == "PlayedCardRight")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerRight as Group;
+			}
+			
+			return gp.addElement(card) as Card;
+		}
+		public function addOtherstoScreen(res:Class, name:String, pt:Point):void
+		{
+			var card:Card = new Card();
+			card.source = res;
+			card.x = pt.x;
+			card.y = pt.y;
+			card.cardid = -1;
+			card.name = name;
+			// 加入
+			var gp:Group;
+			if(name == "CardbackUp")
+			{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerUp as Group;
+			}
+			else if(name == "CardbackLeft"){
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerLeft as Group;
+			}
+			else if(name == "CardbackRight")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerRight as Group;
+			}
+			
+			gp.addElement(card);
+		}		
+		/**
+		 * 从出牌容器中移除所有牌 
+		 * @param name
+		 *     要移除的牌的名字 name属性
+		 * 注意：移除将会清空该容器
+		 */		
+		public function removeCardfromScreen(name:String):void
+		{
+			var gp:Group;
+			if(name == "Card")
+			{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerDown as Group;
+			}
+			else if(name == "PlayedCardSelf"){
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerDown as Group;
+			}
+			else if(name == "PlayedCardUp")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerUp as Group;
+			}
+			else if(name == "PlayedCardLeft")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerLeft as Group;
+			}
+			else if(name == "PlayedCardRight")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamePlayedcardLayerRight as Group;
+			}
+//			for(var i:int=0;i<gp.numElements;i++)
+//			{
+//				var image:Image = gp.getElementAt(i) as Image;
+//				image.removeEventListener(MouseEvent.CLICK, cardClick);
+//			}
+			gp.removeAllElements();
+		}
+		public function removeSingleCardfromScreen(card:Card, name:String):void
+		{
+			var gp:Group = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerDown as Group;
+			gp.removeElement(card);
+		}
+		public function removeOthersfromScreen(name:String):void
+		{
+			var gp:Group;
+			if(name == "CardbackLeft")
+			{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerLeft as Group;
+			}
+			else if(name == "CardbackUp"){
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerUp as Group;
+			}
+			else if(name == "CardbackRight")	{
+				gp = FlexGlobals.topLevelApplication.gamePoker.gamecardLayerRight as Group;
+			}
+			gp.removeAllElements();
 		}
 	}
 }

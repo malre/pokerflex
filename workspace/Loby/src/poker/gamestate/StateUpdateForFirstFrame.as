@@ -73,14 +73,11 @@ package poker.gamestate
 				Game.Instance.updateCurPlayerIcon(obj);
 				// 对时间进行修正
 				Game.Instance.modifyPlayerLefttime(obj);
-				// 左边的玩家的牌堆
-				// 上面的玩家的牌堆
-				// 右边的玩家的牌堆
-				GameObjectManager.Instance.setVisibleByName("CardbackRight", true);
-				GameObjectManager.Instance.setVisibleByName("CardbackUp", true);
-				GameObjectManager.Instance.setVisibleByName("CardbackLeft", true);
+				// 显示其他三家的牌堆
+				Game.Instance.showCardback(true);
 				// 使过往牌记录的查看按钮有效
 				FlexGlobals.topLevelApplication.gamePoker.btnCardView.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.cupAI.visible = true;
 				return true;
 			}
 			else{

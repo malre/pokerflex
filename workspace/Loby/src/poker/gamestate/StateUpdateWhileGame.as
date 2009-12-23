@@ -83,7 +83,13 @@ package poker.gamestate
 									else{
 										var selcards:Array = GameObjectManager.Instance.showHintCards(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
 										if(selcards.length > 0)
+										{
 											GameObjectManager.Instance.selectCards(selcards[0]);
+											Game.Instance.sendcards();
+										}
+										else{
+											Game.Instance.pass();
+										}		
 									}
 								}
 								else
@@ -109,6 +115,7 @@ package poker.gamestate
 							// 关闭所有的出牌按钮
 							FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 							FlexGlobals.topLevelApplication.gamePoker.sandglass.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.cancelCpu();
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);
 							// 描画玩家打出来的牌
@@ -126,9 +133,9 @@ package poker.gamestate
 							FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = false;
 							FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
 							FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarUp.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarLeft.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.Img_playerAvatarRight.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.avatarUpGroup.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.avatarLeftGroup.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.avatarRightGroup.visible = false;
 							FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
 						}
 					}

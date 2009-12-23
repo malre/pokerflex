@@ -193,23 +193,29 @@ package
 				{
 					p = 3;
 				}
-				else if(param2 == null){
-					p = -1;
+				else if(param2 == "invite"){
+					p = 4;
+				}
+				else if(param2 == "toLast"){
+					p = 5;
 				}
 				stateManager.changeState(StateLobyJoinTable.Instance);
 				var rq:Object;
-				if(p == -1){
+				if(p == 4){
 					if(FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().hasOwnProperty("password")){
 						rq = {"roomid":param1, "pw":FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().password, "getPlayers":"true"};
 					}
 					else{
 						rq = {"roomid":param1, "getPlayers":"true"};
 					}
-					StateLobyJoinTable.Instance.setTablename(FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().rname);
+//					StateLobyJoinTable.Instance.setTablename(FlexGlobals.topLevelApplication.invitation.getAcceptInviteObj().rname);
+				}
+				else if(p == 5){
+					rq = {"roomid":param1, "getPlayers":"true"};
 				}
 				else{
 					rq = {"roomid":tabledata[param1].rid.toString(), "pos":p, "pw":param3, "getPlayers":"true"};
-					StateLobyJoinTable.Instance.setTablename(tabledata[param1].name);
+//					StateLobyJoinTable.Instance.setTablename(tabledata[param1].name);
 				}
 				StateLobyJoinTable.Instance.setRequest(rq);
 			}

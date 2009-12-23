@@ -78,6 +78,8 @@ package poker.gamestate
 				// 关闭所有的窗口并置窗口互斥量为假
 				FlexGlobals.topLevelApplication.gamePoker.optionWindow.closeOption();
 				FlexGlobals.topLevelApplication.friendslist.toState(0);
+				// 如果退出成功，回前一张桌子的按钮有效
+				FlexGlobals.topLevelApplication.btn2LastTable.enabled = true;
 				return true;
 			}
 			else{

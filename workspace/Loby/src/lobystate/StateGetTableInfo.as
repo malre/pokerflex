@@ -3,6 +3,9 @@ package lobystate
 	import flash.events.Event;
 	
 	import mx.core.FlexGlobals;
+	
+	import spark.components.Scroller;
+	import spark.components.supportClasses.ScrollBar;
 
 	public class StateGetTableInfo extends NetRequestState
 	{
@@ -50,6 +53,9 @@ package lobystate
 					gameRoomGid = obj[0].gid;
 				//
 				LobyNetManager.Instance.tabledata = obj;
+				var scroll:Scroller = Scroller(FlexGlobals.topLevelApplication.roomScroller);
+				scroll.setStyle("verticalScrollPolicy", "auto");
+				scroll.setStyle("horizontalScrollPolicy", "auto");
 				LobyManager.Instance.getintoRoom(obj);
 					// 设置自动加入桌子的按钮可见
 //				FlexGlobals.topLevelApplication.BtnAutojoinTable.visible = true;
@@ -63,17 +69,17 @@ package lobystate
 					LobyManager.Instance.changeState(1);	// normal
 				}
 				else if(LobyManager.Instance.state == 4){
-					// 对玩家所在房间的号码进行赋值
-					for(var i:int=0;i<obj.length;i++){
-						if(obj[i].rid == StateGetPlayerInfo.Instance.lastSuccData.player.rid){
-							StateLobyJoinTable.Instance.setTablename(obj[i].name);
-							break;
-						}
-					}
+//					// 对玩家所在房间的号码进行赋值
+//					for(var i:int=0;i<obj.length;i++){
+//						if(obj[i].rid == StateGetPlayerInfo.Instance.lastSuccData.player.rid){
+//							StateLobyJoinTable.Instance.setTablename(obj[i].name);
+//							break;
+//						}
+//					}
 				}
 				else if(LobyManager.Instance.state == 5){
 					// 请求加入被邀请的游戏, 可能会失败
-					LobyNetManager.Instance.send(LobyNetManager.joinTable, FlexGlobals.topLevelApplication.invitation.getDestTableId());
+					LobyNetManager.Instance.send(LobyNetManager.joinTable, FlexGlobals.topLevelApplication.invitation.getDestTableId(), "invite");
 					LobyManager.Instance.changeState(1);
 				}
 				// 请求玩家列表

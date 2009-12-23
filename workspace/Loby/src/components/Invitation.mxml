@@ -41,7 +41,7 @@
 					if(StateGetPlayerInfo.Instance.lastSuccData.player.lid == destLobbyid){
 						// 请求进入指定的房间,密码会一起被发送
 						// 存在一个无法确定自己的请求的座位的问题
-						LobyNetManager.Instance.send(LobyNetManager.joinTable, destTableid.toString());
+						LobyNetManager.Instance.send(LobyNetManager.joinTable, destTableid.toString(), "invite");
 					}
 					else{
 						// 会切换大厅

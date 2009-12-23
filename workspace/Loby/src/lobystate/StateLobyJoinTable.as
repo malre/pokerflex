@@ -2,6 +2,7 @@ package lobystate
 {
 	import flash.events.Event;
 	
+	import mx.core.FlexGlobals;
 	import mx.rpc.http.HTTPService;
 
 	public class StateLobyJoinTable extends NetRequestState
@@ -50,6 +51,8 @@ package lobystate
 			if(super.receive(obj))
 			{
 				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
+				// 加入成功，改变玩家的所有rid值
+				StateGetPlayerInfo.Instance.lastSuccData.player.rid = request.roomid;
 				// 关闭显示视窗
 				LobyNetManager.Instance.closeNetProcess();
 				return true;

@@ -57,13 +57,13 @@ package lobystate
 					LobyManager.Instance.changeState(1);	// normal
 				}
 				else if(LobyManager.Instance.state == 4){
-					// 对玩家所在房间的号码进行赋值
-					for(var i:int=0;i<obj.length;i++){
-						if(obj[i].rid == StateGetPlayerInfo.Instance.lastSuccData.player.rid){
-							StateLobyJoinTable.Instance.setTablename(obj[i].name);
-							break;
-						}
-					}
+//					// 对玩家所在房间的号码进行赋值
+//					for(var i:int=0;i<obj.length;i++){
+//						if(obj[i].rid == StateGetPlayerInfo.Instance.lastSuccData.player.rid){
+//							StateLobyJoinTable.Instance.setTablename(obj[i].name);
+//							break;
+//						}
+//					}
 				}
 				// 请求玩家列表
 				LobyNetManager.Instance.update(LobyNetManager.updateRoomplayerlist);

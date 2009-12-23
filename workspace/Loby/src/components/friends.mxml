@@ -162,18 +162,18 @@
 	</fx:Declarations>
 	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG" includeIn="StateLoadingdata,StateMain"/>
 	<s:BitmapImage source="@Embed('/assets/friendslist_title.png')" resizeMode="scale" x="11" y="3" includeIn="StateLoadingdata,StateMain"/>
-	<s:Button skinClass="components.OptionWindow_CloseButton" x="315" y="6" click="CloseButton(event)" id="btnClose" includeIn="StateLoadingdata,StateMain"/>
+	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" click="CloseButton(event)" id="btnClose" includeIn="StateLoadingdata,StateMain"/>
 	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateLoadingdata,StateMain"
-				 dataProvider="{StateGetFriends.Instance.friends}">
+				 dataProvider="{StateGetFriends.Instance.friends}" height.StateMain="193">
 		<mx:columns>
 			<mx:DataGridColumn headerText="玩家名" dataField="name"/>
 <!--			<mx:DataGridColumn headerText="uid" dataField="uid"/>
 			<mx:DataGridColumn headerText="pid" dataField="pid"/>-->
 		</mx:columns>
 	</mx:DataGrid>
-	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="276" label="邀请" click="btnInvite_clickHandler(event)"/>
-	<s:Button includeIn="StateMain" x="265" y="276" label="查找" id="btnSearch" click="searchRecord(event)" />
-	<s:TextInput includeIn="StateMain" x="133" y="275" id="nameinput"/>
+	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="243" label="邀请" click="btnInvite_clickHandler(event)"/>
+	<s:Button includeIn="StateMain" x="265" y="243" label="查找" id="btnSearch" click="searchRecord(event)" />
+	<s:TextInput includeIn="StateMain" x="133" y="242" id="nameinput"/>
 	<s:Panel includeIn="StateMain" x="101" y="98" width="164" height="107" id="msgbox" title="提示" visible="false">
 		<s:Button x="41" y="49" id="btnconfirm" label="确定" click="msgconfirm_clickHandler(event)"/>
 		<s:Label x="10" y="10" id="label_msg" width="132" height="32"/>

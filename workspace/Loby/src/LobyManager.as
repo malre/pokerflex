@@ -2,6 +2,8 @@ package
 {
 	import flash.display.Shape;
 	import flash.events.MouseEvent;
+	import flash.display.DisplayObject;
+	import spark.components.Group;
 	
 	import json.JSON;
 	
@@ -219,10 +221,6 @@ package
 					// 这个地方是一个bug点，如果返回超过1个数据，会出错。
 					node.appendChild(xml);
 				}
-import flash.display.Shape;
-
-import spark.primitives.Graphic;
-
 			}
 		}
 		
@@ -336,28 +334,28 @@ import spark.primitives.Graphic;
 			FlexGlobals.topLevelApplication.functionpanel.currentState='State3';
 			// 将说明文字关闭
 			FlexGlobals.topLevelApplication.introduceText.visible = false;
-			FlexGlobals.topLevelApplication.btn2lobby.visible = true;
-			FlexGlobals.topLevelApplication.btn2room.visible = false;
+//			FlexGlobals.topLevelApplication.btn2lobby.enabled = true;
+			FlexGlobals.topLevelApplication.btn2room.enabled = true;
 			FlexGlobals.topLevelApplication.currentState = "room";
-			RoomTableDraw(obj);
+			RoomTableDrawII(obj);
 		}
 		public function refreshRoom(obj:Object):void
 		{
-			RoomTableDraw(obj);
+			RoomTableDrawII(obj);
 		}
 
 		// 当在房间里面的时候，描画房间里面的桌子
 		public function RoomTableDraw(obj:Object):Boolean
 		{
-			var canvas:Canvas = FlexGlobals.topLevelApplication.gameRoomCanvas;
+			var canvas:Group = FlexGlobals.topLevelApplication.gameRoomCanvas;
 			// 如果这个数组没有成员，直接返回
 			if(obj.length <= 0)
 			{
-				canvas.removeAllChildren();
+//				canvas.removeAllChildren();
 				return false;
 			}
 			
-			canvas.removeAllChildren();
+//			canvas.removeAllChildren();
 			var i:int,j:int;
 			// 本次更新得到的数据比上一次的要少，要删除部分显示的桌子
 /*			if(obj.length <= tableTotal)
@@ -461,22 +459,22 @@ import spark.primitives.Graphic;
 							{
 								if(obj[id].players[n].pos == 0)
 								{
-									createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+17, img.y-40);
+//									createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+17, img.y-40);
 //									farr[0] = 1;
 								}
 								else if(obj[id].players[n].pos == 1)
 								{
-									createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-33, img.y+6);
+//									createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-33, img.y+6);
 //									farr[1] = 1;
 								}
 								else if(obj[id].players[n].pos == 2)
 								{
-									createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+17, img.y+30);
+//									createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+17, img.y+30);
 //									farr[2] = 1;
 								}
 								else if(obj[id].players[n].pos == 3)
 								{
-									createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+21, img.y+6);
+//									createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+21, img.y+6);
 //									farr[3] = 1;
 								}
 							}
@@ -498,130 +496,88 @@ import spark.primitives.Graphic;
 		
 		public function RoomTableDrawII(obj:Object):Boolean
 		{
-			var canvas:Canvas = FlexGlobals.topLevelApplication.gameRoomCanvas;
-			// 如果这个数组没有成员，直接返回
-			if(obj.length <= 0)
+			var canvas:Group = FlexGlobals.topLevelApplication.gameRoomCanvas;
+			for(var i:int=0;i< 15/*roomTableMax*/;i++)
 			{
-				canvas.removeAllChildren();
-				return false;
-			}
-			
-			canvas.removeAllChildren();
-			var i:int,j:int;
-
-			for(i =0; i<roomTableRowMax; i++)
-			{
-				for(j =0; j<roomTableColumnMax; j++)
-				{
-					// 如果超出了界限，直接返回
-					if(i*roomTableColumnMax+j >= obj.length)
-					{
-						tableTotal = obj.length;
-						return true;
-					}
-					
-					var id:int = i*roomTableColumnMax +j;
-					// 如果是非可显示游戏桌，不显示
-					if(obj[id].gid == -1)
-						continue;
-					var roomid:int = obj[id].rid;
-					// 桌子的图
-					var img:Image = new Image();
-					img.x = tableStartX + (intervalX+51)*j;
-					img.y = tableStartY + (intervalY+52)*i;
-					img.load(ResourceManager.imgTable);
-					{
-						// 为了达到一个重叠的效果，把上面的椅子在桌子之前描画
-						canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+12, img.y-28, 0));
-					}
-					img.name = "table"+id.toString();
-					img.toolTip = "游戏桌名："+obj[id].name +"\n";
-					if(obj[id].hasOwnProperty("password"))
-						img.toolTip += "该游戏桌设置有密码\n";
-					if(obj[id].hasOwnProperty("lowerlevellimit"))		
-						img.toolTip += "游戏等级下限为：" + LevelDefine.levelName[obj[id].lowerlevellimit]+"\n";
+				if(i >= obj.length || obj[i].gid == -1){
+					canvas.getElementAt(i).visible = false;
+				}
+				else{
+					canvas.getElementAt(i).visible = true;
+					var gp:Group = canvas.getElementAt(i) as Group;
+					// 先进行桌子上的信息的填充
+					var tableImg:Image = gp.getElementAt(1) as Image;
+					tableImg.toolTip = obj[i].name +"\n";
+					if(obj[i].hasOwnProperty("password"))
+						tableImg.toolTip += "该游戏桌设置有密码\n";
+					if(obj[i].hasOwnProperty("lowerlevellimit"))		
+						tableImg.toolTip += "游戏等级下限为：" + LevelDefine.levelName[obj[i].lowerlevellimit]+"\n";
 					else
-						img.toolTip += "游戏无等级下限\n";
-					if(obj[id].hasOwnProperty("upperlevellimit"))
-						img.toolTip += "游戏等级上限为：" + LevelDefine.levelName[obj[id].upperlevellimit]+"\n";
+						tableImg.toolTip += "游戏无等级下限\n";
+					if(obj[i].hasOwnProperty("upperlevellimit"))
+						tableImg.toolTip += "游戏等级上限为：" + LevelDefine.levelName[obj[i].upperlevellimit]+"\n";
 					else
-						img.toolTip += "游戏无等级上限\n";
-					if(obj[id].hasOwnProperty("magnification"))
-						img.toolTip += "金币倍率为："+ FlexGlobals.topLevelApplication.createTable.goldplusrate[obj[id].magnification]+"\n";
+						tableImg.toolTip += "游戏无等级上限\n";
+					if(obj[i].hasOwnProperty("magnification"))
+						tableImg.toolTip += "金币倍率为："+ FlexGlobals.topLevelApplication.createTable.goldplusrate[obj[i].magnification]+"\n";
 					else
-						img.toolTip += "无金币倍率\n";
-					if(obj[id].hasOwnProperty("allowchat"))	{
-						if(obj[id].allowchat)
-							img.toolTip += "该游戏桌允许聊天\n"
+						tableImg.toolTip += "无金币倍率\n";
+					if(obj[i].hasOwnProperty("allowchat"))	{
+						if(obj[i].allowchat)
+							tableImg.toolTip += "该游戏桌允许聊天\n";
 						else
-							img.toolTip += "该游戏桌禁止聊天\n"
+							tableImg.toolTip += "该游戏桌禁止聊天\n";
 					}
 					else
-						img.toolTip += "该游戏桌禁止聊天\n"
-					canvas.addChild(img);
-					
-					// 桌子上的桌号
-					var label:Label = new Label();
-					label.x = img.x -38;
-					label.y = img.y - 44 ;
-					// 为了保证换行以后的文字能够都显示出来
-					label.width = 50;
-					label.height = 45;
-					label.text = String(obj[id].name).replace("台", "台\n");;//(id+1).toString();
-					//						label.setStyle("fontSize", 14);
-					//						label.setStyle("color","#ffcc33"); 
-					label.name = "tag"+id.toString();
-					canvas.addChild(label);
-					
-					// 创建按钮需要和实际的房间信息结合起来
-					// 如果该位置有玩家存在，则无按钮，否则有按钮
-					canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+16, 1));
-					canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+12, img.y+40, 2));
-					canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+52+15, img.y+16, 3));
-					// 描画桌子上的人的信息
-					//						var farr:Array = new Array(0,0,0,0);
+						tableImg.toolTip += "该游戏桌禁止聊天\n";
+					// 桌子上的桌号填充
+					var lbl:Label = gp.getElementAt(5) as Label;
+					lbl.text = String(obj[i].name).replace("台", "台\n");
+					var lostp:Array = [0,0,0,0];
 					for(var n:int=0;n<4;n++)
 					{
-						if(obj[id].players.hasOwnProperty(n.toString()))
+						if(obj[i].players.hasOwnProperty(n.toString()))
 						{
-							if(obj[id].players[n].pos == 0)
-							{
-								createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+17, img.y-40);
-								//									farr[0] = 1;
-							}
-							else if(obj[id].players[n].pos == 1)
-							{
-								createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-33, img.y+6);
-								//									farr[1] = 1;
-							}
-							else if(obj[id].players[n].pos == 2)
-							{
-								createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+17, img.y+30);
-								//									farr[2] = 1;
-							}
-							else if(obj[id].players[n].pos == 3)
-							{
-								createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+21, img.y+6);
-								//									farr[3] = 1;
-							}
+							var delta:int = int(obj[i].players[n].pos);
+							gp.getElementAt(6+delta).visible = true;
+							tablePlayersDraw(gp ,obj[i].players[n], delta);
+							lostp[obj[i].players[n].pos] = 1;
 						}
 					}
-					//						if(farr[0] == 0)
-					//							createAvatarAndName(null, "up"+id.toString(), img.x+10, img.y-40);
-					//						if(farr[1] == 0)
-					//							createAvatarAndName(null, "left"+id.toString(), img.x+10, img.y-40);
-					//						if(farr[2] == 0)
-					//							createAvatarAndName(null, "down"+id.toString(), img.x+10, img.y-40);
-					//						if(farr[3] == 0)
-					//							createAvatarAndName(null, "right"+id.toString(), img.x+10, img.y-40);
+					for(var m:int=0;m<4;m++)
+					{
+						if(lostp[m]==0){
+							gp.getElementAt(6+m).visible = false;
+						}
+					}
 				}
 			}
-			//}
-			tableTotal = obj.length;
 			return true;
 		}
+		private function tablePlayersDraw(drawto:Group, obj:Object, idx:int):void
+		{
+			var player:Group = drawto.getElementAt(6+idx) as Group;
+			var avatar:Image = player.getElementAt(0) as Image;
+			if(avatar.source != obj.avatar)
+			{
+				avatar.source = obj.avatar;
+			}
+			var name:Label = player.getElementAt(1) as Label;
+			if(obj.ready)
+				name.text = obj.name +"(o)";
+			else
+				name.text = obj.name +"(x)";
 		
-		private function createTableBtn(id:String, name:String, x:int, y:int, pos:int):Image
+			var describe:String = "";
+			describe += obj.score;
+			describe += "分 ";
+			describe += LevelDefine.getLevelName(int(obj.score));
+			describe += "\n";
+			describe += obj.money + " 金币";
+			name.toolTip = name.text + "\n" + describe;
+		}
+		
+		public function createTableBtn(id:String, name:String, x:int, y:int, pos:int):Image
 		{
 			// 进行一定的修改，不再使用按钮，而是直接的椅子的图
 			//var btn:mx.controls.Button = new mx.controls.Button();、
@@ -638,78 +594,57 @@ import spark.primitives.Graphic;
 //			btn.setStyle("borderColor", "#445c95");
 			return btn;
 		}
-		private function createAvatarAndName(obj:Object, name:String, x:int, y:int):Image
+		public function createAvatarAndName(name:String, x:int, y:int):Group
 		{
 			// 增加头像的2个框
-			var rt1:Shape = new Shape();
-			rt1.graphics.beginFill(0xeeeeee, 1);
-			rt1.graphics.moveTo(x+tableAvatarSize+1, y-1);
-			rt1.graphics.lineTo(x-1, y-1);
-			rt1.graphics.lineTo(x-1, y+tableAvatarSize+1);
-			rt1.graphics.lineTo(x+tableAvatarSize+1, y+tableAvatarSize+1);
-			rt1.graphics.lineTo(x+tableAvatarSize+1, y-1);
-			rt1.graphics.endFill();
-			var rt2:Shape = new Shape();
-			rt2.graphics.beginFill(0x0, 1);
-			rt2.graphics.moveTo(x+tableAvatarSize+2, y-2);
-			rt2.graphics.lineTo(x-2, y-2);
-			rt2.graphics.lineTo(x-2, y+tableAvatarSize+2);
-			rt2.graphics.lineTo(x+tableAvatarSize+2, y+tableAvatarSize+2);
-			rt2.graphics.lineTo(x+tableAvatarSize+2, y-2);
-			rt2.graphics.endFill();
-			var ui:UIComponent = new UIComponent();
-			ui.addChild(rt2);
-			ui.addChild(rt1);
-			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(ui);
-			
+			var group:Group = new Group();
+			group.graphics.beginFill(0x0, 1);
+			group.graphics.drawRect(x-2, y-2, tableAvatarSize+4, tableAvatarSize+4);
+			group.graphics.beginFill(0xeeeeee, 1);
+			group.graphics.drawRect(x-1, y-1, tableAvatarSize+2, tableAvatarSize+2);
+			group.graphics.endFill();
+
 			var img:Image = new Image();
-			var lbl:Label = new Label();
 			img.name = "avatar"+name;
-			lbl.name = "name"+name;
-//			lbl.setStyle("color", 0xFFFFFF);
-			lbl.width = 44;
-//			if(obj == null)
-//			{
-//				img.visible = false;
-//				FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(img);
-//				lbl.visible = false;
-//				FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(lbl);
-//				return null;
-//			}
 			img.x = x;
 			img.y = y;
 			img.scaleX = 0.6;
 			img.scaleY = 0.6;
-			if(img.source != obj.avatar)
-				img.source = obj.avatar;
-			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(img);
-			if(obj.ready)
-				lbl.text = obj.name +"(o)";
-			else
-				lbl.text = obj.name +"(x)";
-
-			var describe:String = "";
-			describe += obj.score;
-			describe += "分 ";
-			describe += LevelDefine.getLevelName(int(obj.score));
-			describe += "\n";
-//			for each(var scoreobj:Object in obj.score)//StateGetPlayerInfo.Instance.lastSuccData.player.score)
-//			{
-//				describe += scoreobj.name;
-//				describe += " ";
-//				describe += scoreobj.score;
-//				describe += "分 ";
-//				describe += LevelDefine.getLevelName(int(scoreobj.score));
-//				describe += "\n";
-//			}
-
-			describe += obj.money + " 金币";//StateGetPlayerInfo.Instance.lastSuccData.player.money+" 金币";
-			lbl.toolTip = lbl.text + "\n" + describe;
+			group.addElement(img);
+//			if(img.source != obj.avatar)
+//				img.source = obj.avatar;
+//			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(img);
+//			if(obj.ready)
+//				lbl.text = obj.name +"(o)";
+//			else
+//				lbl.text = obj.name +"(x)";
+//
+//			var describe:String = "";
+//			describe += obj.score;
+//			describe += "分 ";
+//			describe += LevelDefine.getLevelName(int(obj.score));
+//			describe += "\n";
+////			for each(var scoreobj:Object in obj.score)//StateGetPlayerInfo.Instance.lastSuccData.player.score)
+////			{
+////				describe += scoreobj.name;
+////				describe += " ";
+////				describe += scoreobj.score;
+////				describe += "分 ";
+////				describe += LevelDefine.getLevelName(int(scoreobj.score));
+////				describe += "\n";
+////			}
+//
+//			describe += obj.money + " 金币";//StateGetPlayerInfo.Instance.lastSuccData.player.money+" 金币";
+//			lbl.toolTip = lbl.text + "\n" + describe;
 			
+			var lbl:Label = new Label();
+			lbl.name = "name"+name;
+//			lbl.setStyle("color", 0xFFFFFF);
+			lbl.width = 44;
 			lbl.x = x - 4;
 			lbl.y = y - 18;
-			FlexGlobals.topLevelApplication.gameRoomCanvas.addChild(lbl);
-			return null;
+			group.addElement(lbl);
+			return group;
 		}
 		
 		// 当桌子上的座位被点击了以后，会发出加入游戏的请求。

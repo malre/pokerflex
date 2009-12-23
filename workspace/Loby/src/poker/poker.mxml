@@ -20,21 +20,58 @@
 		}
 	</fx:Style>
 	<!--<mx:SWFLoader id="BGswf" source="@Embed('assets/gameBG.swf')" autoLoad="true"/>-->
+	<s:Group>
+		<s:BitmapImage x="0" y="0" width="780" height="560" source="@Embed('res/BG.png')"/>
+
+	</s:Group>
+	<!--玩家自己的牌的层-->
+	<s:Group id="gamecardLayerDown">
+	</s:Group>
+	<!--玩家打出的牌的层-->
+	<s:Group id="gamePlayedcardLayerDown">
+	</s:Group>
+	<!--上家牌堆和手牌层-->
+	<s:Group id="gamecardLayerUp">
+	</s:Group>
+	<!--上家打出的牌的层-->
+	<s:Group id="gamePlayedcardLayerUp">
+	</s:Group>
+	<!--左边牌堆和手牌层-->
+	<s:Group id="gamecardLayerLeft">
+	</s:Group>
+	<!--左边打出的牌的层-->
+	<s:Group id="gamePlayedcardLayerLeft">
+	</s:Group>
+	<!--右边牌堆和手牌层-->
+	<s:Group id="gamecardLayerRight">
+	</s:Group>
+	<!--右边打出的牌的层-->
+	<s:Group id="gamePlayedcardLayerRight">
+	</s:Group>
+	
 	<components:GameCardsCommand id="commandbar" x="270" y="350">
 	</components:GameCardsCommand>
-	<s:Button x="384" y="419" label="托管" id="cupAI" click="cupAI_clickHandler(event)"/>
 	<!--算牌器-->
-	<s:Button x="0" y="524" id="btnCardView" click="requestCardHistory()" skinClass="components.Button_calcCards" enabled="true" visible="true"/>
+	<s:Button x="7" y="524" id="btnCardView" click="requestCardHistory()" skinClass="components.Button_calcCards" enabled="true" visible="true"/>
+	<s:Button x="7" y="493" id="cupAI" click="cupAI_clickHandler(event)" skinClass="components.Button_CpuPlay" visible="false"/>
 	<!--玩家头像-->
-	<mx:Image x="232" y="3" width="48" height="48" id="Img_playerAvatarUp"/>
-	<mx:Image x="6" y="196" width="64" height="64" id="Img_playerAvatarLeft"/>
-	<mx:Image x="233" y="473" width="48" height="48" id="Img_playerAvatarDown"/>
-	<mx:Image x="462" y="196" width="64" height="64" id="Img_playerAvatarRight"/>
+	<s:Group x="238" y="10" width="48" height="48" id="avatarUpGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
+		<mx:Image width="48" height="48" id="Img_playerAvatarUp"/>
+	</s:Group>
+	<s:Group x="12" y="211" width="48" height="48" id="avatarLeftGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
+		<mx:Image width="48" height="48" id="Img_playerAvatarLeft"/>
+	</s:Group>
+	<s:Group x="240" y="489" width="48" height="48" id="avatarDownGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
+		<mx:Image width="48" height="48" id="Img_playerAvatarDown"/>
+	</s:Group>
+	<s:Group x="467" y="211" width="48" height="48" id="avatarRightGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
+		<mx:Image width="48" height="48" id="Img_playerAvatarRight"/>
+	</s:Group>
 	<!--头像上的准备提示图片-->
- 	<mx:Image x="258" y="41" id="imgPlayerUpReady" source="@Embed('../res/ready.png')"/>
-	<mx:Image x="32" y="239" id="imgPlayerLeftReady" source="@Embed('../res/ready.png')"/>
-	<mx:Image x="488" y="239" id="imgPlayerRightReady" source="@Embed('../res/ready.png')"/>
-	<mx:Image x="259" y="516" id="imgPlayerDownReady" source="@Embed('../res/ready.png')"/>
+ 	<mx:Image x="222" y="98" id="imgPlayerUpReady" source="@Embed('../res/ready.swf')"/>
+	<mx:Image x="73" y="200" id="imgPlayerLeftReady" source="@Embed('../res/ready.swf')"/>
+	<mx:Image x="303" y="266" id="imgPlayerRightReady" source="@Embed('../res/ready.swf')"/>
+	<mx:Image x="223" y="419" id="imgPlayerDownReady" source="@Embed('../res/ready.swf')"/>
 	<mx:Image x="281" y="472" id="label_thinking" source="@Embed('../res/chupaihint.png')"/>
 	<!--玩家聊天部分的框体-->
 	<s:TextArea x="547" y="291" width="223" height="236" color="#FFFFFF" baseColor="#f6edae" id="gamechatbox" editable="false" contentBackgroundAlpha="0"/>
@@ -49,7 +86,7 @@
 	<s:Button x="629" y="243" skinClass="components.ButtonHelp" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
 	<s:Button x="730" y="244" skinClass="components.ButtonExit" id="btnExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅"/>
 	<!--桌面上的房间位置和桌号显示-->
-	<s:Label x="14" y="16" width="87" height="25" fontSize="16" fontWeight="normal" id="label_tableName" color="#ffffff"/>
+	<s:Label x="12" y="15" width="82" height="25" fontSize="16" fontWeight="normal" id="label_tableName" color="#ffffff" textAlign="center"/>
 
 	<!--左边的玩家的属性-->
 	<s:Group id="playerinfoLeft" x="4" y="128" height="69" width="138">
@@ -104,7 +141,7 @@
 	<mx:Image x="200" y="338" id="imgDiscardDown" source="@Embed('../res/pass.swf')"/>
 	<mx:Image x="298" y="246" id="imgDiscardRight" source="@Embed('../res/pass.swf')"/>
 	<!--托管显示图-->
-	<mx:Image x="235" y="419" id="cpuAIAnimation" source="assets/CPUAI.swf" visible="false"/>
+	<mx:Image x="235" y="419" id="cpuAIAnimation" source="@Embed('assets/CPUAI.swf')" visible="false"/>
 
 	<mx:Label x="260" y="81" width="26" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#000000"/>
 	<!--玩家聊天部分的设置和表情-->
@@ -137,9 +174,9 @@
 			import message.*;
 			
 			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
-			import poker.gamestate.StateGetTableSetting;
 			import poker.gamestate.StateUpdateWhileGame;
 
 			protected var createOver:Boolean = false;
@@ -179,7 +216,7 @@
 			}
 			private function startDebugClicked(event:Event):void
 			{
-				var popup:CardViewer = CardViewer(PopUpManager.createPopUp(this, CardViewer, true));
+				var popup:GameEndPopup = GameEndPopup(PopUpManager.createPopUp(this, GameEndPopup, true));
 				// 增加一个键盘监听事件
 				//this.addEventListener(KeyboardEvent.KEY_DOWN, keydown);
 				
@@ -253,7 +290,7 @@
 				// 初始化玩家的准备用按钮
 				Game.Instance.readyStateInit();
 				// 描画桌子编号
-				label_tableName.text = StateLobyJoinTable.Instance.tablename;
+				label_tableName.text = StateGetTableSettingFromLobby.Instance.lastSuccData.name;
 			}
 			public function endup():void
 			{
@@ -300,6 +337,7 @@
 				imgDiscardRight.visible = false;
 				imgPlayerRightReady.visible = false;
 				btnCardView.visible = false;
+				cupAI.visible = false;
 				Lable_playernameUp.text = "";
 				Label_leftcardsnumUp.text = "";
 				Lable_playernameLeft.text = "";
@@ -309,10 +347,10 @@
 				Lable_playernameDown.text = "";
 				Label_leftcardsnumDown.text = "";
 				// 玩家头像和准备图
-				Img_playerAvatarUp.visible = false;
-				Img_playerAvatarLeft.visible = false;
-				Img_playerAvatarDown.visible = false;
-				Img_playerAvatarRight.visible = false;
+				avatarUpGroup.visible = false;
+				avatarLeftGroup.visible = false;
+				avatarDownGroup.visible = false;
+				avatarRightGroup.visible = false;
 				imgPlayerUpReady.visible = false;
 				imgPlayerLeftReady.visible = false;
 				imgPlayerRightReady.visible = false;
@@ -353,6 +391,7 @@
 				label_pl_left_gold.text = "";
 				label_pl_right_gold.text = "";
 //				gameplayerlist.visible = false;
+				cancelCpu();
 			}
 			
 			public function enterFrame(event:Event):void
@@ -364,10 +403,10 @@
 		    	if (inGame)
 		    	{
 		    		// 描画部分的循环
-		    		graphics.clear();
-		    		graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
-		    		graphics.drawRect(0, 0, this.width, this.height);
-		    		graphics.endFill();
+//		    		graphics.clear();
+//		    		graphics.beginBitmapFill(GameObjectManager.Instance.backBuffer, null, false, false);
+//		    		graphics.drawRect(0, 0, this.width, this.height);
+//		    		graphics.endFill();
 		    	}
 			}
 			
@@ -417,7 +456,12 @@
 				if(!LobyManager.Instance.windowMutex){
 					if(StateGetTableSettingFromLobby.Instance.lastFlag)
 					{
-						StateGetTableSetting.Instance.setData(StateGetTableSettingFromLobby.Instance.lastSuccData);
+						optionWindow.visible = true;
+						optionWindow.inGameSetting(StateGetTableSettingFromLobby.Instance.lastSuccData);
+						
+						// mutex
+						LobyManager.Instance.windowMutex = true;
+
 					}else{
 						
 					}
@@ -504,6 +548,26 @@
 					}
 				}
 				Game.Instance.isCpuAI = !Game.Instance.isCpuAI;
+			}
+			public function cancelCpu():void
+			{
+				if(Game.Instance.isCpuAI)
+				{
+					cpuAIAnimation.visible = false;
+					cupAI.label = "托管";
+					Game.Instance.isCpuAI = false;
+				}
+			}
+
+
+			protected function avatarUpGroup_creationCompleteHandler(event:FlexEvent):void
+			{
+				var gp:Group = event.currentTarget as Group;
+				gp.graphics.beginFill(0x0);
+				gp.graphics.drawRect(-2, -2, gp.width+4, gp.height+4);
+				gp.graphics.beginFill(0xeeeeee, 1);
+				gp.graphics.drawRect(-1, -1, gp.width+2, gp.height+2);
+				gp.graphics.endFill();
 			}
 
     	]]>

@@ -33,10 +33,14 @@ package lobystate
 		{
 			if(super.receive(obj))
 			{
-				StateLobyJoinTable.Instance.setTablename(obj.room.name);
-				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
-				// 
-				LobyManager.Instance.changeState(2);
+//				StateLobyJoinTable.Instance.setTablename(obj.room.name);
+				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
+				// 加入成功，改变玩家的所有rid值
+				StateGetPlayerInfo.Instance.lastSuccData.player.rid = obj.room.rid;
+
+//				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
+//				// 
+//				LobyManager.Instance.changeState(2);
 
 				// 关闭显示视窗
 				LobyNetManager.Instance.closeNetProcess();
