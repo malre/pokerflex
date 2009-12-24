@@ -24,11 +24,11 @@
 		<s:BitmapImage x="0" y="0" width="780" height="560" source="@Embed('res/BG.png')"/>
 
 	</s:Group>
-	<!--玩家自己的牌的层-->
-	<s:Group id="gamecardLayerDown">
-	</s:Group>
 	<!--玩家打出的牌的层-->
 	<s:Group id="gamePlayedcardLayerDown">
+	</s:Group>
+	<!--玩家自己的牌的层-->
+	<s:Group id="gamecardLayerDown">
 	</s:Group>
 	<!--上家牌堆和手牌层-->
 	<s:Group id="gamecardLayerUp">
@@ -536,6 +536,7 @@
 							if(Game.Instance.PlayerCards.length != 0)
 							{
 								var cards:Array = new Array();
+								GameObjectManager.Instance.deselectAllCards();
 								cards.push(Game.Instance.PlayerCards[Game.Instance.PlayerCards.length-1])
 								GameObjectManager.Instance.selectCards(cards);
 								Game.Instance.sendcards();

@@ -275,9 +275,10 @@ package poker
 		 */		
 		public function showHintCards(arr:Array):Array
 		{
-			var selfcards:Array = new Array();
+			var selfcards:Array;
 			var result:Array = new Array();
-			selfcards = deselectAllCards().reverse();
+			selfcards = Game.Instance.PlayerCards.concat();
+			selfcards.reverse();
 
 			var pattern:int = CardPattern.Instance.patternCheck(arr.sort(Array.NUMERIC));
 			// 前一个人出的不是炸弹
@@ -408,37 +409,60 @@ package poker
 			}
 			return idx;
 		}
-		public function deselectAllCards():Array
+		public function deselectAllCards():void
 		{
-			var tmpcards:Array = new Array();
-			for each(var go:GameObject in baseObjects)
+//			var tmpcards:Array = new Array();
+//			for each(var go:GameObject in baseObjects)
+//			{
+//				if(go.getName() == "Card" && go.visible)
+//				{
+//					tmpcards.push(go.getId());
+//					if(go.selected)
+//					{
+//						go.position.y += 15;
+//						go.selected = false;
+//					}
+//				}
+//			}
+//			return tmpcards;
+			for each(var card:Card in Game.Instance.PlayerCardsObject)
 			{
-				if(go.getName() == "Card" && go.visible)
-				{
-					tmpcards.push(go.getId());
-					if(go.selected)
-					{
-						go.position.y += 15;
-						go.selected = false;
-					}
-				}
+				if(card.selected)
+					card.beClick();
 			}
-			return tmpcards;
+		}
+		public function selectCard(id:int):void
+		{
+			for(var i:int=0;i<Game.Instance.PlayerCardsObject.length;i++)
+			{
+				var card:Card = Card(Game.Instance.PlayerCardsObject[i]);
+				if(card.cardid == id && !card.selected)
+					card.beClick();
+			}
 		}
 		public function selectCards(arr:Array):void
 		{
 			for each(var id:int in arr)
 			{
-				for(var i:int=0;i<baseObjects.length;i++)
+//				for(var i:int=0;i<baseObjects.length;i++)
+//				{
+//					var go:GameObject = GameObject(baseObjects.getItemAt(baseObjects.length-1-i));
+//					if(go.getName() == "Card" && go.visible)
+//					{
+//						if(go.getId() == id && !go.selected){
+//							go.position.y -= 15;
+//							go.selected = true;
+//							break;
+//						}
+//					}
+//				}
+				for(var i:int=0;i<Game.Instance.PlayerCardsObject.length;i++)
 				{
-					var go:GameObject = GameObject(baseObjects.getItemAt(baseObjects.length-1-i));
-					if(go.getName() == "Card" && go.visible)
+					var card:Card = Card(Game.Instance.PlayerCardsObject[i]);
+					if(card.cardid == id && !card.selected)
 					{
-						if(go.getId() == id && !go.selected){
-							go.position.y -= 15;
-							go.selected = true;
-							break;
-						}
+						card.beClick();
+						break;
 					}
 				}
 			}
