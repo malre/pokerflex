@@ -214,6 +214,7 @@ package poker
 		public function clearPlayerCards():void
 		{
 			PlayerCards.length = 0;
+			PlayerCardsObject.length = 0;
 			PlayerCardsLeft.length = 0;
 			PlayerCardsUp.length = 0;
 			PlayerCardsRight.length = 0;
@@ -302,14 +303,14 @@ package poker
 			{
 				if(cards[selfseat] == "null")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
+					deskCards0.length = 0;
 				}
 				else if(cards[selfseat] == "pass")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = true;
+					deskCards0.length = 0;
 					// SE 这个步骤，如果是最后一步是不会到的，所以把pass，放到按钮上去
 					//if(curPlayerLast == selfseat)
 						//SoundManager.Instance().playSE("pass");
@@ -385,16 +386,16 @@ package poker
 			// 如果该回合是出牌轮，将先清除桌面上所有的牌
 			if(curPlayer == id && gamestate == 0)
 			{
-//				GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
+				deskCards1.length = 0;
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = false;
 			}
 			else
 			{
 				if(cards[id] == "null")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
+					deskCards1.length = 0;
 					// 当4个玩家的出牌都是null，并且玩家有值的情况下，需要喊pass,自己不用判断
 					if(obj.cards[0].number==27&&obj.cards[1].number==27
 						&&obj.cards[2].number==27&&obj.cards[3].number==27){
@@ -406,8 +407,8 @@ package poker
 				}
 				else if(cards[id] == "pass")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
+					deskCards1.length = 0;
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = true;
 					// SE
 					if(curPlayerLast == id)
@@ -474,16 +475,16 @@ package poker
 			// 如果该回合是出牌轮，将先清除桌面上所有的牌
 			if(curPlayer == id && gamestate == 0)
 			{
-//				GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
+				deskCards2.length = 0;
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = false;
 			}
 			else
 			{
 				if(cards[id] == "null")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
+					deskCards2.length = 0;
 					// 当4个玩家的出牌都是null，并且玩家有值的情况下，需要喊pass,自己不用判断
 					if(obj.cards[0].number==27&&obj.cards[1].number==27
 						&&obj.cards[2].number==27&&obj.cards[3].number==27){
@@ -495,8 +496,8 @@ package poker
 				}
 				else if(cards[id] == "pass")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
+					deskCards2.length = 0;
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = true;
 					// SE
 					if(curPlayerLast == id)
@@ -561,8 +562,8 @@ package poker
 			// 如果该回合是出牌轮，将先清除桌面上所有的牌
 			if(curPlayer == id && gamestate == 0)
 			{
-//				GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
+				deskCards3.length = 0;
 				FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = false;
 //				// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //				if(!bPassAnimatePlayedLeft)
@@ -579,8 +580,8 @@ package poker
 //					bPassAnimatePlayedLeft = false;
 				if(cards[id] == "null")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
+					deskCards3.length = 0;
 					// 当4个玩家的出牌都是null，并且玩家有值的情况下，需要喊pass,自己不用判断
 					if(obj.cards[0].number==27&&obj.cards[1].number==27
 						&&obj.cards[2].number==27&&obj.cards[3].number==27){
@@ -592,8 +593,8 @@ package poker
 				}
 				else if(cards[id] == "pass")
 				{
-//					GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
+					deskCards3.length = 0;
 					FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = true;
 					// SE
 					if(curPlayerLast == id)
@@ -681,7 +682,7 @@ package poker
 						// 传入的是左上的位置坐标
 //						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsRight[k], "HandCardRight", pt, cardback_BaseZOrder+k, true);
 //						pt = null;
-						GameObjectManager.Instance.addCardtoScreen(PlayerCardsRight[i], "HandCardRight", pt);
+						GameObjectManager.Instance.addCardtoScreen(PlayerCardsRight[k], "HandCardRight", pt);
 					}
 				}
 			}
@@ -708,7 +709,7 @@ package poker
 						// 传入的是左上的位置坐标
 //						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsUp[k], "HandCardUp", pt, cardback_BaseZOrder+k, true);
 //						pt = null;
-						GameObjectManager.Instance.addCardtoScreen(PlayerCardsUp[i], "HandCardUp", pt);
+						GameObjectManager.Instance.addCardtoScreen(PlayerCardsUp[k], "HandCardUp", pt);
 					}
 				}
 			}
@@ -735,7 +736,7 @@ package poker
 						// 传入的是左上的位置坐标
 //						GameObjectManager.Instance.setSpecCardVisible(PlayerCardsLeft[k], "HandCardLeft", pt, cardback_BaseZOrder+k, true);
 //						pt = null;
-						GameObjectManager.Instance.addCardtoScreen(PlayerCardsLeft[i], "HandCardLeft", pt);
+						GameObjectManager.Instance.addCardtoScreen(PlayerCardsLeft[k], "HandCardLeft", pt);
 					}
 				}
 			}
@@ -1237,11 +1238,11 @@ package poker
 
 		public function click(event:MouseEvent):void
 		{
-			if(gameState == 2)
-			{
-				GameObjectManager.Instance.click(event);
-				FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = isSendBtnEnable();
-			}
+//			if(gameState == 2)
+//			{
+//				GameObjectManager.Instance.click(event);
+//				FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = isSendBtnEnable();
+//			}
 		}
 		public function isSendBtnEnable():Boolean
 		{

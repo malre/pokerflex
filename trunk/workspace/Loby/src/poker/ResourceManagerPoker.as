@@ -38,7 +38,7 @@ package poker
 		[Embed(source="../res/08.png")]
 		public static var Card08:Class;
 
-		[Embed(source="../res/09.gif")]
+		[Embed(source="../res/09.png")]
 		public static var Card09:Class;
 
 		[Embed(source="../res/10.png")]

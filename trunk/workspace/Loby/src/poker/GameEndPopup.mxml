@@ -52,6 +52,7 @@
 			
 			private function gameContinue(event:Event):void
 			{
+				GameObjectManager.Instance.removeCardfromScreen("Card");
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");

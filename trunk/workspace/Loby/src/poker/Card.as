@@ -53,6 +53,10 @@ package poker
 		
 		override protected function clickHandler(event:MouseEvent) : void
 		{
+			beClick();
+		}
+		public function beClick():void
+		{
 			if(name == "Card"){
 				_selected = !_selected;
 				if(_selected){
