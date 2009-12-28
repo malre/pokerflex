@@ -59,7 +59,6 @@ package message
 		public function createInputbox(x:Number, y:Number, width:Number, height:Number, type:int, text:String = ""):Sprite
 		{
 			textinput = new TextFlow();
-//			textinput.alignmentBaseline = flash.text.engine.TextBaseline.ASCENT;
 			var sprite:Sprite = new Sprite();
 			var g:Graphics = sprite.graphics;
 			g.beginFill(0x02120b);
@@ -75,9 +74,9 @@ package message
 			addChild(sprite);
 			
 			textinput.addChild(p);
-			var ie:inputEditManager = new inputEditManager();
-			ie.settype(type);
-			textinput.interactionManager = ie;
+//			var ie:inputEditManager = new inputEditManager();
+//			ie.settype(type);
+//			textinput.interactionManager = ie;
 					
 			textinput.fontFamily = "宋体";
 			textinput.fontSize = 12;

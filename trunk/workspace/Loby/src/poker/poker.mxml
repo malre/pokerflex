@@ -56,16 +56,16 @@
 	<s:Button x="7" y="493" id="cupAI" click="cupAI_clickHandler(event)" skinClass="components.Button_CpuPlay" visible="false"/>
 	<!--玩家头像-->
 	<s:Group x="238" y="10" width="48" height="48" id="avatarUpGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
-		<mx:Image width="48" height="48" id="Img_playerAvatarUp"/>
+		<mx:Image width="48" height="48" id="Img_playerAvatarUp" click="Img_playerAvatarUp_clickHandler(event)"/>
 	</s:Group>
 	<s:Group x="12" y="211" width="48" height="48" id="avatarLeftGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
-		<mx:Image width="48" height="48" id="Img_playerAvatarLeft"/>
+		<mx:Image width="48" height="48" id="Img_playerAvatarLeft" click="Img_playerAvatarLeft_clickHandler(event)"/>
 	</s:Group>
 	<s:Group x="240" y="489" width="48" height="48" id="avatarDownGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
-		<mx:Image width="48" height="48" id="Img_playerAvatarDown"/>
+		<mx:Image width="48" height="48" id="Img_playerAvatarDown" click="Img_playerAvatarDown_clickHandler(event)"/>
 	</s:Group>
 	<s:Group x="467" y="211" width="48" height="48" id="avatarRightGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
-		<mx:Image width="48" height="48" id="Img_playerAvatarRight"/>
+		<mx:Image width="48" height="48" id="Img_playerAvatarRight" click="Img_playerAvatarRight_clickHandler(event)"/>
 	</s:Group>
 	<!--头像上的准备提示图片-->
  	<mx:Image x="222" y="98" id="imgPlayerUpReady" source="@Embed('../res/ready.swf')"/>
@@ -169,7 +169,6 @@
     	<![CDATA[
 			import lobystate.StateGetFriends;
 			import lobystate.StateGetTableSettingFromLobby;
-			import lobystate.StateLobyJoinTable;
 			
 			import message.*;
 			
@@ -178,10 +177,12 @@
 			import mx.managers.PopUpManager;
 			
 			import poker.gamestate.StateUpdateWhileGame;
+			import poker.gamestate.StateUpdateWhileWait;
+			import components.Menu_GameCommand;
 
 			protected var createOver:Boolean = false;
 			protected var inGame:Boolean = false;
-			public var inputboxGame:ContentViewer = new ContentViewer();
+			public var gameMenu:Menu_GameCommand;
 
 			private function enterGame(event:Event):void
 			{
@@ -316,6 +317,7 @@
 				commandbar.visible = false;
 				// 初始化玩家的准备用按钮
 				Game.Instance.readyStateInit();
+				GameObjectManager.Instance.removeCardfromScreen("Card");
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
@@ -327,6 +329,12 @@
 				GameObjectManager.Instance.setVisibleByName("BG", true);
 				Game.Instance.clearPlayerCards();
 				initGUI();
+				// 清除玩家的控制命令框
+				if(gameMenu != null)
+				{
+					this.removeElement(gameMenu);
+					gameMenu = null;
+				}
 			}
 			public function initGUI():void
 			{
@@ -419,6 +427,18 @@
 			public function click(event:MouseEvent):void
 			{
 				Game.Instance.click(event);
+				if(gameMenu != null)
+				{
+					if(event.stageX >= gameMenu.x && event.stageX <= gameMenu.x+gameMenu.width
+						&& event.stageY >= gameMenu.y && event.stageY <= gameMenu.y+gameMenu.height)
+					{
+						
+					}
+					else{
+						this.removeElement(gameMenu);
+						gameMenu = null;
+					}
+				}
 			}
 			
 			public function mouseDown(even:MouseEvent):void
@@ -482,7 +502,6 @@
 
     		protected function gameSendMsg_clickHandler(event:MouseEvent):void
     		{
-//    			inputEditManager(inputboxGame.textinput.interactionManager).sendButtonPressed();
 				Messenger.Instance.sendButtonPressed(gameinputbox);
     		}
 
@@ -543,6 +562,7 @@
 							}
 						}
 						else{
+							GameObjectManager.Instance.deselectAllCards();
 							var selcards:Array = GameObjectManager.Instance.showHintCards(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
 							if(selcards.length > 0)	{
 								GameObjectManager.Instance.selectCards(selcards[0]);
@@ -577,6 +597,53 @@
 				gp.graphics.endFill();
 			}
 
+			// 以下是用来控制游戏中玩家头像被点击后，跳出的各种命令控制菜单
+			// 游戏开始以后不能实施类似的操作，有必要保证，玩家的pid的获得，延迟到命令的分类中
+			protected function Img_playerAvatarUp_clickHandler(event:MouseEvent):void
+			{
+				playerCommandHandle(2, event.stageX,event.stageY);
+			}
+			
+			protected function Img_playerAvatarLeft_clickHandler(event:MouseEvent):void
+			{
+				playerCommandHandle(3, event.stageX,event.stageY);
+			}
+
+
+			protected function Img_playerAvatarDown_clickHandler(event:MouseEvent):void
+			{
+//				playerCommandHandle(0, event.stageX,event.stageY);
+			}
+
+
+			protected function Img_playerAvatarRight_clickHandler(event:MouseEvent):void
+			{
+				playerCommandHandle(1, event.stageX,event.stageY)
+			}
+
+			// 命令将要进行分类，不同的命令出现的时机不同，获得信息的过程也不同，要区分对待
+			private function playerCommandHandle(clickplayerPos:int, x:int, y:int):void
+			{
+//				var index:int = Game.Instance.getPlayerIndexByPos(StateUpdateForFirstFrame.Instance.lastSuccData, Game.Instance.selfseat);
+//				playerCommandHandle(StateUpdateForFirstFrame.Instance.lastSuccData.players[index].pid);
+				if(Game.Instance.gameState == 0)
+				{
+				}
+				else
+				{
+					var index:int = Game.Instance.getPlayerIndexByPos(StateUpdateWhileWait.Instance.lastSuccData, (clickplayerPos+Game.Instance.selfseat)%4);
+					if(gameMenu == null)
+					{
+						gameMenu = new Menu_GameCommand();
+						addElement(gameMenu);
+					}
+					gameMenu.setIndex(index);
+					gameMenu.x = x;
+					gameMenu.y = y;
+//					playerCommandHandle(StateUpdateWhileWait.Instance.lastSuccData.players[index].pid);
+				}
+			}
+			
     	]]>
     </fx:Script>
 </mx:Canvas>

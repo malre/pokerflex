@@ -53,7 +53,8 @@ package poker
 		
 		override protected function clickHandler(event:MouseEvent) : void
 		{
-			beClick();
+			if(!Game.Instance.isCpuAI)
+				beClick();
 		}
 		public function beClick():void
 		{

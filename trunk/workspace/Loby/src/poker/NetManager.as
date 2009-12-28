@@ -16,6 +16,7 @@ package poker
 	import poker.gamestate.StateGetTableSetting;
 	import poker.gamestate.StateInviteFriend;
 	import poker.gamestate.StateItemGetPlayedCards;
+	import poker.gamestate.StateKickPlayer;
 	import poker.gamestate.StateLeaveTable;
 	import poker.gamestate.StateNotifyReady;
 	import poker.gamestate.StateSendCards;
@@ -37,6 +38,7 @@ package poker
 		public static const sendURL_game:String = sendURL_serverIP+"/game/room/update";
 		public static const sendURL_tableSetting:String = sendURL_serverIP+"/game/room/viewSetting";
 		public static const sendURL_inviteFriend:String = sendURL_serverIP+"/game/friend/invite";
+		public static const sendURL_kickplayer:String = sendURL_serverIP+"/game/room/kick";
 		//传送的数据内容
 		private var sendData:String = null;
 		//
@@ -57,6 +59,7 @@ package poker
 		public static const send_getGameoverPlayerLeftCard:String = "get left cards";
 		public static const send_getTableSetting:String = "get table setting";
 		public static const send_inviteFriend:String = "i f";
+		public static const send_kickplayer:String = "k p";
 		private var	send_type:String = null;
 		// 记录了本次请求的内容, 请求的内容一般属于下面的几类
 		public var request_type_cards:Boolean = false;
@@ -189,6 +192,10 @@ package poker
 			else if(type == send_inviteFriend)
 			{
 				senderStateManager.changeState(StateInviteFriend.Instance);
+			}
+			else if(type == send_kickplayer)
+			{
+				senderStateManager.changeState(StateKickPlayer.Instance);
 			}
 
 			senderStateManager.send();

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009"
+		 width="80" height="21" xmlns:mx="library://ns.adobe.com/flex/halo"
+		 mouseOver="group1_mouseOverHandler(event)"
+		 mouseOut="group1_mouseOutHandler(event)" >
+	<fx:Script>
+		<![CDATA[
+			public function beClicked():void
+			{
+				if(currentState == "StateOver")
+					return;
+				currentState = "StateOver";
+			}
+			
+			public function reset():void
+			{
+				if(currentState == "StateDown")
+					return;
+				currentState = "StateDown";
+				btntext.setStyle("color", "#4d2902");
+			}
+
+			protected function group1_mouseOverHandler(event:MouseEvent):void
+			{
+				currentState = "StateOver";
+			}
+
+
+			protected function group1_mouseOutHandler(event:MouseEvent):void
+			{
+				currentState = "StateNormal";
+			}
+
+		]]>
+		
+	</fx:Script>
+	<s:states>
+		<s:State name="StateOver"/>
+		<s:State name="StateNormal"/>
+	</s:states>
+	<s:Rect x="0" y="0" width="100%" height="100%" includeIn="StateOver">
+		<s:fill>
+			<s:SolidColor color="#664402" alpha="0.5"/>
+		</s:fill>
+	</s:Rect>
+	<s:Label id="btntext" text="踢出牌局" color="#4d2902" fontSize="16" fontFamily="黑体" fontWeight="bold" x="0" y="0" height="100%" width="100%" textAlign="center" verticalAlign="middle"/>
+</s:Group>

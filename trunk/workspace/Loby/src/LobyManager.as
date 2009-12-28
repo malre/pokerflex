@@ -533,6 +533,7 @@ package
 					// 桌子上的桌号填充
 					var lbl:Label = gp.getElementAt(5) as Label;
 					lbl.text = String(obj[i].name).replace("台", "台\n");
+					// 桌子上的玩家的信息的填充
 					var lostp:Array = [0,0,0,0];
 					for(var n:int=0;n<4;n++)
 					{
@@ -575,6 +576,7 @@ package
 			describe += "\n";
 			describe += obj.money + " 金币";
 			name.toolTip = name.text + "\n" + describe;
+			avatar.toolTip = name.text + "\n" + describe;
 		}
 		
 		public function createTableBtn(id:String, name:String, x:int, y:int, pos:int):Image

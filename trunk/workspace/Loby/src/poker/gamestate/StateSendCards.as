@@ -85,12 +85,14 @@ package poker.gamestate
 										if(Game.Instance.PlayerCards.length != 0)
 										{
 											var cards:Array = new Array();
+											GameObjectManager.Instance.deselectAllCards();
 											cards.push(Game.Instance.PlayerCards[Game.Instance.PlayerCards.length-1])
 											GameObjectManager.Instance.selectCards(cards);
 											Game.Instance.sendcards();
 										}
 									}
 									else{
+										GameObjectManager.Instance.deselectAllCards();
 										var selcards:Array = GameObjectManager.Instance.showHintCards(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
 										if(selcards.length > 0)
 										{

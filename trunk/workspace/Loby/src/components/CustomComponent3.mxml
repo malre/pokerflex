@@ -195,7 +195,6 @@
 
 			protected function lobbySendMsg(event:MouseEvent):void
 			{
-//				inputEditManager(inputboxLobby.textinput.interactionManager).sendButtonPressed(lobbyinputbox.textFlow);
 				Messenger.Instance.sendButtonPressed(lobbyinputbox);
 			}
 

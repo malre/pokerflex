@@ -5,10 +5,12 @@ package poker.gamestate
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
+	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	
 	import poker.Game;
 	import poker.NetManager;
+	import poker.poker;
 	
 	import soundcontrol.SoundManager;
 
@@ -35,7 +37,25 @@ package poker.gamestate
 		}
 		override public function receive(obj:Object):Boolean
 		{
-			if(super.receive(obj))
+			if(obj.hasOwnProperty("success"))
+			{
+				if(!obj.success)
+				{
+					lastFlag = false;
+					if(obj.hasOwnProperty("error"))
+					{
+//						if(obj.error.hasOwnProperty("message")){
+//							LobyErrorState.Instance.showErrMsg(obj.error.message);
+//						}
+					}
+				}
+				else
+				{
+					lastSuccData = obj;
+					lastFlag = true;
+				}
+			}
+			if(lastFlag)
 			{
 				// 链接成功，但游戏尚未开始
 				if(obj.status == 0)
@@ -48,8 +68,15 @@ package poker.gamestate
 					
 					// 将准备按钮隐藏
 					FlexGlobals.topLevelApplication.gamePoker.btnReady.visible = false;
+					// 消去对玩家操作的命令菜单
+					var p:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
+					if(p.gameMenu != null)
+					{
+						p.removeElement(p.gameMenu);
+						p.gameMenu = null;
+					}
 				}
-				else //if(obj.status == 0)
+				else
 				{
 					// 继续等待其他玩家
 					Game.Instance.getSelfseat(obj);
@@ -62,6 +89,26 @@ package poker.gamestate
 				return true;
 			}
 			else{
+				// 判断自己有没有被踢
+				if(obj.kicked)
+				{
+					// 使游戏本体不见，并回到游戏房间，刷新房间
+					FlexGlobals.topLevelApplication.gamePoker.endup();
+					// 回到游戏
+					LobyManager.Instance.changeState(1);
+					// 退出的时候同时清除房间的聊天信息
+					FlexGlobals.topLevelApplication.gamePoker.gamechatbox.selectAll();
+					FlexGlobals.topLevelApplication.gamePoker.gamechatbox.insertText("");
+					// 重置房间设置获得标志位，下一次进房间需要重新去访问
+					StateGetTableSetting.Instance.getSettingSuccess = false;
+					// 关闭所有的窗口并置窗口互斥量为假
+					FlexGlobals.topLevelApplication.gamePoker.optionWindow.closeOption();
+					FlexGlobals.topLevelApplication.friendslist.toState(0);
+					// 如果退出成功，回前一张桌子的按钮有效
+					FlexGlobals.topLevelApplication.btn2LastTable.enabled = true;
+					///
+					Alert.show("","你被踢出了房间");
+				}
 				return false;
 			}
 		}

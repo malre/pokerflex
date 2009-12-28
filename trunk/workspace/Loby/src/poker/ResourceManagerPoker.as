@@ -8,7 +8,7 @@ package poker
 	
 	public final class ResourceManagerPoker
 	{
-		public static var CardsRes:ArrayCollection = new ArrayCollection();
+//		public static var CardsRes:ArrayCollection = new ArrayCollection();
 		public static var gameCardsRes:ArrayCollection = new ArrayCollection();
 		
 		[Embed(source="../res/00.png")]
@@ -176,76 +176,76 @@ package poker
 //		[Embed(source="../res/54.png")]							// back of card
 //		public static var Card54:Class;
 
-		CardsRes.addItem(new GraphicsResource(new Card02()));		//3	方蝮需 	0
-		CardsRes.addItem(new GraphicsResource(new Card15()));		//	草花		1
-		CardsRes.addItem(new GraphicsResource(new Card28()));		//	 郤｢桃	2
-		CardsRes.addItem(new GraphicsResource(new Card41()));		//  黑桃		3
-
-		CardsRes.addItem(new GraphicsResource(new Card03()));		//4
-		CardsRes.addItem(new GraphicsResource(new Card16()));
-		CardsRes.addItem(new GraphicsResource(new Card29()));
-		CardsRes.addItem(new GraphicsResource(new Card42()));
-
-		CardsRes.addItem(new GraphicsResource(new Card04()));
-		CardsRes.addItem(new GraphicsResource(new Card17()));
-		CardsRes.addItem(new GraphicsResource(new Card30()));
-		CardsRes.addItem(new GraphicsResource(new Card43()));
-
-		CardsRes.addItem(new GraphicsResource(new Card05()));
-		CardsRes.addItem(new GraphicsResource(new Card18()));
-		CardsRes.addItem(new GraphicsResource(new Card31()));
-		CardsRes.addItem(new GraphicsResource(new Card44()));
-
-		CardsRes.addItem(new GraphicsResource(new Card06()));
-		CardsRes.addItem(new GraphicsResource(new Card19()));
-		CardsRes.addItem(new GraphicsResource(new Card32()));
-		CardsRes.addItem(new GraphicsResource(new Card45()));
-
-		CardsRes.addItem(new GraphicsResource(new Card07()));
-		CardsRes.addItem(new GraphicsResource(new Card20()));
-		CardsRes.addItem(new GraphicsResource(new Card33()));
-		CardsRes.addItem(new GraphicsResource(new Card46()));
-
-		CardsRes.addItem(new GraphicsResource(new Card08()));
-		CardsRes.addItem(new GraphicsResource(new Card21()));
-		CardsRes.addItem(new GraphicsResource(new Card34()));
-		CardsRes.addItem(new GraphicsResource(new Card47()));
-
-		CardsRes.addItem(new GraphicsResource(new Card09()));		// 10
-		CardsRes.addItem(new GraphicsResource(new Card22()));
-		CardsRes.addItem(new GraphicsResource(new Card35()));
-		CardsRes.addItem(new GraphicsResource(new Card48()));
-
-		CardsRes.addItem(new GraphicsResource(new Card10()));		// J
-		CardsRes.addItem(new GraphicsResource(new Card23()));
-		CardsRes.addItem(new GraphicsResource(new Card36()));
-		CardsRes.addItem(new GraphicsResource(new Card49()));
-
-		CardsRes.addItem(new GraphicsResource(new Card11()));		// Q
-		CardsRes.addItem(new GraphicsResource(new Card24()));
-		CardsRes.addItem(new GraphicsResource(new Card37()));
-		CardsRes.addItem(new GraphicsResource(new Card50()));
-
-		CardsRes.addItem(new GraphicsResource(new Card12()));		// K
-		CardsRes.addItem(new GraphicsResource(new Card25()));
-		CardsRes.addItem(new GraphicsResource(new Card38()));
-		CardsRes.addItem(new GraphicsResource(new Card51()));
-
-		CardsRes.addItem(new GraphicsResource(new Card00()));		// A
-		CardsRes.addItem(new GraphicsResource(new Card13()));
-		CardsRes.addItem(new GraphicsResource(new Card26()));
-		CardsRes.addItem(new GraphicsResource(new Card39()));
-		CardsRes.addItem(new GraphicsResource(new Card01()));		// 2
-		CardsRes.addItem(new GraphicsResource(new Card14()));
-		CardsRes.addItem(new GraphicsResource(new Card27()));
-		CardsRes.addItem(new GraphicsResource(new Card40()));
-
-		CardsRes.addItem(new GraphicsResource(new Card52()));
-		CardsRes.addItem(new GraphicsResource(new Card53()));
+//		CardsRes.addItem(new GraphicsResource(new Card02()));		//3	方蝮需 	0
+//		CardsRes.addItem(new GraphicsResource(new Card15()));		//	草花		1
+//		CardsRes.addItem(new GraphicsResource(new Card28()));		//	 郤｢桃	2
+//		CardsRes.addItem(new GraphicsResource(new Card41()));		//  黑桃		3
+//
+//		CardsRes.addItem(new GraphicsResource(new Card03()));		//4
+//		CardsRes.addItem(new GraphicsResource(new Card16()));
+//		CardsRes.addItem(new GraphicsResource(new Card29()));
+//		CardsRes.addItem(new GraphicsResource(new Card42()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card04()));
+//		CardsRes.addItem(new GraphicsResource(new Card17()));
+//		CardsRes.addItem(new GraphicsResource(new Card30()));
+//		CardsRes.addItem(new GraphicsResource(new Card43()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card05()));
+//		CardsRes.addItem(new GraphicsResource(new Card18()));
+//		CardsRes.addItem(new GraphicsResource(new Card31()));
+//		CardsRes.addItem(new GraphicsResource(new Card44()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card06()));
+//		CardsRes.addItem(new GraphicsResource(new Card19()));
+//		CardsRes.addItem(new GraphicsResource(new Card32()));
+//		CardsRes.addItem(new GraphicsResource(new Card45()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card07()));
+//		CardsRes.addItem(new GraphicsResource(new Card20()));
+//		CardsRes.addItem(new GraphicsResource(new Card33()));
+//		CardsRes.addItem(new GraphicsResource(new Card46()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card08()));
+//		CardsRes.addItem(new GraphicsResource(new Card21()));
+//		CardsRes.addItem(new GraphicsResource(new Card34()));
+//		CardsRes.addItem(new GraphicsResource(new Card47()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card09()));		// 10
+//		CardsRes.addItem(new GraphicsResource(new Card22()));
+//		CardsRes.addItem(new GraphicsResource(new Card35()));
+//		CardsRes.addItem(new GraphicsResource(new Card48()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card10()));		// J
+//		CardsRes.addItem(new GraphicsResource(new Card23()));
+//		CardsRes.addItem(new GraphicsResource(new Card36()));
+//		CardsRes.addItem(new GraphicsResource(new Card49()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card11()));		// Q
+//		CardsRes.addItem(new GraphicsResource(new Card24()));
+//		CardsRes.addItem(new GraphicsResource(new Card37()));
+//		CardsRes.addItem(new GraphicsResource(new Card50()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card12()));		// K
+//		CardsRes.addItem(new GraphicsResource(new Card25()));
+//		CardsRes.addItem(new GraphicsResource(new Card38()));
+//		CardsRes.addItem(new GraphicsResource(new Card51()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card00()));		// A
+//		CardsRes.addItem(new GraphicsResource(new Card13()));
+//		CardsRes.addItem(new GraphicsResource(new Card26()));
+//		CardsRes.addItem(new GraphicsResource(new Card39()));
+//		CardsRes.addItem(new GraphicsResource(new Card01()));		// 2
+//		CardsRes.addItem(new GraphicsResource(new Card14()));
+//		CardsRes.addItem(new GraphicsResource(new Card27()));
+//		CardsRes.addItem(new GraphicsResource(new Card40()));
+//
+//		CardsRes.addItem(new GraphicsResource(new Card52()));
+//		CardsRes.addItem(new GraphicsResource(new Card53()));
 		
 		gameCardsRes.addItem(Card02);
 		gameCardsRes.addItem(Card15);		//	草花		1
-		gameCardsRes.addItem(Card28);		//	 郤｢桃	2
+		gameCardsRes.addItem(Card28);		//	 红桃	2
 		gameCardsRes.addItem(Card41);		//  黑桃		3
 
 		gameCardsRes.addItem(Card03);		//4
@@ -314,50 +314,123 @@ package poker
 		
 		[Embed(source="../res/BG.png")]							// background
 		public static var BG00:Class;
-		public static var BG00Res:GraphicsResource = new GraphicsResource(new BG00());
 
 		[Embed(source="../res/cardback1.png")]
 		public static var cardback1:Class;
-		public static var CardBack1Res:GraphicsResource = new GraphicsResource(new cardback1());
 
 		[Embed(source="../res/sound/start.mp3")]
-		public static var sound01:Class;
-		public static var SoundStart:SoundAsset = new sound01() as SoundAsset;	
+		public static var sound_start:Class;
 
 		[Embed(source="../res/sound/baojing.mp3")]
-		public static var sound02:Class;
-		public static var SoundYizhang:SoundAsset = new sound02() as SoundAsset;	
+		public static var sound_yizhang:Class;
 
 		[Embed(source="../res/sound/buyao.mp3")]
-		public static var sound03:Class;
-		public static var SoundPass:SoundAsset = new sound03() as SoundAsset;	
+		public static var sound_pass:Class;
 
 		[Embed(source="../res/sound/dui.mp3")]
-		public static var sound04:Class;
-		public static var SoundDuizi:SoundAsset = new sound04() as SoundAsset;	
+		public static var sound_dui:Class;
 
 		[Embed(source="../res/sound/liandui.mp3")]
-		public static var sound05:Class;
-		public static var SoundLiandui:SoundAsset = new sound05() as SoundAsset;	
+		public static var sound_liandui:Class;
 
 		[Embed(source="../res/sound/sange.mp3")]
-		public static var sound06:Class;
-		public static var SoundSange:SoundAsset = new sound06() as SoundAsset;	
+		public static var sound_sange:Class;
 
 		[Embed(source="../res/sound/shunzi.mp3")]
-		public static var sound07:Class;
-		public static var SoundShunzi:SoundAsset = new sound07() as SoundAsset;	
+		public static var sound_shunzi:Class;
 
 		[Embed(source="../res/sound/wangzha.mp3")]
-		public static var sound08:Class;
-		public static var SoundWangzha:SoundAsset = new sound08() as SoundAsset;	
+		public static var sound_wangzha:Class;
 
 		[Embed(source="../res/sound/win.mp3")]
-		public static var sound09:Class;
-		public static var SoundWin:SoundAsset = new sound09() as SoundAsset;	
+		public static var sound_win:Class;
 
 		[Embed(source="../res/sound/zhadan.mp3")]
-		public static var sound10:Class;
-		public static var SoundZhadan:SoundAsset = new sound10() as SoundAsset;	
+		public static var sound_zhandan:Class;
+		
+		// 追加的新的音效，单张的发音和对子的发音都根据牌念出来
+		[Embed(source="../res/sound/1.mp3")]
+		public static var sound_single_A:Class;
+		
+		[Embed(source="../res/sound/2.mp3")]
+		public static var sound_single_2:Class;
+		
+		[Embed(source="../res/sound/3.mp3")]
+		public static var sound_single_3:Class;
+		
+		[Embed(source="../res/sound/4.mp3")]
+		public static var sound_single_4:Class;
+		
+		[Embed(source="../res/sound/5.mp3")]
+		public static var sound_single_5:Class;
+		
+		[Embed(source="../res/sound/6.mp3")]
+		public static var sound_single_6:Class;
+		
+		[Embed(source="../res/sound/7.mp3")]
+		public static var sound_single_7:Class;
+		
+		[Embed(source="../res/sound/8.mp3")]
+		public static var sound_single_8:Class;
+		
+		[Embed(source="../res/sound/9.mp3")]
+		public static var sound_single_9:Class;
+		
+		[Embed(source="../res/sound/10.mp3")]
+		public static var sound_single_10:Class;
+		
+		[Embed(source="../res/sound/11.mp3")]
+		public static var sound_single_J:Class;
+		
+		[Embed(source="../res/sound/12.mp3")]
+		public static var sound_single_Q:Class;
+		
+		[Embed(source="../res/sound/13.mp3")]
+		public static var sound_single_K:Class;
+
+		[Embed(source="../res/sound/14.mp3")]
+		public static var sound_single_52:Class;
+
+		[Embed(source="../res/sound/15.mp3")]
+		public static var sound_single_53:Class;
+		
+		[Embed(source="../res/sound/dui1.mp3")]
+		public static var sound_double_A:Class;
+		
+		[Embed(source="../res/sound/dui2.mp3")]
+		public static var sound_double_2:Class;
+		
+		[Embed(source="../res/sound/dui3.mp3")]
+		public static var sound_double_3:Class;
+		
+		[Embed(source="../res/sound/dui4.mp3")]
+		public static var sound_double_4:Class;
+		
+		[Embed(source="../res/sound/dui5.mp3")]
+		public static var sound_double_5:Class;
+		
+		[Embed(source="../res/sound/dui6.mp3")]
+		public static var sound_double_6:Class;
+		
+		[Embed(source="../res/sound/dui7.mp3")]
+		public static var sound_double_7:Class;
+		
+		[Embed(source="../res/sound/dui8.mp3")]
+		public static var sound_double_8:Class;
+		
+		[Embed(source="../res/sound/dui9.mp3")]
+		public static var sound_double_9:Class;
+		
+		[Embed(source="../res/sound/dui10.mp3")]
+		public static var sound_double_10:Class;
+		
+		[Embed(source="../res/sound/dui11.mp3")]
+		public static var sound_double_J:Class;
+		
+		[Embed(source="../res/sound/dui12.mp3")]
+		public static var sound_double_Q:Class;
+		
+		[Embed(source="../res/sound/dui13.mp3")]
+		public static var sound_double_K:Class;
 	}
 }

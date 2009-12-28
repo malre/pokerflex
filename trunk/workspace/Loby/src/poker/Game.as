@@ -367,7 +367,7 @@ package poker
 							SEid = CardPattern.Instance.patternCheck(deskCards0.sort(Array.NUMERIC));
 							if(SEid == 7 && deskCards0.length == 4)	// 王炸
 								SEid = 36;
-							SoundManager.Instance().playSEByCardtype(SEid);
+							SoundManager.Instance().playSEByCardtype(SEid, deskCards0[0]);
 						}
 					}
 					else
@@ -465,7 +465,7 @@ package poker
 							SEid = CardPattern.Instance.patternCheck(deskCards1.sort(Array.NUMERIC));
 							if(SEid == 7 && deskCards0.length == 4)	// 王炸
 								SEid = 36;
-							SoundManager.Instance().playSEByCardtype(SEid);
+							SoundManager.Instance().playSEByCardtype(SEid, deskCards1[0]);
 						}
 					}
 				}
@@ -552,7 +552,7 @@ package poker
 							SEid = CardPattern.Instance.patternCheck(deskCards2.sort(Array.NUMERIC));
 							if(SEid == 7 && deskCards0.length == 4)	// 王炸
 								SEid = 36;
-							SoundManager.Instance().playSEByCardtype(SEid);
+							SoundManager.Instance().playSEByCardtype(SEid, deskCards2[0]);
 						}
 					}
 				}
@@ -639,7 +639,7 @@ package poker
 							SEid = CardPattern.Instance.patternCheck(deskCards3.sort(Array.NUMERIC));
 							if(SEid == 7 && deskCards0.length == 4)	// 王炸
 								SEid = 36;
-							SoundManager.Instance().playSEByCardtype(SEid);
+							SoundManager.Instance().playSEByCardtype(SEid, deskCards3[0]);
 						}
 					}
 				}
@@ -759,7 +759,7 @@ package poker
 			}
 		}
 		// function for find player pos
-		private function getPlayerIndexByPos(obj:Object, pos:int):int
+		public function getPlayerIndexByPos(obj:Object, pos:int):int
 		{
 			var index:int = -1;
 			

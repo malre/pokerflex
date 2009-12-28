@@ -31,7 +31,9 @@ package lobystate
 					lastFlag = false;
 					if(obj.hasOwnProperty("error"))
 					{
-						LobyErrorState.Instance.showErrMsg(obj.error.message);
+						if(obj.error.hasOwnProperty("message")){
+							LobyErrorState.Instance.showErrMsg(obj.error.message);
+						}
 					}
 					return false;
 				}
