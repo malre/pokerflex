@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo"
+		 focusOut="gamecommand_focusOutHandler(event)"
+		 mouseFocusChange="gamecommand_mouseFocusChangeHandler(event)"
+		 mouseOut="gamecommand_mouseOutHandler(event)"
+		 creationComplete="gamecommand_creationCompleteHandler(event)" 
+		 implements="mx.managers.IFocusManagerComponent" xmlns:components="components.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.managers.IFocusManagerComponent;
+			
+			import poker.NetManager;
+			import poker.gamestate.StateUpdateWhileWait;
+			import poker.poker;
+			
+			private var index:int;
+			private var pid:int;
+			protected function gamecommand_focusOutHandler(event:FocusEvent):void
+			{
+				//lose focus
+				this.visible = false;
+			}
+
+			protected function gamecommand_creationCompleteHandler(event:FlexEvent):void
+			{
+				// set focus
+				focusManager.setFocus(this);
+			}
+
+			protected function gamecommand_mouseFocusChangeHandler(event:FocusEvent):void
+			{
+				
+			}
+
+
+			protected function gamecommand_mouseOutHandler(event:MouseEvent):void
+			{
+				
+			}
+			
+			public function setIndex(val:int):void
+			{
+				index = val;
+			}
+			public function getPid():int
+			{
+				return pid;
+			}
+
+			protected function btnKick_clickHandler(event:MouseEvent):void
+			{
+				//
+				pid = StateUpdateWhileWait.Instance.lastSuccData.players[index].pid;
+				NetManager.Instance.send(NetManager.send_kickplayer);
+				var p:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
+				if(p.gameMenu != null)
+				{
+					p.removeElement(p.gameMenu);
+					p.gameMenu = null;
+				}
+			}
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<mx:Image source="@Embed('assets/gameCommandMenu.swf')"/>
+	<!--<s:Button  x="5" y="3" id="btnkick" label="踢出牌局" color="#000000"/>-->
+	<components:Menu_item1 id="btnKick" width="80" click="btnKick_clickHandler(event)"/>
+</s:Group>

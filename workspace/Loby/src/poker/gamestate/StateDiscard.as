@@ -1,14 +1,15 @@
 package poker.gamestate
 {
+	import flash.events.Event;
+	
 	import lobystate.NetRequestState;
 	import lobystate.StateManager;
 	
 	import mx.core.FlexGlobals;
-	import flash.events.Event;
 	
 	import poker.Game;
+	import poker.GameObjectManager;
 	import poker.NetManager;
-	import poker.poker;
 
 	public class StateDiscard extends NetRequestState
 	{
@@ -43,22 +44,6 @@ package poker.gamestate
 						// 正常游戏中
 						if(obj.status == 0)
 						{
-							// 判断是否到了玩家的出牌回合
-							var gamePoker:poker = FlexGlobals.topLevelApplication.gamePoker;
-							if(obj.play.next == Game.Instance.selfseat)
-							{
-								// 显示所有的按钮
-								gamePoker.commandbar.visible = true;
-								gamePoker.commandbar.btnSendCards.enabled = false;
-								gamePoker.commandbar.btnDiscard.enabled = true;
-								if(obj.play.last == obj.play.next)
-								{
-									gamePoker.commandbar.btnDiscard.enabled = false;
-								}
-							}
-							else{
-								gamePoker.commandbar.visible = false;
-							}
 							Game.Instance.lastPlayer = obj.play.last;
 							if(Game.Instance.curPlayer != obj.play.next)	// 出牌权交换
 							{
@@ -76,16 +61,56 @@ package poker.gamestate
 							Game.Instance.updateCurPlayerIcon(obj);
 							// 对时间进行修正
 							Game.Instance.modifyPlayerLefttime(obj);
+							// 判断是否到了玩家的出牌回合
+							if(obj.play.next == Game.Instance.selfseat)
+							{
+								// 首先判断是不是在CPU的托管状态
+								if(Game.Instance.isCpuAI)
+								{
+									if(obj.play.next == obj.play.last)
+									{
+										if(Game.Instance.PlayerCards.length != 0)
+										{
+											var cards:Array = new Array();
+											GameObjectManager.Instance.deselectAllCards();
+											cards.push(Game.Instance.PlayerCards[Game.Instance.PlayerCards.length-1])
+											GameObjectManager.Instance.selectCards(cards);
+											Game.Instance.sendcards();
+										}
+									}
+									else{
+										GameObjectManager.Instance.deselectAllCards();
+										var selcards:Array = GameObjectManager.Instance.showHintCards(StateUpdateWhileGame.Instance.lastSuccData.play.last_card);
+										if(selcards.length > 0)
+										{
+											GameObjectManager.Instance.selectCards(selcards[0]);
+											Game.Instance.sendcards();
+										}
+										else{
+											Game.Instance.pass();
+										}		
+									}
+								}
+								else
+								{
+									// 显示所有的按钮
+									FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = true;
+									if(obj.play.last == obj.play.next)
+										FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
+									else
+										FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = true;
+									
+									FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = Game.Instance.isSendBtnEnable();
+								}
+							}
+							else{
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
+							}
 						}
 						// 游戏意外结束， OR 游戏胜利
 						// 
 						else //if(obj.status == 1)
 						{
-	//						GameObjectManager.Instance.shutdown();
-	//						// 背景还是要保留
-	//						GameObjectManager.Instance.setVisibleByName("BG", true);
-	//						Game.Instance.gameState = 5;
-	//						LobyManager.Instance.gamePoker.showPopupDlg(obj);
 						}
 					}
 				}

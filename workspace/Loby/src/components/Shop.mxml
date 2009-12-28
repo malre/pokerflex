@@ -290,8 +290,8 @@
 		<s:State name="StateItemSub"/>
 	</s:states>
 	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1"/>
-	<s:BitmapImage source="@Embed('/assets/shop_text.png')" resizeMode="scale" x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub"/>
-	<s:BitmapImage source="@Embed('/assets/item_text.png')" resizeMode="scale" x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub"/>
+	<mx:Image source="@Embed('/assets/shop_text.swf')" x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub"/>
+	<mx:Image source="@Embed('/assets/item_text.swf')" x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()"/>
 	<!--道具的图片-->
 	<s:Group includeIn="StateItemMain,StateShopMain" id="item_icon_group" width="312" height="190" x="23" y="40">

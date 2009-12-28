@@ -161,7 +161,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG" includeIn="StateLoadingdata,StateMain"/>
-	<s:BitmapImage source="@Embed('/assets/friendslist_title.png')" resizeMode="scale" x="11" y="3" includeIn="StateLoadingdata,StateMain"/>
+	<mx:Image source="@Embed('/assets/friendslist_title.swf')" x="11" y="3" includeIn="StateLoadingdata,StateMain"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" click="CloseButton(event)" id="btnClose" includeIn="StateLoadingdata,StateMain"/>
 	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateLoadingdata,StateMain"
 				 dataProvider="{StateGetFriends.Instance.friends}" height.StateMain="193">

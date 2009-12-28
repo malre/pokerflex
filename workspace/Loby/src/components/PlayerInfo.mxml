@@ -5,11 +5,15 @@
 	currentState="StateStart" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
-			import lobystate.StateGetItemeffect;
-			import lobystate.StateGetPlayerInfo;
 			import item.miscDefines;
 			
+			import lobystate.StateGetItemeffect;
+			import lobystate.StateGetPlayerInfo;
+			
+			import mx.core.DragSource;
+			import mx.events.DragEvent;
 			import mx.events.StateChangeEvent;
+			import mx.managers.DragManager;
 			
 			import poker.LevelDefine;
 			protected function Button_click():void
@@ -64,6 +68,7 @@
 					}
 				}
 			}
+
 
 		]]>
 
