@@ -136,6 +136,6 @@
 	<s:RichText fontSize="14" fontFamily="宋体" height="44" id="gamenameText" x="38" y="182" width="65" includeIn="StateMain" textAlign="center"/>
 	<s:RichText y="182" x="226" fontSize="14" fontFamily="宋体" width="109" height="44" id="levelText" includeIn="StateMain" textAlign="center"/>
 	<s:RichText y="78" color="0x4769C4" x="149" fontSize="14" fontFamily="宋体" width="163" height="47" includeIn="StateMain" id="playername"/>
-	<mx:Image includeIn="StateMain" scaleContent="true" x="31" y="47" width="80" height="80" id="avatar" source=""/>
+	<mx:Image includeIn="StateMain" scaleContent="true" x="31" y="44" width="80" height="80" id="avatar" source=""/>
 	<mx:Label includeIn="StateMain" x="67" y="130" text="" width="245" fontFamily="宋体" fontSize="16" id="gold"/>
 </s:Group>

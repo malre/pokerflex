@@ -17,6 +17,7 @@ package poker.gamestate
 		public function StateUpdateForFirstFrame()
 		{
 			super();
+			showError = false;
 		}
 		public static function get Instance():StateUpdateForFirstFrame
 		{

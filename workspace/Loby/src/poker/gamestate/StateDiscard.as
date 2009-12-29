@@ -17,6 +17,8 @@ package poker.gamestate
 
 		public function StateDiscard()
 		{
+			super();
+			showError = false;
 		}
 
 		public static function get Instance():StateDiscard

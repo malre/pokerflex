@@ -6,12 +6,14 @@ package lobystate
 	{
 		public var lastFlag:Boolean;
 		public var lastSuccData:Object = new Object();
+		protected var showError:Boolean;
 		protected var timeoutCounter:int = 0;
 		protected var timeoutCounterMax:int = 3;
 		// construct
 		public function NetRequestState()
 		{
 			lastFlag = false;
+			showError = true;
 		}
 		
 		public function clearCounter():void
@@ -29,7 +31,7 @@ package lobystate
 				if(!obj.success)
 				{
 					lastFlag = false;
-					if(obj.hasOwnProperty("error"))
+					if(obj.hasOwnProperty("error") && showError)
 					{
 						if(obj.error.hasOwnProperty("message")){
 							LobyErrorState.Instance.showErrMsg(obj.error.message);

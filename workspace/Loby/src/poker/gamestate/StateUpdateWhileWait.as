@@ -21,6 +21,7 @@ package poker.gamestate
 		public function StateUpdateWhileWait()
 		{
 			super();
+			showError = false;
 		}
 		public static function get Instance():StateUpdateWhileWait
 		{
@@ -37,25 +38,7 @@ package poker.gamestate
 		}
 		override public function receive(obj:Object):Boolean
 		{
-			if(obj.hasOwnProperty("success"))
-			{
-				if(!obj.success)
-				{
-					lastFlag = false;
-					if(obj.hasOwnProperty("error"))
-					{
-//						if(obj.error.hasOwnProperty("message")){
-//							LobyErrorState.Instance.showErrMsg(obj.error.message);
-//						}
-					}
-				}
-				else
-				{
-					lastSuccData = obj;
-					lastFlag = true;
-				}
-			}
-			if(lastFlag)
+			if(super.receive(obj))
 			{
 				// 链接成功，但游戏尚未开始
 				if(obj.status == 0)

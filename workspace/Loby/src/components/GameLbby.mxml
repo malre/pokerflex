@@ -7,6 +7,8 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.core.FlexGlobals;
+			[Bindable]
+			public var roomname:String;
 
 			protected function Button_click():void
 			{
@@ -40,6 +42,7 @@
 				label_currentRoom.text = "";
 				var node:XMLList = LobyManager.Instance.TreeData..*.(@lid == lid);
 				label_currentRoom.text = node.@name;
+				roomname = label_currentRoom.text;
 				var xmlnode:XML = node.parent();
 				for(;;)
 				{
