@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009"
-		creationComplete="btnskin_creationCompleteHandler(event)">
+		creationComplete="btnskin_creationCompleteHandler(event)" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
@@ -53,10 +53,10 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<s:BitmapImage source="@Embed('/assets/Button_cp_up.png')" resizeMode="scale" includeIn="up" x="1" id="bitmapimage1"/>
-	<s:BitmapImage source="@Embed('/assets/Button_cp_over.png')" resizeMode="scale" x="1" includeIn="over" id="bitmapimage2"/>
-	<s:BitmapImage source="@Embed('/assets/Button_cp_down.png')" resizeMode="scale" includeIn="down" x="0.95" id="bitmapimage4"/>
-	<s:BitmapImage source="@Embed('/assets/Button_cp_unus.png')" resizeMode="scale" includeIn="disabled" id="bitmapimage3" x="1" y="0.05"/>
+	<mx:Image source="@Embed('/assets/Button_cp_up.swf')" includeIn="up" x="1" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/Button_cp_over.swf')" x="1" includeIn="over" id="bitmapimage2"/>
+	<mx:Image source="@Embed('/assets/Button_cp_down.swf')" includeIn="down" x="0.95" id="bitmapimage4"/>
+	<mx:Image source="@Embed('/assets/Button_cp_unus.swf')" includeIn="disabled" id="bitmapimage3" x="1" y="0.05"/>
 	<s:RichText text="{btnName}" color="#893808" fontSize="14" fontFamily="宋体" fontWeight="normal" fontStyle="normal" x="14" y="4"/>
 	<fx:Private>
 		<th:Guide x="1"/>

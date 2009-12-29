@@ -1099,9 +1099,9 @@ package poker
 				break;
 				case 1:	
 					// 进行游戏开始的动画演示
-					FlexGlobals.topLevelApplication.gamePoker.alpha += 0.1;
-					if(FlexGlobals.topLevelApplication.gamePoker.alpha >= 1) {
-						FlexGlobals.topLevelApplication.gamePoker.alpha = 1;
+					FlexGlobals.topLevelApplication.gamePoker.gamebg.alpha += 0.1;
+					if(FlexGlobals.topLevelApplication.gamePoker.gamebg.alpha >= 1) {
+						FlexGlobals.topLevelApplication.gamePoker.gamebg.alpha = 1;
 						// 开始播放flash本身的动画
 //						gameState = 10;
 						FlexGlobals.topLevelApplication.gamePoker._startup();

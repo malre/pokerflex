@@ -21,6 +21,7 @@ package poker.gamestate
 		public function StateLeaveTable()
 		{
 			super();
+			showError = false;
 		}
 
 		public static function get Instance():StateLeaveTable

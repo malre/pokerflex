@@ -20,6 +20,7 @@ package poker.gamestate
 		public function StateUpdateWhileGame()
 		{
 			super();
+			showError = false;
 		}
 		public static function get Instance():StateUpdateWhileGame
 		{

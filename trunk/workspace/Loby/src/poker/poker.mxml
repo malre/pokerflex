@@ -4,6 +4,8 @@
 	xmlns:mx="library://ns.adobe.com/flex/halo"
 	xmlns:components="components.*" xmlns:message="message.*"
 	width="780" height="560"
+	verticalScrollPolicy="off"
+	horizontalScrollPolicy="off"
 	creationComplete="creationComplete()" 
 	enterFrame="enterFrame(event)"
 	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
@@ -20,7 +22,7 @@
 		}
 	</fx:Style>
 	<!--<mx:SWFLoader id="BGswf" source="@Embed('assets/gameBG.swf')" autoLoad="true"/>-->
-	<s:Group>
+	<s:Group id="gamebg">
 		<s:BitmapImage x="0" y="0" width="780" height="560" source="@Embed('res/BG.png')"/>
 
 	</s:Group>
@@ -53,7 +55,8 @@
 	</components:GameCardsCommand>
 	<!--算牌器-->
 	<s:Button x="7" y="524" id="btnCardView" click="requestCardHistory()" skinClass="components.Button_calcCards" enabled="true" visible="true"/>
-	<s:Button x="7" y="493" id="cupAI" click="cupAI_clickHandler(event)" skinClass="components.Button_CpuPlay" visible="false"/>
+	<s:Button x="7" y="493" id="cpuAI" click="cpuAI_clickHandler(event)" skinClass="components.Button_CpuPlay" visible="false"/>
+	<s:Button x="7" y="493" id="cpuAICancel" click="cpuAI_clickHandler(event)" skinClass="components.Button_CpuPlayCancel" visible="false"/>
 	<!--玩家头像-->
 	<s:Group x="238" y="10" width="48" height="48" id="avatarUpGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
 		<mx:Image width="48" height="48" id="Img_playerAvatarUp" click="Img_playerAvatarUp_clickHandler(event)"/>
@@ -167,6 +170,7 @@
 
 	<fx:Script>
     	<![CDATA[
+			import mx.events.DragEvent;
 			import lobystate.StateGetFriends;
 			import lobystate.StateGetTableSettingFromLobby;
 			
@@ -175,6 +179,7 @@
 			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
+			import mx.managers.DragManager;
 			
 			import poker.gamestate.StateUpdateWhileGame;
 			import poker.gamestate.StateUpdateWhileWait;
@@ -249,15 +254,15 @@
 				NetManager.Instance.requestSuccess = true;
 				Game.Instance.getSelfseat(obj);
 
-//				this.visible = true;
+				this.visible = true;
 				initGUI();
 				Game.Instance.gameState = 1;
-//				this.alpha = 0;
+				gamebg.alpha = 0;
 			}
 			
 			public function _startup():void
 			{
-				this.visible = true;
+//				this.visible = true;
 				//
 				btnTalk.visible = true;
 				btnEmotion.visible = true;
@@ -351,7 +356,7 @@
 				imgDiscardRight.visible = false;
 				imgPlayerRightReady.visible = false;
 				btnCardView.visible = false;
-				cupAI.visible = false;
+				cpuAI.visible = false;
 				Lable_playernameUp.text = "";
 				Label_leftcardsnumUp.text = "";
 				Lable_playernameLeft.text = "";
@@ -468,6 +473,9 @@
 
     		protected function btnHelp_clickHandler(event:MouseEvent):void
     		{
+//				// for debug
+//				PopUpManager.createPopUp(this, CardViewer, true);
+//				return;
 				if(!LobyManager.Instance.windowMutex){
 					FlexGlobals.topLevelApplication.friendslist.visible = true;
 					FlexGlobals.topLevelApplication.friendslist.toState(1);
@@ -536,17 +544,19 @@
 			}
 
 
-			protected function cupAI_clickHandler(event:MouseEvent):void
+			protected function cpuAI_clickHandler(event:MouseEvent):void
 			{
 				if(Game.Instance.isCpuAI)
 				{
 					cpuAIAnimation.visible = false;
-					cupAI.label = "托管";
+					cpuAI.visible = false;
+					cpuAICancel.visible = true;
 				}
 				else
 				{
 					cpuAIAnimation.visible = true;
-					cupAI.label = "取消托管";
+					cpuAI.visible = true;
+					cpuAICancel.visible = false;
 
 					if(Game.Instance.curPlayer == Game.Instance.selfseat)
 					{
@@ -581,7 +591,8 @@
 				if(Game.Instance.isCpuAI)
 				{
 					cpuAIAnimation.visible = false;
-					cupAI.label = "托管";
+					cpuAI.visible = true;
+					cpuAICancel.visible = false;
 					Game.Instance.isCpuAI = false;
 				}
 			}
@@ -643,7 +654,6 @@
 //					playerCommandHandle(StateUpdateWhileWait.Instance.lastSuccData.players[index].pid);
 				}
 			}
-			
     	]]>
     </fx:Script>
 </mx:Canvas>

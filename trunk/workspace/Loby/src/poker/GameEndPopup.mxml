@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-	 creationComplete="createComplete()"
-	 borderColor="#001975" alpha="1.0" color="#021A1F" backgroundColor="#619CEC" layout="absolute" 
-	 modalTransparency="0" modalTransparencyBlur="0"
-	 close="gameContinue(event)" headerHeight="0">
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/halo"
+		 creationComplete="createComplete()">
 
 	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="image1"/>
 	<mx:Image source="@Embed('/assets/gameEndScoreShow.swf')" id="image2"/>
@@ -84,11 +83,21 @@
 				popupPlayer2Score.text = data.score[1].score;
 				popupPlayer3Score.text = data.score[3].score;
 				// gold
-				popupPlayer0Gold.text = data.score[0].money;
-				popupPlayer1Gold.text = data.score[2].money;
-				popupPlayer2Gold.text = data.score[1].money;
-				popupPlayer3Gold.text = data.score[3].money;
+				if(data.score[0].hasOwnProperty("money"))
+				{
+					popupPlayer0Gold.text = data.score[0].money;
+					popupPlayer1Gold.text = data.score[2].money;
+					popupPlayer2Gold.text = data.score[1].money;
+					popupPlayer3Gold.text = data.score[3].money;
+				}
+				else
+				{
+					popupPlayer0Gold.text = "0";
+					popupPlayer1Gold.text = "0";
+					popupPlayer2Gold.text = "0";
+					popupPlayer3Gold.text = "0";
+				}
 			}
 		]]>
 	</fx:Script>
-</mx:TitleWindow>
+</s:Group>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-	 width="698" height="430" layout="absolute" showCloseButton="true"
-	 creationComplete="createComplete()" title="算牌器" close="handleClose(event)">
-	<mx:Image  source="assets/cardviewerBG.swf"/>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/halo"
+		creationComplete="createComplete()">
+	<mx:Image  source="@Embed('assets/cardviewerBG.swf')"/>
+	<s:Button x="681" y="4" skinClass="components.OptionWindow_CloseButton" id="button1" click="handleClose(event)"/>
 	<s:Label id="playername0" x="286" y="45" color="#FFFFFF"/>
 	<s:Label id="playername1" x="54" y="139" color="#FFFFFF"/>
 	<s:Label id="playername2" x="286" y="349" color="#FFFFFF"/>
@@ -21,6 +23,9 @@
 			
 			private function createComplete():void
 			{
+				//更新自己的位置
+				x = 36;
+				y = 45;
 				// 创建108个image对象，并按照一定的顺序排列在菜单上
 				var i:int, j:int =0;
 				var img:Image = null;
@@ -32,7 +37,7 @@
 						var offx:int,offy:int;
 						if(j==0)
 						{
-							offx = 190;
+							offx = 192;
 							offy = 72;
 						}
 						else if(j==1){
@@ -44,14 +49,14 @@
 							offy = 264;
 						}
 						else if(j==3){
-							offx = 358;
+							offx = 359;
 							offy = 169;
 						}
 						img.x = offx+i*10;
 						img.y = offy;
 						img.name = "img"+j+""+i;
 						//img.source = ResourceManagerPoker.CardsRes[0];//ResourceManagerPoker.Card06;
-						this.addChild(img);
+						this.addElement(img);
 					}
 				}
 				setCards(StateItemGetPlayedCards.Instance.lastSuccData.history);
@@ -77,7 +82,7 @@
 				}
 			}
 
-			private function handleClose(evt:CloseEvent):void
+			private function handleClose(evt:Event):void
 			{
 				PopUpManager.removePopUp(this);
 			}
@@ -308,25 +313,6 @@
 				}
 				return null;
 			}
-//			protected function group1_mouseDownHandler(event:MouseEvent):void
-//			{
-//				var ds:DragSource = new DragSource();
-//				var obj:Object = new Object();
-//				ds.addData(obj, "wnd");
-//				DragManager.doDrag(this.parent, ds, event);
-//				//				var dragInitiator:Panel=Panel(event.currentTarget.parent);
-//				//				var ds:DragSource = new DragSource();
-//				//				ds.addData(event.currentTarget.parent, 'panel'); 
-//				//				
-//				//				// Update the xOff and yOff variables to show the
-//				//				// current mouse location in the Panel.  
-//				//				xOff = event.currentTarget.mouseX;
-//				//				yOff = event.currentTarget.mouseY;
-//				//				
-//				//				// Initiate d&d. 
-//				//				DragManager.doDrag(dragInitiator, ds, event);                    
-//				//				
-//			}
 //			
 //			
 //			protected function group1_dragEnterHandler(event:DragEvent):void
@@ -344,7 +330,6 @@
 //				this.y = event.stageY;
 //			}
 			
-			
 		]]>
 	</fx:Script>
-</mx:TitleWindow>
+</s:Group>
