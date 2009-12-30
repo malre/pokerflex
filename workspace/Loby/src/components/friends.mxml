@@ -7,6 +7,7 @@
 		<s:State name="StateBase"/>
 		<s:State name="StateLoadingdata"/>
 		<s:State name="StateMain"/>
+		<s:State name="StateGift"/>
 	</s:states>
 
 	<s:transitions>
@@ -61,6 +62,7 @@
 	<fx:Script>
 		<![CDATA[
 			import lobystate.StateGetFriends;
+			import lobystate.StateSendGift;
 			
 			import mx.collections.IViewCursor;
 			import mx.collections.Sort;
@@ -88,7 +90,7 @@
 				LobyManager.Instance.windowMutex = false;
 			}
 			
-			// 0:base, 1:loading, 2:main_no_button,  3:main_with_button
+			// 0:base, 1:loading, 2:main_no_button,  3:main_with_button 4:present somebody
 			public function toState(state:int):void
 			{
 				if(state == 0)
@@ -109,6 +111,9 @@
 					btnInvite.visible = true;
 					nameinput.visible = true;
 					btnSearch.visible = true;
+				}
+				else if(state == 4){
+					currentState = "StateGift";
 				}
 			}
 			
@@ -154,30 +159,47 @@
 				msgbox.visible = true;
 				label_msg.text = str;
 			}
+			
+			protected function presentSomebody(event:MouseEvent):void
+			{
+				// 首先确认是否有好友被选中
+				if(friendlist.selectedIndex == -1){
+					showMsg("请先选择一个好友。");
+					msgbox.visible = true;
+				}
+				else{
+					StateSendGift.Instance.friend = friendlist.selectedItem.pid;
+					LobyNetManager.Instance.send(LobyNetManager.sendgift);
+					// 赠送发生以后，关闭好友窗口
+					CloseButton(event);
+				}
+			}
 
+			protected function presentCancel(event:MouseEvent):void
+			{
+				CloseButton(event);
+			}
 		]]>
 	</fx:Script>	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG" includeIn="StateLoadingdata,StateMain"/>
-	<mx:Image source="@Embed('/assets/friendslist_title.swf')" x="11" y="3" includeIn="StateLoadingdata,StateMain"/>
-	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" click="CloseButton(event)" id="btnClose" includeIn="StateLoadingdata,StateMain"/>
-	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateLoadingdata,StateMain"
-				 dataProvider="{StateGetFriends.Instance.friends}" height.StateMain="193">
+	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG" includeIn="StateGift,StateLoadingdata,StateMain"/>
+	<mx:Image source="@Embed('/assets/friendslist_title.swf')" x="11" y="3" includeIn="StateGift,StateLoadingdata,StateMain"/>
+	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" click="CloseButton(event)" id="btnClose" includeIn="StateGift,StateLoadingdata,StateMain"/>
+	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateGift,StateLoadingdata,StateMain"
+				 dataProvider="{StateGetFriends.Instance.friends}" height.StateMain="193" height.StateGift="193">
 		<mx:columns>
 			<mx:DataGridColumn headerText="玩家名" dataField="name"/>
 <!--			<mx:DataGridColumn headerText="uid" dataField="uid"/>
 			<mx:DataGridColumn headerText="pid" dataField="pid"/>-->
 		</mx:columns>
 	</mx:DataGrid>
-	<s:Button includeIn="StateMain" id="btnInvite" x="44" y="243" label="邀请" click="btnInvite_clickHandler(event)"/>
-	<s:Button includeIn="StateMain" x="265" y="243" label="查找" id="btnSearch" click="searchRecord(event)" />
+	<s:Button includeIn="StateGift,StateMain" id="btnInvite" x="44" y="243" label="邀请" click.StateMain="btnInvite_clickHandler(event)" x.StateGift="87" y.StateGift="243" label.StateGift="赠送" click.StateGift="presentSomebody(event)"/>
+	<s:Button includeIn="StateGift,StateMain" x="265" y="243" label="查找" id="btnSearch" click.StateMain="searchRecord(event)"  x.StateGift="205" y.StateGift="243" label.StateGift="取消" click.StateGift="presentCancel(event)"/>
 	<s:TextInput includeIn="StateMain" x="133" y="242" id="nameinput"/>
-	<s:Panel includeIn="StateMain" x="101" y="98" width="164" height="107" id="msgbox" title="提示" visible="false">
+	<s:Panel includeIn="StateGift,StateMain" x="101" y="98" width="164" height="107" id="msgbox" title="提示" visible="false">
 		<s:Button x="41" y="49" id="btnconfirm" label="确定" click="msgconfirm_clickHandler(event)"/>
 		<s:Label x="10" y="10" id="label_msg" width="132" height="32"/>
 	</s:Panel>
 </s:Group>
-
-

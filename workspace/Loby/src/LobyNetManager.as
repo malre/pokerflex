@@ -46,6 +46,8 @@ package
 		static public const URL_getInviteList:String = "game/list/invitation";
 		static public const URL_refuseInvite:String = "lobby/player/decline";
 		static public const URL_getItemEffect:String = "item/player/effectlist";
+		static public const URL_sendGift:String = "game/friend/sendgift";
+		static public const URL_checkGift:String = "game/friend/checkgift";
 		// 各种请求定义
 		static public const getlobyaddress:String = "request loby";
 		static public const addloby:String = "join to loby";
@@ -66,6 +68,8 @@ package
 		static public const updateInvitelist:String = "up i l";
 		static public const refuseInvite:String = "refuse i";
 		static public const getitemeffect:String = "g i e";
+		static public const sendgift:String = "sd g";
+		static public const checkgift:String  = "ck g";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -105,7 +109,7 @@ package
 			
 			lobbyinfoUpdater = new HTTPService();
 			lobbyinfoUpdater.method = "POST";
-			httpser.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+			lobbyinfoUpdater.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
 			lobbyinfoUpdater.requestTimeout = 2;
 			lobbyinfoUpdater.showBusyCursor = false;
 			lobbyinfoUpdater.addEventListener(ResultEvent.RESULT, lobbyupdateResult);
@@ -250,6 +254,14 @@ package
 			else if(type == getitemeffect)
 			{
 				stateManager.changeState(StateGetItemeffect.Instance);
+			}
+			else if(type == sendgift)
+			{
+				stateManager.changeState(StateSendGift.Instance);
+			}
+			else if(type == checkgift)
+			{
+				stateManager.changeState(StateCheckGift.Instance);
 			}
 			stateManager.send();
 		}

@@ -73,7 +73,6 @@
 			import message.*;
 			
 			import mx.core.FlexGlobals;
-			import mx.events.ColorPickerEvent;
 			import mx.events.FlexEvent;
 
 			protected function Buttonitem_click():void
@@ -84,11 +83,14 @@
 					{
 						if(StateGetPlayerInfo.Instance.lastSuccData.success)
 						{
-							FlexGlobals.topLevelApplication.shopmenu.visible = true;
-							FlexGlobals.topLevelApplication.shopmenu.currentState="StateItemMain";
-							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
-							playerItemsRequester.Instance().setRequest(0, 13);
-							playerItemsRequester.Instance().send();
+							// 首先请求是否有从其他玩家处得到的道具
+							LobyNetManager.Instance.send(LobyNetManager.checkgift);
+							
+//							FlexGlobals.topLevelApplication.shopmenu.visible = true;
+//							FlexGlobals.topLevelApplication.shopmenu.currentState="StateItemMain";
+//							// 进行一次道具列表的请求, 该次请求是初始请求，范围在0-12内
+//							playerItemsRequester.Instance().setRequest(0, 13);
+//							playerItemsRequester.Instance().send();
 							//
 							LobyManager.Instance.windowMutex = true;
 						}
