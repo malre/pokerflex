@@ -16,7 +16,7 @@
 			import mx.managers.DragManager;
 			
 			import poker.LevelDefine;
-			protected function Button_click():void
+			public function Button_click():void
 			{
 				currentState='StateStart';
 				LobyManager.Instance.windowMutex = false;
@@ -55,7 +55,7 @@
 						//
 						var img:Image = new Image();
 						img.source = LobyNetManager.URL_lobysonAddress + "/resources/image/item/" + it.iid + ".png";
-						img.x = 30 + idx*20;
+						img.x = 30 + idx*26;
 						img.y = 234;
 						img.height = 24;
 						img.width = 24;
@@ -131,11 +131,11 @@
 	</s:states>
 	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateMain" id="image1"/>
 	<mx:Image source="@Embed('/assets/playerinfo_panel.swf')" includeIn="StateMain" id="image2"/>
-	<s:RichText y="182" x="129" fontSize="14" fontFamily="宋体" width="77" height="44" id="scoreText" includeIn="StateMain" textAlign="right"/>
+	<s:RichText y="182" x="158" fontSize="14" fontFamily="宋体" width="86" height="44" id="scoreText" includeIn="StateMain" textAlign="left"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="330" y="11" id="button1" includeIn="StateMain" click="Button_click()"/>
-	<s:RichText fontSize="14" fontFamily="宋体" height="44" id="gamenameText" x="38" y="182" width="65" includeIn="StateMain" textAlign="center"/>
-	<s:RichText y="182" x="226" fontSize="14" fontFamily="宋体" width="109" height="44" id="levelText" includeIn="StateMain" textAlign="center"/>
-	<s:RichText y="78" color="0x4769C4" x="149" fontSize="14" fontFamily="宋体" width="163" height="47" includeIn="StateMain" id="playername"/>
+	<s:RichText fontSize="14" fontFamily="宋体" height="44" id="gamenameText" x="38" y="182" width="73" includeIn="StateMain" textAlign="left"/>
+	<s:RichText y="182" x="252" fontSize="14" fontFamily="宋体" width="60" height="44" id="levelText" includeIn="StateMain" textAlign="left"/>
+	<s:RichText y="74" color="0x4769C4" x="131" fontSize="14" fontFamily="宋体" width="163" height="47" includeIn="StateMain" id="playername" textAlign="left"/>
 	<mx:Image includeIn="StateMain" scaleContent="true" x="31" y="44" width="80" height="80" id="avatar" source=""/>
 	<mx:Label includeIn="StateMain" x="67" y="130" text="" width="245" fontFamily="宋体" fontSize="16" id="gold"/>
 </s:Group>

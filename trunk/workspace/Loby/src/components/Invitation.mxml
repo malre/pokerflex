@@ -9,6 +9,7 @@
 			import lobystate.StateUpdateInvite;
 			
 			import mx.controls.DataGrid;
+			import mx.core.FlexGlobals;
 			
 			private var destLobbyid:int = -1;
 			private var destTableid:int = -1;
@@ -32,6 +33,9 @@
 					showmsg("请先选择一个要接受的邀请");
 				}
 				else{
+					// 关闭所有的窗口
+					FlexGlobals.topLevelApplication.closeAllWnd();
+					
 					this.visible = false;
 					acceptInvite = invitationlist.selectedItem;
 					// 玩家点击了接受按钮，需要进行一个本地的加入的过程，在这过程中一旦出现错误，邀请就无效了

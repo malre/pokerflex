@@ -118,6 +118,7 @@ package poker.gamestate
 							// 关闭所有的出牌按钮
 							FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
 							FlexGlobals.topLevelApplication.gamePoker.sandglass.visible = false;
+							FlexGlobals.topLevelApplication.gamePoker.label_leftTimeCounter.visible = false;
 							FlexGlobals.topLevelApplication.gamePoker.cancelCpu();
 							// 描画玩家手上的牌
 							Game.Instance.drawPlayerCards(obj);

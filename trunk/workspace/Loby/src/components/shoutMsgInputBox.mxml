@@ -7,8 +7,9 @@
 		<![CDATA[
 			import message.Messenger;
 
-			protected function buttonCancel_clickHandler(event:MouseEvent):void
+			public function buttonCancel_clickHandler(event:MouseEvent):void
 			{
+				shoutMsgbox.text = "";
 				this.visible = false;
 				LobyManager.Instance.windowMutex = false;
 			}

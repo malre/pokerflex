@@ -48,6 +48,8 @@ package
 		static public const URL_getItemEffect:String = "item/player/effectlist";
 		static public const URL_sendGift:String = "game/friend/sendgift";
 		static public const URL_checkGift:String = "game/friend/checkgift";
+		// special
+		static public const URL_checkItemNum:String = "item/player/checkitem";
 		// 各种请求定义
 		static public const getlobyaddress:String = "request loby";
 		static public const addloby:String = "join to loby";
@@ -70,6 +72,7 @@ package
 		static public const getitemeffect:String = "g i e";
 		static public const sendgift:String = "sd g";
 		static public const checkgift:String  = "ck g";
+		static public const checkitemnum:String = "ck in";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -262,6 +265,10 @@ package
 			else if(type == checkgift)
 			{
 				stateManager.changeState(StateCheckGift.Instance);
+			}
+			else if(type == checkitemnum)
+			{
+				stateManager.changeState(StateCheckItemNum.Instance);
 			}
 			stateManager.send();
 		}

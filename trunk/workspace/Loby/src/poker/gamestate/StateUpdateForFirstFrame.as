@@ -78,7 +78,7 @@ package poker.gamestate
 				Game.Instance.showCardback(true);
 				// 使过往牌记录的查看按钮有效
 				FlexGlobals.topLevelApplication.gamePoker.btnCardView.visible = true;
-				FlexGlobals.topLevelApplication.gamePoker.cupAI.visible = true;
+				FlexGlobals.topLevelApplication.gamePoker.cpuAI.visible = true;
 				return true;
 			}
 			else{
