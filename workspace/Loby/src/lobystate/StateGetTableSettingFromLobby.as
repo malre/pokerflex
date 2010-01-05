@@ -36,6 +36,9 @@ package lobystate
 			if(super.receive(obj))
 			{
 				// 获得房间的设置
+
+				// 加入成功，改变玩家的所有rid值
+				StateGetPlayerInfo.Instance.lastRoomId = obj.rid;
 				
 				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
 				// 
@@ -45,6 +48,7 @@ package lobystate
 				return true;
 			}
 			else{
+//				StateGetPlayerInfo.Instance.lastRoomId = -1;
 				// 关闭显示视窗
 				LobyNetManager.Instance.closeNetProcess();
 				return false;

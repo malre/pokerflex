@@ -84,10 +84,17 @@
 				cursor = StateGetFriends.Instance.friends.createCursor();
 			}
 			
-			protected function CloseButton(event:MouseEvent):void
+			public function CloseButton(event:MouseEvent):void
 			{
+				if(currentState == "StateGift")
+				{
+				}
+				else
+				{
+					LobyManager.Instance.windowMutex = false;
+				}
 				currentState = "StateBase";
-				LobyManager.Instance.windowMutex = false;
+				visible = false;
 			}
 			
 			// 0:base, 1:loading, 2:main_no_button,  3:main_with_button 4:present somebody
@@ -114,6 +121,8 @@
 				}
 				else if(state == 4){
 					currentState = "StateGift";
+					btnInvite.visible = true;
+					btnSearch.visible = true;
 				}
 			}
 			

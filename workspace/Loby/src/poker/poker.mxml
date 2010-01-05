@@ -84,7 +84,7 @@
 	<s:Button x="684" y="535" skinClass="components.Button_GameTalk" id="btnTalk" click="gameSendMsg_clickHandler(event)" toolTip="发送聊天对话"/>
 	<s:Button x="710" y="535" skinClass="components.ButtonMsgEmotion" id="btnEmotion" click="chatEmotion_clickHandler(event)" toolTip="表情"/>
 	<s:Button x="755" y="535" skinClass="components.ButtonMsgOption" id="btnChatSetting" click="chatOptionBtn_clickHandler(event)" toolTip="聊天设置"/>
-	<s:Button x="732" y="535" skinClass="components.ButtonMsgToAll" id="btnShout" click="shoutgame_clickHandler(event)" toolTip="小喇叭"/>
+	<s:Button x="732" y="535" skinClass="components.ButtonMsgToAll" id="btnShout" click="shoutgame_clickHandler(event)" toolTip="小喇叭" enabled="false"/>
 	<s:Button x="680" y="244" skinClass="components.ButtonSetup" id="btnSetting" click="btnSetting_clickHandler(event)" toolTip="游戏设置"/>
 	<s:Button x="629" y="243" skinClass="components.ButtonHelp" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
 	<s:Button x="730" y="244" skinClass="components.ButtonExit" id="btnExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅"/>
@@ -138,6 +138,7 @@
 	<mx:Label x="655" y="101" color="#000000" id="textPlayerSelf_gold" height="18" width="94"/>
 	<!--倒计时的沙漏和数字-->
 	<mx:Image x="95" y="231" id="sandglass" source="@Embed('../res/sandglass.swf')" width="16" height="28"/>
+	<mx:Label x="260" y="81" width="26" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#000000"/>
 	<!--放弃-->
 	<mx:Image x="193" y="128" id="imgDiscardUp" source="@Embed('../res/pass.swf')"/>
 	<mx:Image x="85" y="245" id="imgDiscardLeft" source="@Embed('../res/pass.swf')"/>
@@ -146,7 +147,6 @@
 	<!--托管显示图-->
 	<mx:Image x="235" y="419" id="cpuAIAnimation" source="@Embed('assets/CPUAI.swf')" visible="false"/>
 
-	<mx:Label x="260" y="81" width="26" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#000000"/>
 	<!--玩家聊天部分的设置和表情-->
 	<message:chatSetting x="608" y="496" id="chatsetting" visible="false"/>
 	<message:chatEmotion x="618" y="382" id="gameEmotion" visible="false"/>
@@ -504,7 +504,12 @@
     		
     		protected function btnExit_clickHandler(event:MouseEvent):void
     		{
-    			NetManager.Instance.send(NetManager.send_leave);
+				if(!LobyManager.Instance.windowMutex){
+					if(StateGetTableSettingFromLobby.Instance.lastFlag)
+					{
+		    			NetManager.Instance.send(NetManager.send_leave);
+					}
+				}
     		}
 
 
@@ -549,14 +554,14 @@
 				if(Game.Instance.isCpuAI)
 				{
 					cpuAIAnimation.visible = false;
-					cpuAI.visible = false;
-					cpuAICancel.visible = true;
+					cpuAI.visible = true;
+					cpuAICancel.visible = false;
 				}
 				else
 				{
 					cpuAIAnimation.visible = true;
-					cpuAI.visible = true;
-					cpuAICancel.visible = false;
+					cpuAI.visible = false;
+					cpuAICancel.visible = true;
 
 					if(Game.Instance.curPlayer == Game.Instance.selfseat)
 					{

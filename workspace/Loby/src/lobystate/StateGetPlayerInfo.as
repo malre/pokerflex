@@ -14,6 +14,8 @@ package lobystate
 		public var playerMiddleAvatar:String = "";
 		// 0 ：登录用， 1：用户请求用
 		private var type:int = 0;
+		// 用来记录最后一次进入的房间
+		public var lastRoomId:int;
 		
 		private static var instance:StateGetPlayerInfo = null;
 		// construct
@@ -76,6 +78,7 @@ package lobystate
 						if(obj.player.rid != "null")
 						{
 							 LobyManager.Instance.changeState(4);	// resotre
+							 StateGetPlayerInfo.Instance.lastRoomId = int(obj.player.rid);
 						}
 						// 发出房间信息的请求
 						LobyNetManager.Instance.send(LobyNetManager.tableInfo);

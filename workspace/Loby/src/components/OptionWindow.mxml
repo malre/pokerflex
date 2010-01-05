@@ -6,7 +6,6 @@
 	xmlns:th="http://ns.adobe.com/thermo/2009" 
 	xmlns:components="components.*" xmlns:mx="library://ns.adobe.com/flex/halo"
 	creationComplete="createroom_creationCompleteHandler(event)"
-	show="option_showHandler(event)"
 	>
 	<fx:Script>
 		<![CDATA[
@@ -118,11 +117,10 @@
 				return true;
 			}
 
-
 			protected function option_showHandler(event:FlexEvent):void
 			{
-				if(LobyManager.Instance.windowMutex)
-					visible = false;
+//				if(LobyManager.Instance.windowMutex)
+//					visible = false;
 			}
 			
 			public function closeOption():void
@@ -259,17 +257,17 @@
 	<mx:Image includeIn="State2,State3" source="@Embed('/assets/optionWindow_text.swf')" id="image2" x="39" y="46"/>
 	<s:Button includeIn="State2,State3" x="330" y="11" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
 	<s:Button includeIn="State2,State3" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2" visible="false"/>
-	<s:Button skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x="62" y="237" x.State3="131" y.State3="237"/>
-	<s:Button x="193" y="237" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
-	<mx:ComboBox includeIn="State2,State3" x="145" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel"/>
-	<mx:ComboBox includeIn="State2,State3" x="252" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel"/>
+	<s:Button skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x="62" y="237" x.State3="131" y.State3="237" x.State2="62" y.State2="231"/>
+	<s:Button x="193" y="231" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
+	<mx:ComboBox includeIn="State2,State3" x="145" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel" width.State2="60"/>
+	<mx:ComboBox includeIn="State2,State3" x="252" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel" x.State2="236" y.State2="82" width.State2="60"/>
 	<s:CheckBox includeIn="State2,State3" x="146" y="115" id="checkboxAllowGold" click="checkboxAllowGold_clickHandler(event)" selected="true"/>
 	<s:CheckBox includeIn="State2,State3" x="146" y="54" selected="false" id="checkboxPassword" click="checkboxPassword_clickHandler(event)"/>
 	<s:TextInput includeIn="State2,State3" x="178" y="50" width="126" displayAsPassword="true" maxChars="8" enabled="false" id="inputboxPassword"/>
-	<mx:Label includeIn="State2,State3" x="226" y="79" text="－" color="#FFFFFF" fontSize="20" fontWeight="normal"/>
+	<mx:Label includeIn="State2,State3" x="226" y="79" text="－" color="#FFFFFF" fontSize="20" fontWeight="normal" x.State2="208" y.State2="79"/>
 	<mx:ComboBox includeIn="State2,State3" x="285" y="113" dataProvider.State2="{curLobbygoldrate}" dataProvider.State3="{goldplusrate}" editable="false" width="50" id="goldplus"/>
 	<s:CheckBox includeIn="State2,State3" x="146" y="147" id="checkboxAllowChat" selected="true"/>
 	<s:CheckBox includeIn="State2,State3" x="146" y="178" id="checkboxSEEnable" selected="true"/>
-	<mx:ComboBox includeIn="State2,State3" x="144" y="206" editable="true" enabled="false" id="inputboxSE"/>
-	<mx:Label includeIn="State2,State3" x="178" y="147" text="等级范围输入有误，请重新输入！" color="#FF0012" fontSize="14" fontWeight="bold" id="labelErrormsg" visible="false" width="139" height="51"/>
+	<mx:ComboBox includeIn="State2,State3" x="144" y="206" editable="true" enabled="false" id="inputboxSE" visible="false"/>
+	<mx:Label includeIn="State2,State3" x="178" y="147" text="等级范围输入有误，请重新输入！" color="#FF0012" fontSize="14" fontWeight="bold" id="labelErrormsg" visible="true" width="139" height="51" x.State2="57" y.State2="204" width.State2="247" height.State2="25"/>
 </s:Group>

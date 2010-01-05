@@ -173,6 +173,8 @@ package soundcontrol
 				case 53:
 					se = ResourceManagerPoker.sound_single_53;
 					break;
+				default:
+					return;
 			}
 			var sa:SoundAsset = new se as SoundAsset;
 			sa.play();
@@ -230,6 +232,14 @@ package soundcontrol
 				case 12:
 					se = ResourceManagerPoker.sound_double_2;
 					break;			
+				case 52:
+					se = ResourceManagerPoker.sound_single_52;
+					break;
+				case 53:
+					se = ResourceManagerPoker.sound_single_53;
+					break;
+				default:
+					return;
 			}	
 			var sa:SoundAsset = new se as SoundAsset;
 			sa.play();

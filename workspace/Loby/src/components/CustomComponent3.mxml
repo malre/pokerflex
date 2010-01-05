@@ -14,7 +14,7 @@
 	</fx:Style>
 	<mx:Image source="@Embed('/assets/bg_5.swf')" includeIn="State3" id="bitmapimage1"/>
 	<s:Button includeIn="State3" x="184" skinClass="components.ButtonMsgEmotion" y="492" click="btnEmotion_clickHandler(event)" toolTip="表情"/>
-	<s:Button includeIn="State3" x="208" y="492" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)" toolTip="喊话"/>
+	<s:Button includeIn="State3" x="208" y="492" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)" toolTip="喊话" enabled="false"/>
 	<s:Button includeIn="State3" x="232" y="492" skinClass="components.ButtonMsgOption" click="option_clickHandler(event)" toolTip="聊天设置"/>
 	<mx:DataGrid id="lobbyplayerlist" includeIn="State3" x="13" y="41" width="243" editable="false" height="167" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
 		dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}" dragEnabled="false"
@@ -63,7 +63,6 @@
 	</s:states>
 	<fx:Script>
 		<![CDATA[
-			import item.playerItemsRequester;
 			import item.shopRequester;
 			
 			import lobystate.StateGetFriends;
@@ -152,9 +151,10 @@
 			protected function BtnCreateTable_clickHandler(event:MouseEvent):void
 			{
 				if(!LobyManager.Instance.windowMutex){
-					FlexGlobals.topLevelApplication.createTable.visible = true;
-					FlexGlobals.topLevelApplication.createTable.setLobbyGoldrate();
-					FlexGlobals.topLevelApplication.createTable.currentState = "State2";
+//					FlexGlobals.topLevelApplication.createTable.visible = true;
+//					FlexGlobals.topLevelApplication.createTable.setLobbyGoldrate();
+//					FlexGlobals.topLevelApplication.createTable.currentState = "State2";
+					LobyNetManager.Instance.send(LobyNetManager.checkitemnum);
 					LobyManager.Instance.windowMutex = true;
 				}
 			}

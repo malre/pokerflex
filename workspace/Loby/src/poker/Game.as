@@ -1136,7 +1136,7 @@ package poker
 						}
 					}
 					updatePlayerLeftTime();
-				    GameObjectManager.Instance.enterFrame();
+//				    GameObjectManager.Instance.enterFrame();
 				break;
 				case 3:
 					if(requestFlag)
@@ -1144,7 +1144,7 @@ package poker
 						NetManager.Instance.update(NetManager.send_updateWhileWait);
 						requestFlag = false;
 					}
-					GameObjectManager.Instance.enterFrame();
+//					GameObjectManager.Instance.enterFrame();
 				break;
 				case 4:	// 等待其他玩家准备完成
 					// 在一定的频率下，发送消息，更新自己的数据。
@@ -1153,10 +1153,10 @@ package poker
 						NetManager.Instance.update(NetManager.send_updateWhileGame);
 						requestFlag = false;
 					}
-					GameObjectManager.Instance.enterFrame();
+//					GameObjectManager.Instance.enterFrame();
 				break;
 				case 5:
-					GameObjectManager.Instance.enterFrame();
+//					GameObjectManager.Instance.enterFrame();
 				break;
 			}
 		}

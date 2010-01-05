@@ -35,8 +35,6 @@ package lobystate
 			{
 //				StateLobyJoinTable.Instance.setTablename(obj.room.name);
 				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
-				// 加入成功，改变玩家的所有rid值
-				StateGetPlayerInfo.Instance.lastSuccData.player.rid = obj.room.rid;
 
 //				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
 //				// 
