@@ -38,8 +38,8 @@ package lobystate
 		// override function
 		override public function send(obj:StateManager):void
 		{
-			// 显示进行过程
-			LobyNetManager.Instance.showNetProcess("正在加入游戏桌……");
+			// 互斥量有效
+			LobyManager.Instance.windowMutex = true;
 
 			var hp:HTTPService = LobyNetManager.Instance.httpservice;
 			hp.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_joinTable;
@@ -51,13 +51,11 @@ package lobystate
 			if(super.receive(obj))
 			{
 				LobyNetManager.Instance.send(LobyNetManager.getTableSetting);
-				// 关闭显示视窗
-				LobyNetManager.Instance.closeNetProcess();
 				return true;
 			}
 			else{
-				// 关闭显示视窗
-				LobyNetManager.Instance.closeNetProcess();
+				// 关闭互斥量
+				LobyManager.Instance.windowMutex = false;
 				return false;
 			}
 		}
@@ -65,8 +63,8 @@ package lobystate
 		override public function fault(event:Event):void
 		{
 			LobyErrorState.Instance.showErrMsg("加入房间失败,意外失败");
-			// 关闭显示视窗
-			LobyNetManager.Instance.closeNetProcess();
+			// 关闭互斥量
+			LobyManager.Instance.windowMutex = false;
 		}
 	}
 }

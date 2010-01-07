@@ -380,16 +380,16 @@ package poker
 							var animation2:UIMovieClip;
 							if(SEid >=8 && SEid <=15){	// 顺子
 								animation2 = new donghuashunzi();
+								animation2.x = 21;
+								animation2.y = 262;
 							}
 							else if(SEid == 36){
 								animation2 = new donghuatianwangzha();
-								animation2.x = 0;
-								animation2.y = 0;
-								animation2.width = 540;
-								animation2.height = 560;
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation2 = new donghuazhadan();
+								animation2.x = 268;
+								animation2.y = 358;
 							}
 							if(animation2 != null)
 							{
@@ -513,6 +513,8 @@ package poker
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation3 = new donghuazhadan();
+								animation3.x = 392;
+								animation3.y = 234;
 							}
 							if(animation3 != null)
 							{
@@ -625,6 +627,8 @@ package poker
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation0 = new donghuazhadan();
+								animation0.x = 264;
+								animation0.y = 148;
 							}
 							if(animation0 != null)
 							{
@@ -737,6 +741,8 @@ package poker
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation1 = new donghuazhadan();
+								animation1.x = 170;
+								animation1.y = 254;
 							}
 							if(animation1 != null)
 							{

@@ -86,6 +86,17 @@
 				}
 			}
 
+			// 该按钮会导致进入房间的请求，会产生互斥
+			protected function btn2LastTable_clickHandler(event:MouseEvent):void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					if(StateGetPlayerInfo.Instance.lastFlag)
+					{
+						LobyNetManager.Instance.send(LobyNetManager.joinTable, StateGetPlayerInfo.Instance.lastRoomId.toString(), "toLast");
+					}
+				}
+			}
+			
 			// 构建大厅中初始的15张桌子
 			// 如果桌子的数量发生变化，在这里进行维护和修改，所有的桌子采用group的方式
 			protected function gameRoomCanvas_creationCompleteHandler(event:FlexEvent):void
@@ -167,16 +178,6 @@
 			}
 
 
-			protected function btn2LastTable_clickHandler(event:MouseEvent):void
-			{
-				if(!LobyManager.Instance.windowMutex){
-					if(StateGetPlayerInfo.Instance.lastFlag)
-					{
-						LobyNetManager.Instance.send(LobyNetManager.joinTable, StateGetPlayerInfo.Instance.lastRoomId.toString(), "toLast");
-					}
-				}
-			}
-			
 			// 关闭所有的窗口
 			public function closeAllWnd():void
 			{
