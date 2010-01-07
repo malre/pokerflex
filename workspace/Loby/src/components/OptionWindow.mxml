@@ -206,9 +206,6 @@
 				<s:Parallel target="{button1}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
-				<s:Parallel target="{button2}">
-					<s:Fade duration="100"/>
-				</s:Parallel>
 				<s:Parallel target="{image1}">
 					<s:Fade duration="100"/>
 				</s:Parallel>
@@ -226,9 +223,6 @@
 		<s:Transition fromState="State2" toState="State1" autoReverse="true">
 			<s:Parallel>
 				<s:Parallel target="{button1}">
-					<s:Fade duration="50"/>
-				</s:Parallel>
-				<s:Parallel target="{button2}">
 					<s:Fade duration="50"/>
 				</s:Parallel>
 				<s:Parallel target="{image1}">
@@ -256,7 +250,6 @@
 	<mx:Image includeIn="State3" source="@Embed('/assets/text_optionWnd.swf')"/>
 	<mx:Image includeIn="State2,State3" source="@Embed('/assets/optionWindow_text.swf')" id="image2" x="39" y="46"/>
 	<s:Button includeIn="State2,State3" x="330" y="11" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
-	<s:Button includeIn="State2,State3" x="327" y="40" skinClass="components.OptionWindow_LevelButton" id="button2" visible="false"/>
 	<s:Button skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x="62" y="237" x.State3="131" y.State3="237" x.State2="62" y.State2="231"/>
 	<s:Button x="193" y="231" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
 	<mx:ComboBox includeIn="State2,State3" x="145" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel" width.State2="60"/>

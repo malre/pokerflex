@@ -86,6 +86,8 @@ package poker.gamestate
 			else{
 				if(obj.error.code == "25")	// 游戏已经开始，需要确认
 				{
+					Alert.yesLabel = "确定";
+					Alert.noLabel = "取消";
 					Alert.show("请确认","游戏已经开始，确认退出吗？游戏中退出会被扣分。",Alert.YES|Alert.NO, null, alertClickHandler);
 				}
 				return false;

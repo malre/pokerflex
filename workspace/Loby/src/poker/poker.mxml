@@ -10,17 +10,6 @@
 	enterFrame="enterFrame(event)"
 	click="click(event)" mouseDown="mouseDown(event)" mouseUp="mouseUp(event)" mouseMove="mouseMove(event)">
 
-	<fx:Style>
-		@namespace components "components.*";
-		@namespace mx "library://ns.adobe.com/flex/halo";
-		@namespace message "message.*";
-		@namespace s "library://ns.adobe.com/flex/spark";
-		
-		.pokerdatagridheader{
-			color:#000000;
-			fontsize: 12;
-		}
-	</fx:Style>
 	<!--<mx:SWFLoader id="BGswf" source="@Embed('assets/gameBG.swf')" autoLoad="true"/>-->
 	<s:Group id="gamebg">
 		<s:BitmapImage x="0" y="0" width="780" height="560" source="@Embed('res/BG.png')"/>
@@ -146,6 +135,11 @@
 	<mx:Image x="298" y="246" id="imgDiscardRight" source="@Embed('../res/pass.swf')"/>
 	<!--托管显示图-->
 	<mx:Image x="235" y="419" id="cpuAIAnimation" source="@Embed('assets/CPUAI.swf')" visible="false"/>
+	<!--动画特效-->
+	<s:Group id="animationGroup0" x="200" y="100"/>
+	<s:Group id="animationGroup1" x="95" y="206"/>
+	<s:Group id="animationGroup2" x="199" y="374"/>
+	<s:Group id="animationGroup3" x="289" y="223"/>
 
 	<!--玩家聊天部分的设置和表情-->
 	<message:chatSetting x="608" y="496" id="chatsetting" visible="false"/>
@@ -642,7 +636,7 @@
 			{
 //				var index:int = Game.Instance.getPlayerIndexByPos(StateUpdateForFirstFrame.Instance.lastSuccData, Game.Instance.selfseat);
 //				playerCommandHandle(StateUpdateForFirstFrame.Instance.lastSuccData.players[index].pid);
-				if(Game.Instance.gameState == 0)
+				if(Game.Instance.gameState == 2)
 				{
 				}
 				else

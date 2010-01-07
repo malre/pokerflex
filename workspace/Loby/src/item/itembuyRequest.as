@@ -45,7 +45,7 @@ package item
 			}
 			else
 			{
-				FlexGlobals.topLevelApplication.shopmenu.showMsgBox(0,"购买失败! \n错误代码:"+ obj.error.code+" "+obj.error.message);
+				FlexGlobals.topLevelApplication.shopmenu.showMsgBox(0,"购买失败! \n"+obj.error.message);
 			}
 		}
 		

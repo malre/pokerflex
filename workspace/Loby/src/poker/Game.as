@@ -8,8 +8,11 @@ package poker
 	import json.*;
 	
 	import mx.collections.ArrayCollection;
+	import mx.controls.Image;
 	import mx.core.FlexGlobals;
+	import mx.flash.UIMovieClip;
 	
+	import poker.gamestate.StateUpdateForFirstFrame;
 	import poker.gamestate.StateUpdateWhileGame;
 	
 	import soundcontrol.SoundManager;
@@ -100,8 +103,12 @@ package poker
 		// 游戏中的各个阶段的状态定义
 		// 0,没有状态  1, 游戏场景的初始化过程，fadein flash部分 10,播放一个flash 
 		// 2, 游戏过程 3 发送举手消息以前 4 发送举手消息以后
-		// 5 游戏结果发布画面
+		// 5, 游戏结果发布画面
+		// 20,最开始游戏的时候的发牌演示
 		public var gameState:int	= 0;
+			//
+			public var cardAnimateCounter:int = 0;
+			private var cardAnimateArray:Array = new Array();
 			// 用来标识玩家是否使用了托管
 		public var isCpuAI:Boolean = false;
 		// 计时器
@@ -278,11 +285,12 @@ package poker
 		// 描画玩家打出来的牌
 		public function drawOtherCards(obj:Object, gamestate:int):void
 		{
+			var pok:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
 			// reset
-			FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = false;
-			FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = false;
-			FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = false;
-			FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = false;
+			pok.imgDiscardDown.visible = false;
+			pok.imgDiscardRight.visible = false;
+			pok.imgDiscardUp.visible = false;
+			pok.imgDiscardLeft.visible = false;
 			
 			var rt:Rectangle = new Rectangle(0,0,cardsWidth,cardsHeight)
 			var pt:Point;
@@ -297,7 +305,7 @@ package poker
 			{
 //				GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
-				FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = false;
+				pok.imgDiscardDown.visible = false;
 			}
 			else
 			{
@@ -309,7 +317,7 @@ package poker
 				else if(cards[selfseat] == "pass")
 				{
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
-					FlexGlobals.topLevelApplication.gamePoker.imgDiscardDown.visible = true;
+					pok.imgDiscardDown.visible = true;
 					deskCards0.length = 0;
 					// SE 这个步骤，如果是最后一步是不会到的，所以把pass，放到按钮上去
 					//if(curPlayerLast == selfseat)
@@ -368,6 +376,31 @@ package poker
 							if(SEid == 7 && deskCards0.length == 4)	// 王炸
 								SEid = 36;
 							SoundManager.Instance().playSEByCardtype(SEid, deskCards0[0]);
+							// 同时播放动画
+							var animation2:UIMovieClip;
+							if(SEid >=8 && SEid <=15){	// 顺子
+								animation2 = new donghuashunzi();
+							}
+							else if(SEid == 36){
+								animation2 = new donghuatianwangzha();
+								animation2.x = 0;
+								animation2.y = 0;
+								animation2.width = 540;
+								animation2.height = 560;
+							}
+							else if(SEid >= 3 && SEid <= 7){
+								animation2 = new donghuazhadan();
+							}
+							if(animation2 != null)
+							{
+								animation2.name = "anime";
+								if(pok.animationGroup2.numElements >= 0)
+								{
+									pok.animationGroup2.removeAllElements();
+								}
+								pok.animationGroup2.addElement(animation2);
+								animation2.play();
+							}
 						}
 					}
 					else
@@ -388,7 +421,7 @@ package poker
 			{
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 				deskCards1.length = 0;
-				FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = false;
+				pok.imgDiscardRight.visible = false;
 			}
 			else
 			{
@@ -409,7 +442,7 @@ package poker
 				{
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 					deskCards1.length = 0;
-					FlexGlobals.topLevelApplication.gamePoker.imgDiscardRight.visible = true;
+					pok.imgDiscardRight.visible = true;
 					// SE
 					if(curPlayerLast == id)
 						SoundManager.Instance().playSE("pass");
@@ -463,9 +496,34 @@ package poker
 						{
 							// 对打出的牌进行判断，然后发出音效
 							SEid = CardPattern.Instance.patternCheck(deskCards1.sort(Array.NUMERIC));
-							if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							if(SEid == 7 && deskCards1.length == 4)	// 王炸
 								SEid = 36;
 							SoundManager.Instance().playSEByCardtype(SEid, deskCards1[0]);
+							// 同时播放动画
+							var animation3:UIMovieClip;
+							if(SEid >=8 && SEid <=15){	// 顺子
+								animation3 = new donghuashunzi();
+							}
+							else if(SEid == 36){
+								animation3 = new donghuatianwangzha();
+								animation3.x = 0;
+								animation3.y = 0;
+								animation3.width = 540;
+								animation3.height = 560;
+							}
+							else if(SEid >= 3 && SEid <= 7){
+								animation3 = new donghuazhadan();
+							}
+							if(animation3 != null)
+							{
+								animation3.name = "anime";
+								if(pok.animationGroup3.numElements >= 0)
+								{
+									pok.animationGroup3.removeAllElements();
+								}
+								pok.animationGroup3.addElement(animation3);
+								animation3.play();
+							}
 						}
 					}
 				}
@@ -477,7 +535,7 @@ package poker
 			{
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 				deskCards2.length = 0;
-				FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = false;
+				pok.imgDiscardUp.visible = false;
 			}
 			else
 			{
@@ -498,7 +556,7 @@ package poker
 				{
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 					deskCards2.length = 0;
-					FlexGlobals.topLevelApplication.gamePoker.imgDiscardUp.visible = true;
+					pok.imgDiscardUp.visible = true;
 					// SE
 					if(curPlayerLast == id)
 						SoundManager.Instance().playSE("pass");
@@ -550,9 +608,34 @@ package poker
 						if(lastPlayer == id)
 						{
 							SEid = CardPattern.Instance.patternCheck(deskCards2.sort(Array.NUMERIC));
-							if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							if(SEid == 7 && deskCards2.length == 4)	// 王炸
 								SEid = 36;
 							SoundManager.Instance().playSEByCardtype(SEid, deskCards2[0]);
+							// 同时播放动画
+							var animation0:UIMovieClip;
+							if(SEid >=8 && SEid <=15){	// 顺子
+								animation0 = new donghuashunzi();
+							}
+							else if(SEid == 36){
+								animation0 = new donghuatianwangzha();
+								animation0.x = 0;
+								animation0.y = 0;
+								animation0.width = 540;
+								animation0.height = 560;
+							}
+							else if(SEid >= 3 && SEid <= 7){
+								animation0 = new donghuazhadan();
+							}
+							if(animation0 != null)
+							{
+								animation0.name = "anime";
+								if(pok.animationGroup0.numElements >= 0)
+								{
+									pok.animationGroup0.removeAllElements();
+								}
+								pok.animationGroup0.addElement(animation0);
+								animation0.play();
+							}
 						}
 					}
 				}
@@ -564,7 +647,7 @@ package poker
 			{
 				GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 				deskCards3.length = 0;
-				FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = false;
+				pok.imgDiscardLeft.visible = false;
 //				// 进行pass的动画演出，但是动画在进入pass状态以后只重复一次
 //				if(!bPassAnimatePlayedLeft)
 //				{
@@ -595,7 +678,7 @@ package poker
 				{
 					GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 					deskCards3.length = 0;
-					FlexGlobals.topLevelApplication.gamePoker.imgDiscardLeft.visible = true;
+					pok.imgDiscardLeft.visible = true;
 					// SE
 					if(curPlayerLast == id)
 						SoundManager.Instance().playSE("pass");
@@ -637,9 +720,34 @@ package poker
 						if(lastPlayer == id)
 						{
 							SEid = CardPattern.Instance.patternCheck(deskCards3.sort(Array.NUMERIC));
-							if(SEid == 7 && deskCards0.length == 4)	// 王炸
+							if(SEid == 7 && deskCards3.length == 4)	// 王炸
 								SEid = 36;
 							SoundManager.Instance().playSEByCardtype(SEid, deskCards3[0]);
+							// 同时播放动画
+							var animation1:UIMovieClip;
+							if(SEid >=8 && SEid <=15){	// 顺子
+								animation1 = new donghuashunzi();
+							}
+							else if(SEid == 36){
+								animation1 = new donghuatianwangzha();
+								animation1.x = 270;
+								animation1.y = 280;
+								animation1.width = 540;
+								animation1.height = 560;
+							}
+							else if(SEid >= 3 && SEid <= 7){
+								animation1 = new donghuazhadan();
+							}
+							if(animation1 != null)
+							{
+								animation1.name = "anime";
+								if(pok.animationGroup1.numElements >= 0)
+								{
+									pok.animationGroup1.removeAllElements();
+								}
+								pok.animationGroup1.addElement(animation1);
+								animation1.play();
+							}
 						}
 					}
 				}
@@ -1096,7 +1204,7 @@ package poker
 			switch(gameState)
 			{
 				case 0:
-				break;
+					break;
 				case 1:	
 					// 进行游戏开始的动画演示
 					FlexGlobals.topLevelApplication.gamePoker.gamebg.alpha += 0.1;
@@ -1106,7 +1214,7 @@ package poker
 //						gameState = 10;
 						FlexGlobals.topLevelApplication.gamePoker._startup();
 					}
-				break;
+					break;
 				case 10:
 					var mc:MovieClip = MovieClip(FlexGlobals.topLevelApplication.gamePoker.BGswf.content);
 					if(mc.currentFrame == 60/*mc.totalFrames*/){
@@ -1137,7 +1245,91 @@ package poker
 					}
 					updatePlayerLeftTime();
 //				    GameObjectManager.Instance.enterFrame();
-				break;
+					break;
+				case 20:	// 进行动画处理
+					var no:int = cardAnimateCounter;
+					var pok:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
+//					if(cardAnimateCounter/2 == no)
+					{
+						if(no >= 52)
+						{
+							// 删除所有的牌背
+							var delobj:Image = pok.getChildByName("fcba") as Image;
+							while(delobj != null){
+								pok.removeElement(delobj);
+								delobj = pok.getChildByName("fcba") as Image;
+							}
+							//	更新所有的游戏信息
+							var obj:Object = StateUpdateForFirstFrame.Instance.lastSuccData;
+							// 进入游戏逻辑，开始进行update处理
+							gameState = 2;
+							// 
+							readyStateInit();
+							if(obj.play.next == Game.Instance.selfseat)
+							{
+								// 显示所有的按钮
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = true;
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnSendCards.enabled = false;
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = true;
+								if(obj.play.last == obj.play.next)
+								{
+									FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled = false;
+								}
+							}
+							else{
+								FlexGlobals.topLevelApplication.gamePoker.commandbar.visible = false;
+							}
+							lastPlayer = obj.play.last;
+							curPlayerLast = curPlayer;
+							curPlayer = obj.play.next;
+							gamePlayerLeftTimeDef = obj.time;
+							initPlayerLeftStartTime();
+							// 更新其他玩家的名字和状态
+							updatePlayerName(obj);
+							// 更新右侧其他玩家的数据表格
+							playersDatagridFill(obj);
+							// 描画玩家手上的牌
+							drawPlayerCards(obj);
+							// 描画玩家打出来的牌
+							drawOtherCards(obj, obj.status);
+							// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
+							updatePlayerCardsInfo(obj);
+							// 描画出牌剩余时间
+							updateCurPlayerIcon(obj);
+							// 对时间进行修正
+							modifyPlayerLefttime(obj);
+							// 显示其他三家的牌堆
+							showCardback(true);
+							// 使过往牌记录的查看按钮有效
+							FlexGlobals.topLevelApplication.gamePoker.btnCardView.visible = true;
+							FlexGlobals.topLevelApplication.gamePoker.cpuAI.visible = true;							
+						}
+						else
+						{
+							if(no == 0)	// create all
+							{
+								var ca:Array = sortCards(StateUpdateForFirstFrame.Instance.lastSuccData);
+								for(var j:int=0;j<27;j++)
+								{
+									var img:Image = new Image();
+									img.source = ResourceManagerPoker.gameCardsRes[ca[j]];
+									img.x = cardStandardX-(27*cardsIntervalX/2);//+no*cardsIntervalX;
+									img.y = cardStandardY;
+									img.name = "fcba";// for cardback animation
+									pok.addElement(img);
+									cardAnimateArray.push(img);
+								}
+							}
+							var movenum:int = int(cardAnimateCounter/2)+1;
+							for(var i:int=0;i<movenum;i++)
+							{
+//								if((52-cardAnimateCounter)/2 == int()
+								cardAnimateArray[26-i].x += cardsIntervalX/2;
+							}
+						}
+					}
+					cardAnimateCounter++;
+					break;
 				case 3:
 					if(requestFlag)
 					{
@@ -1145,7 +1337,7 @@ package poker
 						requestFlag = false;
 					}
 //					GameObjectManager.Instance.enterFrame();
-				break;
+					break;
 				case 4:	// 等待其他玩家准备完成
 					// 在一定的频率下，发送消息，更新自己的数据。
 					if(requestFlag)
@@ -1154,11 +1346,33 @@ package poker
 						requestFlag = false;
 					}
 //					GameObjectManager.Instance.enterFrame();
-				break;
+					break;
 				case 5:
 //					GameObjectManager.Instance.enterFrame();
-				break;
+					break;
 			}
+import flash.display.MovieClip;
+
+
+
+		}
+		
+		public function commonUpdate(obj:Object):void
+		{
+			// 更新其他玩家的名字和状态
+			Game.Instance.updatePlayerName(obj);
+			// 更新右侧其他玩家的数据表格
+			Game.Instance.playersDatagridFill(obj);
+			// 描画玩家手上的牌
+			Game.Instance.drawPlayerCards(obj);
+			// 描画玩家打出来的牌
+			Game.Instance.drawOtherCards(obj, obj.status);
+			// 描画玩家的剩余牌数,以及当前应该出牌玩家的提示
+			Game.Instance.updatePlayerCardsInfo(obj);
+			// 描画出牌剩余时间
+			Game.Instance.updateCurPlayerIcon(obj);
+			// 对时间进行修正
+			Game.Instance.modifyPlayerLefttime(obj);
 		}
 		
 		public function getSelfseat(obj:Object):void
@@ -1231,6 +1445,10 @@ package poker
 					if(hintCards.length > 0){
 						hintTimes = 0;
 						GameObjectManager.Instance.selectCards(hintCards[hintTimes]);
+					}
+					else{
+						if(FlexGlobals.topLevelApplication.gamePoker.commandbar.btnDiscard.enabled)
+							Game.Instance.pass();
 					}
 				}
 			}
@@ -1318,70 +1536,101 @@ package poker
 		}
 		
 		/**
+		 * 检查所有的动画是否结束，如果结束就关闭并删除 
+		 * 
+		 */		
+		private function checkAnimationOver():void
+		{
+			var pok:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
+			var mc:UIMovieClip;
+			mc = pok.animationGroup0.getChildByName("anime") as UIMovieClip;
+			if(mc != null){
+				if(mc.currentFrame >= mc.totalFrames)
+					pok.animationGroup0.removeAllElements();
+			}
+			mc = pok.animationGroup1.getChildByName("anime") as UIMovieClip;
+			if(mc != null){
+				if(mc.currentFrame >= mc.totalFrames)
+					pok.animationGroup1.removeAllElements();
+			}
+			mc = pok.animationGroup2.getChildByName("anime") as UIMovieClip;
+			if(mc != null){
+				if(mc.currentFrame >= mc.totalFrames)
+					pok.animationGroup2.removeAllElements();
+			}
+			mc = pok.animationGroup3.getChildByName("anime") as UIMovieClip;
+			if(mc != null){
+				if(mc.currentFrame >= mc.totalFrames)
+					pok.animationGroup3.removeAllElements();
+			}
+		}
+		
+		/**
 		 * 填充游戏中使用的玩家数据
 		 * @param data
 		 * 
 		 */		
 		public function playersDatagridFill(obj:Object):void
 		{
+			var pok:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
 			// 直接对游戏中画面进行数据更新
 			// partner
 			var id:int = getPlayerIndexByPos(obj,(selfseat+2)%4);
 			if(obj.players.hasOwnProperty( id.toString() ))
 			{
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.text = obj.players[id].name;
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.text = obj.players[id].score;
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.text = LevelDefine.getLevelName(obj.players[id].score);
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.text = obj.players[id].money;
+				pok.label_pl_up_name.text = obj.players[id].name;
+				pok.label_pl_up_score.text = obj.players[id].score;
+				pok.label_pl_up_level.text = LevelDefine.getLevelName(obj.players[id].score);
+				pok.label_pl_up_gold.text = obj.players[id].money;
 			}
 			else{
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.text = "";
+				pok.label_pl_up_name.text = "";
+				pok.label_pl_up_score.text = "";
+				pok.label_pl_up_level.text = "";
+				pok.label_pl_up_gold.text = "";
 			}
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_name.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_score.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_level.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_up_gold.text;
+			pok.label_pl_up_name.toolTip = pok.label_pl_up_name.text;
+			pok.label_pl_up_score.toolTip = pok.label_pl_up_score.text;
+			pok.label_pl_up_level.toolTip = pok.label_pl_up_level.text;
+			pok.label_pl_up_gold.toolTip = pok.label_pl_up_gold.text;
 			
 			id = getPlayerIndexByPos(obj,(selfseat+1)%4);
 			if(obj.players.hasOwnProperty( id.toString() ))
 			{
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.text = obj.players[id].name;
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.text = obj.players[id].score;
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.text = LevelDefine.getLevelName(obj.players[id].score);
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.text = obj.players[id].money;
+				pok.label_pl_right_name.text = obj.players[id].name;
+				pok.label_pl_right_score.text = obj.players[id].score;
+				pok.label_pl_right_level.text = LevelDefine.getLevelName(obj.players[id].score);
+				pok.label_pl_right_gold.text = obj.players[id].money;
 			}
 			else{
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.text = "";
+				pok.label_pl_right_name.text = "";
+				pok.label_pl_right_score.text = "";
+				pok.label_pl_right_level.text = "";
+				pok.label_pl_right_gold.text = "";
 			}
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_name.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_score.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_level.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_right_gold.text;
+			pok.label_pl_right_name.toolTip = pok.label_pl_right_name.text;
+			pok.label_pl_right_score.toolTip = pok.label_pl_right_score.text;
+			pok.label_pl_right_level.toolTip = pok.label_pl_right_level.text;
+			pok.label_pl_right_gold.toolTip = pok.label_pl_right_gold.text;
 			
 			id = getPlayerIndexByPos(obj,(selfseat+3)%4);
 			if(obj.players.hasOwnProperty( id.toString() ))
 			{
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.text = obj.players[id].name;
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.text = obj.players[id].score;
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.text = LevelDefine.getLevelName(obj.players[id].score);
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.text = obj.players[id].money;
+				pok.label_pl_left_name.text = obj.players[id].name;
+				pok.label_pl_left_score.text = obj.players[id].score;
+				pok.label_pl_left_level.text = LevelDefine.getLevelName(obj.players[id].score);
+				pok.label_pl_left_gold.text = obj.players[id].money;
 			}
 			else{
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.text = "";
-				FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.text = "";
+				pok.label_pl_left_name.text = "";
+				pok.label_pl_left_score.text = "";
+				pok.label_pl_left_level.text = "";
+				pok.label_pl_left_gold.text = "";
 			}
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_name.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_score.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_level.text;
-			FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.toolTip = FlexGlobals.topLevelApplication.gamePoker.label_pl_left_gold.text;
+			pok.label_pl_left_name.toolTip = pok.label_pl_left_name.text;
+			pok.label_pl_left_score.toolTip = pok.label_pl_left_score.text;
+			pok.label_pl_left_level.toolTip = pok.label_pl_left_level.text;
+			pok.label_pl_left_gold.toolTip = pok.label_pl_left_gold.text;
 		
 		}
 	}
