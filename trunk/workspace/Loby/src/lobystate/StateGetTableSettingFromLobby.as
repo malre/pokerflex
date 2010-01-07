@@ -43,21 +43,21 @@ package lobystate
 				FlexGlobals.topLevelApplication.gamePoker.startup(obj);
 				// 
 				LobyManager.Instance.changeState(2);
-				// 关闭显示视窗
-				LobyNetManager.Instance.closeNetProcess();
+				// 关闭互斥量
+				LobyManager.Instance.windowMutex = false;
 				return true;
 			}
 			else{
 //				StateGetPlayerInfo.Instance.lastRoomId = -1;
-				// 关闭显示视窗
-				LobyNetManager.Instance.closeNetProcess();
+				// 关闭互斥量
+				LobyManager.Instance.windowMutex = false;
 				return false;
 			}
 		}
 		override public function fault(event:Event):void
 		{
-			// 关闭显示视窗
-			LobyNetManager.Instance.closeNetProcess();
+			// 关闭互斥量
+			LobyManager.Instance.windowMutex = false;
 		}
 	}
 }

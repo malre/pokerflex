@@ -22,8 +22,9 @@ package lobystate
 
 		override public function send(obj:StateManager):void
 		{
-			// 显示进行过程
+			// 互斥量有效
 			LobyNetManager.Instance.showNetProcess("自动选择游戏桌，准备加入……");
+			LobyManager.Instance.windowMutex = true;
 
 			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_autoAddlobby;
 			LobyNetManager.Instance.httpservice.request = {"getPlayers":true}; 
@@ -40,22 +41,20 @@ package lobystate
 //				// 
 //				LobyManager.Instance.changeState(2);
 
-				// 关闭显示视窗
-				LobyNetManager.Instance.closeNetProcess();
 				return true;
 			}
 			else{
 				LobyErrorState.Instance.showErrMsg("没有找到适合的牌桌");
-				// 关闭显示视窗
-				LobyNetManager.Instance.closeNetProcess();
+				// 关闭互斥量
+				LobyManager.Instance.windowMutex = false;
 				return false;
 			}
 			
 		}
 		override public function fault(event:Event):void
 		{
-			// 关闭显示视窗
-			LobyNetManager.Instance.closeNetProcess();
+			// 关闭互斥量
+			LobyManager.Instance.windowMutex = false;
 			LobyErrorState.Instance.showErrMsg("加入房间失败,意外失败");
 		}
 	}
