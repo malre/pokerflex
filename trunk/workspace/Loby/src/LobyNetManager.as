@@ -42,6 +42,7 @@ package
 		static public const URL_updateTableInfo:String = "game/room/update";	// 桌子上玩家的信息
 		static public const URL_createTable:String = "game/room/create";
 		static public const URL_getFriends:String = "game/friend/onlinelist";
+		static public const URL_getAllFriends:String = "game/friend/list";
 		static public const URL_getTableSetting:String = "game/room/viewSetting";
 		static public const URL_getInviteList:String = "game/list/invitation";
 		static public const URL_refuseInvite:String = "lobby/player/decline";
@@ -64,6 +65,7 @@ package
 		static public const getTablePlayerInfo:String = "get table player info";
 		static public const createTable:String = "create table";
 		static public const getFriends:String = "get friends";
+		static public const getAllFriends:String = "g a f";
 		static public const getTableSetting:String = "get table setting";
 		static public const updateRoomtable:String = "up r t";
 		static public const updateRoomplayerlist:String = "up r pl";
@@ -245,6 +247,10 @@ package
 			else if(type == getFriends)
 			{
 				stateManager.changeState(StateGetFriends.Instance);
+			}
+			else if(type == getAllFriends)
+			{
+				stateManager.changeState(StateGetAllFriends.Instance);
 			}
 			else if(type == getTableSetting)
 			{

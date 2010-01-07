@@ -95,7 +95,7 @@
 			import item.shopRequester;
 			
 			import lobystate.StateCheckGift;
-			import lobystate.StateGetFriends;
+			import lobystate.StateGetAllFriends;
 			import lobystate.StateSendGift;
 			
 			import mx.controls.Image;
@@ -304,8 +304,8 @@
 					// 调用好友列表
 					FlexGlobals.topLevelApplication.friendslist.visible = true;
 					FlexGlobals.topLevelApplication.friendslist.toState(1);
-					StateGetFriends.Instance.settype(2);
-					LobyNetManager.Instance.send(LobyNetManager.getFriends);
+					StateGetAllFriends.Instance.settype(2);
+					LobyNetManager.Instance.send(LobyNetManager.getAllFriends);
 					// 设置赠送的数量
 					StateSendGift.Instance.amount = num;
 					var reg:RegExp = /\d{7}\.png/g;

@@ -255,10 +255,13 @@ package
 						LobyNetManager.Instance.send(LobyNetManager.addloby);
 					}
 					else if(rlt == 1){
+						Alert.okLabel = "确定";
 						Alert.show("你已经在这个房间中了", "");					
 					}
 					else if(rlt == 2){
 						// 首先讯问是否要离开房间
+						Alert.yesLabel = "确定";
+						Alert.noLabel = "取消";
 						Alert.show("加入一个新房间会退出您原来所在的房间，确定吗？", "", Alert.YES|Alert.NO, null/*Application(FlexGlobals.topLevelApplication)*/, alertClickHandler);
 					}
 				}
