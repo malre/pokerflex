@@ -136,10 +136,10 @@
 	<!--托管显示图-->
 	<mx:Image x="235" y="419" id="cpuAIAnimation" source="@Embed('assets/CPUAI.swf')" visible="false"/>
 	<!--动画特效-->
-	<s:Group id="animationGroup0" x="200" y="100"/>
-	<s:Group id="animationGroup1" x="95" y="206"/>
-	<s:Group id="animationGroup2" x="199" y="374"/>
-	<s:Group id="animationGroup3" x="289" y="223"/>
+	<s:Group id="animationGroup0"/>
+	<s:Group id="animationGroup1"/>
+	<s:Group id="animationGroup2"/>
+	<s:Group id="animationGroup3"/>
 
 	<!--玩家聊天部分的设置和表情-->
 	<message:chatSetting x="608" y="496" id="chatsetting" visible="false"/>

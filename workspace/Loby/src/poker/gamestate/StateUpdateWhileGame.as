@@ -131,16 +131,6 @@ package poker.gamestate
 							StateGetLeftCards.Instance.clearCounter();
 
 							Game.Instance.gameState = 5;	// 结束统计状态
-							//
-							SoundManager.Instance().playSE("win");
-							// 消去其他三家玩家头像和信息显示
-							FlexGlobals.topLevelApplication.gamePoker.playerinfoLeft.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.playerinfoUp.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.playerinfoRight.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.avatarUpGroup.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.avatarLeftGroup.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.avatarRightGroup.visible = false;
-							FlexGlobals.topLevelApplication.gamePoker.label_thinking.visible = false;
 						}
 					}
 				}
