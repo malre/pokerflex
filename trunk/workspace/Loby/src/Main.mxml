@@ -247,7 +247,7 @@
 		<components:OptionWindow x="200" y="130" id="createTable" visible="false"/>
 		<components:passwordInput id="pwInput" x="188" y="230" visible="false"/>
 	</fx:DesignLayer>
-	<mx:Label x="140" y="26" text="ver 1.8.5.M" width="64" textAlign="right" color="#333333"/>
+	<mx:Label x="140" y="26" text="ver 1.8.6.B" width="64" textAlign="right" color="#333333"/>
 	<!--游戏本体-->
 	<poker:poker id="gamePoker" visible="false"/>
 	<!--用来确认一些需要使用卡片的道具-->

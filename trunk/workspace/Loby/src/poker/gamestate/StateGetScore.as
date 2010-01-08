@@ -12,6 +12,7 @@ package poker.gamestate
 	import poker.NetManager;
 	import poker.poker;
 	import poker.timeoutDealwithGUI;
+	import soundcontrol.SoundManager;
 	
 	public class StateGetScore extends NetRequestState
 	{
@@ -41,6 +42,8 @@ package poker.gamestate
 		{
 			if(super.receive(obj))
 			{
+				//
+				SoundManager.Instance().playSE("win");
 				if(obj.score.hasOwnProperty("result"))
 				{
 					var pok:poker = poker(FlexGlobals.topLevelApplication.gamePoker);
@@ -52,6 +55,7 @@ package poker.gamestate
 						es0.y = 244;
 						pok.addElement(es0);
 						es0.play();
+						timer.start();
 					}
 					else if(obj.score.result == "1"){		// 单扣
 						var es1:donghuadankou = new donghuadankou();
@@ -60,6 +64,7 @@ package poker.gamestate
 						es1.y = 247;
 						pok.addElement(es1);
 						es1.play();
+						timer.start();
 					}
 					else if(obj.score.result == "2"){		// 双扣
 						var es2:donghuashuangkou = new donghuashuangkou();
@@ -68,12 +73,13 @@ package poker.gamestate
 						es2.y = 237;
 						pok.addElement(es2);
 						es2.play();
+						timer.start();
 					}
 					else
 					{
 						
 					}
-					timer.start();
+					
 				}
 				else	// 意外的结束，不显示动画
 				{

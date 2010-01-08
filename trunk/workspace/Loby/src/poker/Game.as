@@ -88,6 +88,10 @@ package poker
 		private var deskCards1:Array = new Array();
 		private var deskCards2:Array = new Array();
 		private var deskCards3:Array = new Array();
+		private var deskCards0LastAmount:int;
+		private var deskCards1LastAmount:int;
+		private var deskCards2LastAmount:int;
+		private var deskCards3LastAmount:int;
 		
 		//////////////////////////////////////////////////////////////////////////////
 		// card height ZOrder
@@ -352,12 +356,18 @@ package poker
 								break;
 							}
 						}
-						
+						// 再追加一个上一个出牌人和本次的出牌人是否相同的判断
+						if(deskCards0LastAmount != PlayerCards.length)
+						{
+							flag = true;
+						}
 					}
 					if(flag)
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards0.length = 0;
+						// 记录上个出牌玩家
+						deskCards0LastAmount = PlayerCards.length;
 //						GameObjectManager.Instance.setVisibleByName("PlayedCardSelf", false);
 						GameObjectManager.Instance.removeCardfromScreen("PlayedCardSelf");
 						// 重新描画
@@ -380,11 +390,13 @@ package poker
 							var animation2:UIMovieClip;
 							if(SEid >=8 && SEid <=15){	// 顺子
 								animation2 = new donghuashunzi();
-								animation2.x = 21;
-								animation2.y = 262;
+								animation2.x = 191;
+								animation2.y = 300;
 							}
 							else if(SEid == 36){
 								animation2 = new donghuatianwangzha();
+								animation2.x = 456;
+								animation2.y = 372;
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation2 = new donghuazhadan();
@@ -475,12 +487,18 @@ package poker
 								break;
 							}
 						}
-						
+						// 再追加一个上一个出牌人和本次的出牌人是否相同的判断
+						if(deskCards1LastAmount != PlayerCardsRight.length)
+						{
+							flag = true;
+						}
 					}
 					if(flag)
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards1.length = 0;
+						// 记录上个出牌玩家
+						deskCards1LastAmount = PlayerCardsRight.length;
 //						GameObjectManager.Instance.setVisibleByName("PlayedCardRight", false);
 						GameObjectManager.Instance.removeCardfromScreen("PlayedCardRight");
 						// 重新描画
@@ -503,13 +521,13 @@ package poker
 							var animation3:UIMovieClip;
 							if(SEid >=8 && SEid <=15){	// 顺子
 								animation3 = new donghuashunzi();
+								animation3.x = 302;
+								animation3.y = 180;
 							}
 							else if(SEid == 36){
 								animation3 = new donghuatianwangzha();
-								animation3.x = 0;
-								animation3.y = 0;
-								animation3.width = 540;
-								animation3.height = 560;
+								animation3.x = 456;
+								animation3.y = 372;
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation3 = new donghuazhadan();
@@ -591,12 +609,18 @@ package poker
 								break;
 							}
 						}
-						
+						// 再追加一个上一个出牌人和本次的出牌人是否相同的判断
+						if(deskCards2LastAmount != PlayerCardsUp.length)
+						{
+							flag = true;
+						}
 					}
 					if(flag)
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards2.length = 0;
+						// 记录上个出牌玩家
+						deskCards2LastAmount = PlayerCardsUp.length;
 //						GameObjectManager.Instance.setVisibleByName("PlayedCardUp", false);
 						GameObjectManager.Instance.removeCardfromScreen("PlayedCardUp");
 						// 重新描画
@@ -617,13 +641,13 @@ package poker
 							var animation0:UIMovieClip;
 							if(SEid >=8 && SEid <=15){	// 顺子
 								animation0 = new donghuashunzi();
+								animation0.x = 189;
+								animation0.y = 83;
 							}
 							else if(SEid == 36){
 								animation0 = new donghuatianwangzha();
-								animation0.x = 0;
-								animation0.y = 0;
-								animation0.width = 540;
-								animation0.height = 560;
+								animation0.x = 456;
+								animation0.y = 372;
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation0 = new donghuazhadan();
@@ -705,11 +729,18 @@ package poker
 								break;
 							}
 						}
+						// 再追加一个上一个出牌人和本次的出牌人是否相同的判断
+						if(deskCards3LastAmount != PlayerCardsLeft.length)
+						{
+							flag = true;
+						}
 					}
 					if(flag)
 					{
 						// 删除之前该位置显示的所有卡牌
 						deskCards3.length = 0;
+						// 记录上个出牌玩家
+						deskCards3LastAmount = PlayerCardsLeft.length;
 //						GameObjectManager.Instance.setVisibleByName("PlayedCardLeft", false);
 						GameObjectManager.Instance.removeCardfromScreen("PlayedCardLeft");
 						// 重新描画
@@ -731,13 +762,13 @@ package poker
 							var animation1:UIMovieClip;
 							if(SEid >=8 && SEid <=15){	// 顺子
 								animation1 = new donghuashunzi();
+								animation1.x = 64;
+								animation1.y = 200;
 							}
 							else if(SEid == 36){
 								animation1 = new donghuatianwangzha();
-								animation1.x = 270;
-								animation1.y = 280;
-								animation1.width = 540;
-								animation1.height = 560;
+								animation1.x = 456;
+								animation1.y = 372;
 							}
 							else if(SEid >= 3 && SEid <= 7){
 								animation1 = new donghuazhadan();
@@ -1256,6 +1287,7 @@ package poker
 					var no:int = cardAnimateCounter;
 					var pok:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
 //					if(cardAnimateCounter/2 == no)
+					if(true)
 					{
 						if(no >= 52)
 						{
@@ -1265,6 +1297,7 @@ package poker
 								pok.removeElement(delobj);
 								delobj = pok.getChildByName("fcba") as Image;
 							}
+							cardAnimateArray.length = 0;
 							//	更新所有的游戏信息
 							var obj:Object = StateUpdateForFirstFrame.Instance.lastSuccData;
 							// 进入游戏逻辑，开始进行update处理
@@ -1357,10 +1390,6 @@ package poker
 //					GameObjectManager.Instance.enterFrame();
 					break;
 			}
-import flash.display.MovieClip;
-
-
-
 		}
 		
 		public function commonUpdate(obj:Object):void
@@ -1545,30 +1574,41 @@ import flash.display.MovieClip;
 		 * 检查所有的动画是否结束，如果结束就关闭并删除 
 		 * 
 		 */		
-		private function checkAnimationOver():void
+		public function checkAnimationOver():Boolean
 		{
 			var pok:poker = FlexGlobals.topLevelApplication.gamePoker as poker;
 			var mc:UIMovieClip;
+			var flag:Boolean = true;
 			mc = pok.animationGroup0.getChildByName("anime") as UIMovieClip;
 			if(mc != null){
 				if(mc.currentFrame >= mc.totalFrames)
 					pok.animationGroup0.removeAllElements();
+				else
+					flag = false;
 			}
 			mc = pok.animationGroup1.getChildByName("anime") as UIMovieClip;
 			if(mc != null){
 				if(mc.currentFrame >= mc.totalFrames)
 					pok.animationGroup1.removeAllElements();
+				else
+					flag = false;
 			}
 			mc = pok.animationGroup2.getChildByName("anime") as UIMovieClip;
 			if(mc != null){
 				if(mc.currentFrame >= mc.totalFrames)
 					pok.animationGroup2.removeAllElements();
+				else
+					flag = false;
 			}
 			mc = pok.animationGroup3.getChildByName("anime") as UIMovieClip;
 			if(mc != null){
 				if(mc.currentFrame >= mc.totalFrames)
 					pok.animationGroup3.removeAllElements();
+				else
+					flag = false;
 			}
+			
+			return flag;
 		}
 		
 		/**
