@@ -70,7 +70,5 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image source="@Embed('assets/gameCommandMenu.swf')"/>
-	<!--<s:Button  x="5" y="3" id="btnkick" label="踢出牌局" color="#000000"/>-->
-	<components:Menu_item1 id="btnKick" width="80" click="btnKick_clickHandler(event)"/>
+	<mx:Image source="@Embed('assets/gameCommandMenu.swf')" click="btnKick_clickHandler(event)"/>
 </s:Group>
