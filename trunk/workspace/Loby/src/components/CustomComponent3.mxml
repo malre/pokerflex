@@ -13,6 +13,7 @@
 		}
 	</fx:Style>
 	<mx:Image source="@Embed('/assets/bg_5.swf')" includeIn="State3" id="bitmapimage1"/>
+	<s:Button includeIn="State3" x="228" skinClass="components.Button_changeSkin" y="10" click="btnChangeSkin_clickHandler(event)" toolTip="切换皮肤"/>
 	<s:Button includeIn="State3" x="184" skinClass="components.ButtonMsgEmotion" y="492" click="btnEmotion_clickHandler(event)" toolTip="表情"/>
 	<s:Button includeIn="State3" x="208" y="492" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)" toolTip="喊话" enabled="false"/>
 	<s:Button includeIn="State3" x="232" y="492" skinClass="components.ButtonMsgOption" click="option_clickHandler(event)" toolTip="聊天设置"/>
@@ -236,6 +237,19 @@
 				lobbyinputbox.textFlow.fontSize = 12;
 			}
 			
+
+			protected function btnChangeSkin_clickHandler(event:MouseEvent):void
+			{
+				if(!LobyManager.Instance.windowMutex){
+					// 等用户未登录的情况下，这些选项都无效
+					if(StateGetPlayerInfo.Instance.lastFlag)
+					{
+						FlexGlobals.topLevelApplication.changeSkin.visible = true;
+						LobyManager.Instance.windowMutex = true;
+					}
+				}
+			}
+
 		]]>
 	</fx:Script>
 </s:Group>
