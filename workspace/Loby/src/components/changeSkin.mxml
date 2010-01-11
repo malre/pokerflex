@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo">
+
+	<fx:Script>
+		<![CDATA[
+			protected function OK_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+
+			protected function NOT_clickHandler(event:MouseEvent):void
+			{
+				visible = false;
+				LobyManager.Instance.windowMutex = false;
+			}
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<mx:Image x="0" y="0" source="assets/Bg_shop.swf"/>
+	<mx:Image x="0" y="0" source="assets/text_changeSkin.swf"/>
+	<s:Button x="57" y="219" skinClass="components.Button_confirm" click="OK_clickHandler(event)"/>
+	<s:Button x="203" y="219" skinClass="components.Button_ShopNoBuy" click="NOT_clickHandler(event)"/>
+</s:Group>

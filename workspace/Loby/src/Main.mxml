@@ -230,7 +230,6 @@
 	<s:Scroller x="17" y="89" width="480" height="461" baseColor="#f6edae" id="roomScroller" verticalScrollPolicy="off" horizontalScrollPolicy="off">
 		<s:Group x="17" y="89" width="480" height="461" id="gameRoomCanvas" creationComplete="gameRoomCanvas_creationCompleteHandler(event)"/>
 	</s:Scroller>
-	<!--<mx:Canvas x="17" y="89" width="480" height="461" id="gameRoomCanvas" baseColor="#f6edae" creationComplete="gameRoomCanvas_creationCompleteHandler(event)"/>-->
 	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="68" visible="false"/>
 	<fx:DesignLayer d:userLabel="game lest">
 		<components:GameLbby x="10" y="65" id="lobbypanel">
@@ -256,6 +255,7 @@
 	<components:friends id="friendslist" x="200" y="130" visible="false"/>
 	<!--邀请，该窗口会位于所有的窗口之上，以保证会被最优先处理-->
 	<components:Invitation x="200" y="130" id="invitation" visible="false"/>
+	<components:changeSkin x="200" y="130" id="changeSkin" visible="false"/>
 	<!--公告显示的位置，处在画面的最上层-->
 	<message:announceWnd id="lobbyAnnounce" x="50" y="36" visible="false"/>
 </s:Application>

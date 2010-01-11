@@ -51,9 +51,9 @@ package poker
 		private static const cardback2_h:int = 86;
 		
 		// 定义所有的牌在整图中的位置
-		// 所有的牌的定义，按照花色的顺序从 黑桃-》红桃-》梅花-》方块
-		// 牌值从 A开始到K结束,因为我对arraycollection不熟悉，所以是AAAA，然后2222,然后3333的顺序
-		// 最后的53，54是joker--司令。
+		// 所有的牌的定义，按照花色的顺序从 方块-》梅花-》红桃-》黑桃
+		// 牌值从3开始到2结束,所以是3333，4444，kkkk，AAAA，然后2222的顺序
+		// 最后的52，53是joker--司令。
 		private static var cardsRect:ArrayCollection = new ArrayCollection();
 		// 牌的排列间隔
 		public static const cardsWidth:int = 61;
