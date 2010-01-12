@@ -12,11 +12,11 @@
 			fontsize: 12;
 		}
 	</fx:Style>
-	<mx:Image source="@Embed('/assets/bg_5.swf')" includeIn="State3" id="bitmapimage1"/>
-	<s:Button includeIn="State3" x="228" skinClass="components.Button_changeSkin" y="10" click="btnChangeSkin_clickHandler(event)" toolTip="切换皮肤"/>
-	<s:Button includeIn="State3" x="184" skinClass="components.ButtonMsgEmotion" y="492" click="btnEmotion_clickHandler(event)" toolTip="表情"/>
+	<mx:Image includeIn="State3" id="bitmapimage1" creationComplete="panelBG_creationCompleteHandler(event)"/>
+	<s:Button includeIn="State3" x="228" skinClass="components.Button_changeSkin" y="10" click="btnChangeSkin_clickHandler(event)" toolTip="切换皮肤" creationComplete="btnChangeSkin_creationCompleteHandler(event)"/>
+	<s:Button includeIn="State3" x="184" y="492" click="btnEmotion_clickHandler(event)" toolTip="表情" creationComplete="btnMsgEmotion_creationCompleteHandler(event)"/>
 	<s:Button includeIn="State3" x="208" y="492" skinClass="components.ButtonMsgToAll" click="shoutbtn_clickHandler(event)" toolTip="喊话" enabled="false"/>
-	<s:Button includeIn="State3" x="232" y="492" skinClass="components.ButtonMsgOption" click="option_clickHandler(event)" toolTip="聊天设置"/>
+	<s:Button includeIn="State3" x="232" y="492" click="option_clickHandler(event)" toolTip="聊天设置" creationComplete="btnMsgOption_creationCompleteHandler(event)"/>
 	<mx:DataGrid id="lobbyplayerlist" includeIn="State3" x="13" y="41" width="243" editable="false" height="167" baseColor="#f6edae" alternatingItemColors="[#114734, #083025]" contentBackgroundAlpha="0" backgroundAlpha="0"
 		dataProvider="{StateGetRoomPlayerlist.Instance.roomlist}" dragEnabled="false"
 		headerStyleName="datagridheader" dragMoveEnabled="false" draggableColumns="false" horizontalGridLines="false" verticalGridLines="false">
@@ -28,16 +28,16 @@
 		</mx:columns>
 	</mx:DataGrid>
 	
-	<s:Button skinClass="components.Button_Item" click="Buttonitem_click()" toolTip="道具箱" x="80" y="221" includeIn="State3"/>
-	<s:Button x="43" y="221" skinClass="components.Button_Vita" click="Buttonvita_click()" toolTip="个人信息" includeIn="State3"/>
-	<s:Button skinClass="components.ButtonHelp" click="Buttonfriend_click()" toolTip="好友" x="115" y="220" includeIn="State3"/>
-	<s:Button x="153" y="221" skinClass="components.Button_Shop" click="Buttonshop_click()" includeIn="State3" toolTip="商店"/>
-	<s:Button label="自动加入" skinClass="components.Button_AutoJoinTable" id="BtnAutojoinTable" click="BtnAutojoinTable_clickHandler(event)" x="189" y="220" includeIn="State3" toolTip="自动加入房间"/>
-	<s:Button x="226" y="221" label="创建房间" skinClass="components.Button_CreateTable" id="BtnCreateTable" click="BtnCreateTable_clickHandler(event)" enabled="false" includeIn="State3" toolTip="创建房间"/>
+	<s:Button click="Buttonitem_click()" toolTip="道具箱" x="80" y="221" includeIn="State3" creationComplete="btnItem_creationCompleteHandler(event)"/>
+	<s:Button x="43" y="221" click="Buttonvita_click()" toolTip="个人信息" includeIn="State3" creationComplete="btnPlayerInfo_creationCompleteHandler(event)"/>
+	<s:Button click="Buttonfriend_click()" toolTip="好友" x="115" y="220" includeIn="State3" creationComplete="btnFriends_creationCompleteHandler(event)"/>
+	<s:Button x="153" y="221" click="Buttonshop_click()" includeIn="State3" toolTip="商店" creationComplete="btnShop_creationCompleteHandler(event)"/>
+	<s:Button label="自动加入" id="BtnAutojoinTable" click="BtnAutojoinTable_clickHandler(event)" x="189" y="220" includeIn="State3" toolTip="自动加入房间" creationComplete="BtnAutojoinTable_creationCompleteHandler(event)"/>
+	<s:Button x="226" y="221" label="创建房间" id="BtnCreateTable" click="BtnCreateTable_clickHandler(event)" enabled="false" includeIn="State3" toolTip="创建房间" creationComplete="BtnCreateTable_creationCompleteHandler(event)"/>
 	
 	<s:TextArea x="13" y="263" id="lobbychatbox" includeIn="State3" width="243" height="222" color="#FFFFFF" baseColor="#f6edae" editable="false" creationComplete="lobbychatbox_creationCompleteHandler(event)" contentBackgroundAlpha="0"/>
 	<s:TextArea x="12" y="494" id="lobbyinputbox" includeIn="State3" width="140" height="17" color="#FFFFFF" baseColor="#f6edae" editable="true" keyDown="lobbyinputbox_keyDownHandler(event)" paste="lobbyinputbox_pasteHandler(event)" contentBackgroundAlpha="0" maxChars="60" focusEnabled="false"/>	
-	<s:Button includeIn="State3" x="151" y="493" skinClass="components.Button_GameTalk" click="lobbySendMsg(event)" toolTip="发送聊天对话"/>
+	<s:Button includeIn="State3" x="151" y="493" click="lobbySendMsg(event)" toolTip="发送聊天对话" creationComplete="btnSendMsg_creationCompleteHandler(event)"/>
 	<!--</s:Group>-->	
 	<message:chatSetting x="99" y="456" id="lobbychatsetting" visible="false" includeIn="State3"/>
 	<message:chatEmotion id="lobbyEmotion" includeIn="State3" x="109" y="338" visible="false">
@@ -64,6 +64,16 @@
 	</s:states>
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.ButtonMsgEmotion2;
+			import components.skin2.ButtonMsgOption2;
+			import components.skin2.Button_AutoJoinTable2;
+			import components.skin2.Button_CreateTable2;
+			import components.skin2.Button_Friends2;
+			import components.skin2.Button_GameTalk2;
+			import components.skin2.Button_Item2;
+			import components.skin2.Button_Shop2;
+			import components.skin2.Button_Vita2;
+			
 			import item.shopRequester;
 			
 			import lobystate.StateGetFriends;
@@ -248,6 +258,81 @@
 						LobyManager.Instance.windowMutex = true;
 					}
 				}
+			}
+
+
+			protected function panelBG_creationCompleteHandler(event:FlexEvent):void
+			{
+				bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin1; 
+			}
+
+
+			protected function btnChangeSkin_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+
+			protected function btnMsgEmotion_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", ButtonMsgEmotion2); 
+			}
+
+
+			protected function btnMsgOption_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", ButtonMsgOption2);
+			}
+
+
+			protected function btnItem_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_Item2);
+			}
+
+
+			protected function btnPlayerInfo_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_Vita2);
+			}
+
+
+			protected function btnFriends_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_Friends2);
+			}
+
+
+			protected function btnShop_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_Shop2);
+			}
+
+
+			protected function BtnAutojoinTable_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_AutoJoinTable2);
+			}
+
+
+			protected function BtnCreateTable_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_CreateTable2);
+			}
+
+
+			protected function btnSendMsg_creationCompleteHandler(event:FlexEvent):void
+			{
+				var btn:Button = (event.currentTarget) as Button;
+				btn.setStyle("skinClass", Button_GameTalk2);
 			}
 
 		]]>

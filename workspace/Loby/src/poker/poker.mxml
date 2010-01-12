@@ -75,7 +75,7 @@
 	<s:Button x="755" y="535" skinClass="components.ButtonMsgOption" id="btnChatSetting" click="chatOptionBtn_clickHandler(event)" toolTip="聊天设置"/>
 	<s:Button x="732" y="535" skinClass="components.ButtonMsgToAll" id="btnShout" click="shoutgame_clickHandler(event)" toolTip="小喇叭" enabled="false"/>
 	<s:Button x="680" y="244" skinClass="components.ButtonSetup" id="btnSetting" click="btnSetting_clickHandler(event)" toolTip="游戏设置"/>
-	<s:Button x="629" y="243" skinClass="components.ButtonHelp" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
+	<s:Button x="629" y="243" skinClass="components.Button_Friends" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
 	<s:Button x="730" y="244" skinClass="components.ButtonExit" id="btnExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅"/>
 	<!--桌面上的房间位置和桌号显示-->
 	<s:Label x="12" y="15" width="82" height="25" fontSize="16" fontWeight="normal" id="label_tableName" color="#ffffff" textAlign="center"/>

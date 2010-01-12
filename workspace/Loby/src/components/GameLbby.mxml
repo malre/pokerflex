@@ -7,6 +7,7 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
 			[Bindable]
 			public var roomname:String;
 
@@ -62,6 +63,13 @@
 				}
 			}
 
+
+			protected function bg_4_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.bg_4_skin1;
+			}
+
 		]]>
 
 	</fx:Script>
@@ -82,7 +90,6 @@
 		<s:State name="State1"/>
 		<s:State name="State2"/>
 	</s:states>
-	<mx:Image source="@Embed('/assets/bg_4.swf')" includeIn="State1" x="1" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/bg_4.swf')" includeIn="State1" x="1" id="bitmapimage1" creationComplete="bg_4_creationCompleteHandler(event)"/>
 	<s:Label includeIn="State1" x="15" y="43" width="240" height="22" id="label_currentRoom" verticalAlign="middle"/>
-	<!--color="#F4A100"--> 
 </s:Group>
