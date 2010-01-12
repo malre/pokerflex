@@ -172,76 +172,6 @@ package poker
 
 		[Embed(source="../res/53.png")]
 		public static var Card53:Class;
-
-//		[Embed(source="../res/54.png")]							// back of card
-//		public static var Card54:Class;
-
-//		CardsRes.addItem(new GraphicsResource(new Card02()));		//3	方蝮需 	0
-//		CardsRes.addItem(new GraphicsResource(new Card15()));		//	草花		1
-//		CardsRes.addItem(new GraphicsResource(new Card28()));		//	 郤｢桃	2
-//		CardsRes.addItem(new GraphicsResource(new Card41()));		//  黑桃		3
-//
-//		CardsRes.addItem(new GraphicsResource(new Card03()));		//4
-//		CardsRes.addItem(new GraphicsResource(new Card16()));
-//		CardsRes.addItem(new GraphicsResource(new Card29()));
-//		CardsRes.addItem(new GraphicsResource(new Card42()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card04()));
-//		CardsRes.addItem(new GraphicsResource(new Card17()));
-//		CardsRes.addItem(new GraphicsResource(new Card30()));
-//		CardsRes.addItem(new GraphicsResource(new Card43()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card05()));
-//		CardsRes.addItem(new GraphicsResource(new Card18()));
-//		CardsRes.addItem(new GraphicsResource(new Card31()));
-//		CardsRes.addItem(new GraphicsResource(new Card44()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card06()));
-//		CardsRes.addItem(new GraphicsResource(new Card19()));
-//		CardsRes.addItem(new GraphicsResource(new Card32()));
-//		CardsRes.addItem(new GraphicsResource(new Card45()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card07()));
-//		CardsRes.addItem(new GraphicsResource(new Card20()));
-//		CardsRes.addItem(new GraphicsResource(new Card33()));
-//		CardsRes.addItem(new GraphicsResource(new Card46()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card08()));
-//		CardsRes.addItem(new GraphicsResource(new Card21()));
-//		CardsRes.addItem(new GraphicsResource(new Card34()));
-//		CardsRes.addItem(new GraphicsResource(new Card47()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card09()));		// 10
-//		CardsRes.addItem(new GraphicsResource(new Card22()));
-//		CardsRes.addItem(new GraphicsResource(new Card35()));
-//		CardsRes.addItem(new GraphicsResource(new Card48()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card10()));		// J
-//		CardsRes.addItem(new GraphicsResource(new Card23()));
-//		CardsRes.addItem(new GraphicsResource(new Card36()));
-//		CardsRes.addItem(new GraphicsResource(new Card49()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card11()));		// Q
-//		CardsRes.addItem(new GraphicsResource(new Card24()));
-//		CardsRes.addItem(new GraphicsResource(new Card37()));
-//		CardsRes.addItem(new GraphicsResource(new Card50()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card12()));		// K
-//		CardsRes.addItem(new GraphicsResource(new Card25()));
-//		CardsRes.addItem(new GraphicsResource(new Card38()));
-//		CardsRes.addItem(new GraphicsResource(new Card51()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card00()));		// A
-//		CardsRes.addItem(new GraphicsResource(new Card13()));
-//		CardsRes.addItem(new GraphicsResource(new Card26()));
-//		CardsRes.addItem(new GraphicsResource(new Card39()));
-//		CardsRes.addItem(new GraphicsResource(new Card01()));		// 2
-//		CardsRes.addItem(new GraphicsResource(new Card14()));
-//		CardsRes.addItem(new GraphicsResource(new Card27()));
-//		CardsRes.addItem(new GraphicsResource(new Card40()));
-//
-//		CardsRes.addItem(new GraphicsResource(new Card52()));
-//		CardsRes.addItem(new GraphicsResource(new Card53()));
 		
 		gameCardsRes.addItem(Card02);
 		gameCardsRes.addItem(Card15);		//	草花		1
@@ -312,12 +242,32 @@ package poker
 
 
 		
-		[Embed(source="../res/BG.png")]							// background
-		public static var BG00:Class;
-
 		[Embed(source="../res/cardback1.png")]
 		public static var cardback1:Class;
+		
+		[Embed(source="../res/sandglass.swf")]
+		public static var sandglass_skin1:Class;
+		[Embed(source="../res/skin2/sandglass.swf")]
+		public static var sandglass_skin2:Class;
+		[Embed(source="../res/skin3/sandglass.swf")]
+		public static var sandglass_skin3:Class;
+		
+		[Embed(source="../res/pass.swf")]
+		public static var pass_skin1:Class;
+		[Embed(source="../res/skin2/pass.swf")]
+		public static var pass_skin2:Class;
+		[Embed(source="../res/skin3/pass.swf")]
+		public static var pass_skin3:Class;
 
+		[Embed(source="../res/CPUAI.swf")]
+		public static var CPUAI_skin1:Class;
+		[Embed(source="../res/skin2/CPUAI.swf")]
+		public static var CPUAI_skin2:Class;
+		[Embed(source="../res/skin3/CPUAI.swf")]
+		public static var CPUAI_skin3:Class;
+
+		
+		// sound
 		[Embed(source="../res/sound/start.mp3")]
 		public static var sound_start:Class;
 

@@ -10,6 +10,7 @@
 			
 			import mx.controls.DataGrid;
 			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
 			
 			private var destLobbyid:int = -1;
 			private var destTableid:int = -1;
@@ -85,12 +86,18 @@
 				btnconfirm.enabled = true;
 			}
 
+
+			protected function backgroundBG_creationCompleteHandler(event:FlexEvent):void
+			{
+				backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG"/>
+	<mx:Image id="backgroundBG" creationComplete="backgroundBG_creationCompleteHandler(event)"/>
 	<mx:DataGrid id="invitationlist" x="31" y="42" width="302" height="193" editable="false" dragEnabled="false" dragMoveEnabled="false"
 				 dataProvider="{StateUpdateInvite.Instance.invitation}">
 		<mx:columns>

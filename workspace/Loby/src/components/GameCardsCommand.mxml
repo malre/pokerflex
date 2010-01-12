@@ -3,6 +3,11 @@
 
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.Button_Chupai2;
+			
+			import mx.controls.Image;
+			import mx.events.FlexEvent;
+			
 			import poker.Game;
 			import poker.gamestate.StateSendCards;
 			protected function sendCardsClicked(event:Event):void
@@ -26,13 +31,38 @@
 				Game.Instance.hint();
 			}
 
+
+			protected function image1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.ButtonBg_skin1;
+			}
+
+
+			protected function btnSendCards_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnSendCards.setStyle("skinClass", Button_Chupai2);
+			}
+
+
+			protected function btnDiscard_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnDiscard.setStyle("skinClass", Button_Chupai2);
+			}
+
+
+			protected function btnHint_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnHint.setStyle("skinClass", Button_Chupai2);
+			}
+
 		]]>
 	</fx:Script>
 
-	<mx:Image source="@Embed('/assets/ButtonBg.swf')"/>
-	<s:Button id="btnSendCards" label="出牌" x="40" y="2" skinClass="components.Button_Chupai" click="sendCardsClicked(event)" toolTip="出牌"/>
-	<s:Button id="btnDiscard" label="放弃" x="99" y="2" skinClass="components.Button_Chupai" click="discardClicked(event)" toolTip="放弃出牌"/>
-	<s:Button id="btnHint" label="提示" x="159" y="2" skinClass="components.Button_Chupai" click="btnHint_clickHandler(event)" toolTip="提示出牌"/>
+	<mx:Image creationComplete="image1_creationCompleteHandler(event)"/>
+	<s:Button id="btnSendCards" label="出牌" x="40" y="2" click="sendCardsClicked(event)" toolTip="出牌" creationComplete="btnSendCards_creationCompleteHandler(event)"/>
+	<s:Button id="btnDiscard" label="放弃" x="99" y="2" click="discardClicked(event)" toolTip="放弃出牌" creationComplete="btnDiscard_creationCompleteHandler(event)"/>
+	<s:Button id="btnHint" label="提示" x="159" y="2" click="btnHint_clickHandler(event)" toolTip="提示出牌" creationComplete="btnHint_creationCompleteHandler(event)"/>
 	<fx:Private>
 	</fx:Private>
 </s:Group>

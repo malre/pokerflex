@@ -9,6 +9,10 @@
 	>
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.Button_ShopNoBuy2;
+			import components.skin2.Button_confirm2;
+			import components.skin2.OptionWindow_CloseButton2;
+			
 			import lobystate.StateCreateTable;
 			import lobystate.StateUpdateRoomInfo;
 			
@@ -197,6 +201,51 @@
 				
 			}
 
+
+			protected function bg_creationCompleteHandler(event:FlexEvent):void
+			{
+				image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+			}
+
+
+			protected function textcreateroom_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.text_createroom_skin1; 
+			}
+
+
+			protected function textoptionwnd_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin1; 
+			}
+
+
+			protected function optioncontent_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin1; 
+			}
+
+
+			protected function btnclose_creationCompleteHandler(event:FlexEvent):void
+			{
+				button1.setStyle("skinClass", OptionWindow_CloseButton2);
+			}
+
+
+			protected function BtnConfirm_creationCompleteHandler(event:FlexEvent):void
+			{
+				BtnConfirm.setStyle("skinClass", Button_confirm2); 
+			}
+
+
+			protected function BtnCancel_creationCompleteHandler(event:FlexEvent):void
+			{
+				BtnCancel.setStyle("skinClass", Button_ShopNoBuy2); 
+			}
+
 		]]>
 
 	</fx:Script>
@@ -245,13 +294,13 @@
 		<s:State name="State2" enterState="state2_enterStateHandler(event)"/>
 		<s:State name="State3" enterState="state3_enterStateHandler(event)"/>
 	</s:states>
-	<mx:Image includeIn="State2,State3" source="@Embed('/assets/Bg_shop.swf')" id="image1"/>
-	<mx:Image includeIn="State2" source="@Embed('/assets/text_createroom.swf')"/>
-	<mx:Image includeIn="State3" source="@Embed('/assets/text_optionWnd.swf')"/>
-	<mx:Image includeIn="State2,State3" source="@Embed('/assets/optionWindow_text.swf')" id="image2" x="39" y="46"/>
-	<s:Button includeIn="State2,State3" x="330" y="11" skinClass="components.OptionWindow_CloseButton" id="button1" click="closeButton_click()"/>
-	<s:Button skinClass="components.Button_confirm" includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x="62" y="237" x.State3="131" y.State3="237" x.State2="62" y.State2="231"/>
-	<s:Button x="193" y="231" skinClass="components.Button_ShopNoBuy" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)"/>
+	<mx:Image includeIn="State2,State3" id="image1" creationComplete="bg_creationCompleteHandler(event)"/>
+	<mx:Image includeIn="State2" creationComplete="textcreateroom_creationCompleteHandler(event)"/>
+	<mx:Image includeIn="State3" creationComplete="textoptionwnd_creationCompleteHandler(event)"/>
+	<mx:Image includeIn="State2,State3" id="image2" x="39" y="46" creationComplete="optioncontent_creationCompleteHandler(event)"/>
+	<s:Button includeIn="State2,State3" x="330" y="11" id="button1" click="closeButton_click()" creationComplete="btnclose_creationCompleteHandler(event)"/>
+	<s:Button includeIn="State2,State3" id="BtnConfirm" click="BtnConfirm_clickHandler(event)" x="62" y="237" x.State3="131" x.State2="62" creationComplete="BtnConfirm_creationCompleteHandler(event)"/>
+	<s:Button x="193" y="237" id="BtnCancel" includeIn="State2" click="BtnCancel_clickHandler(event)" creationComplete="BtnCancel_creationCompleteHandler(event)"/>
 	<mx:ComboBox includeIn="State2,State3" x="145" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="lowlevel" width.State2="60"/>
 	<mx:ComboBox includeIn="State2,State3" x="252" y="82" dataProvider="{LevelDefine.levelName}" editable="false" width="80" id="highlevel" x.State2="236" y.State2="82" width.State2="60"/>
 	<s:CheckBox includeIn="State2,State3" x="146" y="115" id="checkboxAllowGold" click="checkboxAllowGold_clickHandler(event)" selected="true"/>

@@ -89,6 +89,14 @@
 	</s:transitions>
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.Button_ItemUse2;
+			import components.skin2.Button_Page2;
+			import components.skin2.Button_SendGift2;
+			import components.skin2.Button_ShopBuy2;
+			import components.skin2.Button_ShopNoBuy2;
+			import components.skin2.Button_confirm2;
+			import components.skin2.OptionWindow_CloseButton2;
+			
 			import item.itembuyRequest;
 			import item.itemuseRequest;
 			import item.playerItemsRequester;
@@ -373,6 +381,84 @@
 				img.source = ResourceManagerLobby.Instance.item_text_skin1;
 			}
 
+
+			protected function btnCloseWnd_creationCompleteHandler(event:FlexEvent):void
+			{
+				button1.setStyle("skinClass", OptionWindow_CloseButton2); 
+			}
+
+
+			protected function pageleft_creationCompleteHandler(event:FlexEvent):void
+			{
+				pageleft.setStyle("skinClass", Button_Page2); 
+			}
+
+
+			protected function pageright_creationCompleteHandler(event:FlexEvent):void
+			{
+				pageright.setStyle("skinClass", Button_Page2); 
+			}
+
+			protected function subbg_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.Bg_shop_skin1;
+			}
+
+
+			protected function Button_ShopBuy_creationCompleteHandler(event:FlexEvent):void
+			{
+				button8.setStyle("skinClass", Button_ShopBuy2); 
+			}
+
+
+			protected function Button_ShopNoBuy_creationCompleteHandler(event:FlexEvent):void
+			{
+				button9.setStyle("skinClass", Button_ShopNoBuy2);
+			}
+
+
+			protected function Button_ItemUse_creationCompleteHandler(event:FlexEvent):void
+			{
+				button10.setStyle("skinClass", Button_ItemUse2);
+			}
+
+
+			protected function present_pageleft_creationCompleteHandler(event:FlexEvent):void
+			{
+				present_pageleft.setStyle("skinClass", Button_Page2);
+			}
+
+
+			protected function present_pageright_creationCompleteHandler(event:FlexEvent):void
+			{
+				present_pageright.setStyle("skinClass", Button_Page2); 
+			}
+
+
+			protected function btnPresent_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnPresent.setStyle("skinClass", Button_SendGift2);
+			}
+
+
+			protected function itemnumleft_creationCompleteHandler(event:FlexEvent):void
+			{
+				itemnumleft.setStyle("skinClass", Button_Page2); 
+			}
+
+
+			protected function itemnumright_creationCompleteHandler(event:FlexEvent):void
+			{
+				itemnumright.setStyle("skinClass", Button_Page2); 
+			}
+
+
+			protected function btngetGiftConfirm_creationCompleteHandler(event:FlexEvent):void
+			{
+				btngetGiftConfirm.setStyle("skinClass", Button_confirm2); 
+			}
+
 		]]>
 
 	</fx:Script>
@@ -387,7 +473,7 @@
 	<mx:Image includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1" creationComplete="bg_creationCompleteHandler(event)"/>
 	<mx:Image x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub" creationComplete="shot_text_creationCompleteHandler(event)"/>
 	<mx:Image x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub" creationComplete="item_text_creationCompleteHandler(event)"/>
-	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()"/>
+	<s:Button label="Button" x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()" creationComplete="btnCloseWnd_creationCompleteHandler(event)"/>
 	<!--道具的图片-->
 	<s:Group includeIn="StateItemMain,StateShopMain" id="item_icon_group" width="312" height="190" x="23" y="40">
 		<mx:Image id="item0" name="item0" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="5" y="7"/>
@@ -403,28 +489,28 @@
 		<mx:Image id="item10" name="item10" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="155" y="132"/>
 		<mx:Image id="item11" name="item11" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="230" y="132"/>
 	</s:Group>
-	<s:Button includeIn="StateItemMain,StateShopMain" id="pageleft" skinClass="components.Button_Page" click="pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="上一页" enabled="false" x="130" y="241"/>
-	<s:Button includeIn="StateItemMain,StateShopMain" id="pageright" skinClass="components.Button_Page" rotation="180" click="pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="下一页" x="223" y="260"/>
+	<s:Button includeIn="StateItemMain,StateShopMain" id="pageleft" click="pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="上一页" enabled="false" x="130" y="241" creationComplete="pageleft_creationCompleteHandler(event)"/>
+	<s:Button includeIn="StateItemMain,StateShopMain" id="pageright" rotation="180" click="pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" toolTip="下一页" x="223" y="260" creationComplete="pageright_creationCompleteHandler(event)"/>
 	<mx:Label includeIn="StateItemMain,StateShopMain" id="pagenumber" text="1" width="32" fontSize="16" textAlign="center" fontWeight="bold" color="#000000" x="161" y="238"/>
 
-	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateItemGetGift,StateItemSub,StateShopSub" id="bitmapimage6" x="0" y="0"/>
+	<mx:Image includeIn="StateItemGetGift,StateItemSub,StateShopSub" id="bitmapimage6" x="0" y="0" creationComplete="subbg_creationCompleteHandler(event)"/>
 	<mx:Image includeIn="StateItemGetGift,StateItemSub,StateShopSub" id="Imgbuyitem" x="50" y="60" x.StateItemGetGift="162" y.StateItemGetGift="173"/>
-	<s:Button includeIn="StateShopSub" x="66" y="227" skinClass="components.Button_ShopBuy" id="button8" click="BtnItemBuy()"/>
-	<s:Button includeIn="StateItemSub,StateShopSub" skinClass="components.Button_ShopNoBuy" id="button9" click="BtnItemNotBuy()" x="194" y="227"/>
-	<s:Button includeIn="StateItemSub" x="62" y="227" skinClass="components.Button_ItemUse" id="button10" click="ItemUseClick()"/>
+	<s:Button includeIn="StateShopSub" x="66" y="227" id="button8" click="BtnItemBuy()" creationComplete="Button_ShopBuy_creationCompleteHandler(event)"/>
+	<s:Button includeIn="StateItemSub,StateShopSub" id="button9" click="BtnItemNotBuy()" x="194" y="227" creationComplete="Button_ShopNoBuy_creationCompleteHandler(event)"/>
+	<s:Button includeIn="StateItemSub" x="62" y="227" id="button10" click="ItemUseClick()" creationComplete="Button_ItemUse_creationCompleteHandler(event)"/>
 	<s:RichText includeIn="StateItemSub,StateShopSub" color="#000033" text="说明" fontSize="18" fontFamily="宋体" id="itemDescribe" width="159" height="92" x="154" y="54"/>
-	<s:Label includeIn="StateItemSub,StateShopSub" x="42" y="157" text="价格：" color="#000000" fontFamily="宋体" fontSize="18" text.StateItemSub="价格:" text.StateShopSub="价格:"/>
+	<s:Label includeIn="StateItemSub,StateShopSub" x="42" y="157" text="价格：" color="#000000" fontFamily="宋体" fontSize="18"/>
 	<s:RichText includeIn="StateItemSub,StateShopSub" color="#000000" text="价格，使用限制" fontSize="18" fontFamily="宋体" id="itemPrice" width="157" height="20" x="154" y="157"/>
 	<!--赠送相关，数量选择按钮-->
-	<s:Button includeIn="StateItemSub" id="present_pageleft" skinClass="components.Button_Page" click="present_pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" x="173" y="193"/>
-	<s:Button includeIn="StateItemSub" id="present_pageright" skinClass="components.Button_Page" rotation="180" click="present_pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" x="254" y="212"/>
+	<s:Button includeIn="StateItemSub" id="present_pageleft" click="present_pageleft_clickHandler(event)" buttonMode="true" useHandCursor="true" x="173" y="193" creationComplete="present_pageleft_creationCompleteHandler(event)"/>
+	<s:Button includeIn="StateItemSub" id="present_pageright" rotation="180" click="present_pageright_clickHandler(event)" buttonMode="true" useHandCursor="true" x="254" y="212" creationComplete="present_pageright_creationCompleteHandler(event)"/>
 	<s:Label includeIn="StateItemSub" id="present_num" x="199" y="196" color="#000000" fontSize="18" width="29" textAlign="center" text="1" fontWeight="normal"/>
-	<s:Button includeIn="StateItemSub" id="btnPresent" x="265" y="191" label="赠送" click="btnPresent_clickHandler(event)"/>
+	<s:Button includeIn="StateItemSub" id="btnPresent" x="265" y="191" label="赠送" click="btnPresent_clickHandler(event)" creationComplete="btnPresent_creationCompleteHandler(event)"/>
 	
 	<s:RichText includeIn="StateItemSub,StateShopSub" color="#000000" text="道具名" fontSize="18" fontFamily="宋体" id="itemName" width="93" height="51" x="42" y="112"/>
 	<mx:Label includeIn="StateShopSub" x="80" y="185" text="1" fontWeight="bold" fontSize="16" id="itembuyNumber" textAlign="center" color="#000000"/>
-	<s:Button includeIn="StateShopSub" id="itemnumleft" x="47" y="188" skinClass="components.Button_Page" click="itemnumleft_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
-	<s:Button includeIn="StateShopSub" id="itemnumright" x="134" y="206" skinClass="components.Button_Page" rotation="180" click="itemnumright_clickHandler(event)" buttonMode="true" useHandCursor="true"/>
+	<s:Button includeIn="StateShopSub" id="itemnumleft" x="47" y="188" click="itemnumleft_clickHandler(event)" buttonMode="true" useHandCursor="true" creationComplete="itemnumleft_creationCompleteHandler(event)"/>
+	<s:Button includeIn="StateShopSub" id="itemnumright" x="134" y="206" rotation="180" click="itemnumright_clickHandler(event)" buttonMode="true" useHandCursor="true" creationComplete="itemnumright_creationCompleteHandler(event)"/>
 	<s:Label includeIn="StateItemSub" x="42" y="193" text="数量:" width="54" height="24" color="#000000" fontFamily="宋体" fontSize="18"/>
 	<mx:Label includeIn="StateItemSub" x="95" y="190" width="65" fontSize="18" id="itemnumber" textAlign="center" color="#000000"/>
 	<!--获得赠送的道具-->
@@ -432,7 +518,7 @@
 	<s:Label includeIn="StateItemGetGift" id="presenterName" x="102" y="80" text="好友名" width="228" height="23" fontSize="18"/>
 	<s:Label includeIn="StateItemGetGift" x="44" y="105" text="赠送给您：" fontSize="18" color="#000000"/>
 	<s:Label includeIn="StateItemGetGift" id="presentName" x="102" y="131" text="道具x1" fontSize="18" width="225"/>
-	<s:Button includeIn="StateItemGetGift" id="btngetGiftConfirm" x="132" y="228" skinClass="components.Button_confirm" click="btngetGiftConfirm_clickHandler(event)"/>
+	<s:Button includeIn="StateItemGetGift" id="btngetGiftConfirm" x="132" y="228" click="btngetGiftConfirm_clickHandler(event)" creationComplete="btngetGiftConfirm_creationCompleteHandler(event)"/>
 
 	<components:MSGbox id="msgbox" x="44" y="85" visible="false"/>
 </s:Group>
