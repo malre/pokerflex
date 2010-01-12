@@ -61,6 +61,8 @@
 
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.OptionWindow_CloseButton2;
+			
 			import lobystate.StateGetFriends;
 			import lobystate.StateSendGift;
 			
@@ -188,20 +190,37 @@
 			{
 				CloseButton(event);
 			}
+
+			protected function backgroundBG_creationCompleteHandler(event:FlexEvent):void
+			{
+				backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+			}
+
+
+			protected function title_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.friendslist_title_skin1;
+			}
+
+
+			protected function btnClose_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnClose.setStyle("skinClass", OptionWindow_CloseButton2); 
+			}
+
 		]]>
 	</fx:Script>	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="backgroundBG" includeIn="StateGift,StateLoadingdata,StateMain"/>
-	<mx:Image source="@Embed('/assets/friendslist_title.swf')" x="11" y="3" includeIn="StateGift,StateLoadingdata,StateMain"/>
-	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" click="CloseButton(event)" id="btnClose" includeIn="StateGift,StateLoadingdata,StateMain"/>
+	<mx:Image id="backgroundBG" includeIn="StateGift,StateLoadingdata,StateMain" creationComplete="backgroundBG_creationCompleteHandler(event)"/>
+	<mx:Image x="11" y="3" includeIn="StateGift,StateLoadingdata,StateMain" creationComplete="title_creationCompleteHandler(event)"/>
+	<s:Button x="330" y="11" click="CloseButton(event)" id="btnClose" includeIn="StateGift,StateLoadingdata,StateMain" creationComplete="btnClose_creationCompleteHandler(event)"/>
 	<mx:DataGrid x="21" y="41" width="319" height="227" id="friendlist" includeIn="StateGift,StateLoadingdata,StateMain"
 				 dataProvider="{StateGetFriends.Instance.friends}" height.StateMain="193" height.StateGift="193">
 		<mx:columns>
 			<mx:DataGridColumn headerText="玩家名" dataField="name"/>
-<!--			<mx:DataGridColumn headerText="uid" dataField="uid"/>
-			<mx:DataGridColumn headerText="pid" dataField="pid"/>-->
 		</mx:columns>
 	</mx:DataGrid>
 	<s:Button includeIn="StateGift,StateMain" id="btnInvite" x="44" y="243" label="邀请" click.StateMain="btnInvite_clickHandler(event)" x.StateGift="87" y.StateGift="243" label.StateGift="赠送" click.StateGift="presentSomebody(event)"/>

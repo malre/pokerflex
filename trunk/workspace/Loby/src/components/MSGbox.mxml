@@ -6,7 +6,11 @@
 	currentState="StateBase" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.Button_ItemUse2;
+			import components.skin2.Button_confirm2;
+			
 			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
 			import mx.events.StateChangeEvent;
 			protected function closeButton_click():void
 			{
@@ -19,6 +23,25 @@
 				{
 					visible = false;
 					FlexGlobals.topLevelApplication.shopmenu.BtnItemNotBuy();
+				}
+			}
+
+
+			protected function bg_creationCompleteHandler(event:FlexEvent):void
+			{
+				bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin1;
+			}
+
+
+			protected function button1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(currentState == "StateUse")
+				{
+					button1.setStyle("skinClass", Button_ItemUse2); 
+				}
+				else if(currentState == "StateConfirm")
+				{
+					button1.setStyle("skinClass", Button_confirm2);
 				}
 			}
 
@@ -58,7 +81,7 @@
 		<s:State name="StateBase"/>
 		<s:State name="StateConfirm"/>
 	</s:states>
-	<mx:Image source="@Embed('/assets/systemBG.swf')" id="bitmapimage6" includeIn="StateConfirm,StateUse"/>
+	<mx:Image id="bitmapimage6" includeIn="StateConfirm,StateUse" creationComplete="bg_creationCompleteHandler(event)"/>
 	<s:RichText includeIn="StateConfirm,StateUse" x="36" y="49" color="0x4769C4" text="Text" fontSize="18" fontFamily="宋体" id="desc" width="205" height="68" textAlign.StateConfirm="center"/>
-	<s:Button includeIn="StateConfirm,StateUse" x="87" y="125" skinClass="components.Button_ItemUse" id="button1" click="closeButton_click()" skinClass.StateConfirm="components.Button_confirm"/>
+	<s:Button includeIn="StateConfirm,StateUse" x="87" y="125" id="button1" click="closeButton_click()" creationComplete="button1_creationCompleteHandler(event)"/>
 </s:Group>

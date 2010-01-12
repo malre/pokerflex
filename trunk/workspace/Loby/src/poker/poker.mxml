@@ -12,8 +12,9 @@
 
 	<!--<mx:SWFLoader id="BGswf" source="@Embed('assets/gameBG.swf')" autoLoad="true"/>-->
 	<s:Group id="gamebg">
-		<s:BitmapImage x="0" y="0" width="780" height="560" source="@Embed('res/BG.png')"/>
-
+		<mx:Image x="0" y="0" creationComplete="gamebg_creationCompleteHandler(event)"/>
+		<mx:Image x="190" y="216" creationComplete="logo_creationCompleteHandler(event)"/>
+		<mx:Image x="539" y="1" creationComplete="panel_creationCompleteHandler(event)"/>
 	</s:Group>
 	<!--玩家打出的牌的层-->
 	<s:Group id="gamePlayedcardLayerDown">
@@ -43,9 +44,9 @@
 	<components:GameCardsCommand id="commandbar" x="270" y="350">
 	</components:GameCardsCommand>
 	<!--算牌器-->
-	<s:Button x="7" y="524" id="btnCardView" click="requestCardHistory()" skinClass="components.Button_calcCards" enabled="true" visible="true"/>
-	<s:Button x="7" y="493" id="cpuAI" click="cpuAI_clickHandler(event)" skinClass="components.Button_CpuPlay" visible="false"/>
-	<s:Button x="7" y="493" id="cpuAICancel" click="cpuAI_clickHandler(event)" skinClass="components.Button_CpuPlayCancel" visible="false"/>
+	<s:Button x="7" y="524" id="btnCardView" click="requestCardHistory()" enabled="true" visible="true" creationComplete="btnCardView_creationCompleteHandler(event)"/>
+	<s:Button x="7" y="493" id="cpuAI" click="cpuAI_clickHandler(event)" visible="false" creationComplete="cpuAI_creationCompleteHandler(event)"/>
+	<s:Button x="7" y="493" id="cpuAICancel" click="cpuAI_clickHandler(event)" visible="false" creationComplete="cpuAICancel_creationCompleteHandler(event)"/>
 	<!--玩家头像-->
 	<s:Group x="238" y="10" width="48" height="48" id="avatarUpGroup" creationComplete="avatarUpGroup_creationCompleteHandler(event)">
 		<mx:Image width="48" height="48" id="Img_playerAvatarUp" click="Img_playerAvatarUp_clickHandler(event)"/>
@@ -69,14 +70,14 @@
 	<s:TextArea x="547" y="291" width="223" height="236" color="#FFFFFF" baseColor="#f6edae" id="gamechatbox" editable="false" contentBackgroundAlpha="0"/>
 	<s:TextArea x="543" y="536" width="143" height="18" color="#FFFFFF" id="gameinputbox" editable="true" keyDown="gameinputbox_keyDownHandler(event)" contentBackgroundAlpha="0" maxChars="60" focusEnabled="false"/>
 	<!--聊天上的按钮和选项设置等等-->
-	<s:Button x="235" y="456" skinClass="components.ButtonReady" id="btnReady" click="gameReadyClicked(event)" toolTip="准备游戏"/>
-	<s:Button x="684" y="535" skinClass="components.Button_GameTalk" id="btnTalk" click="gameSendMsg_clickHandler(event)" toolTip="发送聊天对话"/>
-	<s:Button x="710" y="535" skinClass="components.ButtonMsgEmotion" id="btnEmotion" click="chatEmotion_clickHandler(event)" toolTip="表情"/>
-	<s:Button x="755" y="535" skinClass="components.ButtonMsgOption" id="btnChatSetting" click="chatOptionBtn_clickHandler(event)" toolTip="聊天设置"/>
+	<s:Button x="235" y="456" id="btnReady" click="gameReadyClicked(event)" toolTip="准备游戏" creationComplete="btnReady_creationCompleteHandler(event)"/>
+	<s:Button x="684" y="535" id="btnTalk" click="gameSendMsg_clickHandler(event)" toolTip="发送聊天对话" creationComplete="btnTalk_creationCompleteHandler(event)"/>
+	<s:Button x="710" y="535" id="btnEmotion" click="chatEmotion_clickHandler(event)" toolTip="表情" creationComplete="btnEmotion_creationCompleteHandler(event)"/>
+	<s:Button x="755" y="535" id="btnChatSetting" click="chatOptionBtn_clickHandler(event)" toolTip="聊天设置" creationComplete="btnChatSetting_creationCompleteHandler(event)"/>
 	<s:Button x="732" y="535" skinClass="components.ButtonMsgToAll" id="btnShout" click="shoutgame_clickHandler(event)" toolTip="小喇叭" enabled="false"/>
-	<s:Button x="680" y="244" skinClass="components.ButtonSetup" id="btnSetting" click="btnSetting_clickHandler(event)" toolTip="游戏设置"/>
-	<s:Button x="629" y="243" skinClass="components.Button_Friends" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏"/>
-	<s:Button x="730" y="244" skinClass="components.ButtonExit" id="btnExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅"/>
+	<s:Button x="680" y="244" id="btnSetting" click="btnSetting_clickHandler(event)" toolTip="游戏设置" creationComplete="btnSetting_creationCompleteHandler(event)"/>
+	<s:Button x="630" y="243" id="btnFriends" height="44" width="41" click="btnHelp_clickHandler(event)" toolTip="邀请好友加入游戏" creationComplete="btnFriends_creationCompleteHandler(event)"/>
+	<s:Button x="730" y="244" id="btnExit" click="btnExit_clickHandler(event)" toolTip="返回游戏大厅" creationComplete="btnExit_creationCompleteHandler(event)"/>
 	<!--桌面上的房间位置和桌号显示-->
 	<s:Label x="12" y="15" width="82" height="25" fontSize="16" fontWeight="normal" id="label_tableName" color="#ffffff" textAlign="center"/>
 
@@ -126,15 +127,15 @@
 	<mx:Label x="655" y="81" color="#000000" id="textPlayerSelf_level" height="18" width="94"/>
 	<mx:Label x="655" y="101" color="#000000" id="textPlayerSelf_gold" height="18" width="94"/>
 	<!--倒计时的沙漏和数字-->
-	<mx:Image x="95" y="231" id="sandglass" source="@Embed('../res/sandglass.swf')" width="16" height="28"/>
+	<mx:Image x="95" y="231" id="sandglass" width="16" height="28" creationComplete="sandglass_creationCompleteHandler(event)"/>
 	<mx:Label x="260" y="81" width="26" fontWeight="bold" textAlign="left" id="label_leftTimeCounter" color="#000000"/>
 	<!--放弃-->
-	<mx:Image x="193" y="128" id="imgDiscardUp" source="@Embed('../res/pass.swf')"/>
-	<mx:Image x="85" y="245" id="imgDiscardLeft" source="@Embed('../res/pass.swf')"/>
-	<mx:Image x="200" y="338" id="imgDiscardDown" source="@Embed('../res/pass.swf')"/>
-	<mx:Image x="298" y="246" id="imgDiscardRight" source="@Embed('../res/pass.swf')"/>
+	<mx:Image x="193" y="128" id="imgDiscardUp" creationComplete="imgDiscardUp_creationCompleteHandler(event)"/>
+	<mx:Image x="85" y="245" id="imgDiscardLeft" creationComplete="imgDiscardLeft_creationCompleteHandler(event)"/>
+	<mx:Image x="200" y="338" id="imgDiscardDown" creationComplete="imgDiscardDown_creationCompleteHandler(event)"/>
+	<mx:Image x="298" y="246" id="imgDiscardRight" creationComplete="imgDiscardRight_creationCompleteHandler(event)"/>
 	<!--托管显示图-->
-	<mx:Image x="235" y="419" id="cpuAIAnimation" source="@Embed('assets/CPUAI.swf')" visible="false"/>
+	<mx:Image x="235" y="419" id="cpuAIAnimation" visible="false" creationComplete="cpuAIAnimation_creationCompleteHandler(event)"/>
 	<!--动画特效-->
 	<s:Group id="animationGroup0"/>
 	<s:Group id="animationGroup1"/>
@@ -164,7 +165,18 @@
 
 	<fx:Script>
     	<![CDATA[
-			import mx.events.DragEvent;
+			import components.skin2.ButtonMsgEmotion2;
+			import components.skin2.ButtonMsgOption2;
+			import components.skin2.ButtonReady2;
+			import components.skin2.ButtonSetup2;
+			import components.skin2.Button_CpuPlay2;
+			import components.skin2.Button_CpuPlayCancel2;
+			import components.skin2.Button_Exit2;
+			import components.skin2.Button_Friends2;
+			import components.skin2.Button_GameTalk2;
+			import components.skin2.Button_calcCards2;
+			import components.Menu_GameCommand;
+			
 			import lobystate.StateGetFriends;
 			import lobystate.StateGetTableSettingFromLobby;
 			
@@ -173,11 +185,9 @@
 			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
-			import mx.managers.DragManager;
 			
 			import poker.gamestate.StateUpdateWhileGame;
 			import poker.gamestate.StateUpdateWhileWait;
-			import components.Menu_GameCommand;
 
 			protected var createOver:Boolean = false;
 			protected var inGame:Boolean = false;
@@ -653,6 +663,119 @@
 //					playerCommandHandle(StateUpdateWhileWait.Instance.lastSuccData.players[index].pid);
 				}
 			}
+
+			protected function gamebg_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
+			}
+
+			protected function logo_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.gameLogo_skin1;
+			}
+
+			protected function panel_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.gamePanel_skin1;
+			}
+
+			protected function btnCardView_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnCardView.setStyle("skinClass", Button_calcCards2);
+			}
+
+
+			protected function cpuAI_creationCompleteHandler(event:FlexEvent):void
+			{
+				cpuAI.setStyle("skinClass", Button_CpuPlay2);
+			}
+
+
+			protected function cpuAICancel_creationCompleteHandler(event:FlexEvent):void
+			{
+				cpuAICancel.setStyle("skinClass", Button_CpuPlayCancel2);
+			}
+
+			protected function btnReady_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnReady.setStyle("skinClass", ButtonReady2);
+			}
+
+
+			protected function btnTalk_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnTalk.setStyle("skinClass", Button_GameTalk2); 
+			}
+
+
+			protected function btnEmotion_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnEmotion.setStyle("skinClass", ButtonMsgEmotion2); 			
+			}
+
+
+			protected function btnChatSetting_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnChatSetting.setStyle("skinClass", ButtonMsgOption2);
+			}
+
+
+			protected function btnSetting_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnSetting.setStyle("skinClass", ButtonSetup2);
+			}
+
+
+			protected function btnFriends_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnFriends.setStyle("skinClass", Button_Friends2);
+			}
+
+
+			protected function btnExit_creationCompleteHandler(event:FlexEvent):void
+			{
+				btnExit.setStyle("skinClass", Button_Exit2);
+			}
+
+
+			protected function sandglass_creationCompleteHandler(event:FlexEvent):void
+			{
+				sandglass.source = ResourceManagerPoker.sandglass_skin1; 
+			}
+
+
+			protected function imgDiscardUp_creationCompleteHandler(event:FlexEvent):void
+			{
+				imgDiscardUp.source = ResourceManagerPoker.pass_skin1; 
+			}
+
+
+			protected function imgDiscardLeft_creationCompleteHandler(event:FlexEvent):void
+			{
+				imgDiscardLeft.source = ResourceManagerPoker.pass_skin1;
+			}
+
+
+			protected function imgDiscardDown_creationCompleteHandler(event:FlexEvent):void
+			{
+				imgDiscardDown.source = ResourceManagerPoker.pass_skin1;
+			}
+
+
+			protected function imgDiscardRight_creationCompleteHandler(event:FlexEvent):void
+			{
+				imgDiscardRight.source = ResourceManagerPoker.pass_skin1;
+			}
+
+
+			protected function cpuAIAnimation_creationCompleteHandler(event:FlexEvent):void
+			{
+				cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin1; 
+			}
+
     	]]>
     </fx:Script>
 </mx:Canvas>
