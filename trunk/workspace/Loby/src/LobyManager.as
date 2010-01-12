@@ -405,7 +405,7 @@ package
 						var img:Image = new Image();
 						img.x = tableStartX + (intervalX+51)*j;
 						img.y = tableStartY + (intervalY+52)*i;
-						img.load(ResourceManager.imgTable);
+						img.load(ResourceManagerLobby.Instance.imgTable);
 						{
 							// 为了达到一个重叠的效果，把上面的椅子在桌子之前描画
 							canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+12, img.y-28, 0));
@@ -587,7 +587,7 @@ package
 			// 进行一定的修改，不再使用按钮，而是直接的椅子的图
 			//var btn:mx.controls.Button = new mx.controls.Button();、
 			var btn:Image = new Image();
-			btn.source = ResourceManager.imgChair;
+			btn.source = ResourceManagerLobby.Instance.imgChair;
 			btn.x = x;
 			btn.y = y;
 			btn.id = id;

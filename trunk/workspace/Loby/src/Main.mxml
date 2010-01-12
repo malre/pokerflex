@@ -13,6 +13,10 @@
 		preloader="GameLoadingbar">
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.Button_toLastTable2;
+			import components.skin2.Button_toLobbyface2;
+			import components.skin2.Button_toRoom2;
+			
 			import lobystate.StateGetPlayerInfo;
 			
 			import mx.controls.Image;
@@ -143,7 +147,7 @@
 						img.x = 0;
 						img.y = 0;
 						img.id = "grouptable_"+(id+1).toString();
-						img.load(ResourceManager.imgTable);
+						img.load(ResourceManagerLobby.Instance.imgTable);
 						{
 							// 为了达到一个重叠的效果，把上面的椅子在桌子之前描画
 							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "up"+id.toString(), img.x+12, img.y-28, 0), 0);
@@ -189,6 +193,55 @@
 				friendslist.CloseButton(null);
 			}
 
+			// 以下开始是皮肤的识别和切换部分。
+			protected function Bg_DT_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				if(StateGetPlayerInfo.Instance.skinNo == 0)
+				{
+					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
+				}
+			}
+			
+			protected function lobbyPanel_creationCompleteHandler(event:FlexEvent):void
+			{
+				var panel:Image = (event.currentTarget) as Image;
+				panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin1;
+				
+			}
+
+
+			protected function btn2lobby_creationCompleteHandler(event:FlexEvent):void
+			{
+				btn2lobby.setStyle("skinClass", Button_toLobbyface2);
+				
+			}
+
+
+			protected function btn2LastTable_creationCompleteHandler(event:FlexEvent):void
+			{
+				btn2LastTable.setStyle("skinClass", Button_toLastTable2);
+			}
+
+
+			protected function btn2room_creationCompleteHandler(event:FlexEvent):void
+			{
+				btn2room.setStyle("skinClass", Button_toRoom2);
+			}
+
+
+			protected function text_gamelist_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.text_gamelist_skin1;
+			}
+			
+			protected function text_gamelobby_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.text_gamelobby_skin1;
+			}
+
 		]]>
 	</fx:Script>
 	<s:states>
@@ -211,13 +264,13 @@
 		<!--<fx:String id="mk" source="Introduce.xml"/>-->
 	</fx:Declarations>
 	<fx:DesignLayer d:userLabel="bgp">
-		<s:BitmapImage source="@Embed('/assets/Bg_DT.png')" resizeMode="scale" d:userLabel="BgP"/>
-		<mx:Image source="@Embed('assets/lobbyPanel.swf')"/>
-		<s:Button skinClass="components.Button_toLobbyface" id="btn2lobby" x="492" y="4" click="tolobby_clickHandler(event)" includeIn="room"/>
-		<s:Button includeIn="room" x="651" y="4" id="btn2LastTable" skinClass="components.Button_toLastTable" enabled="false" click="btn2LastTable_clickHandler(event)"/>
-		<s:Button skinClass="components.Button_toRoom" id="btn2room" x="492" y="4" enabled="false" click="toroom_clickHandler(event)" includeIn="lobby"/>
-		<mx:Image x="357" y="35" source="@Embed('assets/text_gamelist.swf')" includeIn="lobby"/>
-		<mx:Image x="268" y="36" source="@Embed('assets/text_gamelobby.swf')" includeIn="room"/>
+		<mx:Image creationComplete="Bg_DT_creationCompleteHandler(event)"/>
+		<mx:Image creationComplete="lobbyPanel_creationCompleteHandler(event)"/>
+		<s:Button id="btn2lobby" x="492" y="4" click="tolobby_clickHandler(event)" includeIn="room" creationComplete="btn2lobby_creationCompleteHandler(event)"/>
+		<s:Button includeIn="room" x="651" y="4" id="btn2LastTable" enabled="false" click="btn2LastTable_clickHandler(event)" creationComplete="btn2LastTable_creationCompleteHandler(event)"/>
+		<s:Button id="btn2room" x="492" y="4" enabled="false" click="toroom_clickHandler(event)" includeIn="lobby" creationComplete="btn2room_creationCompleteHandler(event)"/>
+		<mx:Image x="357" y="35" includeIn="lobby" creationComplete="text_gamelist_creationCompleteHandler(event)"/>
+		<mx:Image x="268" y="36" includeIn="room" creationComplete="text_gamelobby_creationCompleteHandler(event)"/>
 		<mx:Label includeIn="room" x="373" y="38" text="-" color="#FFFFFF" fontFamily="黑体" fontWeight="bold" fontSize="16"/>
 		<mx:Label includeIn="room" x="386" y="38" id="label_roomname" color="#FFFFFF" fontSize="16" fontFamily="黑体" width="93" text="{lobbypanel.roomname}"/>
 		<components:CustomComponent3 x="500" y="35" id="functionpanel"/>

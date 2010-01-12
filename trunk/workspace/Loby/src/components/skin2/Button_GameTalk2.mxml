@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:th="http://ns.adobe.com/thermo/2009" xmlns:mx="library://ns.adobe.com/flex/halo">
+	<s:transitions>
+		<s:Transition fromState="up" toState="over" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage2}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="down" toState="up" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage3}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Fade duration="0"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<mx:Image source="@Embed('/assets/Button_GameTalk_up.swf')" includeIn="up" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/Button_GameTalk_over.swf')" includeIn="over" id="bitmapimage2"/>
+	<mx:Image source="@Embed('/assets/Button_GameTalk_down.swf')" includeIn="down" id="bitmapimage3"/>
+	<mx:Image source="@Embed('/assets/Button_GameTalk_disabled.swf')" includeIn="disabled" id="bitmapimage4"/>
+</s:Skin>

@@ -16,12 +16,16 @@ package lobystate
 		private var type:int = 0;
 		// 用来记录最后一次进入的房间
 		public var lastRoomId:int;
+		// 玩家的默认皮肤
+		public var skinNo:int;
 		
 		private static var instance:StateGetPlayerInfo = null;
 		// construct
 		public function StateGetPlayerInfo()
 		{
 			super();
+			// 0 是默认的一套
+			skinNo = 0;
 		}
 		
 		public function setType(value:int):void

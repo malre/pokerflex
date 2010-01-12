@@ -352,6 +352,27 @@
 				}
 			}
 
+
+			protected function bg_creationCompleteHandler(event:FlexEvent):void
+			{
+				var bg:Image = (event.currentTarget) as Image;
+				bg.source = ResourceManagerLobby.Instance.Bg_shop_skin1;
+			}
+
+
+			protected function shot_text_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.shop_text_skin1;
+			}
+
+
+			protected function item_text_creationCompleteHandler(event:FlexEvent):void
+			{
+				var img:Image = (event.currentTarget) as Image;
+				img.source = ResourceManagerLobby.Instance.item_text_skin1;
+			}
+
 		]]>
 
 	</fx:Script>
@@ -363,9 +384,9 @@
 		<s:State name="StateItemSub"/>
 		<s:State name="StateItemGetGift" enterState="StateItemGetGift_enterStateHandler(event)"/>
 	</s:states>
-	<mx:Image source="@Embed('/assets/Bg_shop.swf')" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1"/>
-	<mx:Image source="@Embed('/assets/shop_text.swf')" x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub"/>
-	<mx:Image source="@Embed('/assets/item_text.swf')" x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub"/>
+	<mx:Image includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1" creationComplete="bg_creationCompleteHandler(event)"/>
+	<mx:Image x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub" creationComplete="shot_text_creationCompleteHandler(event)"/>
+	<mx:Image x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub" creationComplete="item_text_creationCompleteHandler(event)"/>
 	<s:Button skinClass="components.OptionWindow_CloseButton" label="Button" x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()"/>
 	<!--道具的图片-->
 	<s:Group includeIn="StateItemMain,StateShopMain" id="item_icon_group" width="312" height="190" x="23" y="40">
