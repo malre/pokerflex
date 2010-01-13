@@ -53,13 +53,9 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<mx:Image source="@Embed('/assets/Button_cp_up.swf')" includeIn="up" x="1" id="bitmapimage1"/>
-	<mx:Image source="@Embed('/assets/Button_cp_over.swf')" x="1" includeIn="over" id="bitmapimage2"/>
-	<mx:Image source="@Embed('/assets/Button_cp_down.swf')" includeIn="down" x="0.95" id="bitmapimage4"/>
-	<mx:Image source="@Embed('/assets/Button_cp_unus.swf')" includeIn="disabled" id="bitmapimage3" x="1" y="0.05"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_cp_up.swf')" includeIn="up" x="1" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_cp_over.swf')" x="1" includeIn="over" id="bitmapimage2"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_cp_down.swf')" includeIn="down" x="0.95" id="bitmapimage4"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_cp_unus.swf')" includeIn="disabled" id="bitmapimage3" x="1" y="0.05"/>
 	<s:RichText text="{btnName}" color="#893808" fontSize="14" fontFamily="宋体" fontWeight="normal" fontStyle="normal" x="14" y="4"/>
-	<fx:Private>
-		<th:Guide x="1"/>
-		<th:Guide y="0"/>
-	</fx:Private>
 </s:Skin>

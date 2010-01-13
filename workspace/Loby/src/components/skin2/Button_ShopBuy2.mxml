@@ -37,10 +37,10 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<s:BitmapImage source="@Embed('/assets/Button_ShopBuy_up.png')" resizeMode="scale" id="bitmapimage7" includeIn="up"/>
-	<s:BitmapImage source="@Embed('/assets/Button_ShopBuy_over.png')" resizeMode="scale" includeIn="over" id="bitmapimage8"/>
-	<s:BitmapImage source="@Embed('/assets/Button_ShopBuy_down.png')" resizeMode="scale" includeIn="down" id="bitmapimage9"/>
-	<s:BitmapImage source="@Embed('/assets/Button_ShopBuy_disabled.png')" resizeMode="scale" includeIn="disabled" id="bitmapimage10"/>
+	<s:BitmapImage source="@Embed('/assets/skin2/Button_ShopBuy_up.png')" resizeMode="scale" id="bitmapimage7" includeIn="up"/>
+	<s:BitmapImage source="@Embed('/assets/skin2/Button_ShopBuy_over.png')" resizeMode="scale" includeIn="over" id="bitmapimage8"/>
+	<s:BitmapImage source="@Embed('/assets/skin2/Button_ShopBuy_down.png')" resizeMode="scale" includeIn="down" id="bitmapimage9"/>
+	<s:BitmapImage source="@Embed('/assets/skin2/Button_ShopBuy_disabled.png')" resizeMode="scale" includeIn="disabled" id="bitmapimage10"/>
 	<fx:Private>
 		<th:Guide x="0"/>
 		<th:Guide y="-1"/>

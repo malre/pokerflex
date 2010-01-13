@@ -42,6 +42,8 @@ package poker.gamestate
 		{
 			if(super.receive(obj))
 			{
+				if(!obj.hasOwnProperty("score"))
+					return false;
 				//
 				SoundManager.Instance().playSE("win");
 				if(obj.score.hasOwnProperty("result"))
