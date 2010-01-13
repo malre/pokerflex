@@ -26,8 +26,8 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<mx:Image source="@Embed('/assets/Button_GameTalk_up.swf')" includeIn="up" id="bitmapimage1"/>
-	<mx:Image source="@Embed('/assets/Button_GameTalk_over.swf')" includeIn="over" id="bitmapimage2"/>
-	<mx:Image source="@Embed('/assets/Button_GameTalk_down.swf')" includeIn="down" id="bitmapimage3"/>
-	<mx:Image source="@Embed('/assets/Button_GameTalk_disabled.swf')" includeIn="disabled" id="bitmapimage4"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_GameTalk_up.swf')" includeIn="up" id="bitmapimage1"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_GameTalk_over.swf')" includeIn="over" id="bitmapimage2"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_GameTalk_down.swf')" includeIn="down" id="bitmapimage3"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_GameTalk_disabled.swf')" includeIn="disabled" id="bitmapimage4"/>
 </s:Skin>

@@ -7,6 +7,6 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<s:BitmapImage source="@Embed('/assets/Button_ItemNextPage_up.png')" resizeMode="scale" includeIn="down,over,up"/>
-	<s:BitmapImage source="@Embed('/assets/Button_ItemNextPage_disabled.png')" resizeMode="scale" includeIn="disabled"/>
+	<s:BitmapImage source="@Embed('/assets/skin2/Button_ItemNextPage_up.png')" resizeMode="scale" includeIn="down,over,up"/>
+	<s:BitmapImage source="@Embed('/assets/skin2/Button_ItemNextPage_disabled.png')" resizeMode="scale" includeIn="disabled"/>
 </s:Skin>
