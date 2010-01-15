@@ -6,11 +6,13 @@
 	<fx:Script>
 		<![CDATA[
 			import components.skin2.OptionWindow_CloseButton2;
+			import components.skin3.OptionWindow_CloseButton3;
 			
 			import item.miscDefines;
 			
 			import lobystate.StateGetItemeffect;
 			import lobystate.StateGetPlayerInfo;
+			import lobystate.StateGetSkin;
 			
 			import mx.events.FlexEvent;
 			import mx.events.StateChangeEvent;
@@ -73,19 +75,46 @@
 
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
-				image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+				}
+				else if(skin == 1){
+					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin2; 
+				}
+				else if(skin == 2){
+					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin3; 
+				}
 			}
 
 
 			protected function panel_creationCompleteHandler(event:FlexEvent):void
 			{
-				image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin1; 
+				}
+				else if(skin == 1){
+					image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin2; 
+				}
+				else if(skin == 2){
+					image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin3; 
+				}
 			}
 
 
 			protected function btnClose_creationCompleteHandler(event:FlexEvent):void
 			{
-				button1.setStyle("skinClass", OptionWindow_CloseButton2); 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					button1.setStyle("skinClass", components.OptionWindow_CloseButton); 
+				}
+				else if(skin == 1){
+					button1.setStyle("skinClass", OptionWindow_CloseButton2); 
+				}
+				else if(skin == 2){
+					button1.setStyle("skinClass", OptionWindow_CloseButton3); 
+				}
 			}
 
 		]]>

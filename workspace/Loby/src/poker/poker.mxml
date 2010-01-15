@@ -175,9 +175,18 @@
 			import components.skin2.Button_Friends2;
 			import components.skin2.Button_GameTalk2;
 			import components.skin2.Button_calcCards2;
-			import components.Menu_GameCommand;
+			import components.skin3.ButtonMsgEmotion3;
+			import components.skin3.ButtonMsgOption3;
+			import components.skin3.ButtonSetup3;
+			import components.skin3.Button_CpuPlay3;
+			import components.skin3.Button_CpuPlayCancel3;
+			import components.skin3.Button_Exit3;
+			import components.skin3.Button_Friends3;
+			import components.skin3.Button_GameTalk3;
+			import components.skin3.Button_calcCards3;
 			
 			import lobystate.StateGetFriends;
+			import lobystate.StateGetSkin;
 			import lobystate.StateGetTableSettingFromLobby;
 			
 			import message.*;
@@ -191,7 +200,7 @@
 
 			protected var createOver:Boolean = false;
 			protected var inGame:Boolean = false;
-			public var gameMenu:Menu_GameCommand;
+			public var gameMenu:components.Menu_GameCommand;
 
 			private function enterGame(event:Event):void
 			{
@@ -654,7 +663,7 @@
 					var index:int = Game.Instance.getPlayerIndexByPos(StateUpdateWhileWait.Instance.lastSuccData, (clickplayerPos+Game.Instance.selfseat)%4);
 					if(gameMenu == null)
 					{
-						gameMenu = new Menu_GameCommand();
+						gameMenu = new components.Menu_GameCommand();
 						addElement(gameMenu);
 					}
 					gameMenu.setIndex(index);
@@ -667,113 +676,285 @@
 			protected function gamebg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
+				}
+				else if(skin == 1){
+					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin2;
+				}
+				else if(skin == 2){
+					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin3;
+				}
 			}
 
 			protected function logo_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
-				img.source = ResourceManagerLobby.Instance.gameLogo_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					img.source = ResourceManagerLobby.Instance.gameLogo_skin1;
+				}
+				else if(skin == 1){
+					img.source = ResourceManagerLobby.Instance.gameLogo_skin2;
+				}
+				else if(skin == 2){
+					img.source = ResourceManagerLobby.Instance.gameLogo_skin3;
+				}
 			}
 
 			protected function panel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
-				img.source = ResourceManagerLobby.Instance.gamePanel_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					img.source = ResourceManagerLobby.Instance.gamePanel_skin1;
+				}
+				else if(skin == 1){
+					img.source = ResourceManagerLobby.Instance.gamePanel_skin2;
+				}
+				else if(skin == 2){
+					img.source = ResourceManagerLobby.Instance.gamePanel_skin3;
+				}
 			}
 
 			protected function btnCardView_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnCardView.setStyle("skinClass", Button_calcCards2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnCardView.setStyle("skinClass", components.Button_calcCards);
+				}
+				else if(skin == 1){
+					btnCardView.setStyle("skinClass", Button_calcCards2);
+				}
+				else if(skin == 2){
+					btnCardView.setStyle("skinClass", Button_calcCards3);
+				}
 			}
 
 
 			protected function cpuAI_creationCompleteHandler(event:FlexEvent):void
 			{
-				cpuAI.setStyle("skinClass", Button_CpuPlay2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					cpuAI.setStyle("skinClass", components.Button_CpuPlay);
+				}
+				else if(skin == 1){
+					cpuAI.setStyle("skinClass", Button_CpuPlay2);
+				}
+				else if(skin == 2){
+					cpuAI.setStyle("skinClass", Button_CpuPlay3);
+				}
 			}
 
 
 			protected function cpuAICancel_creationCompleteHandler(event:FlexEvent):void
 			{
-				cpuAICancel.setStyle("skinClass", Button_CpuPlayCancel2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					cpuAICancel.setStyle("skinClass", components.Button_CpuPlayCancel);
+				}
+				else if(skin == 1){
+					cpuAICancel.setStyle("skinClass", Button_CpuPlayCancel2);
+				}
+				else if(skin == 2){
+					cpuAICancel.setStyle("skinClass", Button_CpuPlayCancel3);
+				}
 			}
 
 			protected function btnReady_creationCompleteHandler(event:FlexEvent):void
 			{
 				btnReady.setStyle("skinClass", ButtonReady2);
+//				var skin:int = StateGetSkin.Instance.skin;
+//				if(skin == 0){
+//					btnReady.setStyle("skinClass", ButtonReady2);
+//				}
+//				else if(skin == 1){
+//					btnReady.setStyle("skinClass", ButtonReady2);
+//				}
+//				else if(skin == 2){
+//					btnReady.setStyle("skinClass", ButtonReady2);
+//				}
 			}
 
 
 			protected function btnTalk_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnTalk.setStyle("skinClass", Button_GameTalk2); 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnTalk.setStyle("skinClass", components.Button_GameTalk); 
+				}
+				else if(skin == 1){
+					btnTalk.setStyle("skinClass", Button_GameTalk2); 
+				}
+				else if(skin == 2){
+					btnTalk.setStyle("skinClass", Button_GameTalk3); 
+				}
 			}
 
 
 			protected function btnEmotion_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnEmotion.setStyle("skinClass", ButtonMsgEmotion2); 			
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnEmotion.setStyle("skinClass", components.ButtonMsgEmotion); 			
+				}
+				else if(skin == 1){
+					btnEmotion.setStyle("skinClass", ButtonMsgEmotion2); 			
+				}
+				else if(skin == 2){
+					btnEmotion.setStyle("skinClass", ButtonMsgEmotion3); 			
+				}
 			}
 
 
 			protected function btnChatSetting_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnChatSetting.setStyle("skinClass", ButtonMsgOption2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnChatSetting.setStyle("skinClass", components.ButtonMsgOption);
+				}
+				else if(skin == 1){
+					btnChatSetting.setStyle("skinClass", ButtonMsgOption2);
+				}
+				else if(skin == 2){
+					btnChatSetting.setStyle("skinClass", ButtonMsgOption3);
+				}
 			}
 
 
 			protected function btnSetting_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnSetting.setStyle("skinClass", ButtonSetup2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnSetting.setStyle("skinClass", components.ButtonSetup);
+				}
+				else if(skin == 1){
+					btnSetting.setStyle("skinClass", ButtonSetup2);
+				}
+				else if(skin == 2){
+					btnSetting.setStyle("skinClass", ButtonSetup3);
+				}
 			}
 
 
 			protected function btnFriends_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnFriends.setStyle("skinClass", Button_Friends2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnFriends.setStyle("skinClass", components.Button_Friends);
+				}
+				else if(skin == 1){
+					btnFriends.setStyle("skinClass", Button_Friends2);
+				}
+				else if(skin == 2){
+					btnFriends.setStyle("skinClass", Button_Friends3);
+				}
 			}
 
 
 			protected function btnExit_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnExit.setStyle("skinClass", Button_Exit2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnExit.setStyle("skinClass", components.Button_Exit);
+				}
+				else if(skin == 1){
+					btnExit.setStyle("skinClass", Button_Exit2);
+				}
+				else if(skin == 2){
+					btnExit.setStyle("skinClass", Button_Exit3);
+				}
 			}
 
 
 			protected function sandglass_creationCompleteHandler(event:FlexEvent):void
 			{
-				sandglass.source = ResourceManagerPoker.sandglass_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					sandglass.source = ResourceManagerPoker.sandglass_skin1; 
+				}
+				else if(skin == 1){
+					sandglass.source = ResourceManagerPoker.sandglass_skin2; 
+				}
+				else if(skin == 2){
+					sandglass.source = ResourceManagerPoker.sandglass_skin3; 
+				}
 			}
 
 
 			protected function imgDiscardUp_creationCompleteHandler(event:FlexEvent):void
 			{
-				imgDiscardUp.source = ResourceManagerPoker.pass_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					imgDiscardUp.source = ResourceManagerPoker.pass_skin1; 
+				}
+				else if(skin == 1){
+					imgDiscardUp.source = ResourceManagerPoker.pass_skin2; 
+				}
+				else if(skin == 2){
+					imgDiscardUp.source = ResourceManagerPoker.pass_skin3; 
+				}
 			}
 
 
 			protected function imgDiscardLeft_creationCompleteHandler(event:FlexEvent):void
 			{
-				imgDiscardLeft.source = ResourceManagerPoker.pass_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					imgDiscardLeft.source = ResourceManagerPoker.pass_skin1;
+				}
+				else if(skin == 1){
+					imgDiscardLeft.source = ResourceManagerPoker.pass_skin2;
+				}
+				else if(skin == 2){
+					imgDiscardLeft.source = ResourceManagerPoker.pass_skin3;
+				}
 			}
 
 
 			protected function imgDiscardDown_creationCompleteHandler(event:FlexEvent):void
 			{
-				imgDiscardDown.source = ResourceManagerPoker.pass_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					imgDiscardDown.source = ResourceManagerPoker.pass_skin1;
+				}
+				else if(skin == 1){
+					imgDiscardDown.source = ResourceManagerPoker.pass_skin2;
+				}
+				else if(skin == 2){
+					imgDiscardDown.source = ResourceManagerPoker.pass_skin3;
+				}
 			}
 
 
 			protected function imgDiscardRight_creationCompleteHandler(event:FlexEvent):void
 			{
-				imgDiscardRight.source = ResourceManagerPoker.pass_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					imgDiscardRight.source = ResourceManagerPoker.pass_skin1;
+				}
+				else if(skin == 1){
+					imgDiscardRight.source = ResourceManagerPoker.pass_skin2;
+				}
+				else if(skin == 2){
+					imgDiscardRight.source = ResourceManagerPoker.pass_skin3;
+				}
 			}
 
 
 			protected function cpuAIAnimation_creationCompleteHandler(event:FlexEvent):void
 			{
-				cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin1; 
+				}
+				else if(skin == 1){
+					cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin2; 
+				}
+				else if(skin == 2){
+					cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin3; 
+				}
 			}
 
     	]]>

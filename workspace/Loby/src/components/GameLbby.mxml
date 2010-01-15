@@ -8,6 +8,7 @@
 		<![CDATA[
 			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
+			import lobystate.StateGetSkin;
 			[Bindable]
 			public var roomname:String;
 
@@ -67,7 +68,16 @@
 			protected function bg_4_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				bg.source = ResourceManagerLobby.Instance.bg_4_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bg.source = ResourceManagerLobby.Instance.bg_4_skin1;
+				}
+				else if(skin == 1){
+					bg.source = ResourceManagerLobby.Instance.bg_4_skin2;
+				}
+				else if(skin == 2){
+					bg.source = ResourceManagerLobby.Instance.bg_4_skin3;
+				}
 			}
 
 		]]>

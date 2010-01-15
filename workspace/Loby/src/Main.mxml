@@ -13,11 +13,11 @@
 		preloader="GameLoadingbar">
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.Button_toLastTable2;
-			import components.skin2.Button_toLobbyface2;
-			import components.skin2.Button_toRoom2;
+			import components.skin2.*;
+			import components.skin3.*;
 			
 			import lobystate.StateGetPlayerInfo;
+			import lobystate.StateGetSkin;
 			
 			import mx.controls.Image;
 			import mx.controls.Label;
@@ -197,49 +197,125 @@
 			protected function Bg_DT_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				if(StateGetPlayerInfo.Instance.skinNo == 0)
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0)
 				{
 					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
+				}
+				else if(skin == 1)
+				{
+					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin2;
+				}
+				else if(skin == 2)
+				{
+					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin3;
 				}
 			}
 			
 			protected function lobbyPanel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var panel:Image = (event.currentTarget) as Image;
-				panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin1;
-				
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0)
+				{
+					panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin1;
+				}
+				else if(skin == 1)
+				{
+					panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin2;
+				}
+				else if(skin == 2)
+				{
+					panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin3;
+				}
 			}
 
 
 			protected function btn2lobby_creationCompleteHandler(event:FlexEvent):void
 			{
-				btn2lobby.setStyle("skinClass", Button_toLobbyface2);
-				
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0)
+				{
+					btn2lobby.setStyle("skinClass", components.Button_toLobbyface);
+				}
+				else if(skin == 1)
+				{
+					btn2lobby.setStyle("skinClass", Button_toLobbyface2);
+				}
+				else if(skin == 2)
+				{
+					btn2lobby.setStyle("skinClass", Button_toLobbyface3);
+				}
 			}
 
 
 			protected function btn2LastTable_creationCompleteHandler(event:FlexEvent):void
 			{
-				btn2LastTable.setStyle("skinClass", Button_toLastTable2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0)
+				{
+					btn2LastTable.setStyle("skinClass", components.Button_toLastTable);
+				}
+				else if(skin == 1)
+				{
+					btn2LastTable.setStyle("skinClass", Button_toLastTable2);
+				}
+				else if(skin == 2)
+				{
+					btn2LastTable.setStyle("skinClass", Button_toLastTable3);
+				}
 			}
 
 
 			protected function btn2room_creationCompleteHandler(event:FlexEvent):void
 			{
-				btn2room.setStyle("skinClass", Button_toRoom2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0)
+				{
+					btn2room.setStyle("skinClass", components.Button_toRoom);
+				}
+				else if(skin == 1)
+				{
+					btn2room.setStyle("skinClass", Button_toRoom2);
+				}
+				else if(skin == 2)
+				{
+					btn2room.setStyle("skinClass", Button_toRoom3);
+				}
 			}
 
 
 			protected function text_gamelist_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
-				img.source = ResourceManagerLobby.Instance.text_gamelist_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0)
+				{
+					img.source = ResourceManagerLobby.Instance.text_gamelist_skin1;
+				}
+				else if(skin == 1)
+				{
+					img.source = ResourceManagerLobby.Instance.text_gamelist_skin2;
+				}
+				else if(skin == 2)
+				{
+					img.source = ResourceManagerLobby.Instance.text_gamelist_skin3;
+				}
 			}
 			
 			protected function text_gamelobby_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
-				img.source = ResourceManagerLobby.Instance.text_gamelobby_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					img.source = ResourceManagerLobby.Instance.text_gamelobby_skin1;
+				}
+				else if(skin == 1){
+					img.source = ResourceManagerLobby.Instance.text_gamelobby_skin2;
+				}
+				else if(skin == 2){
+					img.source = ResourceManagerLobby.Instance.text_gamelobby_skin3;
+				}
 			}
 
 		]]>
