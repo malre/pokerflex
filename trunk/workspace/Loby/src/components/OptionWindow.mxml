@@ -9,11 +9,11 @@
 	>
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.Button_ShopNoBuy2;
-			import components.skin2.Button_confirm2;
-			import components.skin2.OptionWindow_CloseButton2;
+			import components.skin2.*;
+			import components.skin3.*;
 			
 			import lobystate.StateCreateTable;
+			import lobystate.StateGetSkin;
 			import lobystate.StateUpdateRoomInfo;
 			
 			import mx.events.FlexEvent;
@@ -204,46 +204,109 @@
 
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
-				image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
+				}
+				else if(skin == 1){
+					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin2; 
+				}
+				else if(skin == 2){
+					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin3; 
+				}
 			}
 
 
 			protected function textcreateroom_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				bg.source = ResourceManagerLobby.Instance.text_createroom_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bg.source = ResourceManagerLobby.Instance.text_createroom_skin1; 
+				}
+				else if(skin == 1){
+					bg.source = ResourceManagerLobby.Instance.text_createroom_skin2; 
+				}
+				else if(skin == 2){
+					bg.source = ResourceManagerLobby.Instance.text_createroom_skin3; 
+				}
 			}
 
 
 			protected function textoptionwnd_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin1; 
+				}
+				else if(skin == 1){
+					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin2; 
+				}
+				else if(skin == 2){
+					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin3; 
+				}
 			}
 
 
 			protected function optioncontent_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin1; 
+				}
+				else if(skin == 1){
+					bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin2; 
+				}
+				else if(skin == 2){
+					bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin3; 
+				}
 			}
 
 
 			protected function btnclose_creationCompleteHandler(event:FlexEvent):void
 			{
-				button1.setStyle("skinClass", OptionWindow_CloseButton2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					button1.setStyle("skinClass", components.OptionWindow_CloseButton);
+				}
+				else if(skin == 1){
+					button1.setStyle("skinClass", OptionWindow_CloseButton2);
+				}
+				else if(skin == 2){
+					button1.setStyle("skinClass", OptionWindow_CloseButton3);
+				}
 			}
 
 
 			protected function BtnConfirm_creationCompleteHandler(event:FlexEvent):void
 			{
-				BtnConfirm.setStyle("skinClass", Button_confirm2); 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					BtnConfirm.setStyle("skinClass", components.Button_confirm); 
+				}
+				else if(skin == 1){
+					BtnConfirm.setStyle("skinClass", Button_confirm2); 
+				}
+				else if(skin == 2){
+					BtnConfirm.setStyle("skinClass", Button_confirm3); 
+				}
 			}
 
 
 			protected function BtnCancel_creationCompleteHandler(event:FlexEvent):void
 			{
-				BtnCancel.setStyle("skinClass", Button_ShopNoBuy2); 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					BtnCancel.setStyle("skinClass", components.Button_ShopNoBuy); 
+				}
+				else if(skin == 1){
+					BtnCancel.setStyle("skinClass", Button_ShopNoBuy2); 
+				}
+				else if(skin == 2){
+					BtnCancel.setStyle("skinClass", Button_ShopNoBuy3); 
+				}
 			}
 
 		]]>

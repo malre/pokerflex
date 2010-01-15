@@ -64,21 +64,15 @@
 	</s:states>
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.ButtonMsgEmotion2;
-			import components.skin2.ButtonMsgOption2;
-			import components.skin2.Button_AutoJoinTable2;
-			import components.skin2.Button_CreateTable2;
-			import components.skin2.Button_Friends2;
-			import components.skin2.Button_GameTalk2;
-			import components.skin2.Button_Item2;
-			import components.skin2.Button_Shop2;
-			import components.skin2.Button_Vita2;
+			import components.skin2.*;
+			import components.skin3.*;
 			
 			import item.shopRequester;
 			
 			import lobystate.StateGetFriends;
 			import lobystate.StateGetPlayerInfo;
 			import lobystate.StateGetRoomPlayerlist;
+			import lobystate.StateGetSkin;
 			
 			import message.*;
 			
@@ -263,7 +257,16 @@
 
 			protected function panelBG_creationCompleteHandler(event:FlexEvent):void
 			{
-				bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin1; 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin1; 
+				}
+				else if(skin == 1){
+					bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin2; 
+				}
+				else if(skin == 2){
+					bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin3; 
+				}
 			}
 
 
@@ -276,63 +279,144 @@
 			protected function btnMsgEmotion_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", ButtonMsgEmotion2); 
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.ButtonMsgEmotion); 
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", ButtonMsgEmotion2); 
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", ButtonMsgEmotion3); 
+				}
 			}
 
 
 			protected function btnMsgOption_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", ButtonMsgOption2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.ButtonMsgOption);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", ButtonMsgOption2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", ButtonMsgOption3);
+				}
 			}
 
 
 			protected function btnItem_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_Item2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_Item);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_Item2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_Item3);
+				}
 			}
 
 
 			protected function btnPlayerInfo_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_Vita2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_Vita);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_Vita2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_Vita3);
+				}
 			}
 
 
 			protected function btnFriends_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_Friends2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_Friends);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_Friends2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_Friends3);
+				}
 			}
 
 
 			protected function btnShop_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_Shop2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_Shop);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_Shop2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_Shop3);
+				}
 			}
 
 
 			protected function BtnAutojoinTable_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_AutoJoinTable2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_AutoJoinTable);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_AutoJoinTable2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_AutoJoinTable3);
+				}
 			}
 
 
 			protected function BtnCreateTable_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_CreateTable2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_CreateTable);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_CreateTable2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_CreateTable3);
+				}
 			}
 
 
 			protected function btnSendMsg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var btn:Button = (event.currentTarget) as Button;
-				btn.setStyle("skinClass", Button_GameTalk2);
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btn.setStyle("skinClass", components.Button_GameTalk);
+				}
+				else if(skin == 1){
+					btn.setStyle("skinClass", Button_GameTalk2);
+				}
+				else if(skin == 2){
+					btn.setStyle("skinClass", Button_GameTalk3);
+				}
 			}
 
 		]]>

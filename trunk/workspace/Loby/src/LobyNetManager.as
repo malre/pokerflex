@@ -49,6 +49,8 @@ package
 		static public const URL_getItemEffect:String = "item/player/effectlist";
 		static public const URL_sendGift:String = "game/friend/sendgift";
 		static public const URL_checkGift:String = "game/friend/checkgift";
+		static public const URL_setSkin:String = "game/player/setskin";
+		static public const URL_getSkin:String = "game/player/getskin";
 		// special
 		static public const URL_checkItemNum:String = "item/player/checkitem";
 		// 各种请求定义
@@ -75,6 +77,8 @@ package
 		static public const sendgift:String = "sd g";
 		static public const checkgift:String  = "ck g";
 		static public const checkitemnum:String = "ck in";
+		static public const setskin:String = "setskin";
+		static public const getskin:String = "getskin";
 		
 		//
 		static private var instance:LobyNetManager = null;
@@ -275,6 +279,14 @@ package
 			else if(type == checkitemnum)
 			{
 				stateManager.changeState(StateCheckItemNum.Instance);
+			}
+			else if(type == setskin)
+			{
+				stateManager.changeState(StateSetSkin.Instance);
+			}
+			else if(type == getskin)
+			{
+				stateManager.changeState(StateGetSkin.Instance);
 			}
 			stateManager.send();
 		}
