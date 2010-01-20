@@ -127,6 +127,13 @@ package
 		[Embed(source="assets/skin3/friendslist_title.swf")]
 		public var friendslist_title_skin3:Class;
 
+		[Embed(source="assets/text_changeSkin.swf")]
+		public var text_changeSkin_skin1:Class;
+		[Embed(source="assets/skin2/text_changeSkin.swf")]
+		public var text_changeSkin_skin2:Class;
+		[Embed(source="assets/skin3/text_changeSkin.swf")]
+		public var text_changeSkin_skin3:Class;
+
 		[Embed(source="assets/gameLogo.swf")]
 		public var gameLogo_skin1:Class;
 		[Embed(source="assets/skin2/gameLogo.swf")]
@@ -148,7 +155,6 @@ package
 		[Embed(source="assets/skin3/ButtonBg.swf")]
 		public var ButtonBg_skin3:Class;
 
-	
 	
 	}
 }

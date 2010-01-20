@@ -7,6 +7,9 @@ package
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	
+	import lobystate.StateGetSkin;
+	
+	import mx.core.FlexGlobals;
 	import mx.events.FlexEvent;
 	import mx.preloaders.DownloadProgressBar;
 	
@@ -34,6 +37,14 @@ package
 			loader.y = (560-100-40)/2-50;
 			this.addChild(loader);
 		}
+		public function loadSuccess():void
+		{
+			dispatchEvent(new Event(Event.COMPLETE));
+//			FlexGlobals.topLevelApplication.currentState = "lobby";
+			LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+			FlexGlobals.topLevelApplication.modifySkin();
+		}
+		
 		protected function loadover(event:Event):void
 		{
 			var isn:int = 100;
@@ -83,9 +94,11 @@ package
 		private function init_complete(e:FlexEvent):void
 		{   
 //			txt.text = "初始化完毕!" 
-			remove()   
+			remove();
+			StateGetSkin.Instance.setLoadingBarObj(this);
+			LobyNetManager.Instance.send(LobyNetManager.getskin);
 			//最后这个地方需要dpe一个Event.COMPLETE事件..表示加载完毕让swf继续操作~   
-			dispatchEvent(new Event(Event.COMPLETE))   
+//			dispatchEvent(new Event(Event.COMPLETE));
 		}   
 
 		

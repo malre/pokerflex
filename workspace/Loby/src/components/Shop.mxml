@@ -382,6 +382,8 @@
 				}
 				else if(skin == 1){
 					img.source = ResourceManagerLobby.Instance.shop_text_skin2;
+					img.x = 18;
+					img.y = 15;
 				}
 				else if(skin == 2){
 					img.source = ResourceManagerLobby.Instance.shop_text_skin3;
@@ -398,6 +400,8 @@
 				}
 				else if(skin == 1){
 					img.source = ResourceManagerLobby.Instance.item_text_skin2;
+					img.x = 18;
+					img.y = 15;
 				}
 				else if(skin == 2){
 					img.source = ResourceManagerLobby.Instance.item_text_skin3;
@@ -413,6 +417,8 @@
 				}
 				else if(skin == 1){
 					button1.setStyle("skinClass", OptionWindow_CloseButton2); 
+					button1.x = 338;
+					button1.y = 15;
 				}
 				else if(skin == 2){
 					button1.setStyle("skinClass", OptionWindow_CloseButton3); 
@@ -473,6 +479,8 @@
 				}
 				else if(skin == 1){
 					button8.setStyle("skinClass", Button_ShopBuy2); 
+					button8.x = 68;
+					button8.y = 233;
 				}
 				else if(skin == 2){
 					button8.setStyle("skinClass", Button_ShopBuy3); 
@@ -488,6 +496,8 @@
 				}
 				else if(skin == 1){
 					button9.setStyle("skinClass", Button_ShopNoBuy2);
+					button9.x = 252;
+					button9.y = 233;
 				}
 				else if(skin == 2){
 					button9.setStyle("skinClass", Button_ShopNoBuy3);
@@ -503,6 +513,8 @@
 				}
 				else if(skin == 1){
 					button10.setStyle("skinClass", Button_ItemUse2);
+					button10.x = 68;
+					button10.y = 233;
 				}
 				else if(skin == 2){
 					button10.setStyle("skinClass", Button_ItemUse3);
@@ -593,6 +605,8 @@
 				}
 				else if(skin == 1){
 					btngetGiftConfirm.setStyle("skinClass", Button_confirm2); 
+					btngetGiftConfirm.x = 160;
+					btngetGiftConfirm.y = 233;
 				}
 				else if(skin == 2){
 					btngetGiftConfirm.setStyle("skinClass", Button_confirm3); 
@@ -613,7 +627,7 @@
 	<mx:Image includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" id="bitmapimage1" creationComplete="bg_creationCompleteHandler(event)"/>
 	<mx:Image x="13.1" y="2.1" id="bitmapimage2" includeIn="StateShopMain,StateShopSub" creationComplete="shot_text_creationCompleteHandler(event)"/>
 	<mx:Image x="13.1" y="2.1" id="bitmapimage2_2" includeIn="StateItemMain,StateItemSub" creationComplete="item_text_creationCompleteHandler(event)"/>
-	<s:Button label="Button" x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()" creationComplete="btnCloseWnd_creationCompleteHandler(event)"/>
+	<s:Button x="330" y="11" click.StateShopMain="CloseButton()" id="button1" includeIn="StateItemMain,StateItemSub,StateShopMain,StateShopSub" click.StateItemMain="CloseButton()" creationComplete="btnCloseWnd_creationCompleteHandler(event)"/>
 	<!--道具的图片-->
 	<s:Group includeIn="StateItemMain,StateShopMain" id="item_icon_group" width="312" height="190" x="23" y="40">
 		<mx:Image id="item0" name="item0" buttonMode="true" useHandCursor="true" click="itemClicked(event)" x="5" y="7"/>

@@ -111,6 +111,8 @@
 				}
 				else if(skin == 1){
 					button1.setStyle("skinClass", OptionWindow_CloseButton2); 
+					button1.x = 338;
+					button1.y = 15;
 				}
 				else if(skin == 2){
 					button1.setStyle("skinClass", OptionWindow_CloseButton3); 

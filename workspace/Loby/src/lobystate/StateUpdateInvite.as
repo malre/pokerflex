@@ -56,6 +56,7 @@ package lobystate
 				//
 				if(data.length != 0){
 					FlexGlobals.topLevelApplication.invitation.visible = true;
+					FlexGlobals.topLevelApplication.invitation.currentState = "State1";
 				}
 				return true;
 			}

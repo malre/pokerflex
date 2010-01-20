@@ -353,6 +353,12 @@
 					this.removeElement(gameMenu);
 					gameMenu = null;
 				}
+				// 清楚所有的特效动画和开场动画
+				Game.Instance.cardAnimateArray.length = 0;
+				animationGroup0.removeAllElements();
+				animationGroup1.removeAllElements();
+				animationGroup2.removeAllElements();
+				animationGroup3.removeAllElements();
 			}
 			public function initGUI():void
 			{
