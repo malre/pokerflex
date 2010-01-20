@@ -217,6 +217,8 @@
 				}
 				else if(skin == 1){
 					img.source = ResourceManagerLobby.Instance.friendslist_title_skin2;
+					img.x = 18;
+					img.y = 15;
 				}
 				else if(skin == 2){
 					img.source = ResourceManagerLobby.Instance.friendslist_title_skin3;
@@ -232,6 +234,8 @@
 				}
 				else if(skin == 1){
 					btnClose.setStyle("skinClass", OptionWindow_CloseButton2); 
+					btnClose.x = 338;
+					btnClose.y = 15;
 				}
 				else if(skin == 2){
 					btnClose.setStyle("skinClass", OptionWindow_CloseButton3); 

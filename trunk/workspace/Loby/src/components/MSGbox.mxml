@@ -8,6 +8,10 @@
 		<![CDATA[
 			import components.skin2.Button_ItemUse2;
 			import components.skin2.Button_confirm2;
+			import components.skin3.Button_ItemUse3;
+			import components.skin3.Button_confirm3;
+			
+			import lobystate.StateGetSkin;
 			
 			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
@@ -29,19 +33,45 @@
 
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
-				bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin1;
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin1;
+				}
+				else if(skin == 1){
+					bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin2;
+				}
+				else if(skin == 2){
+					bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin3;
+				}
 			}
 
 
 			protected function button1_creationCompleteHandler(event:FlexEvent):void
 			{
+				var skin:int = StateGetSkin.Instance.skin;
 				if(currentState == "StateUse")
 				{
-					button1.setStyle("skinClass", Button_ItemUse2); 
+					if(skin == 0){
+						button1.setStyle("skinClass", components.Button_ItemUse); 
+					}
+					else if(skin == 1){
+						button1.setStyle("skinClass", Button_ItemUse2); 
+					}
+					else if(skin == 2){
+						button1.setStyle("skinClass", Button_ItemUse3); 
+					}
 				}
 				else if(currentState == "StateConfirm")
 				{
-					button1.setStyle("skinClass", Button_confirm2);
+					if(skin == 0){
+						button1.setStyle("skinClass", components.Button_confirm); 
+					}
+					else if(skin == 1){
+						button1.setStyle("skinClass", Button_confirm2); 
+					}
+					else if(skin == 2){
+						button1.setStyle("skinClass", Button_confirm3); 
+					}
 				}
 			}
 

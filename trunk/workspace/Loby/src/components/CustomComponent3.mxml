@@ -249,6 +249,8 @@
 					if(StateGetPlayerInfo.Instance.lastFlag)
 					{
 						FlexGlobals.topLevelApplication.changeSkin.visible = true;
+						FlexGlobals.topLevelApplication.changeSkin.currentState = "StateMain";
+						FlexGlobals.topLevelApplication.changeSkin.skinClick(StateGetSkin.Instance.skin);
 						LobyManager.Instance.windowMutex = true;
 					}
 				}

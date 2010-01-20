@@ -1,29 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo">
+		 xmlns:mx="library://ns.adobe.com/flex/halo" xmlns:components="components.*" currentState="StateStart">
 
 	<fx:Script>
 		<![CDATA[
+			import components.skin2.Button_ShopNoBuy2;
+			import components.skin2.Button_confirm2;
+			import components.skin2.OptionWindow_CloseButton2;
+			import components.skin3.Button_ShopNoBuy3;
+			import components.skin3.Button_confirm3;
+			import components.skin3.OptionWindow_CloseButton3;
+			
+			import lobystate.StateGetSkin;
+			import lobystate.StateSetSkin;
+			
+			import mx.events.FlexEvent;
+			
+			public var selectedSkin:int = 0;
+			
 			protected function OK_clickHandler(event:MouseEvent):void
 			{
-				
+				StateSetSkin.Instance.setSkin(selectedSkin);
+				LobyNetManager.Instance.send(LobyNetManager.setskin);
 			}
 
 			protected function NOT_clickHandler(event:MouseEvent):void
+			{
+				CloseButton();
+			}
+
+
+			protected function btn1_clickHandler(event:MouseEvent):void
+			{
+				if(event.currentTarget.id == "btn1"){
+					skinClick(0);
+				}
+				else if(event.currentTarget.id == "btn2"){
+					skinClick(1);
+				}
+				else if(event.currentTarget.id == "btn3"){
+					skinClick(2);
+				}
+			}
+			
+			public function skinClick(id:int):void
+			{
+				if(id == 0){
+					selectedRect.x = 50;
+					selectedRect.y = 47;
+					selectedSkin = 0;
+				}
+				else if(id == 1){
+					selectedRect.x = 202;
+					selectedRect.y = 47;
+					selectedSkin = 1;
+				}
+				else if(id == 2){
+					selectedRect.x = 50;
+					selectedRect.y = 147;
+					selectedSkin = 2;
+				}
+			}
+
+
+			protected function bg_creationCompleteHandler(event:FlexEvent):void
+			{
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin1;
+				}
+				else if(skin == 1){
+					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin2;
+				}
+				else if(skin == 2){
+					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin3;
+				}
+			}
+
+			protected function btnCloseWnd_creationCompleteHandler(event:FlexEvent):void
+			{
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					btnClose.setStyle("skinClass", components.OptionWindow_CloseButton); 
+				}
+				else if(skin == 1){
+					btnClose.setStyle("skinClass", OptionWindow_CloseButton2); 
+					btnClose.x = 338;
+					btnClose.y = 15;
+				}
+				else if(skin == 2){
+					btnClose.setStyle("skinClass", OptionWindow_CloseButton3); 
+				}
+			}
+			
+			protected function title_creationCompleteHandler(event:FlexEvent):void
+			{
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					title.source = ResourceManagerLobby.Instance.text_changeSkin_skin1;
+				}
+				else if(skin == 1){
+					title.source = ResourceManagerLobby.Instance.text_changeSkin_skin2;
+					title.x = 18;
+					title.y = 15;
+				}
+				else if(skin == 2){
+					title.source = ResourceManagerLobby.Instance.text_changeSkin_skin3;
+				}
+			}
+			
+			protected function confirm_creationCompleteHandler(event:FlexEvent):void
+			{
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					confirm.setStyle("skinClass", components.Button_confirm);
+				}
+				else if(skin == 1){
+					confirm.setStyle("skinClass", Button_confirm2);	
+					confirm.x = 68;
+					confirm.y = 233;
+				}
+				else if(skin == 2){
+					confirm.setStyle("skinClass", Button_confirm3);				
+				}
+			}
+			
+			
+			protected function cancel_creationCompleteHandler(event:FlexEvent):void
+			{
+				var skin:int = StateGetSkin.Instance.skin;
+				if(skin == 0){
+					cancel.setStyle("skinClass", components.Button_ShopNoBuy);
+				}
+				else if(skin == 1){
+					cancel.setStyle("skinClass", Button_ShopNoBuy2);
+					cancel.x = 252;
+					cancel.y = 233;
+				}
+				else if(skin == 2){
+					cancel.setStyle("skinClass", Button_ShopNoBuy3);				
+				}
+			}
+			
+			
+			public function CloseButton():void
 			{
 				visible = false;
 				LobyManager.Instance.windowMutex = false;
 			}
 
+
 		]]>
 	</fx:Script>
+	<s:states>
+		<s:State name="StateMain"/>
+		<s:State name="StateStart"/>
+	</s:states>
 
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image x="0" y="0" source="assets/Bg_shop.swf"/>
-	<mx:Image x="0" y="0" source="assets/text_changeSkin.swf"/>
-	<s:Button x="57" y="219" skinClass="components.Button_confirm" click="OK_clickHandler(event)"/>
-	<s:Button x="203" y="219" skinClass="components.Button_ShopNoBuy" click="NOT_clickHandler(event)"/>
+	<mx:Image x="0" y="0" id="bg" creationComplete="bg_creationCompleteHandler(event)" includeIn="StateMain"/>
+	<mx:Image x="0" y="0" id="title" creationComplete="title_creationCompleteHandler(event)" includeIn="StateMain"/>
+	<s:Button x="330" y="11" id="btnClose" click="CloseButton()" creationComplete="btnCloseWnd_creationCompleteHandler(event)" includeIn="StateMain"/>
+	<s:Button x="57" y="219" id="confirm" click="OK_clickHandler(event)" includeIn="StateMain" creationComplete="confirm_creationCompleteHandler(event)"/>
+	<s:Button x="203" y="219" id="cancel" click="NOT_clickHandler(event)" includeIn="StateMain" creationComplete="cancel_creationCompleteHandler(event)"/>
+
+	<s:Rect id="selectedRect" width="95" height="65" x="50" y="47" includeIn="StateMain">
+		<s:fill>
+			<s:SolidColor color="#2250ee"/>
+		</s:fill>
+	</s:Rect>
+	<components:Button_skinSample id="btn1" click="btn1_clickHandler(event)" x="54" y="42" includeIn="StateMain"/>
+	<components:Button_skinSample id="btn2" click="btn1_clickHandler(event)" x="206" y="42" includeIn="StateMain"/>
+	<components:Button_skinSample id="btn3" click="btn1_clickHandler(event)" x="54" y="133" includeIn="StateMain"/>
+	
 </s:Group>

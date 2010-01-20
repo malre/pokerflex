@@ -242,6 +242,8 @@
 				}
 				else if(skin == 1){
 					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin2; 
+					bg.x = 18;
+					bg.y = 15;
 				}
 				else if(skin == 2){
 					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin3; 
@@ -273,6 +275,8 @@
 				}
 				else if(skin == 1){
 					button1.setStyle("skinClass", OptionWindow_CloseButton2);
+					button1.x = 338;
+					button1.y = 15;
 				}
 				else if(skin == 2){
 					button1.setStyle("skinClass", OptionWindow_CloseButton3);
@@ -288,6 +292,8 @@
 				}
 				else if(skin == 1){
 					BtnConfirm.setStyle("skinClass", Button_confirm2); 
+					BtnConfirm.x = 68;
+					BtnConfirm.y = 233;
 				}
 				else if(skin == 2){
 					BtnConfirm.setStyle("skinClass", Button_confirm3); 
@@ -303,6 +309,8 @@
 				}
 				else if(skin == 1){
 					BtnCancel.setStyle("skinClass", Button_ShopNoBuy2); 
+					BtnCancel.x = 252;
+					BtnCancel.y = 233;
 				}
 				else if(skin == 2){
 					BtnCancel.setStyle("skinClass", Button_ShopNoBuy3); 

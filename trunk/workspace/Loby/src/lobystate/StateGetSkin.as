@@ -1,11 +1,16 @@
 package lobystate
 {
 	import flash.events.Event;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	
+	import mx.core.FlexGlobals;
 	
 	public class StateGetSkin extends NetRequestState
 	{
 		private static var instance:StateGetSkin = null;
 		public var skin:int = 0;
+		private var lb:Object = null;
 		
 		public function StateGetSkin()
 		{
@@ -19,9 +24,14 @@ package lobystate
 			return instance;
 		}
 		
+		public function setLoadingBarObj(loadingbar:Object):void
+		{
+			lb = loadingbar;
+		}
+		
 		override public function send(obj:StateManager):void
 		{
-			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.setskin;
+			LobyNetManager.Instance.httpservice.url = LobyNetManager.URL_lobysonAddress + LobyNetManager.URL_getSkin;
 			LobyNetManager.Instance.httpservice.request = {"skinNo":""};
 			LobyNetManager.Instance.httpservice.send();
 		}
@@ -30,17 +40,18 @@ package lobystate
 			if(super.receive(obj))
 			{
 				skin = obj.skinNo;
+				lb.loadSuccess();
 				return true;
 			}
 			else{
-				LobyManager.Instance.windowMutex = false;
+//				navigateToURL(new URLRequest("javascript:location.reload();"),"_self")
 				return false;
 			}
 			
 		}
 		override public function fault(event:Event):void
 		{
-			LobyManager.Instance.windowMutex = false;
+			navigateToURL(new URLRequest("javascript:location.reload();"),"_self");
 		}
 	}
 }

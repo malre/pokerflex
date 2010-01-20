@@ -10,7 +10,7 @@
 		xmlns:poker="poker.*"
         width="780" height="560" backgroundColor="#ffffff" 
         creationComplete="createcomplete(event)" enterFrame="enterframe(event)" 
-		preloader="GameLoadingbar">
+		preloader="GameLoadingbar" currentState="lobby">
 	<fx:Script>
 		<![CDATA[
 			import components.skin2.*;
@@ -31,14 +31,10 @@
 
 			protected function createcomplete(event:Event):void
 			{
-//				// 修改tooltip的式样
-//				StyleManager.getStyleDeclaration("ToolTip").setStyle("fontSize",18);   
-////				StyleManager.getStyleDeclaration("ToolTip").setStyle("backgroundColor","#33CC99");  
-				
 				// 大厅置成正常状态
 				LobyManager.Instance.state = 0;
 				// 发送更新大厅列表
-				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
+//				LobyNetManager.Instance.send(LobyNetManager.roomInfo);
 				
 				// 开始播放背景音乐
 //				SoundManager.Instance().seturl(SoundManager.Instance().mp3url);
@@ -193,10 +189,13 @@
 				friendslist.CloseButton(null);
 			}
 
+			public function modifySkin():void
+			{
+//				Bg_DT_creationCompleteHandler(null);
+			}
 			// 以下开始是皮肤的识别和切换部分。
 			protected function Bg_DT_creationCompleteHandler(event:FlexEvent):void
 			{
-				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
 				if(skin == 0)
 				{
@@ -323,6 +322,7 @@
 	<s:states>
 		<s:State name="lobby"/>
 		<s:State name="room"/>
+		<s:State name="blank"/>
 	</s:states>
 	<fx:Style>
 		@namespace d "http://ns.adobe.com/fxg/2008/dt";
@@ -340,8 +340,8 @@
 		<!--<fx:String id="mk" source="Introduce.xml"/>-->
 	</fx:Declarations>
 	<fx:DesignLayer d:userLabel="bgp">
-		<mx:Image creationComplete="Bg_DT_creationCompleteHandler(event)"/>
-		<mx:Image creationComplete="lobbyPanel_creationCompleteHandler(event)"/>
+		<mx:Image creationComplete="Bg_DT_creationCompleteHandler(event)" id="bg" includeIn="lobby,room"/>
+		<mx:Image creationComplete="lobbyPanel_creationCompleteHandler(event)" includeIn="lobby,room"/>
 		<s:Button id="btn2lobby" x="492" y="4" click="tolobby_clickHandler(event)" includeIn="room" creationComplete="btn2lobby_creationCompleteHandler(event)"/>
 		<s:Button includeIn="room" x="651" y="4" id="btn2LastTable" enabled="false" click="btn2LastTable_clickHandler(event)" creationComplete="btn2LastTable_creationCompleteHandler(event)"/>
 		<s:Button id="btn2room" x="492" y="4" enabled="false" click="toroom_clickHandler(event)" includeIn="lobby" creationComplete="btn2room_creationCompleteHandler(event)"/>
@@ -349,42 +349,42 @@
 		<mx:Image x="268" y="36" includeIn="room" creationComplete="text_gamelobby_creationCompleteHandler(event)"/>
 		<mx:Label includeIn="room" x="373" y="38" text="-" color="#FFFFFF" fontFamily="黑体" fontWeight="bold" fontSize="16"/>
 		<mx:Label includeIn="room" x="386" y="38" id="label_roomname" color="#FFFFFF" fontSize="16" fontFamily="黑体" width="93" text="{lobbypanel.roomname}"/>
-		<components:CustomComponent3 x="500" y="35" id="functionpanel"/>
+		<components:CustomComponent3 x="500" y="35" id="functionpanel" includeIn="lobby,room"/>
 		<!--<mx:Image  x="160" y="20" id="imgAvatar" autoLoad="true"  scaleContent="true" maintainAspectRatio="true" width="53" height="52"/>-->
 		<!--<mx:Label  x="211" y="37" id="textPlayname" height="17" width="69" fontWeight="bold" fontStyle="normal" textDecoration="none"/>-->
 		<s:TextArea x="289" y="66" id="introduceText" width="474" height="476" editable="false" baseColor="#f6edae" contentBackgroundAlpha="0.5"
-					textFlow="{TextFlowUtil.importFromString(ruleIntroduce.ruleText)}">
+					textFlow="{TextFlowUtil.importFromString(ruleIntroduce.ruleText)}" includeIn="lobby,room">
 		</s:TextArea>
 	</fx:DesignLayer>
-	<s:Scroller x="17" y="89" width="480" height="461" baseColor="#f6edae" id="roomScroller" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	<s:Scroller x="17" y="89" width="480" height="461" baseColor="#f6edae" id="roomScroller" verticalScrollPolicy="off" horizontalScrollPolicy="off" includeIn="lobby,room">
 		<s:Group x="17" y="89" width="480" height="461" id="gameRoomCanvas" creationComplete="gameRoomCanvas_creationCompleteHandler(event)"/>
 	</s:Scroller>
-	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="68" visible="false"/>
+	<components:lobbyroomTagbtn id="lobbyroomtag" x="15" y="68" visible="false" includeIn="lobby,room"/>
 	<fx:DesignLayer d:userLabel="game lest">
-		<components:GameLbby x="10" y="65" id="lobbypanel">
+		<components:GameLbby x="10" y="65" id="lobbypanel" includeIn="lobby,room">
 		<mx:Tree x="14" y="66" width="241" height="405" id="gameTreeView" labelField="@name" dataProvider="{LobyManager.Instance.TreeData}" doubleClickEnabled="true" itemDoubleClick="{LobyManager.Instance.LobyTreeItemClick(event)}" folderOpenIcon="@Embed(source='../res/treeroomiconOpen.png')" folderClosedIcon="@Embed(source='../res/treeroomiconClose.png')" defaultLeafIcon="@Embed(source='../res/treeroomiconNode.png')" backgroundAlpha="0" contentBackgroundAlpha="0"
 			alternatingItemColors="[#11241A, #11241A]" baseColor="#f6edae" color="#000000" selectionColor="#F3AC02"/>
 		</components:GameLbby>
 	</fx:DesignLayer>
 	<fx:DesignLayer d:userLabel="massage" th:visible.Page2="false">
 		<!--商店界面同时也是道具界面-->
-		<components:Shop x="200" y="130" id="shopmenu">
+		<components:Shop x="200" y="130" id="shopmenu" includeIn="lobby,room">
 		</components:Shop>
 		<!--玩家信息-->
-		<components:PlayerInfo x="200" y="130" id="playerinfo"/>
-		<components:OptionWindow x="200" y="130" id="createTable" visible="false"/>
-		<components:passwordInput id="pwInput" x="188" y="230" visible="false"/>
+		<components:PlayerInfo x="200" y="130" id="playerinfo" includeIn="lobby,room"/>
+		<components:OptionWindow x="200" y="130" id="createTable" visible="false" includeIn="lobby,room"/>
+		<components:passwordInput id="pwInput" x="188" y="230" visible="false" includeIn="lobby,room"/>
 	</fx:DesignLayer>
-	<mx:Label x="140" y="26" text="ver 1.8.6.B" width="64" textAlign="right" color="#333333"/>
+	<mx:Label x="140" y="26" text="ver 1.8.6.B" width="64" textAlign="right" color="#333333" includeIn="lobby,room"/>
 	<!--游戏本体-->
-	<poker:poker id="gamePoker" visible="false"/>
+	<poker:poker id="gamePoker" visible="false" includeIn="lobby,room"/>
 	<!--用来确认一些需要使用卡片的道具-->
-	<components:shoutMsgInputBox id="shoutmsgbox" x="250" y="200" visible="false"/>
+	<components:shoutMsgInputBox id="shoutmsgbox" x="250" y="200" visible="false" includeIn="lobby,room"/>
 	<!--好友列表，大厅和游戏共用同一个-->
-	<components:friends id="friendslist" x="200" y="130" visible="false"/>
+	<components:friends id="friendslist" x="200" y="130" visible="false" includeIn="lobby,room"/>
 	<!--邀请，该窗口会位于所有的窗口之上，以保证会被最优先处理-->
-	<components:Invitation x="200" y="130" id="invitation" visible="false"/>
-	<components:changeSkin x="200" y="130" id="changeSkin" visible="false"/>
+	<components:Invitation x="200" y="130" id="invitation" visible="false" includeIn="lobby,room"/>
+	<components:changeSkin x="200" y="130" id="changeSkin" visible="false" includeIn="lobby,room"/>
 	<!--公告显示的位置，处在画面的最上层-->
-	<message:announceWnd id="lobbyAnnounce" x="50" y="36" visible="false"/>
+	<message:announceWnd id="lobbyAnnounce" x="50" y="36" visible="false" includeIn="lobby,room"/>
 </s:Application>

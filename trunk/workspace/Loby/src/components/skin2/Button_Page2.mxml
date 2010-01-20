@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<s:states>
 		<s:State name="up"/>
 		<s:State name="over"/>
@@ -7,6 +7,6 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<s:BitmapImage source="@Embed('/assets/skin2/Button_ItemNextPage_up.png')" resizeMode="scale" includeIn="down,over,up"/>
-	<s:BitmapImage source="@Embed('/assets/skin2/Button_ItemNextPage_disabled.png')" resizeMode="scale" includeIn="disabled"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_ItemNextPage_up.swf')" includeIn="down,over,up"/>
+	<mx:Image source="@Embed('/assets/skin2/Button_ItemNextPage_disabled.swf')" includeIn="disabled"/>
 </s:Skin>

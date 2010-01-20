@@ -112,7 +112,7 @@ package poker
 		public var gameState:int	= 0;
 			//
 			public var cardAnimateCounter:int = 0;
-			private var cardAnimateArray:Array = new Array();
+			public var cardAnimateArray:Array = new Array();
 			// 用来标识玩家是否使用了托管
 		public var isCpuAI:Boolean = false;
 		// 计时器

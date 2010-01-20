@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo">
+		 xmlns:mx="library://ns.adobe.com/flex/halo" currentState="blank">
 	<fx:Script>
 		<![CDATA[
 			import lobystate.StateGetPlayerInfo;
@@ -104,19 +104,23 @@
 
 		]]>
 	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="blank"/>
+	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image id="backgroundBG" creationComplete="backgroundBG_creationCompleteHandler(event)"/>
+	<mx:Image id="backgroundBG" creationComplete="backgroundBG_creationCompleteHandler(event)" includeIn="State1"/>
 	<mx:DataGrid id="invitationlist" x="31" y="42" width="302" height="193" editable="false" dragEnabled="false" dragMoveEnabled="false"
-				 dataProvider="{StateUpdateInvite.Instance.invitation}">
+				 dataProvider="{StateUpdateInvite.Instance.invitation}" includeIn="State1">
 		<mx:columns>
 			<mx:DataGridColumn headerText="全部邀请列表,点选进行接受" dataField="text"/>
 		</mx:columns>
 	</mx:DataGrid>
-	<s:Button id="btnconfirm" x="71" y="242" label="接受" click="btnconfirm_clickHandler(event)"/>
-	<s:Button id="btnRefuseall" x="208" y="242" label="全部拒绝" click="btnRefuseall_clickHandler(event)"/>
-	<s:Panel id="msgbox" x="102" y="89" width="157" height="114" title="提示" visible="false">
+	<s:Button id="btnconfirm" x="71" y="242" label="接受" click="btnconfirm_clickHandler(event)" includeIn="State1"/>
+	<s:Button id="btnRefuseall" x="208" y="242" label="全部拒绝" click="btnRefuseall_clickHandler(event)" includeIn="State1"/>
+	<s:Panel id="msgbox" x="102" y="89" width="157" height="114" title="提示" visible="false" includeIn="State1">
 		<s:Button x="43" y="56" label="确定" click="msgconfirm_clickHandler(event)"/>
 		<s:Label id="msgtext" x="10" y="10" text="拒绝失败，请重新尝试" width="137" height="38" />
 	</s:Panel>
