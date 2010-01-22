@@ -16,10 +16,18 @@ package
 		}
 	
 		[Embed(source="assets/lobbyTable.swf")]
-		public var imgTable:Class;
+		public var imgTable1:Class;
+		[Embed(source="assets/skin2/lobbyTable.swf")]
+		public var imgTable2:Class;
+		[Embed(source="assets/skin3/lobbyTable.swf")]
+		public var imgTable3:Class;
 		
 		[Embed(source="assets/lobbyChair.swf")]
-		public var imgChair:Class;
+		public var imgChair1:Class;
+		[Embed(source="assets/skin2/lobbyChair.swf")]
+		public var imgChair2:Class;
+		[Embed(source="assets/skin3/lobbyChair.swf")]
+		public var imgChair3:Class;
 		
 		// 以下是多套皮肤系统使用的图
 		[Embed(source="assets/gameBg.jpg")]
@@ -28,6 +36,13 @@ package
 		public var Bg_DT_skin2:Class;
 		[Embed(source="assets/skin3/gameBg.jpg")]
 		public var Bg_DT_skin3:Class;
+
+		[Embed(source="assets/tableIdPanel.swf")]
+		public var tableIdPanel_skin1:Class;
+		[Embed(source="assets/skin2/tableIdPanel.swf")]
+		public var tableIdPanel_skin2:Class;
+		[Embed(source="assets/skin3/tableIdPanel.swf")]
+		public var tableIdPanel_skin3:Class;
 
 		[Embed(source="assets/lobbyPanel.swf")]
 		public var lobbyPanel_skin1:Class;

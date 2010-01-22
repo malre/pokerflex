@@ -47,18 +47,18 @@
 			public function skinClick(id:int):void
 			{
 				if(id == 0){
-					selectedRect.x = 50;
+					selectedRect.x = 54;
 					selectedRect.y = 47;
 					selectedSkin = 0;
 				}
 				else if(id == 1){
-					selectedRect.x = 202;
+					selectedRect.x = 207;
 					selectedRect.y = 47;
 					selectedSkin = 1;
 				}
 				else if(id == 2){
-					selectedRect.x = 50;
-					selectedRect.y = 147;
+					selectedRect.x = 54;
+					selectedRect.y = 141;
 					selectedSkin = 2;
 				}
 			}
@@ -164,16 +164,16 @@
 	<mx:Image x="0" y="0" id="bg" creationComplete="bg_creationCompleteHandler(event)" includeIn="StateMain"/>
 	<mx:Image x="0" y="0" id="title" creationComplete="title_creationCompleteHandler(event)" includeIn="StateMain"/>
 	<s:Button x="330" y="11" id="btnClose" click="CloseButton()" creationComplete="btnCloseWnd_creationCompleteHandler(event)" includeIn="StateMain"/>
-	<s:Button x="57" y="219" id="confirm" click="OK_clickHandler(event)" includeIn="StateMain" creationComplete="confirm_creationCompleteHandler(event)"/>
-	<s:Button x="203" y="219" id="cancel" click="NOT_clickHandler(event)" includeIn="StateMain" creationComplete="cancel_creationCompleteHandler(event)"/>
+	<s:Button x="57" y="229" id="confirm" click="OK_clickHandler(event)" includeIn="StateMain" creationComplete="confirm_creationCompleteHandler(event)"/>
+	<s:Button x="203" y="229" id="cancel" click="NOT_clickHandler(event)" includeIn="StateMain" creationComplete="cancel_creationCompleteHandler(event)"/>
 
-	<s:Rect id="selectedRect" width="95" height="65" x="50" y="47" includeIn="StateMain">
+	<s:Rect id="selectedRect" width="116" height="84" x="54" y="47" includeIn="StateMain">
 		<s:fill>
 			<s:SolidColor color="#2250ee"/>
 		</s:fill>
 	</s:Rect>
-	<components:Button_skinSample id="btn1" click="btn1_clickHandler(event)" x="54" y="42" includeIn="StateMain"/>
-	<components:Button_skinSample id="btn2" click="btn1_clickHandler(event)" x="206" y="42" includeIn="StateMain"/>
-	<components:Button_skinSample id="btn3" click="btn1_clickHandler(event)" x="54" y="133" includeIn="StateMain"/>
+	<mx:Image id="btn1" x="56" y="49" source="@Embed('assets/sample1.png')" includeIn="StateMain" click="btn1_clickHandler(event)"/>
+	<mx:Image id="btn2" x="209" y="49" source="@Embed('assets/sample2.png')" includeIn="StateMain" click="btn1_clickHandler(event)"/>
+	<mx:Image id="btn3" x="56" y="143" source="@Embed('assets/sample3.png')" includeIn="StateMain" click="btn1_clickHandler(event)"/>
 	
 </s:Group>

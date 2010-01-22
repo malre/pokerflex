@@ -111,7 +111,7 @@ package
 			httpser = new HTTPService();
 			httpser.method = "POST";
 			httpser.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
-			httpser.requestTimeout = 2;
+			httpser.requestTimeout = 10;
 			httpser.showBusyCursor = false;
 			httpser.addEventListener(ResultEvent.RESULT, httpResult);
 			httpser.addEventListener(FaultEvent.FAULT, httpFault);
@@ -119,7 +119,7 @@ package
 			lobbyinfoUpdater = new HTTPService();
 			lobbyinfoUpdater.method = "POST";
 			lobbyinfoUpdater.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
-			lobbyinfoUpdater.requestTimeout = 2;
+			lobbyinfoUpdater.requestTimeout = 10;
 			lobbyinfoUpdater.showBusyCursor = false;
 			lobbyinfoUpdater.addEventListener(ResultEvent.RESULT, lobbyupdateResult);
 			lobbyinfoUpdater.addEventListener(FaultEvent.FAULT, lobbyupdateFault);

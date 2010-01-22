@@ -10,6 +10,7 @@ package
 	import lobystate.StateGetPlayerInfo;
 	import lobystate.StateGetTableInfo;
 	import lobystate.StateJoinLoby;
+	import lobystate.StateGetSkin;
 	
 	import message.Messenger;
 	
@@ -346,156 +347,6 @@ package
 		{
 			RoomTableDrawII(obj);
 		}
-
-		// 当在房间里面的时候，描画房间里面的桌子
-		public function RoomTableDraw(obj:Object):Boolean
-		{
-			var canvas:Group = FlexGlobals.topLevelApplication.gameRoomCanvas;
-			// 如果这个数组没有成员，直接返回
-			if(obj.length <= 0)
-			{
-//				canvas.removeAllChildren();
-				return false;
-			}
-			
-//			canvas.removeAllChildren();
-			var i:int,j:int;
-			// 本次更新得到的数据比上一次的要少，要删除部分显示的桌子
-/*			if(obj.length <= tableTotal)
-			{
-				// 删除多余的桌子
-				for(i=obj.length;i<tableTotal;i++)
-				{
-					canvas.removeChild(canvas.getChildByName("table"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("tag"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("up"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("left"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("down"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("right"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("avatarup"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("avatarleft"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("avatardown"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("avatarright"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("nameup"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("nameleft"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("namedown"+i.toString()));
-					canvas.removeChild(canvas.getChildByName("nameright"+i.toString()));
-				}
-				tableTotal = obj.length;
-			}
-			else	// 这次的数据比上次的多，也包括了第一次的情况，需要动态的增加桌子的数量
-			{*/
-				for(i =0; i<roomTableRowMax; i++)
-				{
-					for(j =0; j<roomTableColumnMax; j++)
-					{
-						// 如果超出了界限，直接返回
-						if(i*roomTableColumnMax+j >= obj.length)
-						{
-							tableTotal = obj.length;
-							return true;
-						}
-							
-						var id:int = i*roomTableColumnMax +j;
-						// 如果是非可显示游戏桌，不显示
-						if(obj[id].gid == -1)
-							continue;
-						var roomid:int = obj[id].rid;
-						// 桌子的图
-						var img:Image = new Image();
-						img.x = tableStartX + (intervalX+51)*j;
-						img.y = tableStartY + (intervalY+52)*i;
-						img.load(ResourceManagerLobby.Instance.imgTable);
-						{
-							// 为了达到一个重叠的效果，把上面的椅子在桌子之前描画
-							canvas.addChild(createTableBtn(id.toString(), "up"+id.toString(), img.x+12, img.y-28, 0));
-						}
-						img.name = "table"+id.toString();
-						img.toolTip = "游戏桌名："+obj[id].name +"\n";
-						if(obj[id].hasOwnProperty("password"))
-							img.toolTip += "该游戏桌设置有密码\n";
-						if(obj[id].hasOwnProperty("lowerlevellimit"))		
-							img.toolTip += "游戏等级下限为：" + LevelDefine.levelName[obj[id].lowerlevellimit]+"\n";
-						else
-							img.toolTip += "游戏无等级下限\n";
-						if(obj[id].hasOwnProperty("upperlevellimit"))
-							img.toolTip += "游戏等级上限为：" + LevelDefine.levelName[obj[id].upperlevellimit]+"\n";
-						else
-							img.toolTip += "游戏无等级上限\n";
-						if(obj[id].hasOwnProperty("magnification"))
-							img.toolTip += "金币倍率为："+ FlexGlobals.topLevelApplication.createTable.goldplusrate[obj[id].magnification]+"\n";
-						else
-							img.toolTip += "无金币倍率\n";
-						if(obj[id].hasOwnProperty("allowchat"))	{
-							if(obj[id].allowchat)
-								img.toolTip += "该游戏桌允许聊天\n"
-							else
-								img.toolTip += "该游戏桌禁止聊天\n"
-						}
-						else
-							img.toolTip += "该游戏桌禁止聊天\n"
-						canvas.addChild(img);
-						
-						// 桌子上的桌号
-						var label:Label = new Label();
-						label.x = img.x -38;
-						label.y = img.y - 44 ;
-						// 为了保证换行以后的文字能够都显示出来
-						label.width = 50;
-						label.height = 45;
-						label.text = String(obj[id].name).replace("台", "台\n");;//(id+1).toString();
-//						label.setStyle("fontSize", 14);
-//						label.setStyle("color","#ffcc33"); 
-						label.name = "tag"+id.toString();
-						canvas.addChild(label);
-						
-						// 创建按钮需要和实际的房间信息结合起来
-						// 如果该位置有玩家存在，则无按钮，否则有按钮
-						canvas.addChild(createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+16, 1));
-						canvas.addChild(createTableBtn(id.toString(), "down"+id.toString(), img.x+12, img.y+40, 2));
-						canvas.addChild(createTableBtn(id.toString(), "right"+id.toString(), img.x+52+15, img.y+16, 3));
-						// 描画桌子上的人的信息
-//						var farr:Array = new Array(0,0,0,0);
-						for(var n:int=0;n<4;n++)
-						{
-							if(obj[id].players.hasOwnProperty(n.toString()))
-							{
-								if(obj[id].players[n].pos == 0)
-								{
-//									createAvatarAndName(obj[id].players[n], "up"+id.toString(), img.x+17, img.y-40);
-//									farr[0] = 1;
-								}
-								else if(obj[id].players[n].pos == 1)
-								{
-//									createAvatarAndName(obj[id].players[n], "left"+id.toString(), img.x-33, img.y+6);
-//									farr[1] = 1;
-								}
-								else if(obj[id].players[n].pos == 2)
-								{
-//									createAvatarAndName(obj[id].players[n], "down"+id.toString(), img.x+17, img.y+30);
-//									farr[2] = 1;
-								}
-								else if(obj[id].players[n].pos == 3)
-								{
-//									createAvatarAndName(obj[id].players[n], "right"+id.toString(), img.x+51+21, img.y+6);
-//									farr[3] = 1;
-								}
-							}
-						}
-//						if(farr[0] == 0)
-//							createAvatarAndName(null, "up"+id.toString(), img.x+10, img.y-40);
-//						if(farr[1] == 0)
-//							createAvatarAndName(null, "left"+id.toString(), img.x+10, img.y-40);
-//						if(farr[2] == 0)
-//							createAvatarAndName(null, "down"+id.toString(), img.x+10, img.y-40);
-//						if(farr[3] == 0)
-//							createAvatarAndName(null, "right"+id.toString(), img.x+10, img.y-40);
-					}
-				}
-			//}
-			tableTotal = obj.length;
-			return true;
-		}
 		
 		public function RoomTableDrawII(obj:Object):Boolean
 		{
@@ -585,9 +436,14 @@ package
 		public function createTableBtn(id:String, name:String, x:int, y:int, pos:int):Image
 		{
 			// 进行一定的修改，不再使用按钮，而是直接的椅子的图
-			//var btn:mx.controls.Button = new mx.controls.Button();、
+			var skin:int = StateGetSkin.Instance.skin;
 			var btn:Image = new Image();
-			btn.source = ResourceManagerLobby.Instance.imgChair;
+			if(skin == 0)
+				btn.source = ResourceManagerLobby.Instance.imgChair1;
+			else if(skin == 1)
+				btn.source = ResourceManagerLobby.Instance.imgChair2;
+			else if(skin == 2)
+				btn.source = ResourceManagerLobby.Instance.imgChair3;
 			btn.x = x;
 			btn.y = y;
 			btn.id = id;

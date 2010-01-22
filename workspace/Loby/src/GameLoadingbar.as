@@ -40,9 +40,9 @@ package
 		public function loadSuccess():void
 		{
 			dispatchEvent(new Event(Event.COMPLETE));
-//			FlexGlobals.topLevelApplication.currentState = "lobby";
+			FlexGlobals.topLevelApplication.currentState = "lobby";
 			LobyNetManager.Instance.send(LobyNetManager.roomInfo);
-			FlexGlobals.topLevelApplication.modifySkin();
+//			FlexGlobals.topLevelApplication.modifySkin();
 		}
 		
 		protected function loadover(event:Event):void

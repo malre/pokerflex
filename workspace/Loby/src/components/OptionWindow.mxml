@@ -6,7 +6,7 @@
 	xmlns:th="http://ns.adobe.com/thermo/2009" 
 	xmlns:components="components.*" xmlns:mx="library://ns.adobe.com/flex/halo"
 	creationComplete="createroom_creationCompleteHandler(event)"
-	>
+	currentState="State1">
 	<fx:Script>
 		<![CDATA[
 			import components.skin2.*;
@@ -39,7 +39,6 @@
 			{
 				x = (this.parent.width - 360)/2;
 				y = (this.parent.height - 320)/2;
-				currentState='State2';
 			}
 			
 			public function setLobbyGoldrate():void
@@ -226,6 +225,8 @@
 				}
 				else if(skin == 1){
 					bg.source = ResourceManagerLobby.Instance.text_createroom_skin2; 
+					bg.x = 18;
+					bg.y = 15;
 				}
 				else if(skin == 2){
 					bg.source = ResourceManagerLobby.Instance.text_createroom_skin3; 
