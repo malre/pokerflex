@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009"
-		 width="60" height="21" xmlns:mx="library://ns.adobe.com/flex/halo">
+		 width="54" height="21" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
 			public function beClicked():void
@@ -30,5 +30,5 @@
 			<s:SolidColor color="#664402" alpha="0.5"/>
 		</s:fill>
 	</s:Rect>
-	<s:Label id="btntext" color="#4d2902" fontSize="14" x="10" y="3"/>
+	<s:Label id="btntext" color="#4d2902" fontSize="14" x="7" y="3"/>
 </s:Group>

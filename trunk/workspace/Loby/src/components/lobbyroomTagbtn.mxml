@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" width="482" height="21" xmlns:components="components.*"
+		 xmlns:mx="library://ns.adobe.com/flex/halo" height="21" xmlns:components="components.*"
 		 creationComplete="group1_creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
@@ -66,44 +66,44 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<components:Button_LobbyTag x="1" y="0" id="page1" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="61" y="0" id="page2" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="121" y="0" id="page3" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="181" y="0" id="page4" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="241" y="0" id="page5" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="301" y="0" id="page6" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="361" y="0" id="page7" click="pagebtn_clickHandler(event)"/>
-	<components:Button_LobbyTag x="421" y="0" id="page8" click="pagebtn_clickHandler(event)"/>
-	<s:Rect width="4" height="18" x="59" y="2">
+	<components:Button_LobbyTag x="56" y="0" id="page2" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="111" y="0" id="page3" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="166" y="0" id="page4" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="221" y="0" id="page5" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="276" y="0" id="page6" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="331" y="0" id="page7" click="pagebtn_clickHandler(event)"/>
+	<components:Button_LobbyTag x="386" y="0" id="page8" click="pagebtn_clickHandler(event)"/>
+	<s:Rect width="1" height="18" x="55" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>
 	</s:Rect>
-	<s:Rect width="4" height="18" x="119" y="2">
+	<s:Rect width="1" height="18" x="110" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>
 	</s:Rect>
-	<s:Rect width="4" height="18" x="179" y="2">
+	<s:Rect width="1" height="18" x="165" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>
 	</s:Rect>
-	<s:Rect width="4" height="18" x="239" y="2">
+	<s:Rect width="1" height="18" x="220" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>
 	</s:Rect>
-	<s:Rect width="4" height="18" x="299" y="2">
+	<s:Rect width="1" height="18" x="275" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>
 	</s:Rect>
-	<s:Rect width="4" height="18" x="359" y="2">
+	<s:Rect width="1" height="18" x="330" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>
 	</s:Rect>
-	<s:Rect width="4" height="18" x="419" y="2">
+	<s:Rect width="1" height="18" x="385" y="2">
 		<s:fill>
 			<s:SolidColor color="#ffffff" alpha="0.8"/>
 		</s:fill>

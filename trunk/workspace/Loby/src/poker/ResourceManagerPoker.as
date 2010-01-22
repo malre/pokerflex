@@ -266,6 +266,13 @@ package poker
 		[Embed(source="../res/skin3/CPUAI.swf")]
 		public static var CPUAI_skin3:Class;
 
+		[Embed(source="../res/ready.swf")]
+		public static var ready_skin1:Class;
+		[Embed(source="../res/skin2/ready.swf")]
+		public static var ready_skin2:Class;
+		[Embed(source="../res/skin3/ready.swf")]
+		public static var ready_skin3:Class;
+		
 		
 		// sound
 		[Embed(source="../res/sound/start.mp3")]
