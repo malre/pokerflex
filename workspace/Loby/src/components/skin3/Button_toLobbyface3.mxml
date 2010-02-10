@@ -7,7 +7,7 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<mx:Image source="@Embed('/assets/skin3/Button_toLobbyface_up.swf')" includeIn="up,disabled"/>
-	<mx:Image source="@Embed('/assets/skin3/Button_toLobbyface_down.swf')" includeIn="down"/>
-	<mx:Image source="@Embed('/assets/skin3/Button_toLobbyface_over.swf')" includeIn="over"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_toLobbyface_up.png')" includeIn="up,disabled"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_toLobbyface_down.png')" includeIn="down"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_toLobbyface_over.png')" includeIn="over"/>
 </s:Skin>

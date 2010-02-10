@@ -7,8 +7,8 @@
 		<s:State name="disabled"/>
 	</s:states>
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
-	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_up.swf')" id="bitmapimage7" includeIn="up"/>
-	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_over.swf')" includeIn="over" id="bitmapimage8"/>
-	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_down.swf')" includeIn="down" id="bitmapimage9"/>
-	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_disabled.swf')" includeIn="disabled" id="bitmapimage10"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_up.png')" id="bitmapimage7" includeIn="up"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_over.png')" includeIn="over" id="bitmapimage8"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_down.png')" includeIn="down" id="bitmapimage9"/>
+	<mx:Image source="@Embed('/assets/skin3/Button_CpuPlay_disabled.png')" includeIn="disabled" id="bitmapimage10"/>
 </s:Skin>
