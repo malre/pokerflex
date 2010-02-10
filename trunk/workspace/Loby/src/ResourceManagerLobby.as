@@ -34,7 +34,7 @@ package
 		public var Bg_DT_skin1:Class;
 		[Embed(source="assets/skin2/gameBg.jpg")]
 		public var Bg_DT_skin2:Class;
-		[Embed(source="assets/skin3/gameBg.jpg")]
+		[Embed(source="assets/skin3/gameBg.png")]
 		public var Bg_DT_skin3:Class;
 
 		[Embed(source="assets/tableIdPanel.swf")]
@@ -48,126 +48,126 @@ package
 		public var lobbyPanel_skin1:Class;
 		[Embed(source="assets/skin2/lobbyPanel.swf")]
 		public var lobbyPanel_skin2:Class;
-		[Embed(source="assets/skin3/lobbyPanel.swf")]
+		[Embed(source="assets/skin3/lobbyPanel.png")]
 		public var lobbyPanel_skin3:Class;
 		
 		[Embed(source="assets/text_gamelist.swf")]
 		public var text_gamelist_skin1:Class;
 		[Embed(source="assets/skin2/text_gamelist.swf")]
 		public var text_gamelist_skin2:Class;
-		[Embed(source="assets/skin3/text_gamelist.swf")]
+		[Embed(source="assets/skin3/text_gamelist.png")]
 		public var text_gamelist_skin3:Class;
 		
 		[Embed(source="assets/text_gamelobby.swf")]
 		public var text_gamelobby_skin1:Class;
 		[Embed(source="assets/skin2/text_gamelobby.swf")]
 		public var text_gamelobby_skin2:Class;
-		[Embed(source="assets/skin3/text_gamelobby.swf")]
+		[Embed(source="assets/skin3/text_gamelobby.png")]
 		public var text_gamelobby_skin3:Class;
 
 		[Embed(source="assets/bg_5.swf")]
 		public var bg_5_skin1:Class;
 		[Embed(source="assets/skin2/bg_5.swf")]
 		public var bg_5_skin2:Class;
-		[Embed(source="assets/skin3/bg_5.swf")]
+		[Embed(source="assets/skin3/bg_5.png")]
 		public var bg_5_skin3:Class;
 
 		[Embed(source="assets/bg_4.swf")]
 		public var bg_4_skin1:Class;
 		[Embed(source="assets/skin2/bg_4.swf")]
 		public var bg_4_skin2:Class;
-		[Embed(source="assets/skin3/bg_4.swf")]
+		[Embed(source="assets/skin3/bg_4.png")]
 		public var bg_4_skin3:Class;
 		
 		[Embed(source="assets/Bg_shop.swf")]
 		public var Bg_shop_skin1:Class;
 		[Embed(source="assets/skin2/Bg_shop.swf")]
 		public var Bg_shop_skin2:Class;
-		[Embed(source="assets/skin3/Bg_shop.swf")]
+		[Embed(source="assets/skin3/Bg_shop.png")]
 		public var Bg_shop_skin3:Class;
 		
 		[Embed(source="assets/shop_text.swf")]
 		public var shop_text_skin1:Class;
 		[Embed(source="assets/skin2/shop_text.swf")]
 		public var shop_text_skin2:Class;
-		[Embed(source="assets/skin3/shop_text.swf")]
+		[Embed(source="assets/skin3/shop_text.png")]
 		public var shop_text_skin3:Class;
 
 		[Embed(source="assets/item_text.swf")]
 		public var item_text_skin1:Class;
 		[Embed(source="assets/skin2/item_text.swf")]
 		public var item_text_skin2:Class;
-		[Embed(source="assets/skin3/item_text.swf")]
+		[Embed(source="assets/skin3/item_text.png")]
 		public var item_text_skin3:Class;
 
 		[Embed(source="assets/systemBG.swf")]
 		public var systemBG_skin1:Class;
 		[Embed(source="assets/skin2/systemBG.swf")]
 		public var systemBG_skin2:Class;
-		[Embed(source="assets/skin3/systemBG.swf")]
+		[Embed(source="assets/skin3/systemBG.png")]
 		public var systemBG_skin3:Class;
 
 		[Embed(source="assets/playerinfo_panel.swf")]
 		public var playerinfo_panel_skin1:Class;
 		[Embed(source="assets/skin2/playerinfo_panel.swf")]
 		public var playerinfo_panel_skin2:Class;
-		[Embed(source="assets/skin3/playerinfo_panel.swf")]
+		[Embed(source="assets/skin3/playerinfo_panel.png")]
 		public var playerinfo_panel_skin3:Class;
 	
 		[Embed(source="assets/text_createroom.swf")]
 		public var text_createroom_skin1:Class;
 		[Embed(source="assets/skin2/text_createroom.swf")]
 		public var text_createroom_skin2:Class;
-		[Embed(source="assets/skin3/text_createroom.swf")]
+		[Embed(source="assets/skin3/text_createroom.png")]
 		public var text_createroom_skin3:Class;
 	
 		[Embed(source="assets/text_optionWnd.swf")]
 		public var text_optionWnd_skin1:Class;
 		[Embed(source="assets/skin2/text_optionWnd.swf")]
 		public var text_optionWnd_skin2:Class;
-		[Embed(source="assets/skin3/text_optionWnd.swf")]
+		[Embed(source="assets/skin3/text_optionWnd.png")]
 		public var text_optionWnd_skin3:Class;
 
 		[Embed(source="assets/optionWindow_text.swf")]
 		public var optionWindow_text_skin1:Class;
 		[Embed(source="assets/skin2/optionWindow_text.swf")]
 		public var optionWindow_text_skin2:Class;
-		[Embed(source="assets/skin3/optionWindow_text.swf")]
+		[Embed(source="assets/skin3/optionWindow_text.png")]
 		public var optionWindow_text_skin3:Class;
 
 		[Embed(source="assets/friendslist_title.swf")]
 		public var friendslist_title_skin1:Class;
 		[Embed(source="assets/skin2/friendslist_title.swf")]
 		public var friendslist_title_skin2:Class;
-		[Embed(source="assets/skin3/friendslist_title.swf")]
+		[Embed(source="assets/skin3/friendslist_title.png")]
 		public var friendslist_title_skin3:Class;
 
 		[Embed(source="assets/text_changeSkin.swf")]
 		public var text_changeSkin_skin1:Class;
 		[Embed(source="assets/skin2/text_changeSkin.swf")]
 		public var text_changeSkin_skin2:Class;
-		[Embed(source="assets/skin3/text_changeSkin.swf")]
+		[Embed(source="assets/skin3/text_changeSkin.png")]
 		public var text_changeSkin_skin3:Class;
 
 		[Embed(source="assets/gameLogo.swf")]
 		public var gameLogo_skin1:Class;
 		[Embed(source="assets/skin2/gameLogo.swf")]
 		public var gameLogo_skin2:Class;
-		[Embed(source="assets/skin3/gameLogo.swf")]
+		[Embed(source="assets/skin3/gameLogo.png")]
 		public var gameLogo_skin3:Class;
 		
 		[Embed(source="assets/gamePanel.swf")]
 		public var gamePanel_skin1:Class;
 		[Embed(source="assets/skin2/gamePanel.swf")]
 		public var gamePanel_skin2:Class;
-		[Embed(source="assets/skin3/gamePanel.swf")]
+		[Embed(source="assets/skin3/gamePanel.png")]
 		public var gamePanel_skin3:Class;
 		
 		[Embed(source="assets/ButtonBg.swf")]
 		public var ButtonBg_skin1:Class;
 		[Embed(source="assets/skin2/ButtonBg.swf")]
 		public var ButtonBg_skin2:Class;
-		[Embed(source="assets/skin3/ButtonBg.swf")]
+		[Embed(source="assets/skin3/ButtonBg.png")]
 		public var ButtonBg_skin3:Class;
 
 	
