@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties mainApplicationPath="Main.mxml" projectUUID="5aa541ac-507f-40ab-96dd-fd7f6d8e29b5" version="6">
-  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="10.0.12" themeIsDefault="false" themeIsSDK="true" themeLocation="G:/Adobe/Flash Builder Plug-in Beta/sdks/4.0.0/frameworks/themes/Wireframe" themeMain="wireframe.swc" themeMaxSDK="" themeMinSDK="4.0.0" themeName="Wireframe" themePath="Wireframe" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" themeBaseTheme="" themeIsDefault="false" themeIsSDK="true" themeLocation="G:/Adobe/Flash Builder Plug-in Beta/sdks/4.0.0/frameworks/themes/Wireframe" themeMain="wireframe.swc" themeMaxSDK="" themeMinSDK="4.0.0" themeName="Wireframe" themePath="Wireframe" themeSourceLocation="" themeSwcLocation="" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <themePath>Wireframe</themePath>
     <compilerSourcePath/>
-    <libraryPath defaultLinkType="0">
+    <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path=""/>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
     </libraryPath>
