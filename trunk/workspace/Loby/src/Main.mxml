@@ -13,9 +13,7 @@
 		preloader="GameLoadingbar" currentState="blank">
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.*;
-			import components.skin3.*;
-			
+			import components.*;
 			import lobystate.StateGetPlayerInfo;
 			import lobystate.StateGetSkin;
 			
@@ -149,27 +147,44 @@
 						img.x = 0;
 						img.y = 0;
 						img.id = "grouptable_"+(id+1).toString();
-						if(skin == 0)
-							img.source = ResourceManagerLobby.Instance.imgTable1;
-						else if(skin == 1)
-							img.source = ResourceManagerLobby.Instance.imgTable2;
-						else if(skin == 2)
-							img.source = ResourceManagerLobby.Instance.imgTable3;
+						SkinManager.setSkinImage(img,skin,SkinManager.imgTable);
+						if(skin==2)
+						{
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "up"+id.toString(), img.x-18, img.y-12, 0), 0);
+						}
+						else
 						{
 							// 为了达到一个重叠的效果，把上面的椅子在桌子之前描画
 							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "up"+id.toString(), img.x+12, img.y-28, 0), 0);
 						}
 						group.addElementAt(img, 1);
-					
-						// 创建按钮
-						group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+16, 1), 2);
-						group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "down"+id.toString(), img.x+12, img.y+40, 2), 3);
-						group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "right"+id.toString(), img.x+52+15, img.y+16, 3), 4);
-
+						if(skin==2)
+						{
+							// 创建按钮
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "left"+id.toString(), img.x-18, img.y+48, 1), 2);
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "down"+id.toString(), img.x+58, img.y+48, 2), 3);
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "right"+id.toString(), img.x+58, img.y-12, 3), 4);
+						}
+						else
+						{
+							// 创建按钮
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "left"+id.toString(), img.x-40, img.y+16, 1), 2);
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "down"+id.toString(), img.x+12, img.y+40, 2), 3);
+							group.addElementAt(LobyManager.Instance.createTableBtn(id.toString(), "right"+id.toString(), img.x+52+15, img.y+16, 3), 4);
+						}
 						// 桌子上的桌号
 						var tableName:Label = new Label();
-						tableName.x = img.x -38;
-						tableName.y = img.y - 44 ;
+						if(skin == 2)
+						{
+							tableName.x = img.x + 15;
+							tableName.y = img.y - 40;
+						}
+						else
+						{
+							tableName.x = img.x -38;
+							tableName.y = img.y - 44 ;							
+						}
+						
 						// 为了保证换行以后的文字能够都显示出来
 						tableName.width = 50;
 						tableName.height = 45;
@@ -180,10 +195,21 @@
 						// 创建桌子上的头像图和文字信息
 						// 0: 头像
 						// 1: 文字信息
-						group.addElementAt(LobyManager.Instance.createAvatarAndName("up"+id.toString(), img.x+17, img.y-40), 6);
-						group.addElementAt(LobyManager.Instance.createAvatarAndName("left"+id.toString(), img.x-33, img.y+6), 7);
-						group.addElementAt(LobyManager.Instance.createAvatarAndName("down"+id.toString(), img.x+17, img.y+30), 8);
-						group.addElementAt(LobyManager.Instance.createAvatarAndName("right"+id.toString(), img.x+51+21, img.y+6), 9);
+						if(skin==2)
+						{
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("up"+id.toString(), img.x-18, img.y-12), 6);
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("left"+id.toString(), img.x-18, img.y+48), 7);
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("down"+id.toString(), img.x+58, img.y+48), 8);
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("right"+id.toString(), img.x+58, img.y-12), 9);							
+						}
+						else
+						{
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("up"+id.toString(), img.x+17, img.y-40), 6);
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("left"+id.toString(), img.x-33, img.y+6), 7);
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("down"+id.toString(), img.x+17, img.y+30), 8);
+							group.addElementAt(LobyManager.Instance.createAvatarAndName("right"+id.toString(), img.x+51+21, img.y+6), 9);	
+						}
+						
 					}			
 				}
 			}
@@ -208,90 +234,35 @@
 			protected function Bg_DT_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0)
-				{
-					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
-				}
-				else if(skin == 1)
-				{
-					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin2;
-				}
-				else if(skin == 2)
-				{
-					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin3;
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.Bg_DT_skin);
 			}
 			
 			protected function lobbyPanel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var panel:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0)
-				{
-					panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin1;
-				}
-				else if(skin == 1)
-				{
-					panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin2;
-				}
-				else if(skin == 2)
-				{
-					panel.source = ResourceManagerLobby.Instance.lobbyPanel_skin3;
-				}
+				SkinManager.setSkinImage(panel,skin,SkinManager.lobbyPanel_skin);
 			}
 
 
 			protected function btn2lobby_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0)
-				{
-					btn2lobby.setStyle("skinClass", components.Button_toLobbyface);
-				}
-				else if(skin == 1)
-				{
-					btn2lobby.setStyle("skinClass", Button_toLobbyface2);
-				}
-				else if(skin == 2)
-				{
-					btn2lobby.setStyle("skinClass", Button_toLobbyface3);
-				}
+				SkinManager.setStyle(btn2lobby,skin,SkinManager.Button_ToLobbyFace);
 			}
 
 
 			protected function btn2LastTable_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0)
-				{
-					btn2LastTable.setStyle("skinClass", components.Button_toLastTable);
-				}
-				else if(skin == 1)
-				{
-					btn2LastTable.setStyle("skinClass", Button_toLastTable2);
-				}
-				else if(skin == 2)
-				{
-					btn2LastTable.setStyle("skinClass", Button_toLastTable3);
-				}
+				SkinManager.setStyle(btn2LastTable,skin,SkinManager.Button_ToLastTable);
 			}
 
 
 			protected function btn2room_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0)
-				{
-					btn2room.setStyle("skinClass", components.Button_toRoom);
-				}
-				else if(skin == 1)
-				{
-					btn2room.setStyle("skinClass", Button_toRoom2);
-				}
-				else if(skin == 2)
-				{
-					btn2room.setStyle("skinClass", Button_toRoom3);
-				}
+				SkinManager.setStyle(btn2room,skin,SkinManager.Button_ToRoom);
 			}
 
 
@@ -299,32 +270,18 @@
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0)
-				{
-					img.source = ResourceManagerLobby.Instance.text_gamelist_skin1;
-				}
-				else if(skin == 1)
-				{
-					img.source = ResourceManagerLobby.Instance.text_gamelist_skin2;
-				}
-				else if(skin == 2)
-				{
-					img.source = ResourceManagerLobby.Instance.text_gamelist_skin3;
-				}
+				SkinManager.setSkinImage(img,skin,SkinManager.text_gamelist_skin);
 			}
 			
 			protected function text_gamelobby_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.text_gamelobby_skin1;
-				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.text_gamelobby_skin2;
-				}
-				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.text_gamelobby_skin3;
+				SkinManager.setSkinImage(img,skin,SkinManager.text_gamelobby_skin);
+				
+				if(skin == 2){
+					gameTreeView.x=11;
+					gameTreeView.y=58;
 				}
 			}
 

@@ -5,12 +5,6 @@
 
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.Button_ShopNoBuy2;
-			import components.skin2.Button_confirm2;
-			import components.skin2.OptionWindow_CloseButton2;
-			import components.skin3.Button_ShopNoBuy3;
-			import components.skin3.Button_confirm3;
-			import components.skin3.OptionWindow_CloseButton3;
 			
 			import lobystate.StateGetSkin;
 			import lobystate.StateSetSkin;
@@ -67,80 +61,43 @@
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin1;
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin2;
-				}
-				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin3;
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.Bg_shop_skin);
 			}
 
 			protected function btnCloseWnd_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnClose.setStyle("skinClass", components.OptionWindow_CloseButton); 
-				}
-				else if(skin == 1){
-					btnClose.setStyle("skinClass", OptionWindow_CloseButton2); 
-					btnClose.x = 338;
-					btnClose.y = 15;
-				}
-				else if(skin == 2){
-					btnClose.setStyle("skinClass", OptionWindow_CloseButton3); 
-				}
+				SkinManager.setStyle(btnClose,skin,SkinManager.OptionWindow_CloseButton);
 			}
 			
 			protected function title_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					title.source = ResourceManagerLobby.Instance.text_changeSkin_skin1;
-				}
-				else if(skin == 1){
-					title.source = ResourceManagerLobby.Instance.text_changeSkin_skin2;
+				SkinManager.setSkinImage(title,skin,SkinManager.text_changeSkin_skin);
+				
+				if(skin == 1){
 					title.x = 18;
 					title.y = 15;
 				}
 				else if(skin == 2){
-					title.source = ResourceManagerLobby.Instance.text_changeSkin_skin3;
+					title.x = 18;
+					title.y = 10;
 				}
+					
+				
 			}
 			
 			protected function confirm_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					confirm.setStyle("skinClass", components.Button_confirm);
-				}
-				else if(skin == 1){
-					confirm.setStyle("skinClass", Button_confirm2);	
-					confirm.x = 68;
-					confirm.y = 233;
-				}
-				else if(skin == 2){
-					confirm.setStyle("skinClass", Button_confirm3);				
-				}
+				SkinManager.setStyle(confirm,skin,SkinManager.Button_Confirm);
 			}
 			
 			
 			protected function cancel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					cancel.setStyle("skinClass", components.Button_ShopNoBuy);
-				}
-				else if(skin == 1){
-					cancel.setStyle("skinClass", Button_ShopNoBuy2);
-					cancel.x = 252;
-					cancel.y = 233;
-				}
-				else if(skin == 2){
-					cancel.setStyle("skinClass", Button_ShopNoBuy3);				
-				}
+				SkinManager.setStyle(cancel,skin,SkinManager.Button_ShopNoBuy);
 			}
 			
 			

@@ -69,15 +69,7 @@
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.bg_4_skin1;
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.bg_4_skin2;
-				}
-				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.bg_4_skin3;
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.bg_4_skin);
 			}
 
 		]]>
@@ -100,6 +92,6 @@
 		<s:State name="State1"/>
 		<s:State name="State2"/>
 	</s:states>
-	<mx:Image source="@Embed('/assets/bg_4.swf')" includeIn="State1" x="1" id="bitmapimage1" creationComplete="bg_4_creationCompleteHandler(event)"/>
-	<s:Label includeIn="State1" x="15" y="43" width="240" height="22" id="label_currentRoom" verticalAlign="middle"/>
+	<mx:Image source="@Embed('/assets/skin1/bg_4.swf')" includeIn="State1" x="1" id="bitmapimage1" creationComplete="bg_4_creationCompleteHandler(event)"/>
+	<s:Label includeIn="State1" x="15" y="40" width="240" height="22" id="label_currentRoom" verticalAlign="middle"/>
 </s:Group>

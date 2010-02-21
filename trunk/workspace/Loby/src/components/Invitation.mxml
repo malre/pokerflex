@@ -91,15 +91,7 @@
 			protected function backgroundBG_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
-				}
-				else if(skin == 1){
-					backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin2; 
-				}
-				else if(skin == 2){
-					backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin3; 
-				}
+				SkinManager.setSkinImage(backgroundBG,skin,SkinManager.Bg_shop_skin);
 			}
 
 		]]>

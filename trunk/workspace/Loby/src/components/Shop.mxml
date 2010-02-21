@@ -89,6 +89,13 @@
 	</s:transitions>
 	<fx:Script>
 		<![CDATA[
+			import components.skin1.OptionWindow_CloseButton;
+			import components.skin1.Button_ShopNoBuy;
+			import components.skin1.Button_ShopBuy;
+			import components.skin1.Button_SendGift;
+			import components.skin1.Button_Page;
+			import components.skin1.Button_ItemUse;
+			import components.skin1.Button_Confirm;
 			import components.skin2.*;
 			import components.skin3.*;
 			
@@ -361,15 +368,7 @@
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin1;
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin2;
-				}
-				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin3;
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.Bg_shop_skin);
 			}
 
 
@@ -377,17 +376,7 @@
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.shop_text_skin1;
-				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.shop_text_skin2;
-					img.x = 18;
-					img.y = 15;
-				}
-				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.shop_text_skin3;
-				}
+				SkinManager.setSkinImage(img,skin,SkinManager.shop_text_skin);
 			}
 
 
@@ -395,222 +384,98 @@
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.item_text_skin1;
-				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.item_text_skin2;
-					img.x = 18;
-					img.y = 15;
-				}
-				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.item_text_skin3;
-				}
+				SkinManager.setSkinImage(img,skin,SkinManager.item_text_skin);
 			}
 
 
 			protected function btnCloseWnd_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					button1.setStyle("skinClass", components.OptionWindow_CloseButton); 
-				}
-				else if(skin == 1){
-					button1.setStyle("skinClass", OptionWindow_CloseButton2); 
-					button1.x = 338;
-					button1.y = 15;
-				}
-				else if(skin == 2){
-					button1.setStyle("skinClass", OptionWindow_CloseButton3); 
-				}
+				SkinManager.setStyle(button1,skin,SkinManager.OptionWindow_CloseButton); 
 			}
 
 
 			protected function pageleft_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					pageleft.setStyle("skinClass", components.Button_Page); 
-				}
-				else if(skin == 1){
-					pageleft.setStyle("skinClass", Button_Page2); 
-				}
-				else if(skin == 2){
-					pageleft.setStyle("skinClass", Button_Page3); 
-				}
+				SkinManager.setStyle(pageleft,skin,SkinManager.Button_Page);
 			}
 
 
 			protected function pageright_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					pageright.setStyle("skinClass", components.Button_Page); 
-				}
-				else if(skin == 1){
-					pageright.setStyle("skinClass", Button_Page2); 
-				}
-				else if(skin == 2){
-					pageright.setStyle("skinClass", Button_Page3); 
-				}
+				SkinManager.setStyle(pageright,skin,SkinManager.Button_Page); 
 			}
 
 			protected function subbg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin1;
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin2;
-				}
-				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.Bg_shop_skin3;
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.Bg_shop_skin);
 			}
 
 
 			protected function Button_ShopBuy_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					button8.setStyle("skinClass", components.Button_ShopBuy); 
-				}
-				else if(skin == 1){
-					button8.setStyle("skinClass", Button_ShopBuy2); 
-					button8.x = 68;
-					button8.y = 233;
-				}
-				else if(skin == 2){
-					button8.setStyle("skinClass", Button_ShopBuy3); 
-				}
+				SkinManager.setStyle(button8,skin,SkinManager.Button_ShopBuy); 
 			}
 
 
 			protected function Button_ShopNoBuy_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					button9.setStyle("skinClass", components.Button_ShopNoBuy);
-				}
-				else if(skin == 1){
-					button9.setStyle("skinClass", Button_ShopNoBuy2);
-					button9.x = 252;
-					button9.y = 233;
-				}
-				else if(skin == 2){
-					button9.setStyle("skinClass", Button_ShopNoBuy3);
-				}
+				SkinManager.setStyle(button9,skin,SkinManager.Button_ShopNoBuy);
 			}
 
 
 			protected function Button_ItemUse_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					button10.setStyle("skinClass", components.Button_ItemUse);
-				}
-				else if(skin == 1){
-					button10.setStyle("skinClass", Button_ItemUse2);
-					button10.x = 68;
-					button10.y = 233;
-				}
-				else if(skin == 2){
-					button10.setStyle("skinClass", Button_ItemUse3);
-				}
+				SkinManager.setStyle(button10,skin,SkinManager.Button_ItemUse);
 			}
 
 
 			protected function present_pageleft_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					present_pageleft.setStyle("skinClass", components.Button_Page);
-				}
-				else if(skin == 1){
-					present_pageleft.setStyle("skinClass", Button_Page2);
-				}
-				else if(skin == 2){
-					present_pageleft.setStyle("skinClass", Button_Page3);
-				}
+				SkinManager.setStyle(present_pageleft,skin,SkinManager.Button_Page);
 			}
 
 
 			protected function present_pageright_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					present_pageright.setStyle("skinClass", components.Button_Page); 
-				}
-				else if(skin == 1){
-					present_pageright.setStyle("skinClass", Button_Page2); 
-				}
-				else if(skin == 2){
-					present_pageright.setStyle("skinClass", Button_Page3); 
-				}
+				SkinManager.setStyle(present_pageright,skin,SkinManager.Button_Page); 
 			}
 
 
 			protected function btnPresent_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnPresent.setStyle("skinClass", components.Button_SendGift);
-				}
-				else if(skin == 1){
-					btnPresent.setStyle("skinClass", Button_SendGift2);
-				}
-				else if(skin == 2){
-					btnPresent.setStyle("skinClass", Button_SendGift3);
-				}
+				SkinManager.setStyle(btnPresent, skin,SkinManager.Button_SendGift);
 			}
 
 
 			protected function itemnumleft_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					itemnumleft.setStyle("skinClass", components.Button_Page); 
-				}
-				else if(skin == 1){
-					itemnumleft.setStyle("skinClass", Button_Page2); 
-				}
-				else if(skin == 2){
-					itemnumleft.setStyle("skinClass", Button_Page3); 
-				}
+				SkinManager.setStyle(itemnumleft,skin,SkinManager.Button_Page); 
 			}
 
 
 			protected function itemnumright_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					itemnumright.setStyle("skinClass", components.Button_Page); 
-				}
-				else if(skin == 1){
-					itemnumright.setStyle("skinClass", Button_Page2); 
-				}
-				else if(skin == 2){
-					itemnumright.setStyle("skinClass", Button_Page3); 
-				}
+				SkinManager.setStyle(itemnumright,skin,SkinManager.Button_Page); 
 			}
 
 
 			protected function btngetGiftConfirm_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btngetGiftConfirm.setStyle("skinClass", components.Button_confirm); 
-				}
-				else if(skin == 1){
-					btngetGiftConfirm.setStyle("skinClass", Button_confirm2); 
-					btngetGiftConfirm.x = 160;
-					btngetGiftConfirm.y = 233;
-				}
-				else if(skin == 2){
-					btngetGiftConfirm.setStyle("skinClass", Button_confirm3); 
-				}
+				SkinManager.setStyle(btngetGiftConfirm,skin,SkinManager.Button_Confirm); 
 			}
 
 		]]>

@@ -61,8 +61,7 @@
 
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.OptionWindow_CloseButton2;
-			import components.skin3.OptionWindow_CloseButton3;
+			import components.*;
 			
 			import lobystate.StateGetFriends;
 			import lobystate.StateGetSkin;
@@ -196,15 +195,7 @@
 			protected function backgroundBG_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
-				}
-				else if(skin == 1){
-					backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin2; 
-				}
-				else if(skin == 2){
-					backgroundBG.source = ResourceManagerLobby.Instance.Bg_shop_skin3; 
-				}
+				SkinManager.setSkinImage(backgroundBG,skin,SkinManager.Bg_shop_skin);
 			}
 
 
@@ -212,16 +203,15 @@
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.friendslist_title_skin1;
-				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.friendslist_title_skin2;
+				SkinManager.setSkinImage(img,skin,SkinManager.friendslist_title_skin);
+				
+				if(skin == 1){
 					img.x = 18;
 					img.y = 15;
 				}
 				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.friendslist_title_skin3;
+					img.x = 18;
+					img.y = 10;
 				}
 			}
 
@@ -229,17 +219,7 @@
 			protected function btnClose_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnClose.setStyle("skinClass", components.OptionWindow_CloseButton); 
-				}
-				else if(skin == 1){
-					btnClose.setStyle("skinClass", OptionWindow_CloseButton2); 
-					btnClose.x = 338;
-					btnClose.y = 15;
-				}
-				else if(skin == 2){
-					btnClose.setStyle("skinClass", OptionWindow_CloseButton3); 
-				}
+				SkinManager.setStyle(btnClose,skin,SkinManager.OptionWindow_CloseButton); 
 			}
 
 		]]>

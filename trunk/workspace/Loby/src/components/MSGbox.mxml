@@ -6,10 +6,6 @@
 	currentState="StateBase" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.Button_ItemUse2;
-			import components.skin2.Button_confirm2;
-			import components.skin3.Button_ItemUse3;
-			import components.skin3.Button_confirm3;
 			
 			import lobystate.StateGetSkin;
 			
@@ -34,15 +30,7 @@
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin1;
-				}
-				else if(skin == 1){
-					bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin2;
-				}
-				else if(skin == 2){
-					bitmapimage6.source = ResourceManagerLobby.Instance.systemBG_skin3;
-				}
+				SkinManager.setSkinImage(bitmapimage6,skin,SkinManager.systemBG_skin);
 			}
 
 
@@ -51,29 +39,11 @@
 				var skin:int = StateGetSkin.Instance.skin;
 				if(currentState == "StateUse")
 				{
-					if(skin == 0){
-						button1.setStyle("skinClass", components.Button_ItemUse); 
-					}
-					else if(skin == 1){
-						button1.setStyle("skinClass", Button_ItemUse2); 
-						button1.x = 109;
-					}
-					else if(skin == 2){
-						button1.setStyle("skinClass", Button_ItemUse3); 
-					}
+					SkinManager.setStyle(button1,skin,SkinManager.Button_ItemUse);
 				}
 				else if(currentState == "StateConfirm")
 				{
-					if(skin == 0){
-						button1.setStyle("skinClass", components.Button_confirm); 
-					}
-					else if(skin == 1){
-						button1.setStyle("skinClass", Button_confirm2);
-						button1.x = 109;
-					}
-					else if(skin == 2){
-						button1.setStyle("skinClass", Button_confirm3); 
-					}
+					SkinManager.setStyle(button1,skin,SkinManager.Button_Confirm);
 				}
 			}
 

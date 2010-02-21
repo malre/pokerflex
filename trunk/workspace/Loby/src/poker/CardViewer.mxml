@@ -3,8 +3,8 @@
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:mx="library://ns.adobe.com/flex/halo"
 		creationComplete="createComplete()">
-	<mx:Image  source="@Embed('assets/cardviewerBG.swf')"/>
-	<s:Button x="681" y="4" skinClass="components.OptionWindow_CloseButton" id="button1" click="handleClose(event)"/>
+	<mx:Image  source="@Embed('assets/skin1/cardviewerBG.swf')"/>
+	<s:Button x="681" y="4" skinClass="components.skin1.OptionWindow_CloseButton" id="button1" click="handleClose(event)"/>
 	<s:Label id="playername0" x="286" y="45" color="#FFFFFF"/>
 	<s:Label id="playername1" x="54" y="139" color="#FFFFFF"/>
 	<s:Label id="playername2" x="286" y="349" color="#FFFFFF"/>

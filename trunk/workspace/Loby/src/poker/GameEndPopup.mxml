@@ -4,10 +4,10 @@
 		xmlns:mx="library://ns.adobe.com/flex/halo"
 		 creationComplete="createComplete()">
 
-	<mx:Image source="@Embed('/assets/Bg_shop.swf')" id="image1"/>
-	<mx:Image source="@Embed('/assets/gameEndScoreShow.swf')" id="image2"/>
-	<s:Button skinClass="components.OptionWindow_CloseButton" x="330" y="11" id="button1" click="gameContinue(event)"/>
-	<s:Button x="128" y="226" skinClass="components.Button_confirm" click="gameContinue(event)"/>
+	<mx:Image source="@Embed('/assets/skin1/Bg_shop.swf')" id="image1"/>
+	<mx:Image source="@Embed('/assets/skin1/gameEndScoreShow.swf')" id="image2"/>
+	<s:Button skinClass="components.skin1.OptionWindow_CloseButton" x="330" y="11" id="button1" click="gameContinue(event)"/>
+	<s:Button x="128" y="226" skinClass="components.skin1.Button_Confirm" click="gameContinue(event)"/>
 	<mx:Label x="20" y="76" text="玩家一" fontSize="14" fontWeight="bold" id="popupPlayer0"/>
 	<mx:Label x="20" y="107" text="玩家二" fontSize="14" fontWeight="bold" id="popupPlayer1"/>
 	<mx:Label x="20" y="138" text="玩家三" fontSize="14" fontWeight="bold" id="popupPlayer2"/>
@@ -25,7 +25,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import components.Button_confirm;
+			import components.skin1.Button_Confirm;
 			
 			import mx.core.FlexGlobals;
 			import mx.events.CloseEvent;
