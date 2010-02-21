@@ -70,5 +70,5 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<mx:Image source="@Embed('assets/gameCommandMenu.swf')" click="btnKick_clickHandler(event)"/>
+	<mx:Image source="@Embed('assets/skin1/gameCommandMenu.swf')" click="btnKick_clickHandler(event)"/>
 </s:Group>

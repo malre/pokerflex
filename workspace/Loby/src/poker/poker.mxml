@@ -171,8 +171,7 @@
 
 	<fx:Script>
     	<![CDATA[
-			import components.skin2.*;
-			import components.skin3.*;
+			import components.*;
 			
 			import lobystate.StateGetFriends;
 			import lobystate.StateGetSkin;
@@ -671,313 +670,149 @@
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin1;
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin2;
-				}
-				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.Bg_DT_skin3;
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.Bg_DT_skin);
 			}
 			
 			protected function roomId_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
+				SkinManager.setSkinImage(img,skin,SkinManager.tableIdPanel_skin);
+				/*
 				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.tableIdPanel_skin1;
 					img.y -= 6;
 				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.tableIdPanel_skin2;
-				}
-				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.tableIdPanel_skin3;
-				}
+				*/
 			}
 
 			protected function logo_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.gameLogo_skin1;
-				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.gameLogo_skin2;
-				}
-				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.gameLogo_skin3;
-				}
+				SkinManager.setSkinImage(img,skin,SkinManager.gameLogo_skin);
 			}
 
 			protected function panel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var img:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					img.source = ResourceManagerLobby.Instance.gamePanel_skin1;
-				}
-				else if(skin == 1){
-					img.source = ResourceManagerLobby.Instance.gamePanel_skin2;
+				SkinManager.setSkinImage(img,skin,SkinManager.gamePanel_skin);
+			
+				if(skin == 1){
 					img.x = 502;
 					img.y = 8;
 				}
-				else if(skin == 2){
-					img.source = ResourceManagerLobby.Instance.gamePanel_skin3;
-				}
+				
 			}
 
 			protected function btnCardView_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnCardView.setStyle("skinClass", components.Button_calcCards);
-				}
-				else if(skin == 1){
-					btnCardView.setStyle("skinClass", Button_calcCards2);
-				}
-				else if(skin == 2){
-					btnCardView.setStyle("skinClass", Button_calcCards3);
-				}
+				SkinManager.setStyle(btnCardView,skin,SkinManager.Button_CalcCards);
 			}
 
 
 			protected function cpuAI_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					cpuAI.setStyle("skinClass", components.Button_CpuPlay);
-				}
-				else if(skin == 1){
-					cpuAI.setStyle("skinClass", Button_CpuPlay2);
-				}
-				else if(skin == 2){
-					cpuAI.setStyle("skinClass", Button_CpuPlay3);
-				}
+				SkinManager.setStyle(cpuAI,skin,SkinManager.Button_CpuPlay);
 			}
 
 
 			protected function cpuAICancel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					cpuAICancel.setStyle("skinClass", components.Button_CpuPlayCancel);
-				}
-				else if(skin == 1){
-					cpuAICancel.setStyle("skinClass", Button_CpuPlayCancel2);
-				}
-				else if(skin == 2){
-					cpuAICancel.setStyle("skinClass", Button_CpuPlayCancel3);
-				}
+				SkinManager.setStyle(cpuAICancel,skin,SkinManager.Button_CpuPlayCancel);
 			}
 
 			protected function btnReady_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnReady.setStyle("skinClass", components.ButtonReady);
-				}
-				else if(skin == 1){
-					btnReady.setStyle("skinClass", ButtonReady2);
-				}
-				else if(skin == 2){
-					btnReady.setStyle("skinClass", ButtonReady3);
-				}
+				SkinManager.setStyle(btnReady,skin,SkinManager.Button_Ready);
 			}
 
 
 			protected function btnTalk_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnTalk.setStyle("skinClass", components.Button_GameTalk); 
-				}
-				else if(skin == 1){
-					btnTalk.setStyle("skinClass", Button_GameTalk2); 
-					gameinputbox.x = 540;
-					btnTalk.x = 700;
-				}
-				else if(skin == 2){
-					btnTalk.setStyle("skinClass", Button_GameTalk3); 
-				}
+				SkinManager.setStyle(btnTalk,skin,SkinManager.Button_GameTalk); 
 			}
 
 
 			protected function btnEmotion_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnEmotion.setStyle("skinClass", components.ButtonMsgEmotion); 			
-				}
-				else if(skin == 1){
-					btnEmotion.setStyle("skinClass", ButtonMsgEmotion2);
-					btnEmotion.x = 752;
-					btnEmotion.y = 535;
-				}
-				else if(skin == 2){
-					btnEmotion.setStyle("skinClass", ButtonMsgEmotion3); 			
-				}
+				SkinManager.setStyle(btnEmotion, skin,SkinManager.Button_MsgEmotion);
 			}
 
 
 			protected function btnChatSetting_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnChatSetting.setStyle("skinClass", components.ButtonMsgOption);
-				}
-				else if(skin == 1){
-					btnChatSetting.setStyle("skinClass", ButtonMsgOption2);
-					btnChatSetting.x = 729;
-					btnChatSetting.y = 535;
-				}
-				else if(skin == 2){
-					btnChatSetting.setStyle("skinClass", ButtonMsgOption3);
-				}
+				SkinManager.setStyle(btnChatSetting,skin,SkinManager.Button_MsgOption);
 			}
 
 
 			protected function btnSetting_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnSetting.setStyle("skinClass", components.ButtonSetup);
-				}
-				else if(skin == 1){
-					btnSetting.setStyle("skinClass", ButtonSetup2);
-					btnSetting.x = 648;
-					btnSetting.y = 246;
-				}
-				else if(skin == 2){
-					btnSetting.setStyle("skinClass", ButtonSetup3);
-				}
+				SkinManager.setStyle(btnSetting,skin,SkinManager.Button_Setup);
 			}
 
 
 			protected function btnFriends_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnFriends.setStyle("skinClass", components.Button_Friends);
-				}
-				else if(skin == 1){
-					btnFriends.setStyle("skinClass", Button_Friends2);
-					btnFriends.x = 692;
-					btnFriends.y = 246;
-				}
-				else if(skin == 2){
-					btnFriends.setStyle("skinClass", Button_Friends3);
-				}
+				SkinManager.setStyle(btnFriends,skin,SkinManager.Button_GameFriends);
 			}
 
 
 			protected function btnExit_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btnExit.setStyle("skinClass", components.Button_Exit);
-				}
-				else if(skin == 1){
-					btnExit.setStyle("skinClass", Button_Exit2);
-					btnExit.x = 736;
-					btnExit.y = 246;
-				}
-				else if(skin == 2){
-					btnExit.setStyle("skinClass", Button_Exit3);
-				}
+				SkinManager.setStyle(btnExit,skin,SkinManager.Button_Exit);
 			}
 
 
 			protected function sandglass_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					sandglass.source = ResourceManagerPoker.sandglass_skin1; 
-				}
-				else if(skin == 1){
-					sandglass.source = ResourceManagerPoker.sandglass_skin2; 
-				}
-				else if(skin == 2){
-					sandglass.source = ResourceManagerPoker.sandglass_skin3; 
-				}
+				SkinManager.setSkinImage(sandglass,skin,SkinManager.sandglass_skin);
 			}
 
 
 			protected function imgDiscardUp_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgDiscardUp.source = ResourceManagerPoker.pass_skin1; 
-				}
-				else if(skin == 1){
-					imgDiscardUp.source = ResourceManagerPoker.pass_skin2; 
-				}
-				else if(skin == 2){
-					imgDiscardUp.source = ResourceManagerPoker.pass_skin3; 
-				}
+				SkinManager.setSkinImage(imgDiscardUp,skin,SkinManager.pass_skin);
 			}
 
 
 			protected function imgDiscardLeft_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgDiscardLeft.source = ResourceManagerPoker.pass_skin1;
-				}
-				else if(skin == 1){
-					imgDiscardLeft.source = ResourceManagerPoker.pass_skin2;
-				}
-				else if(skin == 2){
-					imgDiscardLeft.source = ResourceManagerPoker.pass_skin3;
-				}
+				SkinManager.setSkinImage(imgDiscardLeft,skin,SkinManager.pass_skin);
 			}
 
 
 			protected function imgDiscardDown_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgDiscardDown.source = ResourceManagerPoker.pass_skin1;
-				}
-				else if(skin == 1){
-					imgDiscardDown.source = ResourceManagerPoker.pass_skin2;
-				}
-				else if(skin == 2){
-					imgDiscardDown.source = ResourceManagerPoker.pass_skin3;
-				}
+				SkinManager.setSkinImage(imgDiscardDown,skin,SkinManager.pass_skin);
 			}
 
 
 			protected function imgDiscardRight_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgDiscardRight.source = ResourceManagerPoker.pass_skin1;
-				}
-				else if(skin == 1){
-					imgDiscardRight.source = ResourceManagerPoker.pass_skin2;
-				}
-				else if(skin == 2){
-					imgDiscardRight.source = ResourceManagerPoker.pass_skin3;
-				}
+				SkinManager.setSkinImage(imgDiscardRight,skin,SkinManager.pass_skin);
 			}
 
 
 			protected function cpuAIAnimation_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin1; 
-				}
-				else if(skin == 1){
-					cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin2; 
-				}
-				else if(skin == 2){
-					cpuAIAnimation.source = ResourceManagerPoker.CPUAI_skin3; 
-				}
+				SkinManager.setSkinImage(cpuAIAnimation,skin,SkinManager.CPUAI_skin);
 			}
 
 
@@ -1229,60 +1064,28 @@
 			protected function imgPlayerUpReady_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgPlayerUpReady.source = ResourceManagerPoker.ready_skin1;
-				}
-				else if(skin == 1){
-					imgPlayerUpReady.source = ResourceManagerPoker.ready_skin2;
-				}
-				else if(skin == 2){
-					imgPlayerUpReady.source = ResourceManagerPoker.ready_skin3;
-				}
+				SkinManager.setSkinImage(imgPlayerUpReady,skin,SkinManager.ready_skin);
 			}
 
 
 			protected function imgPlayerLeftReady_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgPlayerLeftReady.source = ResourceManagerPoker.ready_skin1;
-				}
-				else if(skin == 1){
-					imgPlayerLeftReady.source = ResourceManagerPoker.ready_skin2;
-				}
-				else if(skin == 2){
-					imgPlayerLeftReady.source = ResourceManagerPoker.ready_skin3;
-				}
+				SkinManager.setSkinImage(imgPlayerLeftReady,skin,SkinManager.ready_skin);
 			}
 
 
 			protected function imgPlayerRightReady_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgPlayerRightReady.source = ResourceManagerPoker.ready_skin1;
-				}
-				else if(skin == 1){
-					imgPlayerRightReady.source = ResourceManagerPoker.ready_skin2;
-				}
-				else if(skin == 2){
-					imgPlayerRightReady.source = ResourceManagerPoker.ready_skin3;
-				}
+				SkinManager.setSkinImage(imgPlayerRightReady,skin,SkinManager.ready_skin);
 			}
 
 
 			protected function imgPlayerDownReady_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					imgPlayerDownReady.source = ResourceManagerPoker.ready_skin1;
-				}
-				else if(skin == 1){
-					imgPlayerDownReady.source = ResourceManagerPoker.ready_skin2;
-				}
-				else if(skin == 2){
-					imgPlayerDownReady.source = ResourceManagerPoker.ready_skin3;
-				}
+				SkinManager.setSkinImage(imgPlayerDownReady,skin,SkinManager.ready_skin);
 			}
 
 

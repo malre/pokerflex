@@ -9,6 +9,9 @@
 	currentState="State1">
 	<fx:Script>
 		<![CDATA[
+			import components.skin1.OptionWindow_CloseButton;
+			import components.skin1.Button_ShopNoBuy;
+			import components.skin1.Button_Confirm;
 			import components.skin2.*;
 			import components.skin3.*;
 			
@@ -204,15 +207,7 @@
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
-				}
-				else if(skin == 1){
-					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin2; 
-				}
-				else if(skin == 2){
-					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin3; 
-				}
+				SkinManager.setSkinImage(image1,skin,SkinManager.Bg_shop_skin);
 			}
 
 
@@ -220,17 +215,17 @@
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.text_createroom_skin1; 
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.text_createroom_skin2; 
+				SkinManager.setSkinImage(bg,skin,SkinManager.text_createroom_skin);
+				
+				if(skin == 1){
 					bg.x = 18;
 					bg.y = 15;
 				}
 				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.text_createroom_skin3; 
+					bg.x = 18;
+					bg.y = 10;
 				}
+				
 			}
 
 
@@ -238,17 +233,17 @@
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin1; 
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin2; 
+				SkinManager.setSkinImage(bg,skin,SkinManager.text_optionWnd_skin);
+				
+				if(skin == 1){
 					bg.x = 18;
 					bg.y = 15;
 				}
 				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.text_optionWnd_skin3; 
+					bg.x = 18;
+					bg.y = 10;
 				}
+				
 			}
 
 
@@ -256,66 +251,28 @@
 			{
 				var bg:Image = (event.currentTarget) as Image;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin1; 
-				}
-				else if(skin == 1){
-					bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin2; 
-				}
-				else if(skin == 2){
-					bg.source = ResourceManagerLobby.Instance.optionWindow_text_skin3; 
-				}
+				SkinManager.setSkinImage(bg,skin,SkinManager.optionWindow_text_skin);
 			}
 
 
 			protected function btnclose_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					button1.setStyle("skinClass", components.OptionWindow_CloseButton);
-				}
-				else if(skin == 1){
-					button1.setStyle("skinClass", OptionWindow_CloseButton2);
-					button1.x = 338;
-					button1.y = 15;
-				}
-				else if(skin == 2){
-					button1.setStyle("skinClass", OptionWindow_CloseButton3);
-				}
+				SkinManager.setStyle(button1,skin,SkinManager.OptionWindow_CloseButton);
 			}
 
 
 			protected function BtnConfirm_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					BtnConfirm.setStyle("skinClass", components.Button_confirm); 
-				}
-				else if(skin == 1){
-					BtnConfirm.setStyle("skinClass", Button_confirm2); 
-					BtnConfirm.x = 68;
-					BtnConfirm.y = 233;
-				}
-				else if(skin == 2){
-					BtnConfirm.setStyle("skinClass", Button_confirm3); 
-				}
+				SkinManager.setStyle(BtnConfirm,skin,SkinManager.Button_Confirm);
 			}
 
 
 			protected function BtnCancel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					BtnCancel.setStyle("skinClass", components.Button_ShopNoBuy); 
-				}
-				else if(skin == 1){
-					BtnCancel.setStyle("skinClass", Button_ShopNoBuy2); 
-					BtnCancel.x = 252;
-					BtnCancel.y = 233;
-				}
-				else if(skin == 2){
-					BtnCancel.setStyle("skinClass", Button_ShopNoBuy3); 
-				}
+				SkinManager.setStyle(BtnCancel,skin,SkinManager.Button_ShopNoBuy);
 			}
 
 		]]>

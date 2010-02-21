@@ -5,8 +5,7 @@
 	currentState="StateStart" xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.OptionWindow_CloseButton2;
-			import components.skin3.OptionWindow_CloseButton3;
+			import components.*;
 			
 			import item.miscDefines;
 			
@@ -76,47 +75,21 @@
 			protected function bg_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin1; 
-				}
-				else if(skin == 1){
-					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin2; 
-				}
-				else if(skin == 2){
-					image1.source = ResourceManagerLobby.Instance.Bg_shop_skin3; 
-				}
+				SkinManager.setSkinImage(image1,skin,SkinManager.Bg_shop_skin);
 			}
 
 
 			protected function panel_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin1; 
-				}
-				else if(skin == 1){
-					image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin2; 
-				}
-				else if(skin == 2){
-					image2.source = ResourceManagerLobby.Instance.playerinfo_panel_skin3; 
-				}
+				SkinManager.setSkinImage(image2,skin,SkinManager.playerinfo_panel_skin);
 			}
 
 
 			protected function btnClose_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					button1.setStyle("skinClass", components.OptionWindow_CloseButton); 
-				}
-				else if(skin == 1){
-					button1.setStyle("skinClass", OptionWindow_CloseButton2); 
-					button1.x = 338;
-					button1.y = 15;
-				}
-				else if(skin == 2){
-					button1.setStyle("skinClass", OptionWindow_CloseButton3); 
-				}
+				SkinManager.setStyle(button1,skin,SkinManager.OptionWindow_CloseButton); 
 			}
 
 		]]>

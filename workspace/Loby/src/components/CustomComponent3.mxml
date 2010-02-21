@@ -64,8 +64,8 @@
 	</s:states>
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.*;
-			import components.skin3.*;
+			
+			import components.*;
 			
 			import item.shopRequester;
 			
@@ -225,6 +225,8 @@
 					lobbychatbox.y -= 1;
 				}
 				else if(skin == 2){
+					lobbychatbox.x -= 2;
+					lobbychatbox.y -= 4;
 				}
 			}
 			protected function lobbyinputbox_creationCompleteHandler(event:FlexEvent):void
@@ -239,6 +241,10 @@
 					lobbyinputbox.textFlow.color = 0x0;
 				}
 				else if(skin == 2){
+					lobbyinputbox.x -= 2;
+					lobbyinputbox.y -= 8;
+					//lobbyinputbox.setStyle("color", "#000000");
+					lobbyinputbox.textFlow.color = 0x0;
 				}
 			}
 
@@ -272,17 +278,17 @@
 			protected function panelBG_creationCompleteHandler(event:FlexEvent):void
 			{
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin1; 
-				}
-				else if(skin == 1){
-					bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin2;
+				SkinManager.setSkinImage(bitmapimage1,skin,SkinManager.bg_5_skin);
+				
+				if(skin == 1){
 					lobbyplayerlist.x -= 2;
 					lobbyplayerlist.y -= 4;
 				}
 				else if(skin == 2){
-					bitmapimage1.source = ResourceManagerLobby.Instance.bg_5_skin3; 
+					lobbyplayerlist.x -= 4;
+					lobbyplayerlist.y -= 4;
 				}
+				
 			}
 
 
@@ -296,17 +302,8 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.ButtonMsgEmotion); 
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", ButtonMsgEmotion2); 
-					btn.x = 207;
-					btn.y = 489;
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", ButtonMsgEmotion3); 
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_MsgEmotion);
+				
 			}
 
 
@@ -314,17 +311,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.ButtonMsgOption);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", ButtonMsgOption2);
-					btn.x = 232;
-					btn.y = 489;
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", ButtonMsgOption3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_MsgOption);
 			}
 
 
@@ -332,15 +319,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_Item);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_Item2);
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_Item3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_Item);
 			}
 
 
@@ -348,15 +327,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_Vita);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_Vita2);
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_Vita3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_Vita);
 			}
 
 
@@ -364,15 +335,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_Friends);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_Friends2);
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_Friends3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_Friends);
 			}
 
 
@@ -380,15 +343,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_Shop);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_Shop2);
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_Shop3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_Shop);
 			}
 
 
@@ -396,15 +351,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_AutoJoinTable);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_AutoJoinTable2);
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_AutoJoinTable3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_AutoJoinTable);
 			}
 
 
@@ -412,15 +359,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_CreateTable);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_CreateTable2);
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_CreateTable3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_CreateTable);
 			}
 
 
@@ -428,17 +367,7 @@
 			{
 				var btn:Button = (event.currentTarget) as Button;
 				var skin:int = StateGetSkin.Instance.skin;
-				if(skin == 0){
-					btn.setStyle("skinClass", components.Button_GameTalk);
-				}
-				else if(skin == 1){
-					btn.setStyle("skinClass", Button_GameTalk2);
-					btn.x -= 1;
-					btn.y -= 3;
-				}
-				else if(skin == 2){
-					btn.setStyle("skinClass", Button_GameTalk3);
-				}
+				SkinManager.setStyle(btn,skin,SkinManager.Button_GameTalk);
 			}
 
 

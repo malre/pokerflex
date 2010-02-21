@@ -3,7 +3,7 @@
 
 	<fx:Script>
 		<![CDATA[
-			import components.skin2.Button_Chupai2;
+			import components.*;
 			
 			import mx.controls.Image;
 			import mx.events.FlexEvent;
@@ -35,25 +35,25 @@
 			protected function image1_creationCompleteHandler(event:FlexEvent):void
 			{
 				var bg:Image = (event.currentTarget) as Image;
-				bg.source = ResourceManagerLobby.Instance.ButtonBg_skin1;
+				bg.source = SkinManager.ButtonBg_skin1;
 			}
 
 
 			protected function btnSendCards_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnSendCards.setStyle("skinClass", Button_Chupai2);
+				SkinManager.setStyle(btnSendCards,1,SkinManager.Button_Chupai);
 			}
 
 
 			protected function btnDiscard_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnDiscard.setStyle("skinClass", Button_Chupai2);
+				SkinManager.setStyle(btnDiscard,1,SkinManager.Button_Chupai);
 			}
 
 
 			protected function btnHint_creationCompleteHandler(event:FlexEvent):void
 			{
-				btnHint.setStyle("skinClass", Button_Chupai2);
+				SkinManager.setStyle(btnHint,1,SkinManager.Button_Chupai);
 			}
 
 		]]>

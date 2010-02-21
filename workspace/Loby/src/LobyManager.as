@@ -438,12 +438,7 @@ package
 			// 进行一定的修改，不再使用按钮，而是直接的椅子的图
 			var skin:int = StateGetSkin.Instance.skin;
 			var btn:Image = new Image();
-			if(skin == 0)
-				btn.source = ResourceManagerLobby.Instance.imgChair1;
-			else if(skin == 1)
-				btn.source = ResourceManagerLobby.Instance.imgChair2;
-			else if(skin == 2)
-				btn.source = ResourceManagerLobby.Instance.imgChair3;
+			SkinManager.setSkinImage(btn,skin,SkinManager.imgChair);
 			btn.x = x;
 			btn.y = y;
 			btn.id = id;
